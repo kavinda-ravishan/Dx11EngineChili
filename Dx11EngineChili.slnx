@@ -1,0 +1,7 @@
+<Solution>
+  <Configurations>
+    <Platform Name="x64" />
+    <Platform Name="x86" />
+  </Configurations>
+  <Project Path="Dx11EngineChili.vcxproj" Id="ed413933-ebb3-4ce8-b70b-3d503e669613" />
+</Solution>
