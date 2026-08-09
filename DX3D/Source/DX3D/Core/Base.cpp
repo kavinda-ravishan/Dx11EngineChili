@@ -3,3 +3,7 @@
 dx3d::Base::Base(const BaseDesc& desc) : _logger(desc.logger) {}
 
 dx3d::Base::~Base() {}
+
+dx3d::Logger& dx3d::Base::GetLogger() noexcept {
+	return _logger;
+}

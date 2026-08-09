@@ -34,7 +34,7 @@ dx3d::Window::Window(const WindowDesc& desc) : Base(desc.base), _window_size(des
     AdjustWindowRect(&rc, window_style, false);
 
     // Create the window.
-    HWND hwnd = CreateWindowEx(
+    _window_handle = CreateWindowEx(
         0,                              // Optional window styles.
         MAKEINTATOM(window_class_id),   // Window class
         L"DX11 Engine Window",          // Window text
@@ -51,11 +51,9 @@ dx3d::Window::Window(const WindowDesc& desc) : Base(desc.base), _window_size(des
         NULL        // Additional application data
     );
 
-    if (hwnd == NULL) {
-        return;
+    if (nullptr == _window_handle) {
+        DX3DLogThrowError("Failed to create window");
     }
 
-    _window_handle = static_cast<void*>(hwnd);
-
-    ShowWindow(hwnd, SW_SHOW);
+    ShowWindow(static_cast<HWND>(_window_handle), SW_SHOW);
 }

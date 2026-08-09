@@ -12,26 +12,24 @@ dx3d::Logger::~Logger() {
 	std::clog << "----------------------------------------\n";
 }
 
-void dx3d::Logger::Log(const LogLevel log_level, const char* message) const {
+void dx3d::Logger::Log(LogLevel level, const char* message, const char* file, const int line) {
 
-	if (log_level <= _log_level) {
-		std::clog << "[DX11 Engine] - ";
-
+	auto LogLevel2String = [](LogLevel log_level) -> const char* {
 		switch (log_level) {
-			case LogLevel::Error:
-				std::clog << "Error";
-				break;
-			case LogLevel::Warning:
-				std::clog << "Warning";
-				break;
-			case LogLevel::Info:
-				std::clog << "Info";
-				break;
-			default:
-				std::clog << "Log";
-				break;
+		case LogLevel::Error: return "Error";
+		case LogLevel::Warning: return "Warning";
+		case LogLevel::Info: return "Info";
+		default: return "Unknown";
 		}
+		};
 
-		std::clog << " : " << message << "\n";
+	if (level > _log_level) return;
+
+	std::clog << "[DX3D - " << LogLevel2String(level) << "] " << message << "\n";
+
+#ifdef _DEBUG
+	if (LogLevel::Warning == level || LogLevel::Error == level) {
+		std::clog << file << " : line " << line << "\n";
 	}
+#endif // _DEBUG
 }
