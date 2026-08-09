@@ -13,9 +13,19 @@ dx3d::Game::~Game() {}
 
 void dx3d::Game::Run() {
 
-    MSG msg = { };
-    while (GetMessage(&msg, NULL, 0, 0) > 0) {
-        TranslateMessage(&msg);
-        DispatchMessage(&msg);
-    }
+	MSG msg{};
+	while (_is_running) {
+
+		while (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE)) {
+
+			if (msg.message == WM_QUIT) {
+				_is_running = false;
+				break;
+			}
+
+			TranslateMessage(&msg);
+			DispatchMessage(&msg);
+		}
+
+	}
 }

@@ -13,5 +13,7 @@ namespace dx3d {
 	private:
 		std::unique_ptr<Logger> _logger_ptr{};
 		std::unique_ptr<Window> _window{};
+
+		bool _is_running{true};
 	};
 } // namespace dx3d
