@@ -5,9 +5,9 @@ namespace dx3d {
 	public:
 
 		enum class LogLevel {
-			Info = 0,
+			Error = 0,
 			Warning,
-			Error
+			Info,
 		};
 
 		explicit Logger(const LogLevel log_level = LogLevel::Error);

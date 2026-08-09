@@ -17,12 +17,13 @@ dx3d::Window::Window(const WindowDesc& desc) : Base(desc.base), _window_size(des
 
     auto RegisterWindowClass = []() {
 
-        WNDCLASS wc = { };
+        WNDCLASSEX wc = { };
 
-        wc.lpfnWndProc = WindowProcedure;
+        wc.cbSize = sizeof(WNDCLASSEX);
         wc.lpszClassName = L"DX11EngineWindow";
+        wc.lpfnWndProc = WindowProcedure;
 
-        return RegisterClass(&wc);
+        return RegisterClassEx(&wc);
         };
 
     static const auto window_class_id = std::invoke(RegisterWindowClass);
