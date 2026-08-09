@@ -22,13 +22,14 @@ dx3d::Window::Window(const WindowDesc& desc) : Base(desc.base), _window_size(des
         wc.cbSize = sizeof(WNDCLASSEX);
         wc.lpszClassName = L"DX11EngineWindow";
         wc.lpfnWndProc = WindowProcedure;
+        wc.hInstance = GetModuleHandle(NULL);
 
         return RegisterClassEx(&wc);
         };
 
     static const auto window_class_id = std::invoke(RegisterWindowClass);
 
-    constexpr DWORD window_style = WS_OVERLAPPED | WS_CAPTION | WS_SYSMENU;
+    constexpr DWORD window_style = WS_MINIMIZEBOX | WS_CAPTION | WS_SYSMENU;
 
     RECT rc = { 0, 0, _window_size.width, _window_size.height };
 
@@ -46,10 +47,10 @@ dx3d::Window::Window(const WindowDesc& desc) : Base(desc.base), _window_size(des
         rc.right - rc.left,
         rc.bottom - rc.top,
 
-        NULL,       // Parent window    
-        NULL,       // Menu
-        NULL,       // Instance handle
-        NULL        // Additional application data
+        NULL,                  // Parent window    
+        NULL,                  // Menu
+        GetModuleHandle(NULL), // Instance handle
+        NULL                   // Additional application data
     );
 
     if (nullptr == _window_handle) {

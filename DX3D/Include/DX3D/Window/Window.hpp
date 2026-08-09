@@ -10,7 +10,7 @@ namespace dx3d {
 
 	private:
 		const Rect _window_size{};
-		void* _window_handle{};
+		void* _window_handle{}; // HWND
 	};
 
 } // namespace dx3d
