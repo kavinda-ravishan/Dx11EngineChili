@@ -1,5 +1,5 @@
 #include <Windows.h>
-#include <string>
+#include <sstream>
 #include <DX3D/Core/Logger.hpp>
 #include <DX3D/Window/Window.hpp>
 #include <DX3D/Game/Game.hpp>
@@ -35,6 +35,8 @@ void dx3d::Game::Run() {
 		DX3DLogWarning("Peek message returned with -1");
 	}
 	else if(msg.wParam != 0) {
-		DX3DLogWarning((std::string("Window procedure returned with ") + std::to_string(msg.wParam)).c_str());
+		std::ostringstream oss;
+		oss << "Window procedure returned with " << msg.wParam;
+		DX3DLogWarning(oss.str().c_str());
 	}
 }

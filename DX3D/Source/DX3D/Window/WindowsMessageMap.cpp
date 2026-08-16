@@ -207,7 +207,7 @@ std::string dx3d::WindowsMessageMap::operator()(DWORD msg, LPARAM lp, WPARAM wp)
 		oss << std::left << std::setw(firstColWidth) << padss.str() << std::right;
 	}
 	oss << "   LP: 0x" << std::hex << std::setfill('0') << std::setw(8) << lp;
-	oss << "   WP: 0x" << std::hex << std::setfill('0') << std::setw(8) << wp << std::endl;
+	oss << "   WP: 0x" << std::hex << std::setfill('0') << std::setw(8) << wp;
 
 	return oss.str();
 }
