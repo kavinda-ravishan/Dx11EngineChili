@@ -1,4 +1,5 @@
 #include <Windows.h>
+#include <string>
 #include <DX3D/Core/Logger.hpp>
 #include <DX3D/Window/Window.hpp>
 #include <DX3D/Game/Game.hpp>
@@ -14,9 +15,10 @@ dx3d::Game::~Game() {}
 void dx3d::Game::Run() {
 
 	MSG msg{};
+	BOOL peek_msg_res = 0;
 	while (_is_running) {
 
-		while (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE)) {
+		while (peek_msg_res = PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE)) {
 
 			if (msg.message == WM_QUIT) {
 				_is_running = false;
@@ -27,5 +29,12 @@ void dx3d::Game::Run() {
 			DispatchMessage(&msg);
 		}
 
+	}
+
+	if (peek_msg_res == -1) {
+		DX3DLogWarning("Peek message returned with -1");
+	}
+	else if(msg.wParam != 0) {
+		DX3DLogWarning((std::string("Window procedure returned with ") + std::to_string(msg.wParam)).c_str());
 	}
 }

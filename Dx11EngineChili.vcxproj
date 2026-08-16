@@ -155,6 +155,7 @@
     <ClCompile Include="DX3D\Source\DX3D\Core\Logger.cpp" />
     <ClCompile Include="DX3D\Source\DX3D\Game\Game.cpp" />
     <ClCompile Include="DX3D\Source\DX3D\Window\Window.cpp" />
+    <ClCompile Include="DX3D\Source\DX3D\Window\WindowsMessageMap.cpp" />
     <ClCompile Include="Game\main.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -166,6 +167,7 @@
     <ClInclude Include="DX3D\Include\DX3D\Game\Game.hpp" />
     <ClInclude Include="DX3D\Include\DX3D\Math\Rect.hpp" />
     <ClInclude Include="DX3D\Include\DX3D\Window\Window.hpp" />
+    <ClInclude Include="DX3D\Source\DX3D\Window\WindowsMessageMap.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

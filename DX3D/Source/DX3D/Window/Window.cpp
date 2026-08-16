@@ -1,7 +1,19 @@
+ //#define DX3D_LOG_WIN_MESSAGES
+
 #include <Windows.h>
+#ifdef DX3D_LOG_WIN_MESSAGES
+#include <iostream>
+#endif // DX3D_LOG_WIN_MESSAGES
 #include <DX3D/Window/Window.hpp>
+#include <DX3D/Window/WindowsMessageMap.hpp>
 
 static LRESULT CALLBACK WindowProcedure(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam) {
+    
+#ifdef DX3D_LOG_WIN_MESSAGES
+    static dx3d::WindowsMessageMap win_msg_map;
+    std::clog << win_msg_map(msg, wparam, lparam);
+#endif // DX3D_LOG_WIN_MESSAGES
+
     switch (msg) {
     case WM_DESTROY:
         PostQuitMessage(0);
