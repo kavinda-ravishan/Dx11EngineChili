@@ -7,10 +7,14 @@
 dx3d::Game::Game(const GameDesc& desc) :
     Base({ *std::make_unique<Logger>(desc.log_level).release() }),
     _logger_ptr{ &_logger },
-    _window(std::make_unique<Window>(WindowDesc({ _logger, desc.window_size }))) {
+    _window(std::make_unique<Window>(WindowDesc({ _logger, desc.window_size }))) 
+{
+	DX3DLogInfo("Initializing game");
 }
 
-dx3d::Game::~Game() {}
+dx3d::Game::~Game() {
+	DX3DLogInfo("Destroying game");
+}
 
 void dx3d::Game::Run() {
 

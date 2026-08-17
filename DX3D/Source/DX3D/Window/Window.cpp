@@ -1,9 +1,10 @@
  //#define DX3D_LOG_WIN_MESSAGES
 
 #include <Windows.h>
-#include <sstream>
 #include <DX3D/Window/Window.hpp>
 #include <DX3D/Window/WindowsMessageMap.hpp>
+#include <DX3D/Window/Keyboard.hpp>
+#include <DX3D/Window/Mouse.hpp>
 
 static LRESULT CALLBACK WindowProcedure(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam) {
     dx3d::Window* const window_ptr = reinterpret_cast<dx3d::Window*>(GetWindowLongPtr(hwnd, GWLP_USERDATA));
@@ -30,8 +31,14 @@ static LRESULT CALLBACK HandleMessageSetup(HWND hwnd, UINT msg, WPARAM wparam, L
     return DefWindowProc(hwnd, msg, wparam, lparam);
 }
 
-dx3d::Window::Window(const WindowDesc& desc) 
-    : Base(desc.base), _window_size(desc.window_size), _h_instance(GetModuleHandle(NULL)){
+dx3d::Window::Window(const WindowDesc& desc) : 
+    Base(desc.base), 
+    _window_size(desc.window_size), 
+    _h_instance(GetModuleHandle(NULL)), 
+    _keyboard(std::make_unique<Keyboard>(KeyboardDesc(desc.base))), 
+    _mouse(std::make_unique<Mouse>(MouseDesc(desc.base)))
+{
+    DX3DLogInfo("Initializing window");
 
     auto RegisterWindowClass = [&]() {
 
@@ -78,6 +85,10 @@ dx3d::Window::Window(const WindowDesc& desc)
     ShowWindow(static_cast<HWND>(_window_handle), SW_SHOW);
 }
 
+dx3d::Window::~Window() {
+    DX3DLogInfo("Destroying window");
+}
+
 int64_t dx3d::Window::HandleMessage(void* arg_hwnd, uint32_t arg_msg, uint64_t arg_wparam, int64_t arg_lparam) {
 
     const HWND hwnd = static_cast<HWND>(arg_hwnd);
@@ -91,48 +102,70 @@ int64_t dx3d::Window::HandleMessage(void* arg_hwnd, uint32_t arg_msg, uint64_t a
 #endif // DX3D_LOG_WIN_MESSAGES
 
     switch (msg) {
+    // Window events
     case WM_DESTROY:
         PostQuitMessage(0);
         break;
+    case WM_KILLFOCUS:
+        _keyboard->ClearState();
+        break;
+    
+    // Keyboard events
     case WM_KEYDOWN:
-    {
-        std::ostringstream oss;
-        oss << (char)wparam << " pressed";
-        DX3DLogInfo(oss.str().c_str());
+    case WM_SYSKEYDOWN:
+        if (!(lparam & 0x40000000) || _keyboard->AutoRepeatIsEnabled()) {
+            _keyboard->OnKeyPressed(static_cast<unsigned char>(wparam));
+        }
         break;
-    }
     case WM_KEYUP:
-    {
-        std::ostringstream oss;
-        oss << (char)wparam << " released";
-        DX3DLogInfo(oss.str().c_str());
+    case WM_SYSKEYUP:
+        _keyboard->OnKeyReleased(static_cast<unsigned char>(wparam));
         break;
-    }
     case WM_CHAR:
+        _keyboard->OnChar(static_cast<unsigned char>(wparam));
+        break;
+
+     // Mouse events
+    case WM_MOUSEMOVE:
     {
-        std::ostringstream oss;
-        oss << "Char " << (char)wparam;
-        DX3DLogInfo(oss.str().c_str());
+        const POINTS pt = MAKEPOINTS(lparam);
+        _mouse->OnMouseMove(pt.x, pt.y);
         break;
     }
     case WM_LBUTTONDOWN:
     {
         const POINTS pt = MAKEPOINTS(lparam);
-
-        std::ostringstream oss;
-        oss << "Mouse left button pressed at " << pt.x << ", " << pt.y;
-        
-        DX3DLogInfo(oss.str().c_str());
+        _mouse->OnLeftPressed(pt.x, pt.y);
         break;
     }
     case WM_LBUTTONUP:
     {
         const POINTS pt = MAKEPOINTS(lparam);
-
-        std::ostringstream oss;
-        oss << "Mouse left button released at " << pt.x << ", " << pt.y;
-
-        DX3DLogInfo(oss.str().c_str());
+        _mouse->OnLeftReleased(pt.x, pt.y);
+        break;
+    }
+    case WM_RBUTTONDOWN:
+    {
+        const POINTS pt = MAKEPOINTS(lparam);
+        _mouse->OnRightPressed(pt.x, pt.y);
+        break;
+    }
+    case WM_RBUTTONUP:
+    {
+        const POINTS pt = MAKEPOINTS(lparam);
+        _mouse->OnRightReleased(pt.x, pt.y);
+        break;
+    }
+    case WM_MOUSEWHEEL:
+    {
+        const POINTS pt = MAKEPOINTS(lparam);
+        const int delta = GET_WHEEL_DELTA_WPARAM(wparam);
+        if (delta > 0) {
+            _mouse->OnWheelUp(pt.x, pt.y);
+        }
+        else if(delta < 0) {
+            _mouse->OnWheelDown(pt.x, pt.y);
+        }
         break;
     }
     default:

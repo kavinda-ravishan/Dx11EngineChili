@@ -20,4 +20,12 @@ namespace dx3d {
 		Rect window_size;
 	};
 
+	struct KeyboardDesc {
+		BaseDesc base;
+	};
+
+	struct MouseDesc {
+		BaseDesc base;
+	};
+
 } // namespace dx3d
