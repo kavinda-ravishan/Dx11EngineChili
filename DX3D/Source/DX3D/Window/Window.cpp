@@ -95,20 +95,23 @@ int64_t dx3d::Window::HandleMessage(void* arg_hwnd, uint32_t arg_msg, uint64_t a
         PostQuitMessage(0);
         break;
     case WM_KEYDOWN:
-        if (wparam == 'F') {
-            DX3DLogInfo("F pressed");
-        }
+    {
+        std::ostringstream oss;
+        oss << (char)wparam << " pressed";
+        DX3DLogInfo(oss.str().c_str());
         break;
+    }
     case WM_KEYUP:
-        if (wparam == 'F') {
-            DX3DLogInfo("F released");
-        }
+    {
+        std::ostringstream oss;
+        oss << (char)wparam << " released";
+        DX3DLogInfo(oss.str().c_str());
         break;
+    }
     case WM_CHAR:
     {
-
         std::ostringstream oss;
-        oss << (char)wparam;
+        oss << "Char " << (char)wparam;
         DX3DLogInfo(oss.str().c_str());
         break;
     }
@@ -117,8 +120,18 @@ int64_t dx3d::Window::HandleMessage(void* arg_hwnd, uint32_t arg_msg, uint64_t a
         const POINTS pt = MAKEPOINTS(lparam);
 
         std::ostringstream oss;
-        oss << pt.x << ", " << pt.y;
+        oss << "Mouse left button pressed at " << pt.x << ", " << pt.y;
         
+        DX3DLogInfo(oss.str().c_str());
+        break;
+    }
+    case WM_LBUTTONUP:
+    {
+        const POINTS pt = MAKEPOINTS(lparam);
+
+        std::ostringstream oss;
+        oss << "Mouse left button released at " << pt.x << ", " << pt.y;
+
         DX3DLogInfo(oss.str().c_str());
         break;
     }
