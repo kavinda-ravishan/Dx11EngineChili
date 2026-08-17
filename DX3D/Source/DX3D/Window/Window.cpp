@@ -3,8 +3,8 @@
 #include <Windows.h>
 #include <DX3D/Window/Window.hpp>
 #include <DX3D/Window/WindowsMessageMap.hpp>
-#include <DX3D/Window/Keyboard.hpp>
-#include <DX3D/Window/Mouse.hpp>
+#include <DX3D/IO/Keyboard.hpp>
+#include <DX3D/IO/Mouse.hpp>
 
 static LRESULT CALLBACK WindowProcedure(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam) {
     dx3d::Window* const window_ptr = reinterpret_cast<dx3d::Window*>(GetWindowLongPtr(hwnd, GWLP_USERDATA));

@@ -1,6 +1,5 @@
 #include <sstream>
-#include <DX3D/Window/Keyboard.hpp>
-
+#include <DX3D/IO/Keyboard.hpp>
 
 dx3d::Keyboard::Keyboard(const KeyboardDesc& desc)
 : Base(desc.base)

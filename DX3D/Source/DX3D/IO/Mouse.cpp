@@ -1,5 +1,5 @@
 #include <sstream>
-#include <DX3D/Window/Mouse.hpp>
+#include <DX3D/IO/Mouse.hpp>
 
 dx3d::Mouse::Mouse(const MouseDesc& desc)
 : Base(desc.base) 

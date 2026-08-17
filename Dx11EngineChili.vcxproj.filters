@@ -33,10 +33,10 @@
     <ClCompile Include="DX3D\Source\DX3D\Window\WindowsMessageMap.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="DX3D\Source\DX3D\Window\Keyboard.cpp">
+    <ClCompile Include="DX3D\Source\DX3D\IO\Keyboard.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="DX3D\Source\DX3D\Window\Mouse.cpp">
+    <ClCompile Include="DX3D\Source\DX3D\IO\Mouse.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -68,10 +68,10 @@
     <ClInclude Include="DX3D\Source\DX3D\Window\WindowsMessageMap.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="DX3D\Source\DX3D\Window\Keyboard.hpp">
+    <ClInclude Include="DX3D\Source\DX3D\IO\Keyboard.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="DX3D\Source\DX3D\Window\Mouse.hpp">
+    <ClInclude Include="DX3D\Source\DX3D\IO\Mouse.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
