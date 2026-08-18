@@ -28,4 +28,10 @@ namespace dx3d {
 		BaseDesc base;
 	};
 
+	struct GraphicsDeviceDesc {
+		BaseDesc base;
+		void* win_handle; // HWND
+		Rect window_size;
+	};
+
 } // namespace dx3d

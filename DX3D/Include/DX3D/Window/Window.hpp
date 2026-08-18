@@ -8,6 +8,9 @@ namespace dx3d {
 	public:
 		explicit Window(const WindowDesc& desc);
 		~Window();
+
+		void* GetWindowHandle() const noexcept;
+		Rect GetWindowSize() const noexcept;
 		
 		int64_t HandleMessage(void* arg_hwnd, uint32_t arg_msg, uint64_t arg_wparam, int64_t arg_lparam);
 

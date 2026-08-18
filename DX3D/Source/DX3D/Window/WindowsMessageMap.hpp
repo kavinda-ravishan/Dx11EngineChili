@@ -3,7 +3,7 @@
 #include <unordered_map>
 
 namespace dx3d {
-	class WindowsMessageMap
+	class WindowsMessageMap final
 	{
 	public:
 		WindowsMessageMap() noexcept;

@@ -89,6 +89,14 @@ dx3d::Window::~Window() {
     DX3DLogInfo("Destroying window");
 }
 
+void* dx3d::Window::GetWindowHandle() const noexcept {
+    return _window_handle;
+}
+
+dx3d::Rect dx3d::Window::GetWindowSize() const noexcept {
+    return _window_size;
+}
+
 int64_t dx3d::Window::HandleMessage(void* arg_hwnd, uint32_t arg_msg, uint64_t arg_wparam, int64_t arg_lparam) {
 
     const HWND hwnd = static_cast<HWND>(arg_hwnd);

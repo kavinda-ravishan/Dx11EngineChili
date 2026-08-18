@@ -1,7 +1,7 @@
 #pragma once
 
 namespace dx3d {
-	class Logger {
+	class Logger final {
 	public:
 
 		enum class LogLevel {

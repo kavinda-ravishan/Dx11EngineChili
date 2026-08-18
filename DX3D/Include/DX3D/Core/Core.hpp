@@ -8,9 +8,10 @@ namespace dx3d {
 
 	class Logger;
 	class Base;
+	class Game;
 	class Window;
 	class Keyboard;
 	class Mouse;
-	class Game;
+	class GraphicsDevice;
 
 } // namespace dx3d

@@ -3,13 +3,19 @@
 #include <DX3D/Core/Logger.hpp>
 #include <DX3D/Window/Window.hpp>
 #include <DX3D/Game/Game.hpp>
+#include <DX3D/Graphics/GraphicsDevice.hpp>
 
 dx3d::Game::Game(const GameDesc& desc) :
     Base({ *std::make_unique<Logger>(desc.log_level).release() }),
-    _logger_ptr{ &_logger },
-    _window(std::make_unique<Window>(WindowDesc({ _logger, desc.window_size }))) 
-{
+    _logger_ptr{ &_logger } {
 	DX3DLogInfo("Initializing game");
+
+	_window = std::make_unique<Window>(WindowDesc({ _logger, desc.window_size }));
+	_graphics_device = std::make_unique<GraphicsDevice>(
+		GraphicsDeviceDesc({ _logger }, 
+		_window->GetWindowHandle(), 
+		_window->GetWindowSize())
+	);
 }
 
 dx3d::Game::~Game() {
@@ -33,6 +39,7 @@ void dx3d::Game::Run() {
 			DispatchMessage(&msg);
 		}
 
+		OnInternalUpdate();
 	}
 
 	if (peek_msg_res == -1) {
@@ -43,4 +50,15 @@ void dx3d::Game::Run() {
 		oss << "Window procedure returned with " << msg.wParam;
 		DX3DLogWarning(oss.str().c_str());
 	}
+}
+
+void dx3d::Game::OnInternalUpdate() {
+	static float count = 0;
+
+	const float c = sin(count) / 2.0f + 0.5f;
+
+	_graphics_device->ClearBuffer(c, c, 1.0f);
+	_graphics_device->EndFrame();
+
+	count = count < 100 ? count + 0.01 : 0;
 }
