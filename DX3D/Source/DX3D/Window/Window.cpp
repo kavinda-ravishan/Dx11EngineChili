@@ -160,12 +160,7 @@ int64_t dx3d::Window::HandleMessage(void* arg_hwnd, uint32_t arg_msg, uint64_t a
     {
         const POINTS pt = MAKEPOINTS(lparam);
         const int delta = GET_WHEEL_DELTA_WPARAM(wparam);
-        if (delta > 0) {
-            _mouse->OnWheelUp(pt.x, pt.y);
-        }
-        else if(delta < 0) {
-            _mouse->OnWheelDown(pt.x, pt.y);
-        }
+        _mouse->OnWheelMove(delta, pt.x, pt.y);
         break;
     }
     default:

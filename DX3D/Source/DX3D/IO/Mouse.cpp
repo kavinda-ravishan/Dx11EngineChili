@@ -41,6 +41,15 @@ void dx3d::Mouse::OnRightReleased(int x, int y) noexcept {
     DX3DLogInfo(oss.str().c_str());
 }
 
+void dx3d::Mouse::OnWheelMove(int delta, int x, int y) noexcept {
+    if (delta > 0) {
+        OnWheelUp(x, y);
+    }
+    else if (delta < 0) {
+        OnWheelDown(x, y);
+    }
+}
+
 void dx3d::Mouse::OnWheelUp(int x, int y) noexcept {
     std::ostringstream oss;
     oss << "Mouse wheel up at " << x << ", " << y;

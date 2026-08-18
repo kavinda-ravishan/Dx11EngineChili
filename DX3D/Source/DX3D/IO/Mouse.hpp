@@ -17,6 +17,7 @@ namespace dx3d {
 		void OnLeftReleased(int x, int y) noexcept;
 		void OnRightPressed(int x, int y) noexcept;
 		void OnRightReleased(int x, int y) noexcept;
+		void OnWheelMove(int delta, int x, int y) noexcept;
 		void OnWheelUp(int x, int y) noexcept;
 		void OnWheelDown(int x, int y) noexcept;
 	};
