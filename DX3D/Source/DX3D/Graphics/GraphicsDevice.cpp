@@ -59,7 +59,10 @@ dx3d::GraphicsDevice::~GraphicsDevice() {
 }
 
 void dx3d::GraphicsDevice::EndFrame() {
-	_swap_chain->Present(1u, 0u);
+	DX3DGraphicsLogThrowOnFail(
+		_swap_chain->Present(1u, 0u),
+		"Failed the Present call"
+	);
 }
 
 void dx3d::GraphicsDevice::ClearBuffer(float red, float green, float blue) {
