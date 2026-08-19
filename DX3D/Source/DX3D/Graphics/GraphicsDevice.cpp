@@ -49,7 +49,7 @@ dx3d::GraphicsDevice::GraphicsDevice(const GraphicsDeviceDesc& desc)
 	);
 
 	DX3DGraphicsLogThrowOnFail(
-		_device->CreateRenderTargetView(back_buffer.Get(), nullptr, &_target),
+		_device->CreateRenderTargetView(back_buffer.Get(), nullptr, &_target_view),
 		"Failed to create render target"
 	);
 }
@@ -64,5 +64,5 @@ void dx3d::GraphicsDevice::EndFrame() {
 
 void dx3d::GraphicsDevice::ClearBuffer(float red, float green, float blue) {
 	const float color[] = { red, green, blue };
-	_context->ClearRenderTargetView(_target.Get(), color);
+	_context->ClearRenderTargetView(_target_view.Get(), color);
 }
