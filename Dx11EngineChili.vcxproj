@@ -173,6 +173,7 @@
     <ClInclude Include="DX3D\Include\DX3D\Game\Game.hpp" />
     <ClInclude Include="DX3D\Include\DX3D\Math\Rect.hpp" />
     <ClInclude Include="DX3D\Include\DX3D\Window\Window.hpp" />
+    <ClInclude Include="DX3D\Source\DX3D\Graphics\GraphicsLogUtils.hpp" />
     <ClInclude Include="DX3D\Source\DX3D\Window\WindowsMessageMap.hpp" />
     <ClInclude Include="DX3D\Source\DX3D\IO\Keyboard.hpp" />
     <ClInclude Include="DX3D\Source\DX3D\IO\Mouse.hpp" />

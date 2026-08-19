@@ -83,5 +83,8 @@
     <ClInclude Include="DX3D\Source\DX3D\Core\WinSwitches.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="DX3D\Source\DX3D\Graphics\GraphicsLogUtils.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

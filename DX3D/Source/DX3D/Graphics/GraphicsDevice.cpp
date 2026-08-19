@@ -1,3 +1,4 @@
+#include <DX3D/Graphics/GraphicsLogUtils.hpp>
 #include <DX3D/Graphics/GraphicsDevice.hpp>
 
 #pragma comment(lib, "d3d11.lib")
@@ -24,12 +25,18 @@ dx3d::GraphicsDevice::GraphicsDevice(const GraphicsDeviceDesc& desc)
 	swap_chain_desc.SwapEffect = DXGI_SWAP_EFFECT_DISCARD;
 	swap_chain_desc.Flags = 0;
 
+	UINT create_device_flags{};
+
+#ifdef _DEBUG
+	create_device_flags |= D3D11_CREATE_DEVICE_DEBUG;
+#endif // _DEBUG
+
 	DX3DGraphicsLogThrowOnFail(
 		D3D11CreateDeviceAndSwapChain(
 			nullptr,
 			D3D_DRIVER_TYPE_HARDWARE,
 			nullptr,
-			0,
+			create_device_flags,
 			nullptr,
 			0,
 			D3D11_SDK_VERSION,

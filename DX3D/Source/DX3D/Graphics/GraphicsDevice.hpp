@@ -22,13 +22,3 @@ namespace dx3d {
 	};
 
 } // namespace dx3d
-
-#define DX3DGraphicsLogThrowOnFailUtil(hr, message, file, line) {\
-	auto res = (hr);\
-	if (FAILED(res)) {\
-		DX3DLogThrowErrorUtil(message, file, line);\
-	}\
-}
-
-#define DX3DGraphicsLogThrowOnFail(hr, message)\
-	DX3DGraphicsLogThrowOnFailUtil(hr, message, __FILE__, __LINE__)
