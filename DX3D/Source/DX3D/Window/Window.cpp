@@ -1,5 +1,6 @@
  //#define DX3D_LOG_WIN_MESSAGES
 
+#include <DX3D/Core/WinSwitches.hpp>
 #include <Windows.h>
 #include <DX3D/Window/Window.hpp>
 #include <DX3D/Window/WindowsMessageMap.hpp>

@@ -1,4 +1,5 @@
 #pragma once
+#include <DX3D/Core/WinSwitches.hpp>
 #include <Windows.h>
 #include <unordered_map>
 
