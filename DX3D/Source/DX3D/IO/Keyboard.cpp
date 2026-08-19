@@ -13,19 +13,19 @@ dx3d::Keyboard::~Keyboard() {
 
 void dx3d::Keyboard::OnKeyReleased(unsigned char keycode) noexcept {
 	std::ostringstream oss;
-	oss << keycode << " released";
+	oss << "[Keyboard] : " << keycode << " released";
 	DX3DLogInfo(oss.str().c_str());
 }
 
 void dx3d::Keyboard::OnKeyPressed(unsigned char keycode) noexcept {
 	std::ostringstream oss;
-	oss << keycode << " pressed";
+	oss << "[Keyboard] : " << keycode << " pressed";
 	DX3DLogInfo(oss.str().c_str());
 }
 
 void dx3d::Keyboard::OnChar(char character) noexcept {
 	std::ostringstream oss;
-	oss << "Char " << character;
+	oss << "[Keyboard] : " << "Char " << character;
 	DX3DLogInfo(oss.str().c_str());
 }
 
