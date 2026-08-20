@@ -14,7 +14,11 @@ namespace dx3d {
 
 		void EndFrame();
 		void ClearBuffer(float red, float green, float blue);
+		void DrawTestTriangle();
+
 	private:
+		const Rect _window_size{};
+
 		Microsoft::WRL::ComPtr<ID3D11Device> _device{};
 		Microsoft::WRL::ComPtr<IDXGISwapChain> _swap_chain{};
 		Microsoft::WRL::ComPtr<ID3D11DeviceContext> _context{};

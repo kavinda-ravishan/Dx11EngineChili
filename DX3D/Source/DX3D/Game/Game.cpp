@@ -58,7 +58,8 @@ void dx3d::Game::OnInternalUpdate() {
 	const float c = sin(count) / 2.0f + 0.5f;
 
 	_graphics_device->ClearBuffer(c, c, 1.0f);
+	_graphics_device->DrawTestTriangle();
 	_graphics_device->EndFrame();
 
-	count = count < 100 ? count + 0.01 : 0;
+	count = count < 100 ? count + 0.01f : 0;
 }
