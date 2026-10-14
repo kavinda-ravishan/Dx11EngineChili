@@ -165,6 +165,18 @@ int64_t dx3d::Window::HandleMessage(void* arg_hwnd, uint32_t arg_msg, uint64_t a
         _mouse->OnRightReleased(pt.x, pt.y);
         break;
     }
+    case WM_MBUTTONDOWN:
+    {
+        const POINTS pt = MAKEPOINTS(lparam);
+        _mouse->OnMiddlePressed(pt.x, pt.y);
+        break;
+    }
+    case WM_MBUTTONUP:
+    {
+        const POINTS pt = MAKEPOINTS(lparam);
+        _mouse->OnMiddleReleased(pt.x, pt.y);
+        break;
+    }
     case WM_MOUSEWHEEL:
     {
         const POINTS pt = MAKEPOINTS(lparam);

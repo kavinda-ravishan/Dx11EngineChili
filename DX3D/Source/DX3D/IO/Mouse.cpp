@@ -41,6 +41,20 @@ void dx3d::Mouse::OnRightReleased(int x, int y) noexcept {
     DX3DLogInfo(oss.str().c_str());
 }
 
+void dx3d::Mouse::OnMiddlePressed(int x, int y) noexcept {
+    std::ostringstream oss;
+    oss << "[Mouse] : " << "Mouse middle button pressed at " << x << ", " << y;
+
+    DX3DLogInfo(oss.str().c_str());
+}
+
+void dx3d::Mouse::OnMiddleReleased(int x, int y) noexcept {
+    std::ostringstream oss;
+    oss << "[Mouse] : " << "Mouse middle button released at " << x << ", " << y;
+
+    DX3DLogInfo(oss.str().c_str());
+}
+
 void dx3d::Mouse::OnWheelMove(int delta, int x, int y) noexcept {
     if (delta > 0) {
         OnWheelUp(x, y);
