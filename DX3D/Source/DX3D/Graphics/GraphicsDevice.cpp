@@ -31,6 +31,18 @@ dx3d::GraphicsDevice::GraphicsDevice(const GraphicsDeviceDesc& desc)
 
 	UINT create_device_flags{};
 
+	D3D_FEATURE_LEVEL feature_levels_requested[] = {
+		 D3D_FEATURE_LEVEL_11_1,
+		 D3D_FEATURE_LEVEL_11_0,
+		 D3D_FEATURE_LEVEL_10_1,
+		 D3D_FEATURE_LEVEL_10_0,
+		 D3D_FEATURE_LEVEL_9_3,
+		 D3D_FEATURE_LEVEL_9_2,
+		 D3D_FEATURE_LEVEL_9_1
+	};
+
+	D3D_FEATURE_LEVEL feature_levels{};
+
 #ifdef _DEBUG
 	create_device_flags |= D3D11_CREATE_DEVICE_DEBUG;
 #endif // _DEBUG
@@ -41,17 +53,28 @@ dx3d::GraphicsDevice::GraphicsDevice(const GraphicsDeviceDesc& desc)
 			D3D_DRIVER_TYPE_HARDWARE,
 			nullptr,
 			create_device_flags,
-			nullptr,
-			0,
+			feature_levels_requested,
+			ARRAYSIZE(feature_levels_requested),
 			D3D11_SDK_VERSION,
 			&swap_chain_desc,
 			&_swap_chain,
 			&_device,
-			nullptr,
+			&feature_levels,
 			&_context
 		), 
 		"Failed to create D3D11 device, swap chain and context"
 	);
+
+	switch (feature_levels) {
+		case D3D_FEATURE_LEVEL_11_1: DX3DLogInfo("Feature Level: 11.1"); break;
+		case D3D_FEATURE_LEVEL_11_0: DX3DLogInfo("Feature Level: 11.0"); break;
+		case D3D_FEATURE_LEVEL_10_1: DX3DLogInfo("Feature Level: 10.1"); break;
+		case D3D_FEATURE_LEVEL_10_0: DX3DLogInfo("Feature Level: 10.0"); break;
+		case D3D_FEATURE_LEVEL_9_3:  DX3DLogInfo("Feature Level: 9.3"); break;
+		case D3D_FEATURE_LEVEL_9_2:  DX3DLogInfo("Feature Level: 9.2"); break;
+		case D3D_FEATURE_LEVEL_9_1:  DX3DLogInfo("Feature Level: 9.1"); break;
+		default: DX3DLogInfo("Unknown Feature Level"); break;
+	}
 
 	Microsoft::WRL::ComPtr<ID3D11Resource> back_buffer{};
 	DX3DGraphicsLogThrowOnFail(
