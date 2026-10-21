@@ -83,7 +83,7 @@ dx3d::Window::Window(const WindowDesc& desc) :
         DX3DLogThrowError("Failed to create window");
     }
 
-    ShowWindow(static_cast<HWND>(_window_handle), SW_SHOW);
+    ShowWindow(static_cast<HWND>(_window_handle), SW_SHOWDEFAULT);
 }
 
 dx3d::Window::~Window() {

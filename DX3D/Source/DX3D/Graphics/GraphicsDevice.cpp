@@ -93,13 +93,17 @@ dx3d::GraphicsDevice::~GraphicsDevice() {
 }
 
 void dx3d::GraphicsDevice::EndFrame() {
-	DX3DGraphicsLogThrowOnFail(
-		_swap_chain->Present(1u, 0u),
-		"Failed the Present call"
-	);
+	HRESULT hr{};
+	if (FAILED(hr = _swap_chain->Present(1u, 0u))) {
+		if (hr == DXGI_ERROR_DEVICE_REMOVED) {
+			DX3DGraphicsLogThrowOnFail(_device->GetDeviceRemovedReason(), "Failed the Present call [DEVICE_REMOVED]");
+		}
+	} else {
+		DX3DGraphicsLogThrowOnFail(hr, "Failed the Present call");
+	}
 }
 
-void dx3d::GraphicsDevice::ClearBuffer(float red, float green, float blue) {
+void dx3d::GraphicsDevice::ClearBuffer(float red, float green, float blue) noexcept {
 	const float color[] = { red, green, blue };
 	_context->ClearRenderTargetView(_target_view.Get(), color);
 }

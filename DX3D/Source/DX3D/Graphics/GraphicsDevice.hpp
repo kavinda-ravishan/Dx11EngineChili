@@ -13,7 +13,7 @@ namespace dx3d {
 		~GraphicsDevice();
 
 		void EndFrame();
-		void ClearBuffer(float red, float green, float blue);
+		void ClearBuffer(float red, float green, float blue) noexcept;
 		void DrawTestTriangle();
 
 	private:
