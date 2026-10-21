@@ -136,7 +136,7 @@ void dx3d::GraphicsDevice::DrawTestTriangle() {
 	Microsoft::WRL::ComPtr<ID3D11Buffer> vertex_buffer;
 	DX3DGraphicsLogThrowOnFail(
 		_device->CreateBuffer(&vertex_buffer_desc, &sub_resource_data, &vertex_buffer),
-		"Failed to create the buffer"
+		"Failed to create the vertex buffer"
 	);
 
 	const UINT stride = sizeof(VertexStruct);
