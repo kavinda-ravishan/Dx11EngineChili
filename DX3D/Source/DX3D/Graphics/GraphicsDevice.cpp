@@ -112,14 +112,28 @@ void dx3d::GraphicsDevice::DrawTestTriangle() {
 
 	// create and set vertex buffer
 	struct VertexStruct {
-		float x;
-		float y;
+		struct
+		{
+			float x;
+			float y;
+		} pos;
+
+		struct
+		{
+			unsigned char r;
+			unsigned char g;
+			unsigned char b;
+			unsigned char a;
+		} color;
 	};
 
 	const VertexStruct vertices[] = {
-		{ 0.0f,  0.5f},
-		{ 0.5f, -0.5f},
-		{-0.5f, -0.5f}
+		{ 0.0f,  0.5f, 255, 0, 0, 0},
+		{ 0.5f, -0.5f, 0, 255, 0, 0},
+		{-0.5f, -0.5f, 0, 0, 255, 0},
+		{-0.3f, 0.3f, 0, 0, 255, 0},
+		{0.3f, 0.3f, 0, 255, 0, 0},
+		{0.0f,  -0.8f, 255, 0, 0, 0},
 	};
 
 	D3D11_BUFFER_DESC vertex_buffer_desc{};
@@ -130,20 +144,49 @@ void dx3d::GraphicsDevice::DrawTestTriangle() {
 	vertex_buffer_desc.ByteWidth = sizeof(vertices);
 	vertex_buffer_desc.StructureByteStride = sizeof(VertexStruct);
 
-	D3D11_SUBRESOURCE_DATA sub_resource_data{};
-	sub_resource_data.pSysMem = vertices;
+	D3D11_SUBRESOURCE_DATA v_sub_resource_data{};
+	v_sub_resource_data.pSysMem = vertices;
 
 	Microsoft::WRL::ComPtr<ID3D11Buffer> vertex_buffer;
 	DX3DGraphicsLogThrowOnFail(
-		_device->CreateBuffer(&vertex_buffer_desc, &sub_resource_data, &vertex_buffer),
+		_device->CreateBuffer(&vertex_buffer_desc, &v_sub_resource_data, &vertex_buffer),
 		"Failed to create the vertex buffer"
 	);
 
-	const UINT stride = sizeof(VertexStruct);
-	const UINT offset = 0u;
+	const UINT v_stride = sizeof(VertexStruct);
+	const UINT v_offset = 0u;
 	// NOTE : &vertex_buffer will get the pp but it release the currunt resources therefor use 'GetAddressOf' to get pp
-	_context->IASetVertexBuffers(0, 1, vertex_buffer.GetAddressOf(), &stride, &offset);
+	_context->IASetVertexBuffers(0, 1, vertex_buffer.GetAddressOf(), &v_stride, &v_offset);
 	
+	// create and set index buffer
+	const unsigned short indices[] = {
+		0, 1, 2,
+		0, 2, 3,
+		0, 4, 1,
+		2, 1, 5
+	};
+
+	D3D11_BUFFER_DESC index_buffer_desc{};
+	index_buffer_desc.BindFlags = D3D11_BIND_INDEX_BUFFER;
+	index_buffer_desc.Usage = D3D11_USAGE_DEFAULT;
+	index_buffer_desc.CPUAccessFlags = 0u;
+	index_buffer_desc.MiscFlags = 0u;
+	index_buffer_desc.ByteWidth = sizeof(indices);
+	index_buffer_desc.StructureByteStride = sizeof(unsigned short);
+
+	D3D11_SUBRESOURCE_DATA i_sub_resource_data{};
+	i_sub_resource_data.pSysMem = indices;
+
+	Microsoft::WRL::ComPtr<ID3D11Buffer> index_buffer{};
+	DX3DGraphicsLogThrowOnFail(
+		_device->CreateBuffer(&index_buffer_desc, &i_sub_resource_data, &index_buffer),
+		"Failed to create the index buffer"
+	);
+
+	const UINT i_stride = sizeof(unsigned short);
+	const UINT i_offset = 0u;
+	_context->IASetIndexBuffer(index_buffer.Get(), DXGI_FORMAT_R16_UINT, 0u);
+
 	// read and set vertex shader
 	Microsoft::WRL::ComPtr<ID3DBlob> vs_blod{};
 	Microsoft::WRL::ComPtr<ID3D11VertexShader> vertex_shader{};
@@ -163,7 +206,8 @@ void dx3d::GraphicsDevice::DrawTestTriangle() {
 	Microsoft::WRL::ComPtr<ID3D11InputLayout> input_layout{};
 
 	const D3D11_INPUT_ELEMENT_DESC vs_input_element_desc[] = {
-		{"POSITION", 0, DXGI_FORMAT_R32G32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0}
+		{"POSITION", 0, DXGI_FORMAT_R32G32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0},
+		{"COLOR", 0, DXGI_FORMAT_R8G8B8A8_UNORM, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0}
 	};
 
 	DX3DGraphicsLogThrowOnFail(
@@ -211,5 +255,5 @@ void dx3d::GraphicsDevice::DrawTestTriangle() {
 	_context->RSSetViewports(1u, &view_port);
 
 	// draw
-	_context->Draw(std::size(vertices), 0u);
+	_context->DrawIndexed(std::size(indices), 0u, 0u);
 }
