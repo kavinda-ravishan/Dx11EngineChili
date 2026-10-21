@@ -198,7 +198,7 @@ void dx3d::GraphicsDevice::DrawTestTriangle() {
 	_context->OMSetRenderTargets(1u, _target_view.GetAddressOf(), nullptr);
 
 	// set Primitive Topology to triangle list (groups of 3 vertices)
-	_context->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+	_context->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
 	// confifure viewport
 	D3D11_VIEWPORT view_port{};
