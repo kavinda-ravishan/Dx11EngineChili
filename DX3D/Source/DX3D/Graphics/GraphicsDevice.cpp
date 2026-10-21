@@ -162,18 +162,18 @@ void dx3d::GraphicsDevice::DrawTestTriangle() {
 	// input (vertex) layout (2d position only)
 	Microsoft::WRL::ComPtr<ID3D11InputLayout> input_layout{};
 
-	const D3D11_INPUT_ELEMENT_DESC input_element_desc[] = {
-		{"Position", 0, DXGI_FORMAT_R32G32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0}
+	const D3D11_INPUT_ELEMENT_DESC vs_input_element_desc[] = {
+		{"POSITION", 0, DXGI_FORMAT_R32G32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0}
 	};
 
 	DX3DGraphicsLogThrowOnFail(
 		_device->CreateInputLayout(
-			input_element_desc,
-			std::size(input_element_desc),
+			vs_input_element_desc,
+			std::size(vs_input_element_desc),
 			vs_blod->GetBufferPointer(),
 			vs_blod->GetBufferSize(),
 			&input_layout),
-		"Failed to create input layout"
+		"Failed to create VS input layout"
 	);
 
 	_context->IASetInputLayout(input_layout.Get());
