@@ -1,5 +1,7 @@
 #include <Windows.h>
+#include <cmath>
 #include <sstream>
+#include <DX3D/Math/Constants.hpp>
 #include <DX3D/Core/Logger.hpp>
 #include <DX3D/Window/Window.hpp>
 #include <DX3D/Game/Game.hpp>
@@ -53,13 +55,14 @@ void dx3d::Game::Run() {
 }
 
 void dx3d::Game::OnInternalUpdate() {
-	static float count = 0;
+	static float curr_ang = 0;
 
-	const float c = sin(count) / 2.0f + 0.5f;
+	constexpr float ang_inc = dx3d::PI / 100;
+	const float c = sin(curr_ang) / 2.0f + 0.5f;
 
 	_graphics_device->ClearBuffer(c, c, 1.0f);
-	_graphics_device->DrawTestTriangle();
+	_graphics_device->DrawTestTriangle(curr_ang);
 	_graphics_device->EndFrame();
 
-	count = count < 100 ? count + 0.01f : 0;
+	curr_ang = curr_ang < 2 * dx3d::PI ? curr_ang + ang_inc : 0;
 }

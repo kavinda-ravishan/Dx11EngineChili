@@ -1,3 +1,4 @@
+#include <cmath>
 #include <DX3D/Core/WinSwitches.hpp>
 #include <d3dcompiler.h>
 
@@ -108,7 +109,7 @@ void dx3d::GraphicsDevice::ClearBuffer(float red, float green, float blue) noexc
 	_context->ClearRenderTargetView(_target_view.Get(), color);
 }
 
-void dx3d::GraphicsDevice::DrawTestTriangle() {
+void dx3d::GraphicsDevice::DrawTestTriangle(const float angle) {
 
 	// create and set vertex buffer
 	struct VertexStruct {
@@ -133,7 +134,7 @@ void dx3d::GraphicsDevice::DrawTestTriangle() {
 		{-0.5f, -0.5f, 0, 0, 255, 0},
 		{-0.3f, 0.3f, 0, 0, 255, 0},
 		{0.3f, 0.3f, 0, 255, 0, 0},
-		{0.0f,  -0.8f, 255, 0, 0, 0},
+		{0.0f,  -1.0f, 255, 0, 0, 0},
 	};
 
 	D3D11_BUFFER_DESC vertex_buffer_desc{};
@@ -184,6 +185,42 @@ void dx3d::GraphicsDevice::DrawTestTriangle() {
 	);
 
 	_context->IASetIndexBuffer(index_buffer.Get(), DXGI_FORMAT_R16_UINT, 0u);
+
+	// create constant buffer for transformation matrix
+	struct ConstantBufferStruct {
+		struct
+		{
+			float element[4][4];
+		} transformation;
+	};
+
+	const ConstantBufferStruct constant_buffer = {
+		{
+			 (9.0/16.0) * std::cos(angle), std::sin(angle), 0.0f, 0.0f,
+			-(9.0/16.0) * std::sin(angle), std::cos(angle), 0.0f, 0.0f,
+			 0.0f,                    0.0f,            1.0f, 0.0f,
+			 0.0f,                    0.0f,            0.0f, 1.0f,
+		}
+	};
+
+	D3D11_BUFFER_DESC constant_buffer_desc{};
+	constant_buffer_desc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
+	constant_buffer_desc.Usage = D3D11_USAGE_DYNAMIC;
+	constant_buffer_desc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+	constant_buffer_desc.MiscFlags = 0u;
+	constant_buffer_desc.ByteWidth = sizeof(constant_buffer);
+	constant_buffer_desc.StructureByteStride = 0u;
+
+	D3D11_SUBRESOURCE_DATA constant_buffer_data{};
+	constant_buffer_data.pSysMem = &constant_buffer;
+	
+	Microsoft::WRL::ComPtr<ID3D11Buffer> constant_buffer_res{};
+	DX3DGraphicsLogThrowOnFail(
+		_device->CreateBuffer(&constant_buffer_desc, &constant_buffer_data, &constant_buffer_res), 
+		"Failed to create the constant buffer"
+	);
+
+	_context->VSSetConstantBuffers(0u, 1u, constant_buffer_res.GetAddressOf());
 
 	// read and set vertex shader
 	Microsoft::WRL::ComPtr<ID3DBlob> vs_blod{};
