@@ -11,7 +11,14 @@ dx3d::Mouse::~Mouse() {
 	DX3DLogInfo("Destroying mouse");
 }
 
-void dx3d::Mouse::OnMouseMove(int x, int y) noexcept {}
+const std::array<int, 2>& dx3d::Mouse::GetPos() const noexcept {
+    return _pos;
+}
+
+void dx3d::Mouse::OnMouseMove(int x, int y) noexcept {
+    _pos[0] = x;
+    _pos[1] = y;
+}
 
 void dx3d::Mouse::OnLeftPressed(int x, int y) noexcept {
     std::ostringstream oss;

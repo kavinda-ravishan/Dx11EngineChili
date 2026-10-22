@@ -14,7 +14,7 @@ namespace dx3d {
 
 		void EndFrame();
 		void ClearBuffer(float red, float green, float blue) noexcept;
-		void DrawTestTriangle(const float angle);
+		void DrawTestTriangle(const float angle, const float mouse_pos_x, const float mouse_pos_y);
 
 	private:
 		const Rect _window_size{};

@@ -1,4 +1,5 @@
 #pragma once
+#include <array>
 
 #include <DX3D/Core/Base.hpp>
 
@@ -11,7 +12,11 @@ namespace dx3d {
 		explicit Mouse(const MouseDesc& desc);
 		~Mouse();
 
+		const std::array<int, 2>& GetPos() const noexcept;
+
 	private:
+		std::array<int, 2> _pos{};
+
 		void OnMouseMove(int x, int y) noexcept;
 		void OnLeftPressed(int x, int y) noexcept;
 		void OnLeftReleased(int x, int y) noexcept;

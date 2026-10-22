@@ -1,6 +1,7 @@
 #include <cmath>
 #include <DX3D/Core/WinSwitches.hpp>
 #include <d3dcompiler.h>
+#include <DirectXMath.h>
 
 #include <DX3D/Graphics/GraphicsLogUtils.hpp>
 #include <DX3D/Graphics/GraphicsDevice.hpp>
@@ -109,7 +110,7 @@ void dx3d::GraphicsDevice::ClearBuffer(float red, float green, float blue) noexc
 	_context->ClearRenderTargetView(_target_view.Get(), color);
 }
 
-void dx3d::GraphicsDevice::DrawTestTriangle(const float angle) {
+void dx3d::GraphicsDevice::DrawTestTriangle(const float angle, const float mouse_pos_x, const float mouse_pos_y) {
 
 	// create and set vertex buffer
 	struct VertexStruct {
@@ -188,18 +189,17 @@ void dx3d::GraphicsDevice::DrawTestTriangle(const float angle) {
 
 	// create constant buffer for transformation matrix
 	struct ConstantBufferStruct {
-		struct
-		{
-			float element[4][4];
-		} transformation;
+		DirectX::XMMATRIX transform;
 	};
+
 
 	const ConstantBufferStruct constant_buffer = {
 		{
-			 (9.0/16.0) * std::cos(angle), std::sin(angle), 0.0f, 0.0f,
-			-(9.0/16.0) * std::sin(angle), std::cos(angle), 0.0f, 0.0f,
-			 0.0f,                    0.0f,            1.0f, 0.0f,
-			 0.0f,                    0.0f,            0.0f, 1.0f,
+			DirectX::XMMatrixTranspose(
+				DirectX::XMMatrixRotationZ(angle)*
+				DirectX::XMMatrixScaling(float(_window_size.height) / _window_size.width, 1.0f, 1.0f)*
+				DirectX::XMMatrixTranslation(mouse_pos_x, mouse_pos_y, 0.0f)
+			)
 		}
 	};
 

@@ -3,6 +3,7 @@
 #include <sstream>
 #include <DX3D/Math/Constants.hpp>
 #include <DX3D/Core/Logger.hpp>
+#include <DX3D/IO/Mouse.hpp>
 #include <DX3D/Window/Window.hpp>
 #include <DX3D/Game/Game.hpp>
 #include <DX3D/Graphics/GraphicsDevice.hpp>
@@ -57,11 +58,18 @@ void dx3d::Game::Run() {
 void dx3d::Game::OnInternalUpdate() {
 	static float curr_ang = 0;
 
-	constexpr float ang_inc = dx3d::PI / 100;
+	constexpr float ang_inc = dx3d::PI / 120;
 	const float c = sin(curr_ang) / 2.0f + 0.5f;
 
+	const auto& mouse_pos = _window->_mouse->GetPos();
+	const auto& window_size = _window->GetWindowSize();
+
 	_graphics_device->ClearBuffer(c, c, 1.0f);
-	_graphics_device->DrawTestTriangle(curr_ang);
+	_graphics_device->DrawTestTriangle(
+		curr_ang, 
+		(float(mouse_pos[0] * 2) / window_size.width) - 1, 
+		-((float(mouse_pos[1] * 2) / window_size.height) - 1)
+	);
 	_graphics_device->EndFrame();
 
 	curr_ang = curr_ang < 2 * dx3d::PI ? curr_ang + ang_inc : 0;

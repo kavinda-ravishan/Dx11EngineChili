@@ -14,13 +14,13 @@ namespace dx3d {
 		
 		int64_t HandleMessage(void* arg_hwnd, uint32_t arg_msg, uint64_t arg_wparam, int64_t arg_lparam);
 
+		std::unique_ptr<Keyboard> _keyboard{};
+		std::unique_ptr<Mouse> _mouse{};
+	
 	private:
 		const Rect _window_size{};
 		void* const _h_instance{}; // HINSTANCE
 		void* _window_handle{}; // HWND
-
-		std::unique_ptr<Keyboard> _keyboard{};
-		std::unique_ptr<Mouse> _mouse{};
 	};
 
 } // namespace dx3d
