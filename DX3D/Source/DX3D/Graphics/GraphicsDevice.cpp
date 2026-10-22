@@ -183,8 +183,6 @@ void dx3d::GraphicsDevice::DrawTestTriangle() {
 		"Failed to create the index buffer"
 	);
 
-	const UINT i_stride = sizeof(unsigned short);
-	const UINT i_offset = 0u;
 	_context->IASetIndexBuffer(index_buffer.Get(), DXGI_FORMAT_R16_UINT, 0u);
 
 	// read and set vertex shader
