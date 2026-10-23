@@ -159,7 +159,7 @@ void dx3d::GraphicsDevice::ClearBuffer(float red, float green, float blue) noexc
 	_context->ClearDepthStencilView(_depth_stencil_view.Get(), D3D11_CLEAR_DEPTH, 1.0f, 0u);
 }
 
-void dx3d::GraphicsDevice::DrawTestCube(const float angle, const float mouse_pos_x, const float mouse_pos_y, const float z) {
+void dx3d::GraphicsDevice::DrawTestCube(const float angle, const float x, const float y, const float z) {
 
 	// create and set vertex buffer
 	struct VertexStruct {
@@ -245,7 +245,7 @@ void dx3d::GraphicsDevice::DrawTestCube(const float angle, const float mouse_pos
 			DirectX::XMMatrixTranspose(
 				DirectX::XMMatrixRotationZ(angle)*
 				DirectX::XMMatrixRotationX(angle) *
-				DirectX::XMMatrixTranslation(mouse_pos_x, mouse_pos_y, z + 4.0f) *
+				DirectX::XMMatrixTranslation(x, y, z + 4.0f) *
 				DirectX::XMMatrixPerspectiveLH(1.0f, aspect_ratio, 0.5f, 10.0f)
 			)
 		}

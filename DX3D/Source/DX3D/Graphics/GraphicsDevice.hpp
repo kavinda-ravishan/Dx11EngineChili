@@ -14,7 +14,7 @@ namespace dx3d {
 
 		void EndFrame();
 		void ClearBuffer(float red, float green, float blue) noexcept;
-		void DrawTestCube(const float angle, const float mouse_pos_x, const float mouse_pos_y, const float z);
+		void DrawTestCube(const float angle, const float x, const float y, const float z);
 
 	private:
 		const Rect _window_size{};
