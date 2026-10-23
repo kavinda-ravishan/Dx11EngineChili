@@ -13,9 +13,11 @@ namespace dx3d {
 		~Mouse();
 
 		const std::array<int, 2>& GetPos() const noexcept;
+		const int32_t GetWheelDelta() noexcept;
 
 	private:
 		std::array<int, 2> _pos{};
+		int32_t _wheel_delta{};
 
 		void OnMouseMove(int x, int y) noexcept;
 		void OnLeftPressed(int x, int y) noexcept;
@@ -25,8 +27,6 @@ namespace dx3d {
 		void OnMiddlePressed(int x, int y) noexcept;
 		void OnMiddleReleased(int x, int y) noexcept;
 		void OnWheelMove(int delta, int x, int y) noexcept;
-		void OnWheelUp(int x, int y) noexcept;
-		void OnWheelDown(int x, int y) noexcept;
 	};
 
 } // namespace dx3d

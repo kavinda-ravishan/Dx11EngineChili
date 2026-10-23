@@ -15,6 +15,12 @@ const std::array<int, 2>& dx3d::Mouse::GetPos() const noexcept {
     return _pos;
 }
 
+const int32_t dx3d::Mouse::GetWheelDelta() noexcept {
+    const auto delta = _wheel_delta;
+    _wheel_delta = 0;
+    return delta;
+}
+
 void dx3d::Mouse::OnMouseMove(int x, int y) noexcept {
     _pos[0] = x;
     _pos[1] = y;
@@ -63,24 +69,9 @@ void dx3d::Mouse::OnMiddleReleased(int x, int y) noexcept {
 }
 
 void dx3d::Mouse::OnWheelMove(int delta, int x, int y) noexcept {
-    if (delta > 0) {
-        OnWheelUp(x, y);
-    }
-    else if (delta < 0) {
-        OnWheelDown(x, y);
-    }
-}
+    _wheel_delta = delta;
 
-void dx3d::Mouse::OnWheelUp(int x, int y) noexcept {
     std::ostringstream oss;
-    oss << "[Mouse] : " << "Mouse wheel up at " << x << ", " << y;
-
-    DX3DLogInfo(oss.str().c_str());
-}
-
-void dx3d::Mouse::OnWheelDown(int x, int y) noexcept {
-    std::ostringstream oss;
-    oss << "[Mouse] : " << "Mouse wheel down at " << x << ", " << y;
-
+    oss << "[Mouse] : " << "Mouse wheel scrolls by " << delta << " at " << x << ", " << y;
     DX3DLogInfo(oss.str().c_str());
 }

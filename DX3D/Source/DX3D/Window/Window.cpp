@@ -181,7 +181,7 @@ int64_t dx3d::Window::HandleMessage(void* arg_hwnd, uint32_t arg_msg, uint64_t a
     {
         const POINTS pt = MAKEPOINTS(lparam);
         const int delta = GET_WHEEL_DELTA_WPARAM(wparam);
-        _mouse->OnWheelMove(delta, pt.x, pt.y);
+        _mouse->OnWheelMove(delta/(float)WHEEL_DELTA, pt.x, pt.y);
         break;
     }
     default:

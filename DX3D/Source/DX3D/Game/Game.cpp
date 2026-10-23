@@ -57,24 +57,28 @@ void dx3d::Game::Run() {
 
 void dx3d::Game::OnInternalUpdate() {
 	static float curr_ang = 0;
+	static float cube_z = 0;
 
 	constexpr float ang_inc = dx3d::PI / 120;
 	const float c = sin(curr_ang) / 2.0f + 0.5f;
 
 	const auto& mouse_pos = _window->_mouse->GetPos();
+	const auto wheel_delta = _window->_mouse->GetWheelDelta();
 	const auto& window_size = _window->GetWindowSize();
 
 	_graphics_device->ClearBuffer(c, c, 1.0f);
 
 	_graphics_device->DrawTestCube(
 		-curr_ang,
-		0, 0
+		0, 0, 0
 	);
 
+	cube_z += ((float)wheel_delta / 10);
 	_graphics_device->DrawTestCube(
 		curr_ang, 
 		(float(mouse_pos[0] * 2) / window_size.width) - 1, 
-		-((float(mouse_pos[1] * 2) / window_size.height) - 1)
+		-((float(mouse_pos[1] * 2) / window_size.height) - 1), 
+		cube_z
 	);
 
 	_graphics_device->EndFrame();
