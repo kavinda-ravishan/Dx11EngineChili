@@ -86,7 +86,7 @@ void dx3d::Game::OnInternalUpdate() {
 		0, 0, 0
 	);
 
-	cube_z += ((float)wheel_delta / 10);
+	cube_z += (wheel_delta / 5.0f);
 	_graphics_device->DrawTestCube(
 		curr_ang, 
 		(float(mouse_pos[0] * 2) / window_size.width) - 1, 
