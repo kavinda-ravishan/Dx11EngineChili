@@ -65,11 +65,18 @@ void dx3d::Game::OnInternalUpdate() {
 	const auto& window_size = _window->GetWindowSize();
 
 	_graphics_device->ClearBuffer(c, c, 1.0f);
+
+	_graphics_device->DrawTestCube(
+		-curr_ang,
+		0, 0
+	);
+
 	_graphics_device->DrawTestCube(
 		curr_ang, 
 		(float(mouse_pos[0] * 2) / window_size.width) - 1, 
 		-((float(mouse_pos[1] * 2) / window_size.height) - 1)
 	);
+
 	_graphics_device->EndFrame();
 
 	curr_ang = curr_ang < 2 * dx3d::PI ? curr_ang + ang_inc : 0;

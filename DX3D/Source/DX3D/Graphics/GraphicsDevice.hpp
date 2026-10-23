@@ -23,6 +23,7 @@ namespace dx3d {
 		Microsoft::WRL::ComPtr<IDXGISwapChain> _swap_chain{};
 		Microsoft::WRL::ComPtr<ID3D11DeviceContext> _context{};
 		Microsoft::WRL::ComPtr<ID3D11RenderTargetView> _target_view{};
+		Microsoft::WRL::ComPtr<ID3D11DepthStencilView> _depth_stencil_view{};
 	};
 
 } // namespace dx3d

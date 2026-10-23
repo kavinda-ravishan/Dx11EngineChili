@@ -88,6 +88,54 @@ dx3d::GraphicsDevice::GraphicsDevice(const GraphicsDeviceDesc& desc)
 		_device->CreateRenderTargetView(back_buffer.Get(), nullptr, &_target_view),
 		"Failed to create render target view"
 	);
+
+	// create depth stensil state
+	D3D11_DEPTH_STENCIL_DESC depth_stensil_desc{};
+	depth_stensil_desc.DepthEnable = TRUE;
+	depth_stensil_desc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ALL;
+	depth_stensil_desc.DepthFunc = D3D11_COMPARISON_LESS;
+
+	Microsoft::WRL::ComPtr<ID3D11DepthStencilState> depth_stensil_state{};
+	DX3DGraphicsLogThrowOnFail(
+		_device->CreateDepthStencilState(&depth_stensil_desc, &depth_stensil_state), 
+		"Failed to create depth stensil state"
+	);
+
+	// bind depth stensil state
+	_context->OMSetDepthStencilState(depth_stensil_state.Get(), 1u);
+
+	// create depth stensil texture
+	D3D11_TEXTURE2D_DESC depth_stensil_texture_desc{};
+	depth_stensil_texture_desc.Width = _window_size.width;
+	depth_stensil_texture_desc.Height = _window_size.height;
+	depth_stensil_texture_desc.MipLevels = 1u;
+	depth_stensil_texture_desc.ArraySize = 1u;
+	depth_stensil_texture_desc.Format = DXGI_FORMAT_D32_FLOAT;
+	depth_stensil_texture_desc.SampleDesc.Count = 1u;
+	depth_stensil_texture_desc.SampleDesc.Quality = 0u;
+	depth_stensil_texture_desc.Usage = D3D11_USAGE_DEFAULT;
+	depth_stensil_texture_desc.BindFlags = D3D11_BIND_DEPTH_STENCIL;
+
+	Microsoft::WRL::ComPtr<ID3D11Texture2D> depth_stensil_texture{};
+	DX3DGraphicsLogThrowOnFail(
+		_device->CreateTexture2D(&depth_stensil_texture_desc, nullptr, &depth_stensil_texture),
+		"Failed to create depth stensil texture"
+	);
+
+	// create view of depth stencil texture
+	D3D11_DEPTH_STENCIL_VIEW_DESC depth_stensil_view_desc{};
+	depth_stensil_view_desc.Format = DXGI_FORMAT_D32_FLOAT;
+	depth_stensil_view_desc.ViewDimension = D3D11_DSV_DIMENSION_TEXTURE2D;
+	depth_stensil_view_desc.Texture2D.MipSlice = 0u;
+
+	DX3DGraphicsLogThrowOnFail(
+		_device->CreateDepthStencilView(depth_stensil_texture.Get(), &depth_stensil_view_desc, &_depth_stencil_view),
+		"Failed to create depth stensil view"
+	);
+
+	// bind render target and epth stensil view to OM
+	// NOTE : &_target_view will get the pp but it release the currunt resources therefor use 'GetAddressOf' to get pp
+	_context->OMSetRenderTargets(1u, _target_view.GetAddressOf(), _depth_stencil_view.Get());
 }
 
 dx3d::GraphicsDevice::~GraphicsDevice() {
@@ -108,6 +156,7 @@ void dx3d::GraphicsDevice::EndFrame() {
 void dx3d::GraphicsDevice::ClearBuffer(float red, float green, float blue) noexcept {
 	const float color[] = { red, green, blue };
 	_context->ClearRenderTargetView(_target_view.Get(), color);
+	_context->ClearDepthStencilView(_depth_stencil_view.Get(), D3D11_CLEAR_DEPTH, 1.0f, 0u);
 }
 
 void dx3d::GraphicsDevice::DrawTestCube(const float angle, const float mouse_pos_x, const float mouse_pos_y) {
@@ -120,25 +169,17 @@ void dx3d::GraphicsDevice::DrawTestCube(const float angle, const float mouse_pos
 			float y;
 			float z;
 		} pos;
-
-		struct
-		{
-			unsigned char r;
-			unsigned char g;
-			unsigned char b;
-			unsigned char a;
-		} color;
 	};
 
 	const VertexStruct vertices[] = {
-		{-1.0f, -1.0f, -1.0f,  255, 0,   0,   0},
-		{ 1.0f, -1.0f, -1.0f,  0,   255, 0,   0},
-		{-1.0f,  1.0f, -1.0f,  0,   0,   255, 0},
-		{ 1.0f,  1.0f, -1.0f,  255, 255, 0,   0},
-		{-1.0f, -1.0f,  1.0f,  255, 0,   255, 0},
-		{ 1.0f, -1.0f,  1.0f,  0,   255, 255, 0},
-		{-1.0f,  1.0f,  1.0f,  0,   0,   0,   0},
-		{ 1.0f,  1.0f,  1.0f,  255, 255, 255, 0},
+		{-1.0f, -1.0f, -1.0f},
+		{ 1.0f, -1.0f, -1.0f},
+		{-1.0f,  1.0f, -1.0f},
+		{ 1.0f,  1.0f, -1.0f},
+		{-1.0f, -1.0f,  1.0f},
+		{ 1.0f, -1.0f,  1.0f},
+		{-1.0f,  1.0f,  1.0f},
+		{ 1.0f,  1.0f,  1.0f},
 	};
 
 	D3D11_BUFFER_DESC vertex_buffer_desc{};
@@ -204,7 +245,7 @@ void dx3d::GraphicsDevice::DrawTestCube(const float angle, const float mouse_pos
 			DirectX::XMMatrixTranspose(
 				DirectX::XMMatrixRotationZ(angle)*
 				DirectX::XMMatrixRotationX(angle) *
-				DirectX::XMMatrixTranslation(mouse_pos_x, mouse_pos_y, 4.0f) * 
+				DirectX::XMMatrixTranslation(mouse_pos_x, 0.0f, mouse_pos_y + 4.0f) *
 				DirectX::XMMatrixPerspectiveLH(1.0f, aspect_ratio, 0.5f, 10.0f)
 			)
 		}
@@ -224,10 +265,51 @@ void dx3d::GraphicsDevice::DrawTestCube(const float angle, const float mouse_pos
 	Microsoft::WRL::ComPtr<ID3D11Buffer> vs_constant_buffer_res{};
 	DX3DGraphicsLogThrowOnFail(
 		_device->CreateBuffer(&vs_constant_buffer_desc, &vs_constant_buffer_data, &vs_constant_buffer_res), 
-		"Failed to create the constant buffer"
+		"Failed to create the VS constant buffer"
 	);
 
 	_context->VSSetConstantBuffers(0u, 1u, vs_constant_buffer_res.GetAddressOf());
+
+	// create constant buffer for cube face colors
+	struct PSConstantBuffer {
+		struct
+		{
+			float r;
+			float g;
+			float b;
+			float a;
+		} face_colors[6];
+	};
+
+	const PSConstantBuffer ps_constant_buffer = {
+		{
+			{1.0f, 0.0f, 1.0f, 1.0f},
+			{1.0f, 0.0f, 0.0f, 1.0f},
+			{0.0f, 1.0f, 0.0f, 1.0f},
+			{0.0f, 0.0f, 1.0f, 1.0f},
+			{1.0f, 1.0f, 0.0f, 1.0f},
+			{0.0f, 1.0f, 1.0f, 1.0f}
+		}
+	};
+
+	D3D11_BUFFER_DESC ps_constant_buffer_desc{};
+	ps_constant_buffer_desc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
+	ps_constant_buffer_desc.Usage = D3D11_USAGE_DEFAULT;
+	ps_constant_buffer_desc.CPUAccessFlags = 0u;
+	ps_constant_buffer_desc.MiscFlags = 0u;
+	ps_constant_buffer_desc.ByteWidth = sizeof(ps_constant_buffer);
+	ps_constant_buffer_desc.StructureByteStride = 0u;
+
+	D3D11_SUBRESOURCE_DATA ps_constant_buffer_data{};
+	ps_constant_buffer_data.pSysMem = &ps_constant_buffer;
+
+	Microsoft::WRL::ComPtr<ID3D11Buffer> ps_constant_buffer_res{};
+	DX3DGraphicsLogThrowOnFail(
+		_device->CreateBuffer(&ps_constant_buffer_desc, &ps_constant_buffer_data, &ps_constant_buffer_res),
+		"Failed to create the PS constant buffer"
+	);
+
+	_context->PSSetConstantBuffers(0u, 1u, ps_constant_buffer_res.GetAddressOf());
 
 	// read and set vertex shader
 	Microsoft::WRL::ComPtr<ID3DBlob> vs_blod{};
@@ -248,8 +330,7 @@ void dx3d::GraphicsDevice::DrawTestCube(const float angle, const float mouse_pos
 	Microsoft::WRL::ComPtr<ID3D11InputLayout> input_layout{};
 
 	const D3D11_INPUT_ELEMENT_DESC vs_input_element_desc[] = {
-		{"POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0},
-		{"COLOR", 0, DXGI_FORMAT_R8G8B8A8_UNORM, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0}
+		{"POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0}
 	};
 
 	DX3DGraphicsLogThrowOnFail(
@@ -278,10 +359,6 @@ void dx3d::GraphicsDevice::DrawTestCube(const float angle, const float mouse_pos
 	);
 
 	_context->PSSetShader(pixel_shader.Get(), nullptr, 0u);
-
-	// bind render target
-	// NOTE : &_target_view will get the pp but it release the currunt resources therefor use 'GetAddressOf' to get pp
-	_context->OMSetRenderTargets(1u, _target_view.GetAddressOf(), nullptr);
 
 	// set Primitive Topology to triangle list (groups of 3 vertices)
 	_context->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
