@@ -10,7 +10,12 @@ namespace dx3d {
 		explicit Keyboard(const KeyboardDesc& desc);
 		~Keyboard();
 
+		void Clear() noexcept;
+
+		char GetCharKey() const noexcept;
 	private:
+		char _key{'\0'};
+
 		void OnKeyReleased(unsigned char keycode) noexcept;
 		void OnKeyPressed(unsigned char keycode) noexcept;
 		void OnChar(char character) noexcept;

@@ -12,8 +12,10 @@ namespace dx3d {
 		explicit Mouse(const MouseDesc& desc);
 		~Mouse();
 
+		void Clear() noexcept;
+
 		const std::array<int, 2>& GetPos() const noexcept;
-		const int32_t GetWheelDelta() noexcept;
+		const int32_t GetWheelDelta() const noexcept;
 
 	private:
 		std::array<int, 2> _pos{};

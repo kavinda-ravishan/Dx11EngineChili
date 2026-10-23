@@ -4,6 +4,7 @@
 #include <DX3D/Math/Constants.hpp>
 #include <DX3D/Core/Logger.hpp>
 #include <DX3D/IO/Mouse.hpp>
+#include <DX3D/IO/Keyboard.hpp>
 #include <DX3D/Window/Window.hpp>
 #include <DX3D/Game/Game.hpp>
 #include <DX3D/Graphics/GraphicsDevice.hpp>
@@ -56,17 +57,29 @@ void dx3d::Game::Run() {
 }
 
 void dx3d::Game::OnInternalUpdate() {
+	constexpr float ang_inc = dx3d::PI / 120;
+
 	static float curr_ang = 0;
 	static float cube_z = 0;
-
-	constexpr float ang_inc = dx3d::PI / 120;
-	const float c = sin(curr_ang) / 2.0f + 0.5f;
+	static float screen_color = 0.0f;
 
 	const auto& mouse_pos = _window->_mouse->GetPos();
 	const auto wheel_delta = _window->_mouse->GetWheelDelta();
 	const auto& window_size = _window->GetWindowSize();
 
-	_graphics_device->ClearBuffer(c, c, 1.0f);
+	const char key = _window->_keyboard->GetCharKey();
+	switch (key) {
+	case '+':
+		screen_color = max(min(1.0f, screen_color + 0.1), 0.0f);
+		break;
+	case '-':
+		screen_color = max(min(1.0f, screen_color - 0.1), 0.0f);
+		break;
+	default:
+		break;
+	}
+
+	_graphics_device->ClearBuffer(screen_color, screen_color, screen_color);
 
 	_graphics_device->DrawTestCube(
 		-curr_ang,
@@ -84,4 +97,7 @@ void dx3d::Game::OnInternalUpdate() {
 	_graphics_device->EndFrame();
 
 	curr_ang = curr_ang < 2 * dx3d::PI ? curr_ang + ang_inc : 0;
+
+	_window->_mouse->Clear();
+	_window->_keyboard->Clear();
 }

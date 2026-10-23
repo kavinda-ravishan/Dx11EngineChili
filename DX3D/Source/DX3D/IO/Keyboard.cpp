@@ -11,6 +11,14 @@ dx3d::Keyboard::~Keyboard() {
 	DX3DLogInfo("Destroying keyboard");
 }
 
+void dx3d::Keyboard::Clear() noexcept {
+	_key = '\0';
+}
+
+char dx3d::Keyboard::GetCharKey() const noexcept {
+	return _key;
+}
+
 void dx3d::Keyboard::OnKeyReleased(unsigned char keycode) noexcept {
 	std::ostringstream oss;
 	oss << "[Keyboard] : " << keycode << " released";
@@ -24,6 +32,8 @@ void dx3d::Keyboard::OnKeyPressed(unsigned char keycode) noexcept {
 }
 
 void dx3d::Keyboard::OnChar(char character) noexcept {
+	_key = character;
+
 	std::ostringstream oss;
 	oss << "[Keyboard] : " << "Char " << character;
 	DX3DLogInfo(oss.str().c_str());

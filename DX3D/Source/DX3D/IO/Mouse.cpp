@@ -11,14 +11,16 @@ dx3d::Mouse::~Mouse() {
 	DX3DLogInfo("Destroying mouse");
 }
 
+void dx3d::Mouse::Clear() noexcept {
+    _wheel_delta = 0;
+}
+
 const std::array<int, 2>& dx3d::Mouse::GetPos() const noexcept {
     return _pos;
 }
 
-const int32_t dx3d::Mouse::GetWheelDelta() noexcept {
-    const auto delta = _wheel_delta;
-    _wheel_delta = 0;
-    return delta;
+const int32_t dx3d::Mouse::GetWheelDelta() const noexcept {
+    return _wheel_delta;
 }
 
 void dx3d::Mouse::OnMouseMove(int x, int y) noexcept {
