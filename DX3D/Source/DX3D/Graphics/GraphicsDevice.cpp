@@ -110,7 +110,7 @@ void dx3d::GraphicsDevice::ClearBuffer(float red, float green, float blue) noexc
 	_context->ClearRenderTargetView(_target_view.Get(), color);
 }
 
-void dx3d::GraphicsDevice::DrawTestTriangle(const float angle, const float mouse_pos_x, const float mouse_pos_y) {
+void dx3d::GraphicsDevice::DrawTestCube(const float angle, const float mouse_pos_x, const float mouse_pos_y) {
 
 	// create and set vertex buffer
 	struct VertexStruct {
@@ -118,6 +118,7 @@ void dx3d::GraphicsDevice::DrawTestTriangle(const float angle, const float mouse
 		{
 			float x;
 			float y;
+			float z;
 		} pos;
 
 		struct
@@ -130,12 +131,14 @@ void dx3d::GraphicsDevice::DrawTestTriangle(const float angle, const float mouse
 	};
 
 	const VertexStruct vertices[] = {
-		{ 0.0f,  0.5f, 255, 0, 0, 0},
-		{ 0.5f, -0.5f, 0, 255, 0, 0},
-		{-0.5f, -0.5f, 0, 0, 255, 0},
-		{-0.3f, 0.3f, 0, 0, 255, 0},
-		{0.3f, 0.3f, 0, 255, 0, 0},
-		{0.0f,  -1.0f, 255, 0, 0, 0},
+		{-1.0f, -1.0f, -1.0f,  255, 0,   0,   0},
+		{ 1.0f, -1.0f, -1.0f,  0,   255, 0,   0},
+		{-1.0f,  1.0f, -1.0f,  0,   0,   255, 0},
+		{ 1.0f,  1.0f, -1.0f,  255, 255, 0,   0},
+		{-1.0f, -1.0f,  1.0f,  255, 0,   255, 0},
+		{ 1.0f, -1.0f,  1.0f,  0,   255, 255, 0},
+		{-1.0f,  1.0f,  1.0f,  0,   0,   0,   0},
+		{ 1.0f,  1.0f,  1.0f,  255, 255, 255, 0},
 	};
 
 	D3D11_BUFFER_DESC vertex_buffer_desc{};
@@ -162,10 +165,12 @@ void dx3d::GraphicsDevice::DrawTestTriangle(const float angle, const float mouse
 	
 	// create and set index buffer
 	const unsigned short indices[] = {
-		0, 1, 2,
-		0, 2, 3,
-		0, 4, 1,
-		2, 1, 5
+		0, 2, 1,  2, 3, 1, 
+		1, 3, 5,  3, 7, 5, 
+		2, 6, 3,  3, 6, 7, 
+		4, 5, 7,  4, 7, 6, 
+		0, 4, 2,  2, 4, 6, 
+		0, 1, 4,  1, 5, 4
 	};
 
 	D3D11_BUFFER_DESC index_buffer_desc{};
@@ -188,39 +193,41 @@ void dx3d::GraphicsDevice::DrawTestTriangle(const float angle, const float mouse
 	_context->IASetIndexBuffer(index_buffer.Get(), DXGI_FORMAT_R16_UINT, 0u);
 
 	// create constant buffer for transformation matrix
-	struct ConstantBufferStruct {
+	struct VSConstantBufferStruct {
 		DirectX::XMMATRIX transform;
 	};
 
+	const float aspect_ratio = float(_window_size.height) / _window_size.width;
 
-	const ConstantBufferStruct constant_buffer = {
+	const VSConstantBufferStruct vs_constant_buffer = {
 		{
 			DirectX::XMMatrixTranspose(
 				DirectX::XMMatrixRotationZ(angle)*
-				DirectX::XMMatrixScaling(float(_window_size.height) / _window_size.width, 1.0f, 1.0f)*
-				DirectX::XMMatrixTranslation(mouse_pos_x, mouse_pos_y, 0.0f)
+				DirectX::XMMatrixRotationX(angle) *
+				DirectX::XMMatrixTranslation(mouse_pos_x, mouse_pos_y, 4.0f) * 
+				DirectX::XMMatrixPerspectiveLH(1.0f, aspect_ratio, 0.5f, 10.0f)
 			)
 		}
 	};
 
-	D3D11_BUFFER_DESC constant_buffer_desc{};
-	constant_buffer_desc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
-	constant_buffer_desc.Usage = D3D11_USAGE_DYNAMIC;
-	constant_buffer_desc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
-	constant_buffer_desc.MiscFlags = 0u;
-	constant_buffer_desc.ByteWidth = sizeof(constant_buffer);
-	constant_buffer_desc.StructureByteStride = 0u;
+	D3D11_BUFFER_DESC vs_constant_buffer_desc{};
+	vs_constant_buffer_desc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
+	vs_constant_buffer_desc.Usage = D3D11_USAGE_DYNAMIC;
+	vs_constant_buffer_desc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+	vs_constant_buffer_desc.MiscFlags = 0u;
+	vs_constant_buffer_desc.ByteWidth = sizeof(vs_constant_buffer);
+	vs_constant_buffer_desc.StructureByteStride = 0u;
 
-	D3D11_SUBRESOURCE_DATA constant_buffer_data{};
-	constant_buffer_data.pSysMem = &constant_buffer;
+	D3D11_SUBRESOURCE_DATA vs_constant_buffer_data{};
+	vs_constant_buffer_data.pSysMem = &vs_constant_buffer;
 	
-	Microsoft::WRL::ComPtr<ID3D11Buffer> constant_buffer_res{};
+	Microsoft::WRL::ComPtr<ID3D11Buffer> vs_constant_buffer_res{};
 	DX3DGraphicsLogThrowOnFail(
-		_device->CreateBuffer(&constant_buffer_desc, &constant_buffer_data, &constant_buffer_res), 
+		_device->CreateBuffer(&vs_constant_buffer_desc, &vs_constant_buffer_data, &vs_constant_buffer_res), 
 		"Failed to create the constant buffer"
 	);
 
-	_context->VSSetConstantBuffers(0u, 1u, constant_buffer_res.GetAddressOf());
+	_context->VSSetConstantBuffers(0u, 1u, vs_constant_buffer_res.GetAddressOf());
 
 	// read and set vertex shader
 	Microsoft::WRL::ComPtr<ID3DBlob> vs_blod{};
@@ -241,7 +248,7 @@ void dx3d::GraphicsDevice::DrawTestTriangle(const float angle, const float mouse
 	Microsoft::WRL::ComPtr<ID3D11InputLayout> input_layout{};
 
 	const D3D11_INPUT_ELEMENT_DESC vs_input_element_desc[] = {
-		{"POSITION", 0, DXGI_FORMAT_R32G32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0},
+		{"POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0},
 		{"COLOR", 0, DXGI_FORMAT_R8G8B8A8_UNORM, 0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0}
 	};
 

@@ -65,7 +65,7 @@ void dx3d::Game::OnInternalUpdate() {
 	const auto& window_size = _window->GetWindowSize();
 
 	_graphics_device->ClearBuffer(c, c, 1.0f);
-	_graphics_device->DrawTestTriangle(
+	_graphics_device->DrawTestCube(
 		curr_ang, 
 		(float(mouse_pos[0] * 2) / window_size.width) - 1, 
 		-((float(mouse_pos[1] * 2) / window_size.height) - 1)
