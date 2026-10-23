@@ -240,12 +240,15 @@ void dx3d::GraphicsDevice::DrawTestCube(const float angle, const float x, const 
 
 	const float aspect_ratio = float(_window_size.height) / _window_size.width;
 
+	const float depth = z + 4.0f;
+	const float tx = x * depth;
+	const float ty = y * depth * aspect_ratio;
 	const VSConstantBufferStruct vs_constant_buffer = {
 		{
 			DirectX::XMMatrixTranspose(
-				DirectX::XMMatrixRotationZ(angle)*
-				DirectX::XMMatrixRotationX(angle) *
-				DirectX::XMMatrixTranslation(x, y, z + 4.0f) *
+				DirectX::XMMatrixRotationZ(angle) * 
+				DirectX::XMMatrixRotationX(angle) * 
+				DirectX::XMMatrixTranslation(tx, ty, depth) * 
 				DirectX::XMMatrixPerspectiveLH(1.0f, aspect_ratio, 0.5f, 10.0f)
 			)
 		}
