@@ -7,10 +7,12 @@
 
 namespace dx3d {
 
-	class GraphicsDevice final : public Base {
+	class Graphics final : public Base {
+		friend class Bindable;
+
 	public:
-		explicit GraphicsDevice(const GraphicsDeviceDesc& desc);
-		~GraphicsDevice();
+		explicit Graphics(const GraphicsDesc& desc);
+		~Graphics();
 
 		void EndFrame();
 		void ClearBuffer(float red, float green, float blue) noexcept;

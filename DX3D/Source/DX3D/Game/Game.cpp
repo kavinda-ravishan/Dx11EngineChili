@@ -7,7 +7,7 @@
 #include <DX3D/IO/Keyboard.hpp>
 #include <DX3D/Window/Window.hpp>
 #include <DX3D/Game/Game.hpp>
-#include <DX3D/Graphics/GraphicsDevice.hpp>
+#include <DX3D/Graphics/Graphics.hpp>
 
 dx3d::Game::Game(const GameDesc& desc) :
     Base({ *std::make_unique<Logger>(desc.log_level).release() }),
@@ -15,8 +15,8 @@ dx3d::Game::Game(const GameDesc& desc) :
 	DX3DLogInfo("Initializing game");
 
 	_window = std::make_unique<Window>(WindowDesc({ _logger, desc.window_size }));
-	_graphics_device = std::make_unique<GraphicsDevice>(
-		GraphicsDeviceDesc({ _logger }, 
+	_graphics= std::make_unique<Graphics>(
+		GraphicsDesc({ _logger }, 
 		_window->GetWindowHandle(), 
 		_window->GetWindowSize())
 	);
@@ -63,38 +63,38 @@ void dx3d::Game::OnInternalUpdate() {
 	static float cube_z = 0;
 	static float screen_color = 0.0f;
 
-	const auto& mouse_pos = _window->_mouse->GetPos();
+	const auto mouse_pos = _window->_mouse->GetPos();
 	const auto wheel_delta = _window->_mouse->GetWheelDelta();
 	const auto& window_size = _window->GetWindowSize();
 
 	const char key = _window->_keyboard->GetCharKey();
 	switch (key) {
 	case '+':
-		screen_color = max(min(1.0f, screen_color + 0.1), 0.0f);
+		screen_color = static_cast<float>(max(min(1.0f, screen_color + 0.1), 0.0f));
 		break;
 	case '-':
-		screen_color = max(min(1.0f, screen_color - 0.1), 0.0f);
+		screen_color = static_cast<float>(max(min(1.0f, screen_color - 0.1), 0.0f));
 		break;
 	default:
 		break;
 	}
 
-	_graphics_device->ClearBuffer(screen_color, screen_color, screen_color);
+	_graphics->ClearBuffer(screen_color, screen_color, screen_color);
 
-	_graphics_device->DrawTestCube(
+	_graphics->DrawTestCube(
 		-curr_ang,
 		0, 0, 0
 	);
 
 	cube_z += (wheel_delta / 5.0f);
-	_graphics_device->DrawTestCube(
+	_graphics->DrawTestCube(
 		curr_ang, 
 		(float(mouse_pos[0] * 2) / window_size.width) - 1, 
 		-((float(mouse_pos[1] * 2) / window_size.height) - 1), 
 		cube_z
 	);
 
-	_graphics_device->EndFrame();
+	_graphics->EndFrame();
 
 	curr_ang = curr_ang < 2 * dx3d::PI ? curr_ang + ang_inc : 0;
 

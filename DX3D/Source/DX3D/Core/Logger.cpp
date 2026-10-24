@@ -27,9 +27,9 @@ void dx3d::Logger::Log(LogLevel level, const char* message, const char* file, co
 
 	std::clog << "[DX3D - " << LogLevel2String(level) << "] " << message << "\n";
 
-#ifdef _DEBUG
+#ifndef NDEBUG
 	if (LogLevel::Warning == level || LogLevel::Error == level) {
 		std::clog << file << " : line " << line << "\n";
 	}
-#endif // _DEBUG
+#endif // NDEBUG
 }

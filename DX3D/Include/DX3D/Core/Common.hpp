@@ -28,10 +28,13 @@ namespace dx3d {
 		BaseDesc base;
 	};
 
-	struct GraphicsDeviceDesc {
+	struct GraphicsDesc {
 		BaseDesc base;
 		void* win_handle; // HWND
 		Rect window_size;
 	};
 
+	struct BindableDesc {
+		BaseDesc base;
+	};
 } // namespace dx3d

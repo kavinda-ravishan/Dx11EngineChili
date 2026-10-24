@@ -4,6 +4,12 @@
 #include <stdexcept>
 #include <memory>
 
+#ifdef NDEBUG
+constexpr bool IS_DEBUG = false;
+#else
+constexpr bool IS_DEBUG = true;
+#endif
+
 namespace dx3d {
 
 	class Logger;
@@ -12,6 +18,7 @@ namespace dx3d {
 	class Window;
 	class Keyboard;
 	class Mouse;
-	class GraphicsDevice;
+	class Graphics;
+	class Bindable;
 
 } // namespace dx3d

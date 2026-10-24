@@ -39,7 +39,10 @@
     <ClCompile Include="DX3D\Source\DX3D\IO\Mouse.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="DX3D\Source\DX3D\Graphics\GraphicsDevice.cpp">
+    <ClCompile Include="DX3D\Source\DX3D\Graphics\Graphics.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DX3D\Source\DX3D\Bindable\Bindable.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -77,7 +80,7 @@
     <ClInclude Include="DX3D\Source\DX3D\IO\Mouse.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="DX3D\Source\DX3D\Graphics\GraphicsDevice.hpp">
+    <ClInclude Include="DX3D\Source\DX3D\Graphics\Graphics.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="DX3D\Source\DX3D\Core\WinSwitches.hpp">
@@ -87,6 +90,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="DX3D\Source\DX3D\Math\Constants.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DX3D\Source\DX3D\Bindable\Bindable.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DX3D\Source\DX3D\Bindable\ConstantBuffers.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

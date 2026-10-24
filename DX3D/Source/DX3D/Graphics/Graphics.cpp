@@ -4,14 +4,15 @@
 #include <DirectXMath.h>
 
 #include <DX3D/Graphics/GraphicsLogUtils.hpp>
-#include <DX3D/Graphics/GraphicsDevice.hpp>
+#include <DX3D/Graphics/Graphics.hpp>
+#include <DX3D/Bindable/ConstantBuffers.hpp>
 
 #pragma comment(lib, "d3d11.lib")
 #pragma comment(lib, "D3DCompiler.lib")
 
-dx3d::GraphicsDevice::GraphicsDevice(const GraphicsDeviceDesc& desc) 
+dx3d::Graphics::Graphics(const GraphicsDesc& desc) 
 : Base(desc.base), _window_size(desc.window_size) {
-	DX3DLogInfo("Initializing Graphics Device");
+	DX3DLogInfo("Initializing Graphics");
 
 	DXGI_SWAP_CHAIN_DESC swap_chain_desc{};
 
@@ -45,9 +46,9 @@ dx3d::GraphicsDevice::GraphicsDevice(const GraphicsDeviceDesc& desc)
 
 	D3D_FEATURE_LEVEL feature_levels{};
 
-#ifdef _DEBUG
+#ifndef NDBUG
 	create_device_flags |= D3D11_CREATE_DEVICE_DEBUG;
-#endif // _DEBUG
+#endif // NDBUG
 
 	DX3DGraphicsLogThrowOnFail(
 		D3D11CreateDeviceAndSwapChain(
@@ -138,11 +139,11 @@ dx3d::GraphicsDevice::GraphicsDevice(const GraphicsDeviceDesc& desc)
 	_context->OMSetRenderTargets(1u, _target_view.GetAddressOf(), _depth_stencil_view.Get());
 }
 
-dx3d::GraphicsDevice::~GraphicsDevice() {
-	DX3DLogInfo("Destroying Graphics Device");
+dx3d::Graphics::~Graphics() {
+	DX3DLogInfo("Destroying Graphics");
 }
 
-void dx3d::GraphicsDevice::EndFrame() {
+void dx3d::Graphics::EndFrame() {
 	HRESULT hr{};
 	if (FAILED(hr = _swap_chain->Present(1u, 0u))) {
 		if (hr == DXGI_ERROR_DEVICE_REMOVED) {
@@ -153,13 +154,13 @@ void dx3d::GraphicsDevice::EndFrame() {
 	}
 }
 
-void dx3d::GraphicsDevice::ClearBuffer(float red, float green, float blue) noexcept {
+void dx3d::Graphics::ClearBuffer(float red, float green, float blue) noexcept {
 	const float color[] = { red, green, blue };
 	_context->ClearRenderTargetView(_target_view.Get(), color);
 	_context->ClearDepthStencilView(_depth_stencil_view.Get(), D3D11_CLEAR_DEPTH, 1.0f, 0u);
 }
 
-void dx3d::GraphicsDevice::DrawTestCube(const float angle, const float x, const float y, const float z) {
+void dx3d::Graphics::DrawTestCube(const float angle, const float x, const float y, const float z) {
 
 	// create and set vertex buffer
 	struct VertexStruct {
@@ -243,7 +244,7 @@ void dx3d::GraphicsDevice::DrawTestCube(const float angle, const float x, const 
 	const float depth = z + 4.0f;
 	const float tx = x * depth;
 	const float ty = y * depth * aspect_ratio;
-	const VSConstantBufferStruct vs_constant_buffer = {
+	const VSConstantBufferStruct vs_constant_buffer_data = {
 		{
 			DirectX::XMMatrixTranspose(
 				DirectX::XMMatrixRotationZ(angle) * 
@@ -254,27 +255,14 @@ void dx3d::GraphicsDevice::DrawTestCube(const float angle, const float x, const 
 		}
 	};
 
-	D3D11_BUFFER_DESC vs_constant_buffer_desc{};
-	vs_constant_buffer_desc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
-	vs_constant_buffer_desc.Usage = D3D11_USAGE_DYNAMIC;
-	vs_constant_buffer_desc.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
-	vs_constant_buffer_desc.MiscFlags = 0u;
-	vs_constant_buffer_desc.ByteWidth = sizeof(vs_constant_buffer);
-	vs_constant_buffer_desc.StructureByteStride = 0u;
-
-	D3D11_SUBRESOURCE_DATA vs_constant_buffer_data{};
-	vs_constant_buffer_data.pSysMem = &vs_constant_buffer;
-	
-	Microsoft::WRL::ComPtr<ID3D11Buffer> vs_constant_buffer_res{};
-	DX3DGraphicsLogThrowOnFail(
-		_device->CreateBuffer(&vs_constant_buffer_desc, &vs_constant_buffer_data, &vs_constant_buffer_res), 
-		"Failed to create the VS constant buffer"
+	VertexConstantBuffer<VSConstantBufferStruct> vs_constant_buffer(
+		BindableDesc({ GetLogger() }), *this, vs_constant_buffer_data
 	);
 
-	_context->VSSetConstantBuffers(0u, 1u, vs_constant_buffer_res.GetAddressOf());
+	vs_constant_buffer.Bind(*this);
 
 	// create constant buffer for cube face colors
-	struct PSConstantBuffer {
+	struct PSConstantBufferStruct {
 		struct
 		{
 			float r;
@@ -284,7 +272,7 @@ void dx3d::GraphicsDevice::DrawTestCube(const float angle, const float x, const 
 		} face_colors[6];
 	};
 
-	const PSConstantBuffer ps_constant_buffer = {
+	const PSConstantBufferStruct ps_constant_buffer_data = {
 		{
 			{1.0f, 0.0f, 1.0f, 1.0f},
 			{1.0f, 0.0f, 0.0f, 1.0f},
@@ -295,24 +283,11 @@ void dx3d::GraphicsDevice::DrawTestCube(const float angle, const float x, const 
 		}
 	};
 
-	D3D11_BUFFER_DESC ps_constant_buffer_desc{};
-	ps_constant_buffer_desc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
-	ps_constant_buffer_desc.Usage = D3D11_USAGE_DEFAULT;
-	ps_constant_buffer_desc.CPUAccessFlags = 0u;
-	ps_constant_buffer_desc.MiscFlags = 0u;
-	ps_constant_buffer_desc.ByteWidth = sizeof(ps_constant_buffer);
-	ps_constant_buffer_desc.StructureByteStride = 0u;
-
-	D3D11_SUBRESOURCE_DATA ps_constant_buffer_data{};
-	ps_constant_buffer_data.pSysMem = &ps_constant_buffer;
-
-	Microsoft::WRL::ComPtr<ID3D11Buffer> ps_constant_buffer_res{};
-	DX3DGraphicsLogThrowOnFail(
-		_device->CreateBuffer(&ps_constant_buffer_desc, &ps_constant_buffer_data, &ps_constant_buffer_res),
-		"Failed to create the PS constant buffer"
+	PixelConstantBuffer<PSConstantBufferStruct> ps_constant_buffer(
+		BindableDesc({ GetLogger() }), *this, ps_constant_buffer_data
 	);
 
-	_context->PSSetConstantBuffers(0u, 1u, ps_constant_buffer_res.GetAddressOf());
+	ps_constant_buffer.Bind(*this);
 
 	// read and set vertex shader
 	Microsoft::WRL::ComPtr<ID3DBlob> vs_blod{};
@@ -368,8 +343,8 @@ void dx3d::GraphicsDevice::DrawTestCube(const float angle, const float x, const 
 
 	// confifure viewport
 	D3D11_VIEWPORT view_port{};
-	view_port.Width = _window_size.width;
-	view_port.Height= _window_size.height;
+	view_port.Width = static_cast<float>(_window_size.width);
+	view_port.Height= static_cast<float>(_window_size.height);
 	view_port.MinDepth = 0;
 	view_port.MaxDepth = 1;
 	view_port.TopLeftX = 0;

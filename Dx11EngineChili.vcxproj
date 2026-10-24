@@ -153,6 +153,7 @@
     </Manifest>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="DX3D\Source\DX3D\Bindable\Bindable.cpp" />
     <ClCompile Include="DX3D\Source\DX3D\Core\Base.cpp" />
     <ClCompile Include="DX3D\Source\DX3D\Core\Logger.cpp" />
     <ClCompile Include="DX3D\Source\DX3D\Game\Game.cpp" />
@@ -161,7 +162,7 @@
     <ClCompile Include="Game\main.cpp" />
     <ClCompile Include="DX3D\Source\DX3D\IO\Keyboard.cpp" />
     <ClCompile Include="DX3D\Source\DX3D\IO\Mouse.cpp" />
-    <ClCompile Include="DX3D\Source\DX3D\Graphics\GraphicsDevice.cpp" />
+    <ClCompile Include="DX3D\Source\DX3D\Graphics\Graphics.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DX3D\Include\DX3D\All.hpp" />
@@ -169,6 +170,8 @@
     <ClInclude Include="DX3D\Include\DX3D\Core\Common.hpp" />
     <ClInclude Include="DX3D\Include\DX3D\Core\Core.hpp" />
     <ClInclude Include="DX3D\Include\DX3D\Core\Logger.hpp" />
+    <ClInclude Include="DX3D\Source\DX3D\Bindable\Bindable.hpp" />
+    <ClInclude Include="DX3D\Source\DX3D\Bindable\ConstantBuffers.hpp" />
     <ClInclude Include="DX3D\Source\DX3D\Core\WinSwitches.hpp" />
     <ClInclude Include="DX3D\Include\DX3D\Game\Game.hpp" />
     <ClInclude Include="DX3D\Include\DX3D\Math\Rect.hpp" />
@@ -178,7 +181,7 @@
     <ClInclude Include="DX3D\Source\DX3D\Window\WindowsMessageMap.hpp" />
     <ClInclude Include="DX3D\Source\DX3D\IO\Keyboard.hpp" />
     <ClInclude Include="DX3D\Source\DX3D\IO\Mouse.hpp" />
-    <ClInclude Include="DX3D\Source\DX3D\Graphics\GraphicsDevice.hpp" />
+    <ClInclude Include="DX3D\Source\DX3D\Graphics\Graphics.hpp" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="DX3D\Assets\Shaders\PixelShader.hlsl">
