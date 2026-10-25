@@ -276,26 +276,15 @@ void dx3d::Graphics::DrawTestCube(const float angle, const float x, const float 
 	ps_constant_buffer.Update(*this, ps_constant_buffer_data);
 
 	// read and set vertex shader
-	Microsoft::WRL::ComPtr<ID3DBlob> vs_blod{};
-	Microsoft::WRL::ComPtr<ID3D11VertexShader> vertex_shader{};
-	DX3DGraphicsLogThrowOnFail(
-		D3DReadFileToBlob(L"VertexShader.cso", &vs_blod),
-		"Failed to read vertex shader binary"
-	);
-
-	DX3DGraphicsLogThrowOnFail(
-		_device->CreateVertexShader(vs_blod->GetBufferPointer(), vs_blod->GetBufferSize(), nullptr, &vertex_shader),
-		"Failed to create vertex shader"
-	);
-	
-	_context->VSSetShader(vertex_shader.Get(), nullptr, 0u);
+	VertexShader vertex_shader(BindableDesc({ GetLogger() }), *this, L"VertexShader.cso");
+	vertex_shader.Bind(*this);
 
 	// input (vertex) layout
 	const std::vector<D3D11_INPUT_ELEMENT_DESC> vs_input_element_desc {
 		{"POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0}
 	};
 
-	InputLayout input_layout(BindableDesc({ GetLogger() }), *this, vs_input_element_desc, vs_blod.Get());
+	InputLayout input_layout(BindableDesc({ GetLogger() }), *this, vs_input_element_desc, vertex_shader.GetBytecode());
 	input_layout.Bind(*this);
 
 	// read and set pixel shader
