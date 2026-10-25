@@ -9,6 +9,7 @@
 #include <DX3D/Graphics/Graphics.hpp>
 #include <DX3D/Bindable/ConstantBuffers.hpp>
 #include <DX3D/Bindable/IndexBuffer.hpp>
+#include <DX3D/Bindable/InputLayout.hpp>
 
 #pragma comment(lib, "d3d11.lib")
 #pragma comment(lib, "D3DCompiler.lib")
@@ -291,24 +292,13 @@ void dx3d::Graphics::DrawTestCube(const float angle, const float x, const float 
 	
 	_context->VSSetShader(vertex_shader.Get(), nullptr, 0u);
 
-	// input (vertex) layout (2d position only)
-	Microsoft::WRL::ComPtr<ID3D11InputLayout> input_layout{};
-
-	const D3D11_INPUT_ELEMENT_DESC vs_input_element_desc[] = {
+	// input (vertex) layout
+	const std::vector<D3D11_INPUT_ELEMENT_DESC> vs_input_element_desc {
 		{"POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0}
 	};
 
-	DX3DGraphicsLogThrowOnFail(
-		_device->CreateInputLayout(
-			vs_input_element_desc,
-			std::size(vs_input_element_desc),
-			vs_blod->GetBufferPointer(),
-			vs_blod->GetBufferSize(),
-			&input_layout),
-		"Failed to create VS input layout"
-	);
-
-	_context->IASetInputLayout(input_layout.Get());
+	InputLayout input_layout(BindableDesc({ GetLogger() }), *this, vs_input_element_desc, vs_blod.Get());
+	input_layout.Bind(*this);
 
 	// read and set pixel shader
 	Microsoft::WRL::ComPtr<ID3D11PixelShader> pixel_shader{};
@@ -339,5 +329,5 @@ void dx3d::Graphics::DrawTestCube(const float angle, const float x, const float 
 	_context->RSSetViewports(1u, &view_port);
 
 	// draw
-	_context->DrawIndexed(std::size(indices), 0u, 0u);
+	_context->DrawIndexed((UINT)indices.size(), 0u, 0u);
 }

@@ -10,7 +10,7 @@ namespace dx3d {
 		explicit Bindable(const BindableDesc& desc);
 		virtual ~Bindable() = default;
 
-		virtual void Bind(Graphics& gfx) noexcept = 0;
+		virtual void Bind(Graphics& graphics) noexcept = 0;
 
 	protected:
 		static ID3D11DeviceContext* GetContext(Graphics& graphics) noexcept;

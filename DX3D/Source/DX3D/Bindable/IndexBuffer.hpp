@@ -7,8 +7,8 @@
 namespace dx3d {
 	class IndexBuffer : public Bindable {
 	public:
-		IndexBuffer(const BindableDesc& desc, Graphics& gfx, const std::vector<unsigned short>& indices);
-		void Bind(Graphics& gfx) noexcept override;
+		IndexBuffer(const BindableDesc& desc, Graphics& graphics, const std::vector<unsigned short>& indices);
+		void Bind(Graphics& graphics) noexcept override;
 		UINT GetCount() const noexcept;
 	protected:
 		const UINT _count{};
