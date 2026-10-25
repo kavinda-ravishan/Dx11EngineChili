@@ -6,3 +6,4 @@
 #include <DX3D/Graphics/Bindable/PixelShader.hpp>
 #include <DX3D/Graphics/Bindable/Topology.hpp>
 #include <DX3D/Graphics/Bindable/VertexShader.hpp>
+#include <DX3D/Graphics/Bindable/VertexBuffer.hpp>

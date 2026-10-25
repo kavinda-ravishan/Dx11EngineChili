@@ -174,7 +174,7 @@ void dx3d::Graphics::DrawTestCube(const float angle, const float x, const float 
 		} pos;
 	};
 
-	const VertexStruct vertices[] = {
+	const std::vector<VertexStruct> vertices {
 		{-1.0f, -1.0f, -1.0f},
 		{ 1.0f, -1.0f, -1.0f},
 		{-1.0f,  1.0f, -1.0f},
@@ -185,27 +185,8 @@ void dx3d::Graphics::DrawTestCube(const float angle, const float x, const float 
 		{ 1.0f,  1.0f,  1.0f},
 	};
 
-	D3D11_BUFFER_DESC vertex_buffer_desc{};
-	vertex_buffer_desc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
-	vertex_buffer_desc.Usage = D3D11_USAGE_DEFAULT;
-	vertex_buffer_desc.CPUAccessFlags = 0u;
-	vertex_buffer_desc.MiscFlags = 0u;
-	vertex_buffer_desc.ByteWidth = sizeof(vertices);
-	vertex_buffer_desc.StructureByteStride = sizeof(VertexStruct);
-
-	D3D11_SUBRESOURCE_DATA v_sub_resource_data{};
-	v_sub_resource_data.pSysMem = vertices;
-
-	Microsoft::WRL::ComPtr<ID3D11Buffer> vertex_buffer;
-	DX3DGraphicsLogThrowOnFail(
-		_device->CreateBuffer(&vertex_buffer_desc, &v_sub_resource_data, &vertex_buffer),
-		"Failed to create the vertex buffer"
-	);
-
-	const UINT v_stride = sizeof(VertexStruct);
-	const UINT v_offset = 0u;
-	// NOTE : &vertex_buffer will get the pp but it release the currunt resources therefor use 'GetAddressOf' to get pp
-	_context->IASetVertexBuffers(0, 1, vertex_buffer.GetAddressOf(), &v_stride, &v_offset);
+	VertexBuffer vertex_buffer(BindableDesc({GetLogger()}), *this, vertices);
+	vertex_buffer.Bind(*this);
 	
 	// create and set index buffer
 	const std::vector<unsigned short> indices {
