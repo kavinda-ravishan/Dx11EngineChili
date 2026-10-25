@@ -25,6 +25,7 @@ dx3d::Game::Game(const GameDesc& desc) :
 		_window->GetWindowHandle(), 
 		_window->GetWindowSize())
 	);
+	_timer = std::make_unique<Timer>();
 
 	std::mt19937 rng(std::random_device{}());
 	std::uniform_real_distribution<float> adist(0.0f, 3.1415f * 2.0f);
@@ -34,7 +35,7 @@ dx3d::Game::Game(const GameDesc& desc) :
 
 	for (auto i = 0; i < 80; i++)
 	{
-		boxes.push_back(std::make_unique<Box>(
+		_boxes.push_back(std::make_unique<Box>(
 			DrawableDesc({ _logger }), *_graphics, rng, adist,
 			ddist, odist, rdist
 		));
@@ -79,9 +80,21 @@ void dx3d::Game::Run() {
 }
 
 void dx3d::Game::OnInternalUpdate() {
-	constexpr float dt = 0.01f;
+	const auto dt = _timer->Mark();
+
 	static float screen_color = 0.0f;
-	const char key = _window->_keyboard->GetCharKey();
+
+	char key = '\0';
+	key = _window->_keyboard->GetCharKey();
+
+	const auto wheel_delta = _window->_mouse->GetWheelDelta();
+	if (wheel_delta > 0) {
+		key = '+';
+	}
+	else if (wheel_delta < 0) {
+		key = '-';
+	}
+
 	switch (key) {
 	case '+':
 		screen_color = static_cast<float>(std::max(std::min(1.0f, screen_color + 0.1f), 0.0f));
@@ -94,7 +107,7 @@ void dx3d::Game::OnInternalUpdate() {
 	}
 
 	_graphics->ClearBuffer(screen_color, screen_color, screen_color);
-	for (auto& boxe : boxes)
+	for (auto& boxe : _boxes)
 	{
 		boxe->Update(dt);
 		boxe->Draw(*_graphics);

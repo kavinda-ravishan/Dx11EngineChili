@@ -18,7 +18,8 @@ namespace dx3d {
 		std::unique_ptr<Logger> _logger_ptr{};
 		std::unique_ptr<Window> _window{};
 		std::unique_ptr<Graphics> _graphics{};
-		std::vector<std::unique_ptr<class Box>> boxes;
+		std::unique_ptr <class Timer> _timer{};
+		std::vector<std::unique_ptr<class Box>> _boxes{};
 
 		bool _is_running{true};
 	};
