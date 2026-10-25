@@ -20,5 +20,6 @@ namespace dx3d {
 	class Mouse;
 	class Graphics;
 	class Bindable;
+	class Drawable;
 
 } // namespace dx3d

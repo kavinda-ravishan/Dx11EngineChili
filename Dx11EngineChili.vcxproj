@@ -153,6 +153,8 @@
     </Manifest>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="DX3D\Source\DX3D\Drawable\Box.cpp" />
+    <ClCompile Include="DX3D\Source\DX3D\Drawable\Drawable.cpp" />
     <ClCompile Include="DX3D\Source\DX3D\Graphics\Bindable\Bindable.cpp" />
     <ClCompile Include="DX3D\Source\DX3D\Graphics\Bindable\IndexBuffer.cpp" />
     <ClCompile Include="DX3D\Source\DX3D\Graphics\Bindable\InputLayout.cpp" />
@@ -161,6 +163,7 @@
     <ClCompile Include="DX3D\Source\DX3D\Core\Base.cpp" />
     <ClCompile Include="DX3D\Source\DX3D\Core\Logger.cpp" />
     <ClCompile Include="DX3D\Source\DX3D\Game\Game.cpp" />
+    <ClCompile Include="DX3D\Source\DX3D\Graphics\Bindable\TransformCbuf.cpp" />
     <ClCompile Include="DX3D\Source\DX3D\Graphics\Bindable\VertexBuffer.cpp" />
     <ClCompile Include="DX3D\Source\DX3D\Graphics\Bindable\VertexShader.cpp" />
     <ClCompile Include="DX3D\Source\DX3D\Window\Window.cpp" />
@@ -176,6 +179,8 @@
     <ClInclude Include="DX3D\Include\DX3D\Core\Common.hpp" />
     <ClInclude Include="DX3D\Include\DX3D\Core\Core.hpp" />
     <ClInclude Include="DX3D\Include\DX3D\Core\Logger.hpp" />
+    <ClInclude Include="DX3D\Source\DX3D\Drawable\Box.hpp" />
+    <ClInclude Include="DX3D\Source\DX3D\Drawable\Drawable.hpp" />
     <ClInclude Include="DX3D\Source\DX3D\Graphics\Bindable\Bindable.hpp" />
     <ClInclude Include="DX3D\Source\DX3D\Graphics\Bindable\BindableBase.hpp" />
     <ClInclude Include="DX3D\Source\DX3D\Graphics\Bindable\ConstantBuffers.hpp" />
@@ -187,10 +192,11 @@
     <ClInclude Include="DX3D\Include\DX3D\Game\Game.hpp" />
     <ClInclude Include="DX3D\Include\DX3D\Math\Rect.hpp" />
     <ClInclude Include="DX3D\Include\DX3D\Window\Window.hpp" />
+    <ClInclude Include="DX3D\Source\DX3D\Graphics\Bindable\TransformCbuf.hpp" />
     <ClInclude Include="DX3D\Source\DX3D\Graphics\Bindable\VertexBuffer.hpp" />
     <ClInclude Include="DX3D\Source\DX3D\Graphics\Bindable\VertexShader.hpp" />
     <ClInclude Include="DX3D\Source\DX3D\Graphics\GraphicsLogUtils.hpp" />
-    <ClInclude Include="DX3D\Source\DX3D\Math\Constants.hpp" />
+    <ClInclude Include="DX3D\Include\DX3D\Math\Constants.hpp" />
     <ClInclude Include="DX3D\Source\DX3D\Window\WindowsMessageMap.hpp" />
     <ClInclude Include="DX3D\Source\DX3D\IO\Keyboard.hpp" />
     <ClInclude Include="DX3D\Source\DX3D\IO\Mouse.hpp" />

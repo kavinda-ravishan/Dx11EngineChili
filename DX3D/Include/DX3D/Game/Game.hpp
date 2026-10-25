@@ -1,5 +1,6 @@
 #pragma once
 
+#include <vector>
 #include <DX3D/Core/Base.hpp>
 
 namespace dx3d {
@@ -17,6 +18,7 @@ namespace dx3d {
 		std::unique_ptr<Logger> _logger_ptr{};
 		std::unique_ptr<Window> _window{};
 		std::unique_ptr<Graphics> _graphics{};
+		std::vector<std::unique_ptr<class Box>> boxes;
 
 		bool _is_running{true};
 	};

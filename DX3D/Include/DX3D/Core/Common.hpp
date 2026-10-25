@@ -37,4 +37,8 @@ namespace dx3d {
 	struct BindableDesc {
 		BaseDesc base;
 	};
+
+	struct DrawableDesc {
+		BaseDesc base;
+	};
 } // namespace dx3d

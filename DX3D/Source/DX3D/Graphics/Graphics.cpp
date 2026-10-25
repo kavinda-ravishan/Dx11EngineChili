@@ -139,6 +139,16 @@ dx3d::Graphics::Graphics(const GraphicsDesc& desc)
 	// bind render target and epth stensil view to OM
 	// NOTE : &_target_view will get the pp but it release the currunt resources therefor use 'GetAddressOf' to get pp
 	_context->OMSetRenderTargets(1u, _target_view.GetAddressOf(), _depth_stencil_view.Get());
+
+	// confifure viewport
+	D3D11_VIEWPORT view_port{};
+	view_port.Width = static_cast<float>(_window_size.width);
+	view_port.Height = static_cast<float>(_window_size.height);
+	view_port.MinDepth = 0;
+	view_port.MaxDepth = 1;
+	view_port.TopLeftX = 0;
+	view_port.TopLeftY = 0;
+	_context->RSSetViewports(1u, &view_port);
 }
 
 dx3d::Graphics::~Graphics() {
@@ -160,6 +170,18 @@ void dx3d::Graphics::ClearBuffer(float red, float green, float blue) noexcept {
 	const float color[] = { red, green, blue };
 	_context->ClearRenderTargetView(_target_view.Get(), color);
 	_context->ClearDepthStencilView(_depth_stencil_view.Get(), D3D11_CLEAR_DEPTH, 1.0f, 0u);
+}
+
+void dx3d::Graphics::DrawIndexed(UINT count) noexcept(!IS_DEBUG) {
+	_context->DrawIndexed(count, 0u, 0u);
+}
+
+void dx3d::Graphics::SetProjection(DirectX::FXMMATRIX projection) noexcept {
+	_projection = projection;
+}
+
+DirectX::XMMATRIX dx3d::Graphics::GetProjection() const noexcept {
+	return _projection;
 }
 
 void dx3d::Graphics::DrawTestCube(const float angle, const float x, const float y, const float z) {
@@ -275,16 +297,6 @@ void dx3d::Graphics::DrawTestCube(const float angle, const float x, const float 
 	// set Primitive Topology to triangle list (groups of 3 vertices)
 	Topology topology(BindableDesc({ GetLogger() }), *this, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 	topology.Bind(*this);
-
-	// confifure viewport
-	D3D11_VIEWPORT view_port{};
-	view_port.Width = static_cast<float>(_window_size.width);
-	view_port.Height= static_cast<float>(_window_size.height);
-	view_port.MinDepth = 0;
-	view_port.MaxDepth = 1;
-	view_port.TopLeftX = 0;
-	view_port.TopLeftY = 0;
-	_context->RSSetViewports(1u, &view_port);
 
 	// draw
 	_context->DrawIndexed((UINT)indices.size(), 0u, 0u);
