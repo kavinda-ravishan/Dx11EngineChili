@@ -11,7 +11,7 @@ namespace dx3d {
 		void Bind(Graphics& graphics) noexcept override;
 
 	protected:
-		Microsoft::WRL::ComPtr<ID3D11PixelShader> _pixel_shader;
+		Microsoft::WRL::ComPtr<ID3D11PixelShader> _pixel_shader{};
 	};
 
 } // namespace dx3d

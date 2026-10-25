@@ -303,7 +303,9 @@ void dx3d::Graphics::DrawTestCube(const float angle, const float x, const float 
 	pixel_shader.Bind(*this);
 
 	// set Primitive Topology to triangle list (groups of 3 vertices)
-	_context->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+	Topology topology(BindableDesc({ GetLogger() }), *this, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+	topology.Bind(*this);
+	//_context->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
 	// confifure viewport
 	D3D11_VIEWPORT view_port{};

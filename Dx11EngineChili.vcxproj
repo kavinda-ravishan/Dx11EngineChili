@@ -157,6 +157,7 @@
     <ClCompile Include="DX3D\Source\DX3D\Bindable\IndexBuffer.cpp" />
     <ClCompile Include="DX3D\Source\DX3D\Bindable\InputLayout.cpp" />
     <ClCompile Include="DX3D\Source\DX3D\Bindable\PixelShader.cpp" />
+    <ClCompile Include="DX3D\Source\DX3D\Bindable\Topology.cpp" />
     <ClCompile Include="DX3D\Source\DX3D\Core\Base.cpp" />
     <ClCompile Include="DX3D\Source\DX3D\Core\Logger.cpp" />
     <ClCompile Include="DX3D\Source\DX3D\Game\Game.cpp" />
@@ -179,6 +180,7 @@
     <ClInclude Include="DX3D\Source\DX3D\Bindable\IndexBuffer.hpp" />
     <ClInclude Include="DX3D\Source\DX3D\Bindable\InputLayout.hpp" />
     <ClInclude Include="DX3D\Source\DX3D\Bindable\PixelShader.hpp" />
+    <ClInclude Include="DX3D\Source\DX3D\Bindable\Topology.hpp" />
     <ClInclude Include="DX3D\Source\DX3D\Core\WinSwitches.hpp" />
     <ClInclude Include="DX3D\Include\DX3D\Game\Game.hpp" />
     <ClInclude Include="DX3D\Include\DX3D\Math\Rect.hpp" />
