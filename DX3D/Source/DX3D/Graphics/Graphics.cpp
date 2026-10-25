@@ -7,9 +7,7 @@
 
 #include <DX3D/Graphics/GraphicsLogUtils.hpp>
 #include <DX3D/Graphics/Graphics.hpp>
-#include <DX3D/Bindable/ConstantBuffers.hpp>
-#include <DX3D/Bindable/IndexBuffer.hpp>
-#include <DX3D/Bindable/InputLayout.hpp>
+#include <DX3D/Bindable/BindableBase.hpp>
 
 #pragma comment(lib, "d3d11.lib")
 #pragma comment(lib, "D3DCompiler.lib")
@@ -301,19 +299,8 @@ void dx3d::Graphics::DrawTestCube(const float angle, const float x, const float 
 	input_layout.Bind(*this);
 
 	// read and set pixel shader
-	Microsoft::WRL::ComPtr<ID3D11PixelShader> pixel_shader{};
-	Microsoft::WRL::ComPtr<ID3DBlob> ps_blod{};
-	DX3DGraphicsLogThrowOnFail(
-		D3DReadFileToBlob(L"PixelShader.cso", &ps_blod),
-		"Failed to read pixel shader binary"
-	);
-
-	DX3DGraphicsLogThrowOnFail(
-		_device->CreatePixelShader(ps_blod->GetBufferPointer(), ps_blod->GetBufferSize(), nullptr, &pixel_shader),
-		"Failed to create pixel shader"
-	);
-
-	_context->PSSetShader(pixel_shader.Get(), nullptr, 0u);
+	PixelShader pixel_shader(BindableDesc({ GetLogger() }), *this, L"PixelShader.cso");
+	pixel_shader.Bind(*this);
 
 	// set Primitive Topology to triangle list (groups of 3 vertices)
 	_context->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
