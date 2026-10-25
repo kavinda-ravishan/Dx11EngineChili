@@ -154,6 +154,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="DX3D\Source\DX3D\Bindable\Bindable.cpp" />
+    <ClCompile Include="DX3D\Source\DX3D\Bindable\IndexBuffer.cpp" />
     <ClCompile Include="DX3D\Source\DX3D\Core\Base.cpp" />
     <ClCompile Include="DX3D\Source\DX3D\Core\Logger.cpp" />
     <ClCompile Include="DX3D\Source\DX3D\Game\Game.cpp" />
@@ -172,6 +173,7 @@
     <ClInclude Include="DX3D\Include\DX3D\Core\Logger.hpp" />
     <ClInclude Include="DX3D\Source\DX3D\Bindable\Bindable.hpp" />
     <ClInclude Include="DX3D\Source\DX3D\Bindable\ConstantBuffers.hpp" />
+    <ClInclude Include="DX3D\Source\DX3D\Bindable\IndexBuffer.hpp" />
     <ClInclude Include="DX3D\Source\DX3D\Core\WinSwitches.hpp" />
     <ClInclude Include="DX3D\Include\DX3D\Game\Game.hpp" />
     <ClInclude Include="DX3D\Include\DX3D\Math\Rect.hpp" />

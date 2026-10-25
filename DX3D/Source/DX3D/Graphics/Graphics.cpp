@@ -1,4 +1,6 @@
 #include <cmath>
+#include <vector>
+
 #include <DX3D/Core/WinSwitches.hpp>
 #include <d3dcompiler.h>
 #include <DirectXMath.h>
@@ -6,6 +8,7 @@
 #include <DX3D/Graphics/GraphicsLogUtils.hpp>
 #include <DX3D/Graphics/Graphics.hpp>
 #include <DX3D/Bindable/ConstantBuffers.hpp>
+#include <DX3D/Bindable/IndexBuffer.hpp>
 
 #pragma comment(lib, "d3d11.lib")
 #pragma comment(lib, "D3DCompiler.lib")
@@ -206,7 +209,7 @@ void dx3d::Graphics::DrawTestCube(const float angle, const float x, const float 
 	_context->IASetVertexBuffers(0, 1, vertex_buffer.GetAddressOf(), &v_stride, &v_offset);
 	
 	// create and set index buffer
-	const unsigned short indices[] = {
+	const std::vector<unsigned short> indices {
 		0, 2, 1,  2, 3, 1, 
 		1, 3, 5,  3, 7, 5, 
 		2, 6, 3,  3, 6, 7, 
@@ -215,24 +218,8 @@ void dx3d::Graphics::DrawTestCube(const float angle, const float x, const float 
 		0, 1, 4,  1, 5, 4
 	};
 
-	D3D11_BUFFER_DESC index_buffer_desc{};
-	index_buffer_desc.BindFlags = D3D11_BIND_INDEX_BUFFER;
-	index_buffer_desc.Usage = D3D11_USAGE_DEFAULT;
-	index_buffer_desc.CPUAccessFlags = 0u;
-	index_buffer_desc.MiscFlags = 0u;
-	index_buffer_desc.ByteWidth = sizeof(indices);
-	index_buffer_desc.StructureByteStride = sizeof(unsigned short);
-
-	D3D11_SUBRESOURCE_DATA i_sub_resource_data{};
-	i_sub_resource_data.pSysMem = indices;
-
-	Microsoft::WRL::ComPtr<ID3D11Buffer> index_buffer{};
-	DX3DGraphicsLogThrowOnFail(
-		_device->CreateBuffer(&index_buffer_desc, &i_sub_resource_data, &index_buffer),
-		"Failed to create the index buffer"
-	);
-
-	_context->IASetIndexBuffer(index_buffer.Get(), DXGI_FORMAT_R16_UINT, 0u);
+	IndexBuffer index_buffer(BindableDesc({ GetLogger() }), *this, indices);
+	index_buffer.Bind(*this);
 
 	// create constant buffer for transformation matrix
 	struct VSConstantBufferStruct {
@@ -256,10 +243,10 @@ void dx3d::Graphics::DrawTestCube(const float angle, const float x, const float 
 	};
 
 	VertexConstantBuffer<VSConstantBufferStruct> vs_constant_buffer(
-		BindableDesc({ GetLogger() }), *this, vs_constant_buffer_data
+		BindableDesc({ GetLogger() }), *this
 	);
-
 	vs_constant_buffer.Bind(*this);
+	vs_constant_buffer.Update(*this, vs_constant_buffer_data);
 
 	// create constant buffer for cube face colors
 	struct PSConstantBufferStruct {
@@ -284,10 +271,10 @@ void dx3d::Graphics::DrawTestCube(const float angle, const float x, const float 
 	};
 
 	PixelConstantBuffer<PSConstantBufferStruct> ps_constant_buffer(
-		BindableDesc({ GetLogger() }), *this, ps_constant_buffer_data
+		BindableDesc({ GetLogger() }), *this
 	);
-
 	ps_constant_buffer.Bind(*this);
+	ps_constant_buffer.Update(*this, ps_constant_buffer_data);
 
 	// read and set vertex shader
 	Microsoft::WRL::ComPtr<ID3DBlob> vs_blod{};
