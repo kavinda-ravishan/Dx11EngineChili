@@ -20,8 +20,6 @@ namespace dx3d {
 		void DrawIndexed(UINT count) noexcept(!IS_DEBUG);
 		void SetProjection(DirectX::FXMMATRIX proj) noexcept;
 		DirectX::XMMATRIX GetProjection() const noexcept;
-
-		void DrawTestCube(const float angle, const float x, const float y, const float z);
 	private:
 		const Rect _window_size{};
 		DirectX::XMMATRIX _projection{};

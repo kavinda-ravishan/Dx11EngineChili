@@ -166,6 +166,7 @@
     <ClCompile Include="DX3D\Source\DX3D\Graphics\Bindable\TransformCbuf.cpp" />
     <ClCompile Include="DX3D\Source\DX3D\Graphics\Bindable\VertexBuffer.cpp" />
     <ClCompile Include="DX3D\Source\DX3D\Graphics\Bindable\VertexShader.cpp" />
+    <ClCompile Include="DX3D\Source\DX3D\Timer\Timer.cpp" />
     <ClCompile Include="DX3D\Source\DX3D\Window\Window.cpp" />
     <ClCompile Include="DX3D\Source\DX3D\Window\WindowsMessageMap.cpp" />
     <ClCompile Include="Game\main.cpp" />
@@ -197,6 +198,7 @@
     <ClInclude Include="DX3D\Source\DX3D\Graphics\Bindable\VertexShader.hpp" />
     <ClInclude Include="DX3D\Source\DX3D\Graphics\GraphicsLogUtils.hpp" />
     <ClInclude Include="DX3D\Include\DX3D\Math\Constants.hpp" />
+    <ClInclude Include="DX3D\Source\DX3D\Timer\Timer.hpp" />
     <ClInclude Include="DX3D\Source\DX3D\Window\WindowsMessageMap.hpp" />
     <ClInclude Include="DX3D\Source\DX3D\IO\Keyboard.hpp" />
     <ClInclude Include="DX3D\Source\DX3D\IO\Mouse.hpp" />
