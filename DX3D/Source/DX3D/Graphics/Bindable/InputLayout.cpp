@@ -1,5 +1,5 @@
 #include <DX3D/Graphics/GraphicsLogUtils.hpp>
-#include <DX3D/Bindable/InputLayout.hpp>
+#include <DX3D/Graphics/Bindable/InputLayout.hpp>
 
 dx3d::InputLayout::InputLayout(const BindableDesc&                          desc,
 							   Graphics&                                    graphics,

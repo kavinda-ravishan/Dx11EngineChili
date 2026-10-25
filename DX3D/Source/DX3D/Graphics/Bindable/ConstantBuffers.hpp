@@ -1,6 +1,6 @@
 #pragma once
 #include <wrl.h>
-#include <DX3D/Bindable/Bindable.hpp>
+#include <DX3D/Graphics/Bindable/Bindable.hpp>
 #include <DX3D/Graphics/GraphicsLogUtils.hpp>
 
 namespace dx3d {

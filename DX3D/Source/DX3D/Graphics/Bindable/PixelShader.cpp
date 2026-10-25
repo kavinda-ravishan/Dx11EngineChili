@@ -2,7 +2,7 @@
 #include <DX3D/Core/WinSwitches.hpp>
 #include <d3dcompiler.h>
 #include <DX3D/Graphics/GraphicsLogUtils.hpp>
-#include <DX3D/Bindable/PixelShader.hpp>
+#include <DX3D/Graphics/Bindable/PixelShader.hpp>
 
 dx3d::PixelShader::PixelShader(const BindableDesc& desc, Graphics& graphics, const std::wstring& path) : Bindable(desc)
 {

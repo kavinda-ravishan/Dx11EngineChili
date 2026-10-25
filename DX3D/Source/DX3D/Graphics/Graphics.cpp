@@ -7,7 +7,7 @@
 
 #include <DX3D/Graphics/GraphicsLogUtils.hpp>
 #include <DX3D/Graphics/Graphics.hpp>
-#include <DX3D/Bindable/BindableBase.hpp>
+#include <DX3D/Graphics/Bindable/BindableBase.hpp>
 
 #pragma comment(lib, "d3d11.lib")
 #pragma comment(lib, "D3DCompiler.lib")

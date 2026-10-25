@@ -1,7 +1,7 @@
 #pragma once
 #include <DX3D/Core/WinSwitches.hpp>
 #include <wrl.h>
-#include <DX3D/Bindable/Bindable.hpp>
+#include <DX3D/Graphics/Bindable/Bindable.hpp>
 
 namespace dx3d {
 

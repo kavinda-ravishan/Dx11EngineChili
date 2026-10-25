@@ -1,5 +1,5 @@
 #include <DX3D/Graphics/GraphicsLogUtils.hpp>
-#include <DX3D/Bindable/IndexBuffer.hpp>
+#include <DX3D/Graphics/Bindable/IndexBuffer.hpp>
 
 dx3d::IndexBuffer::IndexBuffer(const BindableDesc& desc, Graphics& graphics, const std::vector<unsigned short>& indices)
     : Bindable(desc), _count((UINT)indices.size()) 
