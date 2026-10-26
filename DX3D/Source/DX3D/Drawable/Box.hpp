@@ -1,10 +1,10 @@
 #pragma once
 #include <random>
 #include <DX3D/Core/Common.hpp>
-#include <DX3D/Drawable/Drawable.hpp>
+#include <DX3D/Drawable/DrawableBase.hpp>
 
 namespace dx3d {
-	class Box : public Drawable {
+	class Box final : public DrawableBase<Box> {
 	public:
 		Box(const DrawableDesc& desc,
 			Graphics& graphics, std::mt19937& rng,
@@ -18,9 +18,9 @@ namespace dx3d {
 	private:
 		// positional
 		float r{};
-		float roll{ 0.0f };
-		float pitch{ 0.0f };
-		float yaw{ 0.0f };
+		float roll{};
+		float pitch{};
+		float yaw{};
 		float theta{};
 		float phi{};
 		float chi{};

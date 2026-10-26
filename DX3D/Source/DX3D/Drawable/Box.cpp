@@ -12,7 +12,7 @@ dx3d::Box::Box(
 	std::uniform_real_distribution<float>& odist, 
 	std::uniform_real_distribution<float>& rdist)
 	: 
-	Drawable(desc), 
+	DrawableBase<Box>(desc),
 	r(rdist(rng)),
 	droll(ddist(rng)),
 	dpitch(ddist(rng)),
@@ -24,83 +24,88 @@ dx3d::Box::Box(
 	theta(adist(rng)),
 	phi(adist(rng))
 {
-	// create and set vertex buffer
-	struct VertexStruct {
-		struct
-		{
-			float x;
-			float y;
-			float z;
-		} pos;
-	};
 
-	const std::vector<VertexStruct> vertices{
-		{-1.0f, -1.0f, -1.0f},
-		{ 1.0f, -1.0f, -1.0f},
-		{-1.0f,  1.0f, -1.0f},
-		{ 1.0f,  1.0f, -1.0f},
-		{-1.0f, -1.0f,  1.0f},
-		{ 1.0f, -1.0f,  1.0f},
-		{-1.0f,  1.0f,  1.0f},
-		{ 1.0f,  1.0f,  1.0f},
-	};
+	if (!IsStaticInitialized()) {
+		// create and set vertex buffer
+		struct VertexStruct {
+			struct
+			{
+				float x;
+				float y;
+				float z;
+			} pos;
+		};
 
-	AddBind(std::make_unique<VertexBuffer>(BINDABLE_DESC, graphics, vertices));
+		const std::vector<VertexStruct> vertices{
+			{-1.0f, -1.0f, -1.0f},
+			{ 1.0f, -1.0f, -1.0f},
+			{-1.0f,  1.0f, -1.0f},
+			{ 1.0f,  1.0f, -1.0f},
+			{-1.0f, -1.0f,  1.0f},
+			{ 1.0f, -1.0f,  1.0f},
+			{-1.0f,  1.0f,  1.0f},
+			{ 1.0f,  1.0f,  1.0f},
+		};
 
-	// read and set vertex shader
-	auto vertex_shader = std::make_unique<VertexShader>(BINDABLE_DESC, graphics, L"VertexShader.cso");
-	auto vertex_shader_byte_code = vertex_shader->GetBytecode();
-	AddBind(std::move(vertex_shader));
+		AddStaticBind(std::make_unique<VertexBuffer>(BINDABLE_DESC, graphics, vertices));
 
-	// read and set pixel shader
-	AddBind(std::make_unique<PixelShader>(BINDABLE_DESC, graphics, L"PixelShader.cso"));
+		// read and set vertex shader
+		auto vertex_shader = std::make_unique<VertexShader>(BINDABLE_DESC, graphics, L"VertexShader.cso");
+		auto vertex_shader_byte_code = vertex_shader->GetBytecode();
+		AddStaticBind(std::move(vertex_shader));
 
-	// create and set index buffer
-	const std::vector<unsigned short> indices{
-		0, 2, 1,  2, 3, 1,
-		1, 3, 5,  3, 7, 5,
-		2, 6, 3,  3, 6, 7,
-		4, 5, 7,  4, 7, 6,
-		0, 4, 2,  2, 4, 6,
-		0, 1, 4,  1, 5, 4
-	};
+		// read and set pixel shader
+		AddStaticBind(std::make_unique<PixelShader>(BINDABLE_DESC, graphics, L"PixelShader.cso"));
 
-	AddIndexBuffer(std::make_unique<IndexBuffer>(BINDABLE_DESC, graphics, indices));
+		// create and set index buffer
+		const std::vector<unsigned short> indices{
+			0, 2, 1,  2, 3, 1,
+			1, 3, 5,  3, 7, 5,
+			2, 6, 3,  3, 6, 7,
+			4, 5, 7,  4, 7, 6,
+			0, 4, 2,  2, 4, 6,
+			0, 1, 4,  1, 5, 4
+		};
 
-	// create constant buffer for cube face colors
-	struct PSConstantBufferStruct {
-		struct
-		{
-			float r;
-			float g;
-			float b;
-			float a;
-		} face_colors[6];
-	};
+		AddStaticIndexBuffer(std::make_unique<IndexBuffer>(BINDABLE_DESC, graphics, indices));
 
-	const PSConstantBufferStruct ps_constant_buffer_data = {
-		{
-			{1.0f, 0.0f, 1.0f, 1.0f},
-			{1.0f, 0.0f, 0.0f, 1.0f},
-			{0.0f, 1.0f, 0.0f, 1.0f},
-			{0.0f, 0.0f, 1.0f, 1.0f},
-			{1.0f, 1.0f, 0.0f, 1.0f},
-			{0.0f, 1.0f, 1.0f, 1.0f}
-		}
-	};
+		// create constant buffer for cube face colors
+		struct PSConstantBufferStruct {
+			struct
+			{
+				float r;
+				float g;
+				float b;
+				float a;
+			} face_colors[6];
+		};
 
-	AddBind(std::make_unique<PixelConstantBuffer<PSConstantBufferStruct>>(BINDABLE_DESC, graphics, ps_constant_buffer_data));
+		const PSConstantBufferStruct ps_constant_buffer_data = {
+			{
+				{1.0f, 0.0f, 1.0f, 1.0f},
+				{1.0f, 0.0f, 0.0f, 1.0f},
+				{0.0f, 1.0f, 0.0f, 1.0f},
+				{0.0f, 0.0f, 1.0f, 1.0f},
+				{1.0f, 1.0f, 0.0f, 1.0f},
+				{0.0f, 1.0f, 1.0f, 1.0f}
+			}
+		};
 
-	// input (vertex) layout
-	const std::vector<D3D11_INPUT_ELEMENT_DESC> vs_input_element_desc{
-		{"POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0}
-	};
+		AddStaticBind(std::make_unique<PixelConstantBuffer<PSConstantBufferStruct>>(BINDABLE_DESC, graphics, ps_constant_buffer_data));
 
-	AddBind(std::make_unique<InputLayout>(BINDABLE_DESC, graphics, vs_input_element_desc, vertex_shader_byte_code));
+		// input (vertex) layout
+		const std::vector<D3D11_INPUT_ELEMENT_DESC> vs_input_element_desc{
+			{"POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0}
+		};
 
-	// set Primitive Topology to triangle list (groups of 3 vertices)
-	AddBind(std::make_unique<Topology>(BINDABLE_DESC, graphics, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST));
+		AddStaticBind(std::make_unique<InputLayout>(BINDABLE_DESC, graphics, vs_input_element_desc, vertex_shader_byte_code));
 
+		// set Primitive Topology to triangle list (groups of 3 vertices)
+		AddStaticBind(std::make_unique<Topology>(BINDABLE_DESC, graphics, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST));
+	} else {
+		SetIndexFromStatic();
+	}
+	
 	// bind vertex transform constant buffer
 	AddBind(std::make_unique<TransformCbuf>(BINDABLE_DESC, graphics, *this));
 }

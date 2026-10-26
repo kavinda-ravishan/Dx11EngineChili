@@ -182,6 +182,7 @@
     <ClInclude Include="DX3D\Include\DX3D\Core\Logger.hpp" />
     <ClInclude Include="DX3D\Source\DX3D\Drawable\Box.hpp" />
     <ClInclude Include="DX3D\Source\DX3D\Drawable\Drawable.hpp" />
+    <ClInclude Include="DX3D\Source\DX3D\Drawable\DrawableBase.hpp" />
     <ClInclude Include="DX3D\Source\DX3D\Graphics\Bindable\Bindable.hpp" />
     <ClInclude Include="DX3D\Source\DX3D\Graphics\Bindable\BindableBase.hpp" />
     <ClInclude Include="DX3D\Source\DX3D\Graphics\Bindable\ConstantBuffers.hpp" />

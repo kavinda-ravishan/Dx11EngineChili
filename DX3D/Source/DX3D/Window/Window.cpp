@@ -15,7 +15,7 @@ static LRESULT CALLBACK WindowProcedure(HWND hwnd, UINT msg, WPARAM wparam, LPAR
     const uint64_t arg_wparam = static_cast<uint64_t>(wparam);
     const int64_t arg_lparam = static_cast<int64_t>(lparam);
     
-    return window_ptr->HandleMessage(arg_hwnd, arg_msg, arg_wparam, arg_lparam);
+    return (LRESULT)window_ptr->HandleMessage(arg_hwnd, arg_msg, arg_wparam, arg_lparam);
 }
 
 static LRESULT CALLBACK HandleMessageSetup(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam) {

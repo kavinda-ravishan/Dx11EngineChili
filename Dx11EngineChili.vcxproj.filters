@@ -161,6 +161,9 @@
     <ClInclude Include="DX3D\Source\DX3D\Timer\Timer.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="DX3D\Source\DX3D\Drawable\DrawableBase.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="DX3D\Assets\Shaders\VertexShader.hlsl" />
