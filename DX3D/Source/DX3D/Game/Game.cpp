@@ -13,11 +13,55 @@
 #include <DX3D/Game/Game.hpp>
 #include <DX3D/Graphics/Graphics.hpp>
 #include <DX3D/Drawable/Box.hpp>
+#include <DX3D/Drawable/Melon.hpp>
+#include <DX3D/Drawable/Pyramid.hpp>
 
 dx3d::Game::Game(const GameDesc& desc) :
     Base({ *std::make_unique<Logger>(desc.log_level).release() }),
-    _logger_ptr{ &_logger } {
+    _logger_ptr{ &_logger } 
+{
 	DX3DLogInfo("Initializing game");
+
+	class Factory {
+	public:
+		Factory(Logger& logger, Graphics& graphics) : _logger(logger), _graphics(graphics) {}
+
+		std::unique_ptr<Drawable> operator()() {
+			switch (_typedist(_rng)) {
+			case 0:
+				return std::make_unique<Pyramid>(
+					DrawableDesc({ _logger }), _graphics, _rng, _adist, _ddist,
+					_odist, _rdist
+				);
+			case 1:
+				return std::make_unique<Box>(
+					DrawableDesc({ _logger }), _graphics, _rng, _adist, _ddist,
+					_odist, _rdist, _bdist
+				);
+			case 2:
+				return std::make_unique<Melon>(
+					DrawableDesc({ _logger }), _graphics, _rng, _adist, _ddist,
+					_odist, _rdist, _longdist, _latdist
+				);
+			default:
+				assert(false && "bad drawable type in factory");
+				return {};
+			}
+		}
+
+	private:
+		Logger& _logger;
+		Graphics& _graphics;
+		std::mt19937 _rng{ std::random_device{}() };
+		std::uniform_real_distribution<float> _adist{ 0.0f,PI * 2.0f };
+		std::uniform_real_distribution<float> _ddist{ 0.0f,PI * 0.5f };
+		std::uniform_real_distribution<float> _odist{ 0.0f,PI * 0.08f };
+		std::uniform_real_distribution<float> _rdist{ 6.0f,20.0f };
+		std::uniform_real_distribution<float> _bdist{ 0.4f,3.0f };
+		std::uniform_int_distribution<int> _latdist{ 5,20 };
+		std::uniform_int_distribution<int> _longdist{ 10,40 };
+		std::uniform_int_distribution<int> _typedist{ 0,2 };
+	};
 
 	_window = std::make_unique<Window>(WindowDesc({ _logger, desc.window_size }));
 	_graphics= std::make_unique<Graphics>(
@@ -27,19 +71,9 @@ dx3d::Game::Game(const GameDesc& desc) :
 	);
 	_timer = std::make_unique<Timer>();
 
-	std::mt19937 rng(std::random_device{}());
-	std::uniform_real_distribution<float> adist(0.0f, 3.1415f * 2.0f);
-	std::uniform_real_distribution<float> ddist(0.0f, 3.1415f * 2.0f);
-	std::uniform_real_distribution<float> odist(0.0f, 3.1415f * 0.3f);
-	std::uniform_real_distribution<float> rdist(6.0f, 20.0f);
-
-	for (auto i = 0; i < 80; i++)
-	{
-		_boxes.push_back(std::make_unique<Box>(
-			DrawableDesc({ _logger }), *_graphics, rng, adist,
-			ddist, odist, rdist
-		));
-	}
+	Factory f(_logger, *_graphics);
+	_drawables.reserve(_n_drawables);
+	std::generate_n(std::back_inserter(_drawables), _n_drawables, f);
 
 	const float aspect_ratio = float(_window->GetWindowSize().height) / _window->GetWindowSize().width;
 	_graphics->SetProjection(DirectX::XMMatrixPerspectiveLH(1.0f, aspect_ratio, 0.5f, 40.0f));
@@ -107,10 +141,10 @@ void dx3d::Game::OnInternalUpdate() {
 	}
 
 	_graphics->ClearBuffer(screen_color, screen_color, screen_color);
-	for (auto& boxe : _boxes)
+	for (auto& drawable : _drawables)
 	{
-		boxe->Update(dt);
-		boxe->Draw(*_graphics);
+		drawable->Update(dt);
+		drawable->Draw(*_graphics);
 	}
 	_graphics->EndFrame();
 

@@ -155,6 +155,8 @@
   <ItemGroup>
     <ClCompile Include="DX3D\Source\DX3D\Drawable\Box.cpp" />
     <ClCompile Include="DX3D\Source\DX3D\Drawable\Drawable.cpp" />
+    <ClCompile Include="DX3D\Source\DX3D\Drawable\Melon.cpp" />
+    <ClCompile Include="DX3D\Source\DX3D\Drawable\Pyramid.cpp" />
     <ClCompile Include="DX3D\Source\DX3D\Graphics\Bindable\Bindable.cpp" />
     <ClCompile Include="DX3D\Source\DX3D\Graphics\Bindable\IndexBuffer.cpp" />
     <ClCompile Include="DX3D\Source\DX3D\Graphics\Bindable\InputLayout.cpp" />
@@ -181,8 +183,14 @@
     <ClInclude Include="DX3D\Include\DX3D\Core\Core.hpp" />
     <ClInclude Include="DX3D\Include\DX3D\Core\Logger.hpp" />
     <ClInclude Include="DX3D\Source\DX3D\Drawable\Box.hpp" />
+    <ClInclude Include="DX3D\Source\DX3D\Drawable\Cone.hpp" />
+    <ClInclude Include="DX3D\Source\DX3D\Drawable\Cube.hpp" />
     <ClInclude Include="DX3D\Source\DX3D\Drawable\Drawable.hpp" />
     <ClInclude Include="DX3D\Source\DX3D\Drawable\DrawableBase.hpp" />
+    <ClInclude Include="DX3D\Source\DX3D\Drawable\IndexedTriangleList.hpp" />
+    <ClInclude Include="DX3D\Source\DX3D\Drawable\Prism.hpp" />
+    <ClInclude Include="DX3D\Source\DX3D\Drawable\Pyramid.hpp" />
+    <ClInclude Include="DX3D\Source\DX3D\Drawable\Sphere.hpp" />
     <ClInclude Include="DX3D\Source\DX3D\Graphics\Bindable\Bindable.hpp" />
     <ClInclude Include="DX3D\Source\DX3D\Graphics\Bindable\BindableBase.hpp" />
     <ClInclude Include="DX3D\Source\DX3D\Graphics\Bindable\ConstantBuffers.hpp" />
@@ -206,7 +214,25 @@
     <ClInclude Include="DX3D\Source\DX3D\Graphics\Graphics.hpp" />
   </ItemGroup>
   <ItemGroup>
-    <FxCompile Include="DX3D\Assets\Shaders\PixelShader.hlsl">
+    <FxCompile Include="DX3D\Assets\Shaders\ColorBlendPS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">4.0</ShaderModel>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">4.0</ShaderModel>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ProjectDir)%(Filename).cso</ObjectFileOutput>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ProjectDir)%(Filename).cso</ObjectFileOutput>
+    </FxCompile>
+    <FxCompile Include="DX3D\Assets\Shaders\ColorBlendVS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ProjectDir)%(Filename).cso</ObjectFileOutput>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ProjectDir)%(Filename).cso</ObjectFileOutput>
+    </FxCompile>
+    <FxCompile Include="DX3D\Assets\Shaders\ColorIndexPS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
@@ -216,7 +242,7 @@
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">4.0</ShaderModel>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">4.0</ShaderModel>
     </FxCompile>
-    <FxCompile Include="DX3D\Assets\Shaders\VertexShader.hlsl">
+    <FxCompile Include="DX3D\Assets\Shaders\ColorIndexVS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>
@@ -224,6 +250,9 @@
       <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ProjectDir)%(Filename).cso</ObjectFileOutput>
       <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ProjectDir)%(Filename).cso</ObjectFileOutput>
     </FxCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="DX3D\Source\DX3D\Drawable\Melon.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

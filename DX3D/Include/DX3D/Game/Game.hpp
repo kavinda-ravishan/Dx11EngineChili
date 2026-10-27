@@ -19,7 +19,8 @@ namespace dx3d {
 		std::unique_ptr<Window> _window{};
 		std::unique_ptr<Graphics> _graphics{};
 		std::unique_ptr <class Timer> _timer{};
-		std::vector<std::unique_ptr<class Box>> _boxes{};
+		std::vector<std::unique_ptr<class Drawable>> _drawables{};
+		static constexpr size_t _n_drawables{ 180 };
 
 		bool _is_running{true};
 	};

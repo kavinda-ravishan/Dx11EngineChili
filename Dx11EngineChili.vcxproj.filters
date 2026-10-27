@@ -75,6 +75,12 @@
     <ClCompile Include="DX3D\Source\DX3D\Timer\Timer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="DX3D\Source\DX3D\Drawable\Melon.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DX3D\Source\DX3D\Drawable\Pyramid.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DX3D\Include\DX3D\Core\Base.hpp">
@@ -164,9 +170,32 @@
     <ClInclude Include="DX3D\Source\DX3D\Drawable\DrawableBase.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="DX3D\Source\DX3D\Drawable\IndexedTriangleList.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DX3D\Source\DX3D\Drawable\Cube.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DX3D\Source\DX3D\Drawable\Sphere.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DX3D\Source\DX3D\Drawable\Prism.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DX3D\Source\DX3D\Drawable\Pyramid.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DX3D\Source\DX3D\Drawable\Cone.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <FxCompile Include="DX3D\Assets\Shaders\VertexShader.hlsl" />
-    <FxCompile Include="DX3D\Assets\Shaders\PixelShader.hlsl" />
+    <FxCompile Include="DX3D\Assets\Shaders\ColorIndexVS.hlsl" />
+    <FxCompile Include="DX3D\Assets\Shaders\ColorIndexPS.hlsl" />
+    <FxCompile Include="DX3D\Assets\Shaders\ColorBlendPS.hlsl" />
+    <FxCompile Include="DX3D\Assets\Shaders\ColorBlendVS.hlsl" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="DX3D\Source\DX3D\Drawable\Melon.hpp" />
   </ItemGroup>
 </Project>

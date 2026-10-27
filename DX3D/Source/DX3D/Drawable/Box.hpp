@@ -11,26 +11,29 @@ namespace dx3d {
 			std::uniform_real_distribution<float>& adist,
 			std::uniform_real_distribution<float>& ddist,
 			std::uniform_real_distribution<float>& odist,
-			std::uniform_real_distribution<float>& rdist);
+			std::uniform_real_distribution<float>& rdist,
+			std::uniform_real_distribution<float>& bdist);
 		void Update(const float dt) noexcept override;
 		DirectX::XMMATRIX GetTransformXM() const noexcept override;
 
 	private:
 		// positional
-		float r{};
-		float roll{};
-		float pitch{};
-		float yaw{};
-		float theta{};
-		float phi{};
-		float chi{};
+		float _r{};
+		float _roll{};
+		float _pitch{};
+		float _yaw{};
+		float _theta{};
+		float _phi{};
+		float _chi{};
 		// speed (delta/s)
-		float droll{};
-		float dpitch{};
-		float dyaw{};
-		float dtheta{};
-		float dphi{};
-		float dchi{};
+		float _droll{};
+		float _dpitch{};
+		float _dyaw{};
+		float _dtheta{};
+		float _dphi{};
+		float _dchi{};
+		// model transform
+		DirectX::XMFLOAT3X3 _mt;
 	};
 
 } // namespace dx3d
