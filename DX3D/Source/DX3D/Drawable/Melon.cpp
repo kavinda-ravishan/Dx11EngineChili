@@ -2,8 +2,6 @@
 #include <DX3D/Graphics/Bindable/BindableBase.hpp>
 #include <DX3D/Drawable/Sphere.hpp>
 
-#define BINDABLE_DESC BindableDesc({ GetLogger() })
-
 dx3d::Melon::Melon(
 	const DrawableDesc& desc,
 	Graphics& gfx,

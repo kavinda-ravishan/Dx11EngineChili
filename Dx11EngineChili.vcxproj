@@ -122,11 +122,13 @@
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <AdditionalIncludeDirectories>$(SolutionDir)\third_party_libs\opencv\build\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>opencv_world500d.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)\third_party_libs\opencv\build\x64\vc16\lib</AdditionalLibraryDirectories>
     </Link>
     <Manifest>
       <EnableSegmentHeap>true</EnableSegmentHeap>
@@ -142,11 +144,13 @@
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <AdditionalIncludeDirectories>$(SolutionDir)\third_party_libs\opencv\build\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>opencv_world500.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)\third_party_libs\opencv\build\x64\vc16\lib</AdditionalLibraryDirectories>
     </Link>
     <Manifest>
       <EnableSegmentHeap>true</EnableSegmentHeap>
@@ -157,10 +161,14 @@
     <ClCompile Include="DX3D\Source\DX3D\Drawable\Drawable.cpp" />
     <ClCompile Include="DX3D\Source\DX3D\Drawable\Melon.cpp" />
     <ClCompile Include="DX3D\Source\DX3D\Drawable\Pyramid.cpp" />
+    <ClCompile Include="DX3D\Source\DX3D\Drawable\Sheet.cpp" />
+    <ClCompile Include="DX3D\Source\DX3D\Drawable\SkinnedBox.cpp" />
     <ClCompile Include="DX3D\Source\DX3D\Graphics\Bindable\Bindable.cpp" />
     <ClCompile Include="DX3D\Source\DX3D\Graphics\Bindable\IndexBuffer.cpp" />
     <ClCompile Include="DX3D\Source\DX3D\Graphics\Bindable\InputLayout.cpp" />
     <ClCompile Include="DX3D\Source\DX3D\Graphics\Bindable\PixelShader.cpp" />
+    <ClCompile Include="DX3D\Source\DX3D\Graphics\Bindable\Sampler.cpp" />
+    <ClCompile Include="DX3D\Source\DX3D\Graphics\Bindable\Texture.cpp" />
     <ClCompile Include="DX3D\Source\DX3D\Graphics\Bindable\Topology.cpp" />
     <ClCompile Include="DX3D\Source\DX3D\Core\Base.cpp" />
     <ClCompile Include="DX3D\Source\DX3D\Core\Logger.cpp" />
@@ -169,6 +177,7 @@
     <ClCompile Include="DX3D\Source\DX3D\Graphics\Bindable\VertexBuffer.cpp" />
     <ClCompile Include="DX3D\Source\DX3D\Graphics\Bindable\VertexShader.cpp" />
     <ClCompile Include="DX3D\Source\DX3D\Timer\Timer.cpp" />
+    <ClCompile Include="DX3D\Source\DX3D\Utils\Surface.cpp" />
     <ClCompile Include="DX3D\Source\DX3D\Window\Window.cpp" />
     <ClCompile Include="DX3D\Source\DX3D\Window\WindowsMessageMap.cpp" />
     <ClCompile Include="Game\main.cpp" />
@@ -182,14 +191,19 @@
     <ClInclude Include="DX3D\Include\DX3D\Core\Common.hpp" />
     <ClInclude Include="DX3D\Include\DX3D\Core\Core.hpp" />
     <ClInclude Include="DX3D\Include\DX3D\Core\Logger.hpp" />
+    <ClInclude Include="DX3D\Include\DX3D\Math\Vec2.hpp" />
+    <ClInclude Include="DX3D\Include\DX3D\Math\Vec3.hpp" />
     <ClInclude Include="DX3D\Source\DX3D\Drawable\Box.hpp" />
     <ClInclude Include="DX3D\Source\DX3D\Drawable\Cone.hpp" />
     <ClInclude Include="DX3D\Source\DX3D\Drawable\Cube.hpp" />
     <ClInclude Include="DX3D\Source\DX3D\Drawable\Drawable.hpp" />
     <ClInclude Include="DX3D\Source\DX3D\Drawable\DrawableBase.hpp" />
     <ClInclude Include="DX3D\Source\DX3D\Drawable\IndexedTriangleList.hpp" />
+    <ClInclude Include="DX3D\Source\DX3D\Drawable\Plane.hpp" />
     <ClInclude Include="DX3D\Source\DX3D\Drawable\Prism.hpp" />
     <ClInclude Include="DX3D\Source\DX3D\Drawable\Pyramid.hpp" />
+    <ClInclude Include="DX3D\Source\DX3D\Drawable\Sheet.hpp" />
+    <ClInclude Include="DX3D\Source\DX3D\Drawable\SkinnedBox.hpp" />
     <ClInclude Include="DX3D\Source\DX3D\Drawable\Sphere.hpp" />
     <ClInclude Include="DX3D\Source\DX3D\Graphics\Bindable\Bindable.hpp" />
     <ClInclude Include="DX3D\Source\DX3D\Graphics\Bindable\BindableBase.hpp" />
@@ -197,6 +211,8 @@
     <ClInclude Include="DX3D\Source\DX3D\Graphics\Bindable\IndexBuffer.hpp" />
     <ClInclude Include="DX3D\Source\DX3D\Graphics\Bindable\InputLayout.hpp" />
     <ClInclude Include="DX3D\Source\DX3D\Graphics\Bindable\PixelShader.hpp" />
+    <ClInclude Include="DX3D\Source\DX3D\Graphics\Bindable\Sampler.hpp" />
+    <ClInclude Include="DX3D\Source\DX3D\Graphics\Bindable\Texture.hpp" />
     <ClInclude Include="DX3D\Source\DX3D\Graphics\Bindable\Topology.hpp" />
     <ClInclude Include="DX3D\Source\DX3D\Core\WinSwitches.hpp" />
     <ClInclude Include="DX3D\Include\DX3D\Game\Game.hpp" />
@@ -206,8 +222,10 @@
     <ClInclude Include="DX3D\Source\DX3D\Graphics\Bindable\VertexBuffer.hpp" />
     <ClInclude Include="DX3D\Source\DX3D\Graphics\Bindable\VertexShader.hpp" />
     <ClInclude Include="DX3D\Source\DX3D\Graphics\GraphicsLogUtils.hpp" />
-    <ClInclude Include="DX3D\Include\DX3D\Math\Constants.hpp" />
+    <ClInclude Include="DX3D\Include\DX3D\Math\Math.hpp" />
     <ClInclude Include="DX3D\Source\DX3D\Timer\Timer.hpp" />
+    <ClInclude Include="DX3D\Source\DX3D\Utils\Colors.hpp" />
+    <ClInclude Include="DX3D\Source\DX3D\Utils\Surface.hpp" />
     <ClInclude Include="DX3D\Source\DX3D\Window\WindowsMessageMap.hpp" />
     <ClInclude Include="DX3D\Source\DX3D\IO\Keyboard.hpp" />
     <ClInclude Include="DX3D\Source\DX3D\IO\Mouse.hpp" />
@@ -250,9 +268,33 @@
       <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ProjectDir)%(Filename).cso</ObjectFileOutput>
       <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ProjectDir)%(Filename).cso</ObjectFileOutput>
     </FxCompile>
+    <FxCompile Include="DX3D\Assets\Shaders\TexturePS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ProjectDir)%(Filename).cso</ObjectFileOutput>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ProjectDir)%(Filename).cso</ObjectFileOutput>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">4.0</ShaderModel>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">4.0</ShaderModel>
+    </FxCompile>
+    <FxCompile Include="DX3D\Assets\Shaders\TextureVS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">4.0</ShaderModel>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">4.0</ShaderModel>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ProjectDir)%(Filename).cso</ObjectFileOutput>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ProjectDir)%(Filename).cso</ObjectFileOutput>
+    </FxCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="DX3D\Source\DX3D\Drawable\Melon.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="DX3D\Assets\Images\cube.png" />
+    <Image Include="DX3D\Assets\Images\kappa50.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -1,7 +1,7 @@
 #pragma once
 #include <DX3D/Core/WinSwitches.hpp>
 #include <DirectXMath.h>
-#include <DX3D/Math/Constants.hpp>
+#include <DX3D/Math/Math.hpp>
 #include <DX3D/Drawable/IndexedTriangleList.hpp>
 
 namespace dx3d {

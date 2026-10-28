@@ -5,7 +5,7 @@
 #include <random>
 #include <sstream>
 #include <DX3D/Timer/Timer.hpp>
-#include <DX3D/Math/Constants.hpp>
+#include <DX3D/Math/Math.hpp>
 #include <DX3D/Core/Logger.hpp>
 #include <DX3D/IO/Mouse.hpp>
 #include <DX3D/IO/Keyboard.hpp>
@@ -15,6 +15,8 @@
 #include <DX3D/Drawable/Box.hpp>
 #include <DX3D/Drawable/Melon.hpp>
 #include <DX3D/Drawable/Pyramid.hpp>
+#include <DX3D/Drawable/Sheet.hpp>
+#include <DX3D/Drawable/SkinnedBox.hpp>
 
 dx3d::Game::Game(const GameDesc& desc) :
     Base({ *std::make_unique<Logger>(desc.log_level).release() }),
@@ -43,6 +45,16 @@ dx3d::Game::Game(const GameDesc& desc) :
 					DrawableDesc({ _logger }), _graphics, _rng, _adist, _ddist,
 					_odist, _rdist, _longdist, _latdist
 				);
+			case 3:
+				return std::make_unique<Sheet>(
+					DrawableDesc({ _logger }), _graphics, _rng, _adist, _ddist,
+					_odist, _rdist
+				);
+			case 4:
+				return std::make_unique<SkinnedBox>(
+					DrawableDesc({ _logger }), _graphics, _rng, _adist, _ddist,
+					_odist, _rdist
+				);
 			default:
 				assert(false && "bad drawable type in factory");
 				return {};
@@ -60,7 +72,7 @@ dx3d::Game::Game(const GameDesc& desc) :
 		std::uniform_real_distribution<float> _bdist{ 0.4f,3.0f };
 		std::uniform_int_distribution<int> _latdist{ 5,20 };
 		std::uniform_int_distribution<int> _longdist{ 10,40 };
-		std::uniform_int_distribution<int> _typedist{ 0,2 };
+		std::uniform_int_distribution<int> _typedist{ 0,4 };
 	};
 
 	_window = std::make_unique<Window>(WindowDesc({ _logger, desc.window_size }));
@@ -136,6 +148,9 @@ void dx3d::Game::OnInternalUpdate() {
 	case '-':
 		screen_color = static_cast<float>(std::max(std::min(1.0f, screen_color - 0.1f), 0.0f));
 		break;
+	case ' ':
+		_pause = !_pause;
+		break;
 	default:
 		break;
 	}
@@ -143,7 +158,7 @@ void dx3d::Game::OnInternalUpdate() {
 	_graphics->ClearBuffer(screen_color, screen_color, screen_color);
 	for (auto& drawable : _drawables)
 	{
-		drawable->Update(dt);
+		drawable->Update(_pause ? 0.0f : dt);
 		drawable->Draw(*_graphics);
 	}
 	_graphics->EndFrame();

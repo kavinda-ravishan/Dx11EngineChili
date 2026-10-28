@@ -4,6 +4,8 @@
 #include <DX3D/Core/Base.hpp>
 #include <DX3D/Core/Common.hpp>
 
+#define BINDABLE_DESC BindableDesc({ GetLogger() })
+
 namespace dx3d {
 	class Bindable : public Base {
 	public:

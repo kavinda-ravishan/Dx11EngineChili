@@ -2,8 +2,6 @@
 #include <DX3D/Graphics/Bindable/BindableBase.hpp>
 #include <DX3D/Drawable/Cube.hpp>
 
-#define BINDABLE_DESC BindableDesc({ GetLogger() })
-
 dx3d::Box::Box(
 	const DrawableDesc& desc, 
 	Graphics& graphics, 

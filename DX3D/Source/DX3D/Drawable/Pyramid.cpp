@@ -2,8 +2,6 @@
 #include <DX3D/Graphics/Bindable/BindableBase.hpp>
 #include <DX3D/Drawable/Cone.hpp>
 
-#define BINDABLE_DESC BindableDesc({ GetLogger() })
-
 dx3d::Pyramid::Pyramid(
 	const DrawableDesc& desc,
 	Graphics & gfx,

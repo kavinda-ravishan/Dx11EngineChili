@@ -8,3 +8,5 @@
 #include <DX3D/Graphics/Bindable/TransformCbuf.hpp>
 #include <DX3D/Graphics/Bindable/VertexShader.hpp>
 #include <DX3D/Graphics/Bindable/VertexBuffer.hpp>
+#include <DX3D/Graphics/Bindable/Texture.hpp>
+#include <DX3D/Graphics/Bindable/Sampler.hpp>

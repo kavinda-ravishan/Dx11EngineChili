@@ -81,6 +81,21 @@
     <ClCompile Include="DX3D\Source\DX3D\Drawable\Pyramid.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="DX3D\Source\DX3D\Utils\Surface.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DX3D\Source\DX3D\Graphics\Bindable\Texture.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DX3D\Source\DX3D\Drawable\Sheet.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DX3D\Source\DX3D\Graphics\Bindable\Sampler.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DX3D\Source\DX3D\Drawable\SkinnedBox.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DX3D\Include\DX3D\Core\Base.hpp">
@@ -125,7 +140,7 @@
     <ClInclude Include="DX3D\Source\DX3D\Graphics\GraphicsLogUtils.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="DX3D\Include\DX3D\Math\Constants.hpp">
+    <ClInclude Include="DX3D\Include\DX3D\Math\Math.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="DX3D\Source\DX3D\Graphics\Bindable\Bindable.hpp">
@@ -188,14 +203,51 @@
     <ClInclude Include="DX3D\Source\DX3D\Drawable\Cone.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="DX3D\Source\DX3D\Utils\Surface.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DX3D\Source\DX3D\Utils\Colors.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DX3D\Include\DX3D\Math\Vec2.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DX3D\Include\DX3D\Math\Vec3.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DX3D\Source\DX3D\Graphics\Bindable\Texture.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DX3D\Source\DX3D\Drawable\Sheet.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DX3D\Source\DX3D\Drawable\Plane.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DX3D\Source\DX3D\Graphics\Bindable\Sampler.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DX3D\Source\DX3D\Drawable\SkinnedBox.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="DX3D\Assets\Shaders\ColorIndexVS.hlsl" />
     <FxCompile Include="DX3D\Assets\Shaders\ColorIndexPS.hlsl" />
     <FxCompile Include="DX3D\Assets\Shaders\ColorBlendPS.hlsl" />
     <FxCompile Include="DX3D\Assets\Shaders\ColorBlendVS.hlsl" />
+    <FxCompile Include="DX3D\Assets\Shaders\TexturePS.hlsl" />
+    <FxCompile Include="DX3D\Assets\Shaders\TextureVS.hlsl" />
   </ItemGroup>
   <ItemGroup>
     <None Include="DX3D\Source\DX3D\Drawable\Melon.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="DX3D\Assets\Images\cube.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="DX3D\Assets\Images\kappa50.png">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
 </Project>
