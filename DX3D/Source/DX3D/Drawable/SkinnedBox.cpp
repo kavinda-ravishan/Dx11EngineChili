@@ -33,7 +33,7 @@ dx3d::SkinnedBox::SkinnedBox(const DrawableDesc& desc, Graphics& gfx, std::mt199
 
 		auto model = Cube::MakeSkinned<Vertex>();
 
-		AddStaticBind(std::make_unique<Texture>(BINDABLE_DESC, gfx, Surface("DX3D\\Assets\\Images\\cube.png")));
+		AddStaticBind(std::make_unique<Texture>(BINDABLE_DESC, gfx, Surface("Assets\\Images\\cube.png")));
 
 		AddStaticBind(std::make_unique<VertexBuffer>(BINDABLE_DESC, gfx, model._vertices));
 

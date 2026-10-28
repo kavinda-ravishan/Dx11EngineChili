@@ -206,15 +206,6 @@
     <ClInclude Include="DX3D\Source\DX3D\Utils\Surface.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="DX3D\Source\DX3D\Utils\Colors.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="DX3D\Include\DX3D\Math\Vec2.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="DX3D\Include\DX3D\Math\Vec3.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="DX3D\Source\DX3D\Graphics\Bindable\Texture.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -243,10 +234,10 @@
     <None Include="DX3D\Source\DX3D\Drawable\Melon.hpp" />
   </ItemGroup>
   <ItemGroup>
-    <Image Include="DX3D\Assets\Images\cube.png">
+    <Image Include="Assets\Images\cube.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="DX3D\Assets\Images\kappa50.png">
+    <Image Include="Assets\Images\kappa50.png">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>

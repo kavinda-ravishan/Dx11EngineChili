@@ -21,7 +21,7 @@ dx3d::Texture::Texture(const BindableDesc& desc, Graphics& graphics, const Surfa
 	
 	D3D11_SUBRESOURCE_DATA subresource_data = {};
 	subresource_data.pSysMem = surface.GetBufferPtr();
-	subresource_data.SysMemPitch = surface.GetWidth() * sizeof(Color);
+	subresource_data.SysMemPitch = surface.GetWidth() * sizeof(Surface::Color);
 	
 	Microsoft::WRL::ComPtr<ID3D11Texture2D> texture;
 	DX3DGraphicsLogThrowOnFail(GetDevice(graphics)->CreateTexture2D(

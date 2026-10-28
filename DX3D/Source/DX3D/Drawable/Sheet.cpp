@@ -37,7 +37,7 @@ dx3d::Sheet::Sheet(const DrawableDesc& desc, Graphics& gfx, std::mt19937& rng, s
 		model._vertices[2].tex = { -0.5f,1.5f };
 		model._vertices[3].tex = { 1.5f,1.5f };
 
-		AddStaticBind(std::make_unique<Texture>(BINDABLE_DESC, gfx, Surface("DX3D\\Assets\\Images\\kappa50.png")));
+		AddStaticBind(std::make_unique<Texture>(BINDABLE_DESC, gfx, Surface("Assets\\Images\\kappa50.png")));
 
 		AddStaticBind(std::make_unique<VertexBuffer>(BINDABLE_DESC, gfx, model._vertices));
 

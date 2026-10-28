@@ -82,7 +82,7 @@ void dx3d::Surface::PutPixel(int x, int y, const Color color) {
     ptr[x] = color.dword;
 }
 
-dx3d::Color dx3d::Surface::GetPixel(int x, int y) const {
+dx3d::Surface::Color dx3d::Surface::GetPixel(int x, int y) const {
     assert(x >= 0);
     assert(y >= 0);
     assert(x < (int)_width);

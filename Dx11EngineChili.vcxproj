@@ -191,8 +191,6 @@
     <ClInclude Include="DX3D\Include\DX3D\Core\Common.hpp" />
     <ClInclude Include="DX3D\Include\DX3D\Core\Core.hpp" />
     <ClInclude Include="DX3D\Include\DX3D\Core\Logger.hpp" />
-    <ClInclude Include="DX3D\Include\DX3D\Math\Vec2.hpp" />
-    <ClInclude Include="DX3D\Include\DX3D\Math\Vec3.hpp" />
     <ClInclude Include="DX3D\Source\DX3D\Drawable\Box.hpp" />
     <ClInclude Include="DX3D\Source\DX3D\Drawable\Cone.hpp" />
     <ClInclude Include="DX3D\Source\DX3D\Drawable\Cube.hpp" />
@@ -224,7 +222,6 @@
     <ClInclude Include="DX3D\Source\DX3D\Graphics\GraphicsLogUtils.hpp" />
     <ClInclude Include="DX3D\Include\DX3D\Math\Math.hpp" />
     <ClInclude Include="DX3D\Source\DX3D\Timer\Timer.hpp" />
-    <ClInclude Include="DX3D\Source\DX3D\Utils\Colors.hpp" />
     <ClInclude Include="DX3D\Source\DX3D\Utils\Surface.hpp" />
     <ClInclude Include="DX3D\Source\DX3D\Window\WindowsMessageMap.hpp" />
     <ClInclude Include="DX3D\Source\DX3D\IO\Keyboard.hpp" />
@@ -293,8 +290,8 @@
     <None Include="DX3D\Source\DX3D\Drawable\Melon.hpp" />
   </ItemGroup>
   <ItemGroup>
-    <Image Include="DX3D\Assets\Images\cube.png" />
-    <Image Include="DX3D\Assets\Images\kappa50.png" />
+    <Image Include="Assets\Images\cube.png" />
+    <Image Include="Assets\Images\kappa50.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
