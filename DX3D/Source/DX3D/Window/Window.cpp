@@ -123,7 +123,7 @@ int64_t dx3d::Window::HandleMessage(void* arg_hwnd, uint32_t arg_msg, uint64_t a
     // Window events
     case WM_DESTROY:
         PostQuitMessage(0);
-        break;
+        return 0;
     case WM_KILLFOCUS:
         _keyboard->ClearState();
         break;
@@ -131,68 +131,103 @@ int64_t dx3d::Window::HandleMessage(void* arg_hwnd, uint32_t arg_msg, uint64_t a
     // Keyboard events
     case WM_KEYDOWN:
     case WM_SYSKEYDOWN:
+    {
+        if (ImGui::GetIO().WantCaptureMouse) break;
+
         if (!(lparam & 0x40000000) || _keyboard->AutoRepeatIsEnabled()) {
             _keyboard->OnKeyPressed(static_cast<unsigned char>(wparam));
         }
         break;
+    }
     case WM_KEYUP:
     case WM_SYSKEYUP:
+    {
+        if (ImGui::GetIO().WantCaptureMouse) break;
+
         _keyboard->OnKeyReleased(static_cast<unsigned char>(wparam));
         break;
+    }
     case WM_CHAR:
+    {
+        if (ImGui::GetIO().WantCaptureMouse) break;
+
         _keyboard->OnChar(static_cast<unsigned char>(wparam));
         break;
-
-     // Mouse events
+    }
+    
+    // Mouse events
     case WM_MOUSEMOVE:
     {
+        if (ImGui::GetIO().WantCaptureMouse) break;
+
         const POINTS pt = MAKEPOINTS(lparam);
         _mouse->OnMouseMove(pt.x, pt.y);
         break;
     }
     case WM_LBUTTONDOWN:
     {
+        if (ImGui::GetIO().WantCaptureMouse) break;
+
         const POINTS pt = MAKEPOINTS(lparam);
         _mouse->OnLeftPressed(pt.x, pt.y);
         break;
     }
     case WM_LBUTTONUP:
     {
+        if (ImGui::GetIO().WantCaptureMouse) break;
+
         const POINTS pt = MAKEPOINTS(lparam);
         _mouse->OnLeftReleased(pt.x, pt.y);
         break;
     }
     case WM_RBUTTONDOWN:
     {
+        if (ImGui::GetIO().WantCaptureMouse) break;
+
         const POINTS pt = MAKEPOINTS(lparam);
         _mouse->OnRightPressed(pt.x, pt.y);
         break;
     }
     case WM_RBUTTONUP:
     {
+        if (ImGui::GetIO().WantCaptureMouse) break;
+
         const POINTS pt = MAKEPOINTS(lparam);
         _mouse->OnRightReleased(pt.x, pt.y);
         break;
     }
     case WM_MBUTTONDOWN:
     {
+        if (ImGui::GetIO().WantCaptureMouse) break;
+
         const POINTS pt = MAKEPOINTS(lparam);
         _mouse->OnMiddlePressed(pt.x, pt.y);
         break;
     }
     case WM_MBUTTONUP:
     {
+        if (ImGui::GetIO().WantCaptureMouse) break;
+
         const POINTS pt = MAKEPOINTS(lparam);
         _mouse->OnMiddleReleased(pt.x, pt.y);
         break;
     }
     case WM_MOUSEWHEEL:
     {
-        const POINTS pt = MAKEPOINTS(lparam);
+        if (ImGui::GetIO().WantCaptureMouse) break;
+
+        POINT pt{
+            static_cast<LONG>(MAKEPOINTS(lparam).x),
+            static_cast<LONG>(MAKEPOINTS(lparam).y)
+        };
+
+        ScreenToClient(hwnd, &pt);
+
         const int delta = GET_WHEEL_DELTA_WPARAM(wparam);
         _mouse->OnWheelMove(static_cast<int>(delta/(float)WHEEL_DELTA), pt.x, pt.y);
         break;
     }
+    
     default:
         return DefWindowProc(hwnd, msg, wparam, lparam);
     }
