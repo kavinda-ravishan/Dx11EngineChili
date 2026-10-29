@@ -18,8 +18,11 @@ namespace dx3d {
 		void EndFrame();
 		void BeginFrame(float red, float green, float blue) noexcept;
 		void DrawIndexed(UINT count) noexcept(!IS_DEBUG);
-		void SetProjection(DirectX::FXMMATRIX proj) noexcept;
+
+		void SetProjection(DirectX::FXMMATRIX projection) noexcept;
 		DirectX::XMMATRIX GetProjection() const noexcept;
+		void SetCamera(DirectX::FXMMATRIX camera) noexcept;
+		DirectX::XMMATRIX GetCamera() const noexcept;
 
 		void EnableImgui() noexcept;
 		void DisableImgui() noexcept;
@@ -30,6 +33,8 @@ namespace dx3d {
 		bool _imgui_enabled{ true };
 
 		DirectX::XMMATRIX _projection{};
+		DirectX::XMMATRIX _camera{};
+
 		Microsoft::WRL::ComPtr<ID3D11Device> _device{};
 		Microsoft::WRL::ComPtr<IDXGISwapChain> _swap_chain{};
 		Microsoft::WRL::ComPtr<ID3D11DeviceContext> _context{};

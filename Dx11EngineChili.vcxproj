@@ -157,12 +157,12 @@
     </Manifest>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="DX3D\Source\DX3D\Drawable\Box.cpp" />
-    <ClCompile Include="DX3D\Source\DX3D\Drawable\Drawable.cpp" />
-    <ClCompile Include="DX3D\Source\DX3D\Drawable\Melon.cpp" />
-    <ClCompile Include="DX3D\Source\DX3D\Drawable\Pyramid.cpp" />
-    <ClCompile Include="DX3D\Source\DX3D\Drawable\Sheet.cpp" />
-    <ClCompile Include="DX3D\Source\DX3D\Drawable\SkinnedBox.cpp" />
+    <ClCompile Include="DX3D\Source\DX3D\Graphics\Drawable\Box.cpp" />
+    <ClCompile Include="DX3D\Source\DX3D\Graphics\Drawable\Drawable.cpp" />
+    <ClCompile Include="DX3D\Source\DX3D\Graphics\Drawable\Melon.cpp" />
+    <ClCompile Include="DX3D\Source\DX3D\Graphics\Drawable\Pyramid.cpp" />
+    <ClCompile Include="DX3D\Source\DX3D\Graphics\Drawable\Sheet.cpp" />
+    <ClCompile Include="DX3D\Source\DX3D\Graphics\Drawable\SkinnedBox.cpp" />
     <ClCompile Include="DX3D\Source\DX3D\Graphics\Bindable\Bindable.cpp" />
     <ClCompile Include="DX3D\Source\DX3D\Graphics\Bindable\IndexBuffer.cpp" />
     <ClCompile Include="DX3D\Source\DX3D\Graphics\Bindable\InputLayout.cpp" />
@@ -199,18 +199,18 @@
     <ClInclude Include="DX3D\Include\DX3D\Core\Common.hpp" />
     <ClInclude Include="DX3D\Include\DX3D\Core\Core.hpp" />
     <ClInclude Include="DX3D\Include\DX3D\Core\Logger.hpp" />
-    <ClInclude Include="DX3D\Source\DX3D\Drawable\Box.hpp" />
-    <ClInclude Include="DX3D\Source\DX3D\Drawable\Cone.hpp" />
-    <ClInclude Include="DX3D\Source\DX3D\Drawable\Cube.hpp" />
-    <ClInclude Include="DX3D\Source\DX3D\Drawable\Drawable.hpp" />
-    <ClInclude Include="DX3D\Source\DX3D\Drawable\DrawableBase.hpp" />
-    <ClInclude Include="DX3D\Source\DX3D\Drawable\IndexedTriangleList.hpp" />
-    <ClInclude Include="DX3D\Source\DX3D\Drawable\Plane.hpp" />
-    <ClInclude Include="DX3D\Source\DX3D\Drawable\Prism.hpp" />
-    <ClInclude Include="DX3D\Source\DX3D\Drawable\Pyramid.hpp" />
-    <ClInclude Include="DX3D\Source\DX3D\Drawable\Sheet.hpp" />
-    <ClInclude Include="DX3D\Source\DX3D\Drawable\SkinnedBox.hpp" />
-    <ClInclude Include="DX3D\Source\DX3D\Drawable\Sphere.hpp" />
+    <ClInclude Include="DX3D\Source\DX3D\Graphics\Drawable\Box.hpp" />
+    <ClInclude Include="DX3D\Source\DX3D\Graphics\Drawable\Cone.hpp" />
+    <ClInclude Include="DX3D\Source\DX3D\Graphics\Drawable\Cube.hpp" />
+    <ClInclude Include="DX3D\Source\DX3D\Graphics\Drawable\Drawable.hpp" />
+    <ClInclude Include="DX3D\Source\DX3D\Graphics\Drawable\DrawableBase.hpp" />
+    <ClInclude Include="DX3D\Source\DX3D\Graphics\Drawable\IndexedTriangleList.hpp" />
+    <ClInclude Include="DX3D\Source\DX3D\Graphics\Drawable\Plane.hpp" />
+    <ClInclude Include="DX3D\Source\DX3D\Graphics\Drawable\Prism.hpp" />
+    <ClInclude Include="DX3D\Source\DX3D\Graphics\Drawable\Pyramid.hpp" />
+    <ClInclude Include="DX3D\Source\DX3D\Graphics\Drawable\Sheet.hpp" />
+    <ClInclude Include="DX3D\Source\DX3D\Graphics\Drawable\SkinnedBox.hpp" />
+    <ClInclude Include="DX3D\Source\DX3D\Graphics\Drawable\Sphere.hpp" />
     <ClInclude Include="DX3D\Source\DX3D\Graphics\Bindable\Bindable.hpp" />
     <ClInclude Include="DX3D\Source\DX3D\Graphics\Bindable\BindableBase.hpp" />
     <ClInclude Include="DX3D\Source\DX3D\Graphics\Bindable\ConstantBuffers.hpp" />
@@ -304,7 +304,7 @@
     </FxCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="DX3D\Source\DX3D\Drawable\Melon.hpp" />
+    <None Include="DX3D\Source\DX3D\Graphics\Drawable\Melon.hpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Assets\Images\cube.png" />

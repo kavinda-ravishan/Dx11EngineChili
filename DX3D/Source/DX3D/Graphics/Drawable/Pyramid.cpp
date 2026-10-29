@@ -1,6 +1,6 @@
-#include <DX3D/Drawable/Pyramid.hpp>
 #include <DX3D/Graphics/Bindable/BindableBase.hpp>
-#include <DX3D/Drawable/Cone.hpp>
+#include <DX3D/Graphics/Drawable/Pyramid.hpp>
+#include <DX3D/Graphics/Drawable/Cone.hpp>
 
 dx3d::Pyramid::Pyramid(
 	const DrawableDesc& desc,
@@ -91,6 +91,5 @@ DirectX::XMMATRIX dx3d::Pyramid::GetTransformXM() const noexcept
 	namespace dx = DirectX;
 	return dx::XMMatrixRotationRollPitchYaw(pitch, yaw, roll) *
 		dx::XMMatrixTranslation(r, 0.0f, 0.0f) *
-		dx::XMMatrixRotationRollPitchYaw(theta, phi, chi) *
-		dx::XMMatrixTranslation(0.0f, 0.0f, 20.0f);
+		dx::XMMatrixRotationRollPitchYaw(theta, phi, chi);
 }

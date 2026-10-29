@@ -14,11 +14,11 @@
 #include <DX3D/Window/Window.hpp>
 #include <DX3D/Game/Game.hpp>
 #include <DX3D/Graphics/Graphics.hpp>
-#include <DX3D/Drawable/Box.hpp>
-#include <DX3D/Drawable/Melon.hpp>
-#include <DX3D/Drawable/Pyramid.hpp>
-#include <DX3D/Drawable/Sheet.hpp>
-#include <DX3D/Drawable/SkinnedBox.hpp>
+#include <DX3D/Graphics/Drawable/Box.hpp>
+#include <DX3D/Graphics/Drawable/Melon.hpp>
+#include <DX3D/Graphics/Drawable/Pyramid.hpp>
+#include <DX3D/Graphics/Drawable/Sheet.hpp>
+#include <DX3D/Graphics/Drawable/SkinnedBox.hpp>
 
 dx3d::Game::Game(const GameDesc& desc) :
     Base({ *std::make_unique<Logger>(desc.log_level).release() }),
@@ -91,6 +91,7 @@ dx3d::Game::Game(const GameDesc& desc) :
 
 	const float aspect_ratio = float(_window->GetWindowSize().height) / _window->GetWindowSize().width;
 	_graphics->SetProjection(DirectX::XMMatrixPerspectiveLH(1.0f, aspect_ratio, 0.5f, 40.0f));
+	_graphics->SetCamera(DirectX::XMMatrixTranslation(0.0f, 0.0f, 20.0f));
 }
 
 dx3d::Game::~Game() {

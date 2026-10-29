@@ -1,6 +1,6 @@
 #pragma once
 #include <random>
-#include <DX3D/Drawable/DrawableBase.hpp>
+#include <DX3D/Graphics/Drawable/DrawableBase.hpp>
 
 namespace dx3d {
 

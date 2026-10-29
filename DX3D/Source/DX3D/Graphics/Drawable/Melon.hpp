@@ -1,17 +1,18 @@
 #pragma once
 #include <random>
-#include <DX3D/Drawable/DrawableBase.hpp>
+#include <DX3D/Graphics/Drawable/DrawableBase.hpp>
 
 namespace dx3d {
-	class Pyramid : public DrawableBase<Pyramid>
-	{
+	class Melon : public DrawableBase<Melon> {
 	public:
-		Pyramid(const DrawableDesc& desc,
+		Melon(const DrawableDesc& desc,
 			Graphics& gfx, std::mt19937& rng,
 			std::uniform_real_distribution<float>& adist,
 			std::uniform_real_distribution<float>& ddist,
 			std::uniform_real_distribution<float>& odist,
-			std::uniform_real_distribution<float>& rdist);
+			std::uniform_real_distribution<float>& rdist,
+			std::uniform_int_distribution<int>& longdist,
+			std::uniform_int_distribution<int>& latdist);
 		void Update(float dt) noexcept override;
 		DirectX::XMMATRIX GetTransformXM() const noexcept override;
 	private:
@@ -31,4 +32,4 @@ namespace dx3d {
 		float dphi;
 		float dchi;
 	};
-} // namespace dx3d
+} // namespace dx3d 

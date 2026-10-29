@@ -63,22 +63,22 @@
     <ClCompile Include="DX3D\Source\DX3D\Graphics\Bindable\VertexBuffer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="DX3D\Source\DX3D\Drawable\Drawable.cpp">
+    <ClCompile Include="DX3D\Source\DX3D\Graphics\Drawable\Drawable.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="DX3D\Source\DX3D\Graphics\Bindable\TransformCbuf.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="DX3D\Source\DX3D\Drawable\Box.cpp">
+    <ClCompile Include="DX3D\Source\DX3D\Graphics\Drawable\Box.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="DX3D\Source\DX3D\Timer\Timer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="DX3D\Source\DX3D\Drawable\Melon.cpp">
+    <ClCompile Include="DX3D\Source\DX3D\Graphics\Drawable\Melon.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="DX3D\Source\DX3D\Drawable\Pyramid.cpp">
+    <ClCompile Include="DX3D\Source\DX3D\Graphics\Drawable\Pyramid.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="DX3D\Source\DX3D\Utils\Surface.cpp">
@@ -87,13 +87,13 @@
     <ClCompile Include="DX3D\Source\DX3D\Graphics\Bindable\Texture.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="DX3D\Source\DX3D\Drawable\Sheet.cpp">
+    <ClCompile Include="DX3D\Source\DX3D\Graphics\Drawable\Sheet.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="DX3D\Source\DX3D\Graphics\Bindable\Sampler.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="DX3D\Source\DX3D\Drawable\SkinnedBox.cpp">
+    <ClCompile Include="DX3D\Source\DX3D\Graphics\Drawable\SkinnedBox.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="DX3D\Source\DX3D\Window\ImGUI\imgui.cpp">
@@ -194,37 +194,37 @@
     <ClInclude Include="DX3D\Source\DX3D\Graphics\Bindable\VertexBuffer.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="DX3D\Source\DX3D\Drawable\Drawable.hpp">
+    <ClInclude Include="DX3D\Source\DX3D\Graphics\Drawable\Drawable.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="DX3D\Source\DX3D\Graphics\Bindable\TransformCbuf.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="DX3D\Source\DX3D\Drawable\Box.hpp">
+    <ClInclude Include="DX3D\Source\DX3D\Graphics\Drawable\Box.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="DX3D\Source\DX3D\Timer\Timer.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="DX3D\Source\DX3D\Drawable\DrawableBase.hpp">
+    <ClInclude Include="DX3D\Source\DX3D\Graphics\Drawable\DrawableBase.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="DX3D\Source\DX3D\Drawable\IndexedTriangleList.hpp">
+    <ClInclude Include="DX3D\Source\DX3D\Graphics\Drawable\IndexedTriangleList.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="DX3D\Source\DX3D\Drawable\Cube.hpp">
+    <ClInclude Include="DX3D\Source\DX3D\Graphics\Drawable\Cube.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="DX3D\Source\DX3D\Drawable\Sphere.hpp">
+    <ClInclude Include="DX3D\Source\DX3D\Graphics\Drawable\Sphere.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="DX3D\Source\DX3D\Drawable\Prism.hpp">
+    <ClInclude Include="DX3D\Source\DX3D\Graphics\Drawable\Prism.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="DX3D\Source\DX3D\Drawable\Pyramid.hpp">
+    <ClInclude Include="DX3D\Source\DX3D\Graphics\Drawable\Pyramid.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="DX3D\Source\DX3D\Drawable\Cone.hpp">
+    <ClInclude Include="DX3D\Source\DX3D\Graphics\Drawable\Cone.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="DX3D\Source\DX3D\Utils\Surface.hpp">
@@ -233,16 +233,16 @@
     <ClInclude Include="DX3D\Source\DX3D\Graphics\Bindable\Texture.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="DX3D\Source\DX3D\Drawable\Sheet.hpp">
+    <ClInclude Include="DX3D\Source\DX3D\Graphics\Drawable\Sheet.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="DX3D\Source\DX3D\Drawable\Plane.hpp">
+    <ClInclude Include="DX3D\Source\DX3D\Graphics\Drawable\Plane.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="DX3D\Source\DX3D\Graphics\Bindable\Sampler.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="DX3D\Source\DX3D\Drawable\SkinnedBox.hpp">
+    <ClInclude Include="DX3D\Source\DX3D\Graphics\Drawable\SkinnedBox.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="DX3D\Source\DX3D\Window\ImGUI\imconfig.h">
@@ -282,7 +282,7 @@
     <FxCompile Include="DX3D\Assets\Shaders\TextureVS.hlsl" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="DX3D\Source\DX3D\Drawable\Melon.hpp" />
+    <None Include="DX3D\Source\DX3D\Graphics\Drawable\Melon.hpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Assets\Images\cube.png">

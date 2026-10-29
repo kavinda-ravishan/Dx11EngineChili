@@ -2,7 +2,7 @@
 #include <DX3D/Graphics/Graphics.hpp>
 #include <DX3D/Graphics/Bindable/Bindable.hpp>
 #include <DX3D/Graphics/Bindable/IndexBuffer.hpp>
-#include <DX3D/Drawable/Drawable.hpp>
+#include <DX3D/Graphics/Drawable/Drawable.hpp>
 
 dx3d::Drawable::Drawable(const DrawableDesc& desc) : Base(desc.base) {}
 

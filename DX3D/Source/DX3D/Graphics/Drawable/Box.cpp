@@ -1,6 +1,6 @@
-#include <DX3D/Drawable/Box.hpp>
 #include <DX3D/Graphics/Bindable/BindableBase.hpp>
-#include <DX3D/Drawable/Cube.hpp>
+#include <DX3D/Graphics/Drawable/Box.hpp>
+#include <DX3D/Graphics/Drawable/Cube.hpp>
 
 dx3d::Box::Box(
 	const DrawableDesc& desc, 
@@ -105,10 +105,9 @@ void dx3d::Box::Update(const float dt) noexcept {
 }
 
 DirectX::XMMATRIX dx3d::Box::GetTransformXM() const noexcept {
-	return 
+	return
 		DirectX::XMLoadFloat3x3(&_mt) *
 		DirectX::XMMatrixRotationRollPitchYaw(_pitch, _yaw, _roll) *
 		DirectX::XMMatrixTranslation(_r, 0.0f, 0.0f) *
-		DirectX::XMMatrixRotationRollPitchYaw(_theta, _phi, _chi) *
-		DirectX::XMMatrixTranslation(0.0f, 0.0f, 20.0f);
+		DirectX::XMMatrixRotationRollPitchYaw(_theta, _phi, _chi);
 }

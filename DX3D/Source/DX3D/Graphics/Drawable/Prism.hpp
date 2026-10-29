@@ -1,7 +1,7 @@
 #pragma once
 #include <DX3D/Core/WinSwitches.hpp>
 #include <DirectXMath.h>
-#include <DX3D/Drawable/IndexedTriangleList.hpp>
+#include <DX3D/Graphics/Drawable/IndexedTriangleList.hpp>
 
 namespace dx3d {
 	class Prism

@@ -1,6 +1,6 @@
-#include <DX3D/Drawable/Melon.hpp>
 #include <DX3D/Graphics/Bindable/BindableBase.hpp>
-#include <DX3D/Drawable/Sphere.hpp>
+#include <DX3D/Graphics/Drawable/Melon.hpp>
+#include <DX3D/Graphics/Drawable/Sphere.hpp>
 
 dx3d::Melon::Melon(
 	const DrawableDesc& desc,
@@ -99,6 +99,5 @@ DirectX::XMMATRIX dx3d::Melon::GetTransformXM() const noexcept
 	namespace dx = DirectX;
 	return dx::XMMatrixRotationRollPitchYaw(pitch, yaw, roll) *
 		dx::XMMatrixTranslation(r, 0.0f, 0.0f) *
-		dx::XMMatrixRotationRollPitchYaw(theta, phi, chi) *
-		dx::XMMatrixTranslation(0.0f, 0.0f, 20.0f);
+		dx::XMMatrixRotationRollPitchYaw(theta, phi, chi);
 }

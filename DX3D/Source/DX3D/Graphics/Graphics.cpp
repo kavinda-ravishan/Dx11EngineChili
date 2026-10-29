@@ -193,6 +193,14 @@ DirectX::XMMATRIX dx3d::Graphics::GetProjection() const noexcept {
 	return _projection;
 }
 
+void dx3d::Graphics::SetCamera(DirectX::FXMMATRIX camera) noexcept {
+	_camera = camera;
+}
+
+DirectX::XMMATRIX dx3d::Graphics::GetCamera() const noexcept {
+	return _camera;
+}
+
 void dx3d::Graphics::EnableImgui() noexcept {
 	_imgui_enabled = true;
 }

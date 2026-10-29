@@ -3,7 +3,7 @@
 #include <vector>
 #include <array>
 #include <DX3D/Math/Math.hpp>
-#include <DX3D/Drawable/IndexedTriangleList.hpp>
+#include <DX3D/Graphics/Drawable/IndexedTriangleList.hpp>
 
 namespace dx3d {
 

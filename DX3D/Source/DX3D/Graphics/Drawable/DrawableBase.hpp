@@ -1,5 +1,5 @@
 #pragma once
-#include <DX3D/Drawable/Drawable.hpp>
+#include <DX3D/Graphics/Drawable/Drawable.hpp>
 #include <DX3D/Graphics/Bindable/IndexBuffer.hpp>
 
 namespace dx3d {

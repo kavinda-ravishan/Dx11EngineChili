@@ -1,14 +1,12 @@
 #pragma once
 #include <random>
-#include <DX3D/Drawable/DrawableBase.hpp>
+#include <DX3D/Graphics/Drawable/DrawableBase.hpp>
 
 namespace dx3d {
-
-	class Sheet : public DrawableBase<Sheet>
+	class Pyramid : public DrawableBase<Pyramid>
 	{
 	public:
-		Sheet(
-			const DrawableDesc& desc,
+		Pyramid(const DrawableDesc& desc,
 			Graphics& gfx, std::mt19937& rng,
 			std::uniform_real_distribution<float>& adist,
 			std::uniform_real_distribution<float>& ddist,
@@ -18,19 +16,19 @@ namespace dx3d {
 		DirectX::XMMATRIX GetTransformXM() const noexcept override;
 	private:
 		// positional
-		float r{};
-		float roll{};
-		float pitch{};
-		float yaw{};
-		float theta{};
-		float phi{};
-		float chi{};
+		float r;
+		float roll = 0.0f;
+		float pitch = 0.0f;
+		float yaw = 0.0f;
+		float theta;
+		float phi;
+		float chi;
 		// speed (delta/s)
-		float droll{};
-		float dpitch{};
-		float dyaw{};
-		float dtheta{};
-		float dphi{};
-		float dchi{};
+		float droll;
+		float dpitch;
+		float dyaw;
+		float dtheta;
+		float dphi;
+		float dchi;
 	};
 } // namespace dx3d

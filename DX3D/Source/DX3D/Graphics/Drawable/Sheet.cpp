@@ -1,11 +1,11 @@
 #include <DX3D/Utils/Surface.hpp>
-#include <DX3D/Drawable/Cube.hpp>
 #include <DX3D/Graphics/Bindable/BindableBase.hpp> 
-#include <DX3D/Drawable/SkinnedBox.hpp>
+#include <DX3D/Graphics/Drawable/Plane.hpp>
+#include <DX3D/Graphics/Drawable/Sheet.hpp>
 
-dx3d::SkinnedBox::SkinnedBox(const DrawableDesc& desc, Graphics& gfx, std::mt19937& rng, std::uniform_real_distribution<float>& adist, std::uniform_real_distribution<float>& ddist, std::uniform_real_distribution<float>& odist, std::uniform_real_distribution<float>& rdist)
-	:
-	DrawableBase<SkinnedBox>(desc),
+dx3d::Sheet::Sheet(const DrawableDesc& desc, Graphics& gfx, std::mt19937& rng, std::uniform_real_distribution<float>& adist, std::uniform_real_distribution<float>& ddist, std::uniform_real_distribution<float>& odist, std::uniform_real_distribution<float>& rdist)
+    : 
+    DrawableBase<Sheet>(desc),
 	r(rdist(rng)),
 	droll(ddist(rng)),
 	dpitch(ddist(rng)),
@@ -31,9 +31,13 @@ dx3d::SkinnedBox::SkinnedBox(const DrawableDesc& desc, Graphics& gfx, std::mt199
 			} tex;
 		};
 
-		auto model = Cube::MakeSkinned<Vertex>();
+		auto model = Plane::Make<Vertex>();
+		model._vertices[0].tex = { -0.5f,-0.5f };
+		model._vertices[1].tex = { 1.5f,-0.5f };
+		model._vertices[2].tex = { -0.5f,1.5f };
+		model._vertices[3].tex = { 1.5f,1.5f };
 
-		AddStaticBind(std::make_unique<Texture>(BINDABLE_DESC, gfx, Surface("Assets\\Images\\cube.png")));
+		AddStaticBind(std::make_unique<Texture>(BINDABLE_DESC, gfx, Surface("Assets\\Images\\kappa50.png")));
 
 		AddStaticBind(std::make_unique<VertexBuffer>(BINDABLE_DESC, gfx, model._vertices));
 
@@ -65,7 +69,7 @@ dx3d::SkinnedBox::SkinnedBox(const DrawableDesc& desc, Graphics& gfx, std::mt199
 	AddBind(std::make_unique<TransformCbuf>(BINDABLE_DESC, gfx, *this));
 }
 
-void dx3d::SkinnedBox::Update(float dt) noexcept {
+void dx3d::Sheet::Update(float dt) noexcept {
 	roll += droll * dt;
 	pitch += dpitch * dt;
 	yaw += dyaw * dt;
@@ -74,10 +78,9 @@ void dx3d::SkinnedBox::Update(float dt) noexcept {
 	chi += dchi * dt;
 }
 
-DirectX::XMMATRIX dx3d::SkinnedBox::GetTransformXM() const noexcept {
+DirectX::XMMATRIX dx3d::Sheet::GetTransformXM() const noexcept {
 	namespace dx = DirectX;
 	return dx::XMMatrixRotationRollPitchYaw(pitch, yaw, roll) *
 		dx::XMMatrixTranslation(r, 0.0f, 0.0f) *
-		dx::XMMatrixRotationRollPitchYaw(theta, phi, chi) *
-		dx::XMMatrixTranslation(0.0f, 0.0f, 20.0f);
+		dx::XMMatrixRotationRollPitchYaw(theta, phi, chi);
 }
