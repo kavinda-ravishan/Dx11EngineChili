@@ -128,9 +128,8 @@ void dx3d::Game::Run() {
 }
 
 void dx3d::Game::OnInternalUpdate() {
-	const auto dt = _timer->Mark();
+	const auto dt = _timer->Mark() * _speed_factor;
 
-	static bool show_demo_window = true;
 	static float screen_color = 0.0f;
 
 	char key = '\0';
@@ -161,9 +160,6 @@ void dx3d::Game::OnInternalUpdate() {
 			_graphics->EnableImgui();
 		}
 		break;
-	case '`':
-		show_demo_window = !show_demo_window;
-		break;
 	default:
 		break;
 	}
@@ -176,8 +172,13 @@ void dx3d::Game::OnInternalUpdate() {
 		drawable->Draw(*_graphics);
 	}
 
-	if (_graphics->IsImguiEnabled() && show_demo_window) {
-		ImGui::ShowDemoWindow(&show_demo_window);
+	if (_graphics->IsImguiEnabled()) {
+		if (ImGui::Begin("Simulation Speed")) {
+			ImGui::SliderFloat("Speed Factor", &_speed_factor, 0.0f, 4.0f);
+			ImGui::Text("%.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
+			ImGui::Text("Status: %s", _pause ? "PAUSED" : "RUNNING (press spacebar to pause)");
+		}
+		ImGui::End();
 	}
 
 	_graphics->EndFrame();
