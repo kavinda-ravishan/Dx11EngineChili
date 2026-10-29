@@ -2,10 +2,14 @@
 
 #include <DX3D/Core/WinSwitches.hpp>
 #include <Windows.h>
+#include <DX3D/Window/ImGUI/imgui_impl_win32.h>
 #include <DX3D/Window/Window.hpp>
 #include <DX3D/Window/WindowsMessageMap.hpp>
 #include <DX3D/IO/Keyboard.hpp>
 #include <DX3D/IO/Mouse.hpp>
+
+// Forward declare message handler from imgui_impl_win32.cpp
+extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
 static LRESULT CALLBACK WindowProcedure(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam) {
     dx3d::Window* const window_ptr = reinterpret_cast<dx3d::Window*>(GetWindowLongPtr(hwnd, GWLP_USERDATA));
@@ -84,10 +88,13 @@ dx3d::Window::Window(const WindowDesc& desc) :
     }
 
     ShowWindow(static_cast<HWND>(_window_handle), SW_SHOWDEFAULT);
+
+    ImGui_ImplWin32_Init(static_cast<HWND>(_window_handle));
 }
 
 dx3d::Window::~Window() {
     DX3DLogInfo("Destroying window");
+    ImGui_ImplWin32_Shutdown();
 }
 
 void* dx3d::Window::GetWindowHandle() const noexcept {
@@ -109,6 +116,8 @@ int64_t dx3d::Window::HandleMessage(void* arg_hwnd, uint32_t arg_msg, uint64_t a
     static dx3d::WindowsMessageMap win_msg_map;
     DX3DLogInfo(win_msg_map(msg, wparam, lparam).c_str());
 #endif // DX3D_LOG_WIN_MESSAGES
+
+    if (ImGui_ImplWin32_WndProcHandler(hwnd, msg, wparam, lparam)) return true;
 
     switch (msg) {
     // Window events

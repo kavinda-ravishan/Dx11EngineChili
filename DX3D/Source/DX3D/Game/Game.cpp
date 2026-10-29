@@ -4,6 +4,8 @@
 #include <memory>
 #include <random>
 #include <sstream>
+#include <DX3D/Window/ImGUI/imgui.h>
+#include <DX3D/Window/ImguiManager.hpp>
 #include <DX3D/Timer/Timer.hpp>
 #include <DX3D/Math/Math.hpp>
 #include <DX3D/Core/Logger.hpp>
@@ -74,9 +76,9 @@ dx3d::Game::Game(const GameDesc& desc) :
 		std::uniform_int_distribution<int> _longdist{ 10,40 };
 		std::uniform_int_distribution<int> _typedist{ 0,4 };
 	};
-
+	_imgui = std::make_unique<ImguiManager>();
 	_window = std::make_unique<Window>(WindowDesc({ _logger, desc.window_size }));
-	_graphics= std::make_unique<Graphics>(
+	_graphics = std::make_unique<Graphics>(
 		GraphicsDesc({ _logger }, 
 		_window->GetWindowHandle(), 
 		_window->GetWindowSize())
@@ -128,6 +130,7 @@ void dx3d::Game::Run() {
 void dx3d::Game::OnInternalUpdate() {
 	const auto dt = _timer->Mark();
 
+	static bool show_demo_window = true;
 	static float screen_color = 0.0f;
 
 	char key = '\0';
@@ -151,16 +154,32 @@ void dx3d::Game::OnInternalUpdate() {
 	case ' ':
 		_pause = !_pause;
 		break;
+	case '\t':
+		if (_graphics->IsImguiEnabled()) {
+			_graphics->DisableImgui();
+		} else {
+			_graphics->EnableImgui();
+		}
+		break;
+	case '`':
+		show_demo_window = !show_demo_window;
+		break;
 	default:
 		break;
 	}
 
-	_graphics->ClearBuffer(screen_color, screen_color, screen_color);
+	_graphics->BeginFrame(screen_color, screen_color, screen_color);
+	
 	for (auto& drawable : _drawables)
 	{
 		drawable->Update(_pause ? 0.0f : dt);
 		drawable->Draw(*_graphics);
 	}
+
+	if (_graphics->IsImguiEnabled() && show_demo_window) {
+		ImGui::ShowDemoWindow(&show_demo_window);
+	}
+
 	_graphics->EndFrame();
 
 	_window->_mouse->Clear();

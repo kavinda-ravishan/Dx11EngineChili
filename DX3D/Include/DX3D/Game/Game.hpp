@@ -16,6 +16,7 @@ namespace dx3d {
 
 	private:
 		std::unique_ptr<Logger> _logger_ptr{};
+		std::unique_ptr<class ImguiManager> _imgui{};
 		std::unique_ptr<Window> _window{};
 		std::unique_ptr<Graphics> _graphics{};
 		std::unique_ptr <class Timer> _timer{};

@@ -1,3 +1,6 @@
+#include <DX3D/Core/WinSwitches.hpp>
+#include <DX3D/Window/ImGUI/imgui_impl_dx11.h>
+#include <DX3D/Window/ImGUI/imgui_impl_win32.h>
 #include <DX3D/Graphics/GraphicsLogUtils.hpp>
 #include <DX3D/Graphics/Graphics.hpp>
 
@@ -141,13 +144,21 @@ dx3d::Graphics::Graphics(const GraphicsDesc& desc)
 	view_port.TopLeftX = 0;
 	view_port.TopLeftY = 0;
 	_context->RSSetViewports(1u, &view_port);
+
+	ImGui_ImplDX11_Init(_device.Get(), _context.Get());
 }
 
 dx3d::Graphics::~Graphics() {
 	DX3DLogInfo("Destroying Graphics");
+	ImGui_ImplDX11_Shutdown();
 }
 
 void dx3d::Graphics::EndFrame() {
+	if (_imgui_enabled) {
+		ImGui::Render();
+		ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
+	}
+
 	HRESULT hr{};
 	if (FAILED(hr = _swap_chain->Present(1u, 0u))) {
 		if (hr == DXGI_ERROR_DEVICE_REMOVED) {
@@ -158,7 +169,13 @@ void dx3d::Graphics::EndFrame() {
 	}
 }
 
-void dx3d::Graphics::ClearBuffer(float red, float green, float blue) noexcept {
+void dx3d::Graphics::BeginFrame(float red, float green, float blue) noexcept {
+	if (_imgui_enabled) {
+		ImGui_ImplDX11_NewFrame();
+		ImGui_ImplWin32_NewFrame();
+		ImGui::NewFrame();
+	}
+
 	const float color[] = { red, green, blue };
 	_context->ClearRenderTargetView(_target_view.Get(), color);
 	_context->ClearDepthStencilView(_depth_stencil_view.Get(), D3D11_CLEAR_DEPTH, 1.0f, 0u);
@@ -174,4 +191,16 @@ void dx3d::Graphics::SetProjection(DirectX::FXMMATRIX projection) noexcept {
 
 DirectX::XMMATRIX dx3d::Graphics::GetProjection() const noexcept {
 	return _projection;
+}
+
+void dx3d::Graphics::EnableImgui() noexcept {
+	_imgui_enabled = true;
+}
+
+void dx3d::Graphics::DisableImgui() noexcept {
+	_imgui_enabled = false;
+}
+
+bool dx3d::Graphics::IsImguiEnabled() const noexcept {
+	return _imgui_enabled;
 }

@@ -16,12 +16,19 @@ namespace dx3d {
 		~Graphics();
 
 		void EndFrame();
-		void ClearBuffer(float red, float green, float blue) noexcept;
+		void BeginFrame(float red, float green, float blue) noexcept;
 		void DrawIndexed(UINT count) noexcept(!IS_DEBUG);
 		void SetProjection(DirectX::FXMMATRIX proj) noexcept;
 		DirectX::XMMATRIX GetProjection() const noexcept;
+
+		void EnableImgui() noexcept;
+		void DisableImgui() noexcept;
+		bool IsImguiEnabled() const noexcept;
 	private:
 		const Rect _window_size{};
+
+		bool _imgui_enabled{ true };
+
 		DirectX::XMMATRIX _projection{};
 		Microsoft::WRL::ComPtr<ID3D11Device> _device{};
 		Microsoft::WRL::ComPtr<IDXGISwapChain> _swap_chain{};
