@@ -1,18 +1,24 @@
 #include <DX3D/Core/WinSwitches.hpp>
 #include <Windows.h>
+
 #include <cmath>
 #include <memory>
 #include <random>
 #include <sstream>
+
 #include <DX3D/Window/ImGUI/imgui.h>
 #include <DX3D/Window/ImguiManager.hpp>
-#include <DX3D/Timer/Timer.hpp>
+
 #include <DX3D/Math/Math.hpp>
 #include <DX3D/Core/Logger.hpp>
-#include <DX3D/IO/Mouse.hpp>
-#include <DX3D/IO/Keyboard.hpp>
+
 #include <DX3D/Window/Window.hpp>
 #include <DX3D/Game/Game.hpp>
+#include <DX3D/Game/Camera.hpp>
+#include <DX3D/IO/Mouse.hpp>
+#include <DX3D/IO/Keyboard.hpp>
+#include <DX3D/Timer/Timer.hpp>
+
 #include <DX3D/Graphics/Graphics.hpp>
 #include <DX3D/Graphics/Drawable/Box.hpp>
 #include <DX3D/Graphics/Drawable/Melon.hpp>
@@ -83,6 +89,7 @@ dx3d::Game::Game(const GameDesc& desc) :
 		_window->GetWindowHandle(), 
 		_window->GetWindowSize())
 	);
+	_camera = std::make_unique<Camera>();
 	_timer = std::make_unique<Timer>();
 
 	Factory f(_logger, *_graphics);
@@ -166,6 +173,7 @@ void dx3d::Game::OnInternalUpdate() {
 	}
 
 	_graphics->BeginFrame(screen_color, screen_color, screen_color);
+	_graphics->SetCamera(_camera->GetMatrix());
 	
 	for (auto& drawable : _drawables)
 	{
@@ -180,6 +188,8 @@ void dx3d::Game::OnInternalUpdate() {
 			ImGui::Text("Status: %s", _pause ? "PAUSED" : "RUNNING (press spacebar to pause)");
 		}
 		ImGui::End();
+
+		_camera->SpawnControlWindow();
 	}
 
 	_graphics->EndFrame();

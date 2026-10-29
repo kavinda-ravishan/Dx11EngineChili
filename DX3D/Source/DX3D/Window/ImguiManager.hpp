@@ -1,7 +1,11 @@
 #pragma once
 
-class ImguiManager {
-public:
-	ImguiManager();
-	~ImguiManager();
-};
+namespace dx3d {
+
+	class ImguiManager {
+	public:
+		ImguiManager();
+		~ImguiManager();
+	};
+
+} // namespace dx3d 

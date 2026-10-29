@@ -157,6 +157,7 @@
     </Manifest>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="DX3D\Source\DX3D\Game\Camera.cpp" />
     <ClCompile Include="DX3D\Source\DX3D\Graphics\Drawable\Box.cpp" />
     <ClCompile Include="DX3D\Source\DX3D\Graphics\Drawable\Drawable.cpp" />
     <ClCompile Include="DX3D\Source\DX3D\Graphics\Drawable\Melon.cpp" />
@@ -199,6 +200,7 @@
     <ClInclude Include="DX3D\Include\DX3D\Core\Common.hpp" />
     <ClInclude Include="DX3D\Include\DX3D\Core\Core.hpp" />
     <ClInclude Include="DX3D\Include\DX3D\Core\Logger.hpp" />
+    <ClInclude Include="DX3D\Source\DX3D\Game\Camera.hpp" />
     <ClInclude Include="DX3D\Source\DX3D\Graphics\Drawable\Box.hpp" />
     <ClInclude Include="DX3D\Source\DX3D\Graphics\Drawable\Cone.hpp" />
     <ClInclude Include="DX3D\Source\DX3D\Graphics\Drawable\Cube.hpp" />

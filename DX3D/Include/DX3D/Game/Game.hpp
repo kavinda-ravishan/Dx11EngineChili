@@ -19,6 +19,7 @@ namespace dx3d {
 		std::unique_ptr<class ImguiManager> _imgui{};
 		std::unique_ptr<Window> _window{};
 		std::unique_ptr<Graphics> _graphics{};
+		std::unique_ptr<class Camera> _camera{};
 		std::unique_ptr <class Timer> _timer{};
 		std::vector<std::unique_ptr<class Drawable>> _drawables{};
 		
