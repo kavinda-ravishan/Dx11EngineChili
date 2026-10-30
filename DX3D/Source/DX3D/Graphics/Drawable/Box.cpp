@@ -29,52 +29,29 @@ dx3d::Box::Box(
 		// create and set vertex buffer
 		struct Vertex {
 			DirectX::XMFLOAT3 pos;
+			DirectX::XMFLOAT3 n;
 		};
 
-		const auto model = Cube::Make<Vertex>();
+		auto model = Cube::MakeIndependent<Vertex>();
+		model.SetNormalsIndependentFlat();
 
 		AddStaticBind(std::make_unique<VertexBuffer>(BINDABLE_DESC, graphics, model._vertices));
 
 		// read and set vertex shader
-		auto vertex_shader = std::make_unique<VertexShader>(BINDABLE_DESC, graphics, L"ColorIndexVS.cso");
+		auto vertex_shader = std::make_unique<VertexShader>(BINDABLE_DESC, graphics, L"PhongVS.cso");
 		auto vertex_shader_byte_code = vertex_shader->GetBytecode();
 		AddStaticBind(std::move(vertex_shader));
 
 		// read and set pixel shader
-		AddStaticBind(std::make_unique<PixelShader>(BINDABLE_DESC, graphics, L"ColorIndexPS.cso"));
+		AddStaticBind(std::make_unique<PixelShader>(BINDABLE_DESC, graphics, L"PhongPS.cso"));
 
 		// set index buffer
 		AddStaticIndexBuffer(std::make_unique<IndexBuffer>(BINDABLE_DESC, graphics, model._indices));
 
-		// create constant buffer for cube face colors
-		struct PSConstantBufferStruct {
-			struct
-			{
-				float r;
-				float g;
-				float b;
-				float a;
-			} face_colors[8];
-		};
-
-		const PSConstantBufferStruct ps_constant_buffer_data = {
-			{
-				{ 1.0f, 1.0f, 1.0f, 1.0f },
-				{ 1.0f, 0.0f, 0.0f, 1.0f },
-				{ 0.0f, 1.0f, 0.0f, 1.0f },
-				{ 1.0f, 1.0f, 0.0f, 1.0f },
-				{ 0.0f, 0.0f, 1.0f, 1.0f },
-				{ 1.0f, 0.0f, 1.0f, 1.0f },
-				{ 0.0f, 1.0f, 1.0f, 1.0f },
-				{ 0.0f, 0.0f, 0.0f, 1.0f },
-			}
-		};
-
-		AddStaticBind(std::make_unique<PixelConstantBuffer<PSConstantBufferStruct>>(BINDABLE_DESC, graphics, ps_constant_buffer_data));
-
 		// input (vertex) layout
 		const std::vector<D3D11_INPUT_ELEMENT_DESC> vs_input_element_desc{
-			{"POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0}
+			{"POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0},
+			{"NORMAL", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 12, D3D11_INPUT_PER_VERTEX_DATA, 0}
 		};
 
 		AddStaticBind(std::make_unique<InputLayout>(BINDABLE_DESC, graphics, vs_input_element_desc, vertex_shader_byte_code));

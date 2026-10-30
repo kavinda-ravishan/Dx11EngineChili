@@ -123,6 +123,12 @@
     <ClCompile Include="DX3D\Source\DX3D\Game\Camera.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="DX3D\Source\DX3D\Graphics\Drawable\SolidSphere.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DX3D\Source\DX3D\Graphics\Light\PointLight.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DX3D\Include\DX3D\Core\Base.hpp">
@@ -278,6 +284,12 @@
     <ClInclude Include="DX3D\Source\DX3D\Game\Camera.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="DX3D\Source\DX3D\Graphics\Light\PointLight.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DX3D\Source\DX3D\Graphics\Drawable\SolidSphere.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="DX3D\Assets\Shaders\ColorIndexVS.hlsl" />
@@ -286,6 +298,10 @@
     <FxCompile Include="DX3D\Assets\Shaders\ColorBlendVS.hlsl" />
     <FxCompile Include="DX3D\Assets\Shaders\TexturePS.hlsl" />
     <FxCompile Include="DX3D\Assets\Shaders\TextureVS.hlsl" />
+    <FxCompile Include="DX3D\Assets\Shaders\PhongVS.hlsl" />
+    <FxCompile Include="DX3D\Assets\Shaders\PhongPS.hlsl" />
+    <FxCompile Include="DX3D\Assets\Shaders\SolidPS.hlsl" />
+    <FxCompile Include="DX3D\Assets\Shaders\SolidVS.hlsl" />
   </ItemGroup>
   <ItemGroup>
     <None Include="DX3D\Source\DX3D\Graphics\Drawable\Melon.hpp" />

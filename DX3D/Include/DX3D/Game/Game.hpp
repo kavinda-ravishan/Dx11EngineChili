@@ -21,6 +21,7 @@ namespace dx3d {
 		std::unique_ptr<Graphics> _graphics{};
 		std::unique_ptr<class Camera> _camera{};
 		std::unique_ptr <class Timer> _timer{};
+		std::unique_ptr<class PointLight> _point_light{};
 		std::vector<std::unique_ptr<class Drawable>> _drawables{};
 		
 		static constexpr size_t _n_drawables{ 180 };

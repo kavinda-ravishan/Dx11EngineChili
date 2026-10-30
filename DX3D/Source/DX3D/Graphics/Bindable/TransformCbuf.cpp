@@ -7,21 +7,26 @@ dx3d::TransformCbuf::TransformCbuf(const BindableDesc& desc, Graphics& graphics,
 	: Bindable(desc), _parent(parent) 
 {
 	if (!_static_vertex_constant_buffer) {
-		_static_vertex_constant_buffer = std::make_unique<VertexConstantBuffer<DirectX::XMMATRIX>>(desc, graphics);
+		_static_vertex_constant_buffer = std::make_unique<VertexConstantBuffer<Transforms>>(desc, graphics);
 	}
 }
 
 void dx3d::TransformCbuf::Bind(Graphics& graphics) noexcept {
 
-	_static_vertex_constant_buffer->Update(
-		graphics,
+	const auto model = _parent.GetTransformXM();
+
+	const Transforms tf =
+	{
+		DirectX::XMMatrixTranspose(model),
 		DirectX::XMMatrixTranspose(
-			_parent.GetTransformXM() * 
-			graphics.GetCamera() * 
+			model *
+			graphics.GetCamera() *
 			graphics.GetProjection()
 		)
-	);
+	};
+
+	_static_vertex_constant_buffer->Update(graphics, tf);
 	_static_vertex_constant_buffer->Bind(graphics);
 }
 
-std::unique_ptr<dx3d::VertexConstantBuffer<DirectX::XMMATRIX>> dx3d::TransformCbuf::_static_vertex_constant_buffer;
+std::unique_ptr<dx3d::VertexConstantBuffer<dx3d::TransformCbuf::Transforms>> dx3d::TransformCbuf::_static_vertex_constant_buffer;

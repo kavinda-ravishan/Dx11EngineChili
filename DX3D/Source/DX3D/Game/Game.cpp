@@ -26,6 +26,8 @@
 #include <DX3D/Graphics/Drawable/Sheet.hpp>
 #include <DX3D/Graphics/Drawable/SkinnedBox.hpp>
 
+#include <DX3D/Graphics/Light/PointLight.hpp>
+
 dx3d::Game::Game(const GameDesc& desc) :
     Base({ *std::make_unique<Logger>(desc.log_level).release() }),
     _logger_ptr{ &_logger } 
@@ -37,36 +39,41 @@ dx3d::Game::Game(const GameDesc& desc) :
 		Factory(Logger& logger, Graphics& graphics) : _logger(logger), _graphics(graphics) {}
 
 		std::unique_ptr<Drawable> operator()() {
-			switch (_typedist(_rng)) {
-			case 0:
-				return std::make_unique<Pyramid>(
-					DrawableDesc({ _logger }), _graphics, _rng, _adist, _ddist,
-					_odist, _rdist
-				);
-			case 1:
-				return std::make_unique<Box>(
-					DrawableDesc({ _logger }), _graphics, _rng, _adist, _ddist,
-					_odist, _rdist, _bdist
-				);
-			case 2:
-				return std::make_unique<Melon>(
-					DrawableDesc({ _logger }), _graphics, _rng, _adist, _ddist,
-					_odist, _rdist, _longdist, _latdist
-				);
-			case 3:
-				return std::make_unique<Sheet>(
-					DrawableDesc({ _logger }), _graphics, _rng, _adist, _ddist,
-					_odist, _rdist
-				);
-			case 4:
-				return std::make_unique<SkinnedBox>(
-					DrawableDesc({ _logger }), _graphics, _rng, _adist, _ddist,
-					_odist, _rdist
-				);
-			default:
-				assert(false && "bad drawable type in factory");
-				return {};
-			}
+			return std::make_unique<Box>(
+				DrawableDesc({ _logger }), _graphics, _rng, _adist, _ddist,
+				_odist, _rdist, _bdist
+			);
+
+			//switch (_typedist(_rng)) {
+			//case 0:
+			//	return std::make_unique<Pyramid>(
+			//		DrawableDesc({ _logger }), _graphics, _rng, _adist, _ddist,
+			//		_odist, _rdist
+			//	);
+			//case 1:
+			//	return std::make_unique<Box>(
+			//		DrawableDesc({ _logger }), _graphics, _rng, _adist, _ddist,
+			//		_odist, _rdist, _bdist
+			//	);
+			//case 2:
+			//	return std::make_unique<Melon>(
+			//		DrawableDesc({ _logger }), _graphics, _rng, _adist, _ddist,
+			//		_odist, _rdist, _longdist, _latdist
+			//	);
+			//case 3:
+			//	return std::make_unique<Sheet>(
+			//		DrawableDesc({ _logger }), _graphics, _rng, _adist, _ddist,
+			//		_odist, _rdist
+			//	);
+			//case 4:
+			//	return std::make_unique<SkinnedBox>(
+			//		DrawableDesc({ _logger }), _graphics, _rng, _adist, _ddist,
+			//		_odist, _rdist
+			//	);
+			//default:
+			//	assert(false && "bad drawable type in factory");
+			//	return {};
+			//}
 		}
 
 	private:
@@ -78,9 +85,9 @@ dx3d::Game::Game(const GameDesc& desc) :
 		std::uniform_real_distribution<float> _odist{ 0.0f,PI * 0.08f };
 		std::uniform_real_distribution<float> _rdist{ 6.0f,20.0f };
 		std::uniform_real_distribution<float> _bdist{ 0.4f,3.0f };
-		std::uniform_int_distribution<int> _latdist{ 5,20 };
-		std::uniform_int_distribution<int> _longdist{ 10,40 };
-		std::uniform_int_distribution<int> _typedist{ 0,4 };
+		//std::uniform_int_distribution<int> _latdist{ 5,20 };
+		//std::uniform_int_distribution<int> _longdist{ 10,40 };
+		//std::uniform_int_distribution<int> _typedist{ 0,4 };
 	};
 	_imgui = std::make_unique<ImguiManager>();
 	_window = std::make_unique<Window>(WindowDesc({ _logger, desc.window_size }));
@@ -91,6 +98,10 @@ dx3d::Game::Game(const GameDesc& desc) :
 	);
 	_camera = std::make_unique<Camera>();
 	_timer = std::make_unique<Timer>();
+
+	_point_light = std::make_unique<PointLight>(
+		BaseDesc(_logger), DrawableDesc({_logger}), BindableDesc({_logger}), *_graphics
+	);
 
 	Factory f(_logger, *_graphics);
 	_drawables.reserve(_n_drawables);
@@ -174,12 +185,14 @@ void dx3d::Game::OnInternalUpdate() {
 
 	_graphics->BeginFrame(screen_color, screen_color, screen_color);
 	_graphics->SetCamera(_camera->GetMatrix());
+	_point_light->Bind(*_graphics);
 	
 	for (auto& drawable : _drawables)
 	{
 		drawable->Update(_pause ? 0.0f : dt);
 		drawable->Draw(*_graphics);
 	}
+	_point_light->Draw(*_graphics);
 
 	if (_graphics->IsImguiEnabled()) {
 		if (ImGui::Begin("Simulation Speed")) {
@@ -190,6 +203,7 @@ void dx3d::Game::OnInternalUpdate() {
 		ImGui::End();
 
 		_camera->SpawnControlWindow();
+		_point_light->SpawnControlWindow();
 	}
 
 	_graphics->EndFrame();

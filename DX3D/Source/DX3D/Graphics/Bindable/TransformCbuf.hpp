@@ -9,11 +9,18 @@ namespace dx3d {
 	class VertexConstantBuffer;
 
 	class TransformCbuf : public Bindable {
+	private:
+		struct Transforms {
+			DirectX::XMMATRIX model_view_proj;
+			DirectX::XMMATRIX model;
+		};
+
 	public:
 		TransformCbuf(const BindableDesc& desc, Graphics& graphics, const Drawable& parent);
 		void Bind(Graphics& graphics) noexcept override;
+	
 	private:
-		static std::unique_ptr<VertexConstantBuffer<DirectX::XMMATRIX>> _static_vertex_constant_buffer;
+		static std::unique_ptr<VertexConstantBuffer<Transforms>> _static_vertex_constant_buffer;
 		const Drawable& _parent;
 	};
 } // namespace dx3d
