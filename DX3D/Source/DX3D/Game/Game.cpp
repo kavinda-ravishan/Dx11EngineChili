@@ -149,8 +149,6 @@ void dx3d::Game::Run() {
 void dx3d::Game::OnInternalUpdate() {
 	const auto dt = _timer->Mark() * _speed_factor;
 
-	static float screen_color = 0.0f;
-
 	char key = '\0';
 	key = _window->_keyboard->GetCharKey();
 
@@ -164,10 +162,10 @@ void dx3d::Game::OnInternalUpdate() {
 
 	switch (key) {
 	case '+':
-		screen_color = static_cast<float>(std::max(std::min(1.0f, screen_color + 0.1f), 0.0f));
+		_speed_factor = std::min(_speed_factor + 0.1f, 4.0f);
 		break;
 	case '-':
-		screen_color = static_cast<float>(std::max(std::min(1.0f, screen_color - 0.1f), 0.0f));
+		_speed_factor = std::max(0.0f, _speed_factor - 0.1f);
 		break;
 	case ' ':
 		_pause = !_pause;
@@ -183,7 +181,7 @@ void dx3d::Game::OnInternalUpdate() {
 		break;
 	}
 
-	_graphics->BeginFrame(screen_color, screen_color, screen_color);
+	_graphics->BeginFrame(0.07f, 0.0f, 0.12f);
 	_graphics->SetCamera(_camera->GetMatrix());
 	_point_light->Bind(*_graphics);
 	
