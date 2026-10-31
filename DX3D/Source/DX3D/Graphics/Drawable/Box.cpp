@@ -1,6 +1,6 @@
 #include <DX3D/Graphics/Bindable/BindableBase.hpp>
 #include <DX3D/Graphics/Drawable/Box.hpp>
-#include <DX3D/Graphics/Drawable/Cube.hpp>
+#include <DX3D/Graphics/Drawable/Models/Cube.hpp>
 
 dx3d::Box::Box(
 	const DrawableDesc& desc, 

@@ -1,6 +1,6 @@
 #include <DX3D/Graphics/Bindable/BindableBase.hpp>
 #include <DX3D/Graphics/Drawable/Pyramid.hpp>
-#include <DX3D/Graphics/Drawable/Cone.hpp>
+#include <DX3D/Graphics/Drawable/Models/Cone.hpp>
 
 dx3d::Pyramid::Pyramid(
 	const DrawableDesc& desc,

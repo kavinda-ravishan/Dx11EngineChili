@@ -1,5 +1,5 @@
 #include <DX3D/Graphics/Drawable/SolidSphere.hpp>
-#include <DX3D/Graphics/Drawable/Sphere.hpp>
+#include <DX3D/Graphics/Drawable/Models/Sphere.hpp>
 #include <DX3D/Graphics/Bindable/BindableBase.hpp>
 
 dx3d::SolidSphere::SolidSphere(const DrawableDesc& desc, Graphics& graphics, float radius)

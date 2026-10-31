@@ -14,12 +14,12 @@
 
 #include <DX3D/Window/Window.hpp>
 #include <DX3D/Game/Game.hpp>
-#include <DX3D/Game/Camera.hpp>
 #include <DX3D/IO/Mouse.hpp>
 #include <DX3D/IO/Keyboard.hpp>
 #include <DX3D/Timer/Timer.hpp>
 
 #include <DX3D/Graphics/Graphics.hpp>
+#include <DX3D/Graphics/Camera/Camera.hpp>
 #include <DX3D/Graphics/Drawable/Box.hpp>
 #include <DX3D/Graphics/Drawable/Melon.hpp>
 #include <DX3D/Graphics/Drawable/Pyramid.hpp>

@@ -1,4 +1,4 @@
-#include <DX3D/Game/Camera.hpp>
+#include <DX3D/Graphics/Camera/Camera.hpp>
 #include <DX3D/Window/ImGUI/imgui.h>
 
 DirectX::XMMATRIX dx3d::Camera::GetMatrix() const noexcept {

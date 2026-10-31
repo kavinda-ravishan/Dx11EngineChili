@@ -1,6 +1,6 @@
 #include <DX3D/Utils/Surface.hpp>
 #include <DX3D/Graphics/Bindable/BindableBase.hpp> 
-#include <DX3D/Graphics/Drawable/Cube.hpp>
+#include <DX3D/Graphics/Drawable/Models/Cube.hpp>
 #include <DX3D/Graphics/Drawable/SkinnedBox.hpp>
 
 dx3d::SkinnedBox::SkinnedBox(const DrawableDesc& desc, Graphics& gfx, std::mt19937& rng, std::uniform_real_distribution<float>& adist, std::uniform_real_distribution<float>& ddist, std::uniform_real_distribution<float>& odist, std::uniform_real_distribution<float>& rdist)

@@ -1,6 +1,6 @@
 #include <DX3D/Graphics/Bindable/BindableBase.hpp>
 #include <DX3D/Graphics/Drawable/Melon.hpp>
-#include <DX3D/Graphics/Drawable/Sphere.hpp>
+#include <DX3D/Graphics/Drawable/Models/Sphere.hpp>
 
 dx3d::Melon::Melon(
 	const DrawableDesc& desc,

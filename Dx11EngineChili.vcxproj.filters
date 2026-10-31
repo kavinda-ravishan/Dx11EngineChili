@@ -120,7 +120,7 @@
     <ClCompile Include="DX3D\Source\DX3D\Window\ImguiManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="DX3D\Source\DX3D\Game\Camera.cpp">
+    <ClCompile Include="DX3D\Source\DX3D\Graphics\Camera\Camera.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="DX3D\Source\DX3D\Graphics\Drawable\SolidSphere.cpp">
@@ -221,19 +221,19 @@
     <ClInclude Include="DX3D\Source\DX3D\Graphics\Drawable\IndexedTriangleList.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="DX3D\Source\DX3D\Graphics\Drawable\Cube.hpp">
+    <ClInclude Include="DX3D\Source\DX3D\Graphics\Drawable\Models\Cube.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="DX3D\Source\DX3D\Graphics\Drawable\Sphere.hpp">
+    <ClInclude Include="DX3D\Source\DX3D\Graphics\Drawable\Models\Sphere.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="DX3D\Source\DX3D\Graphics\Drawable\Prism.hpp">
+    <ClInclude Include="DX3D\Source\DX3D\Graphics\Drawable\Models\Prism.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="DX3D\Source\DX3D\Graphics\Drawable\Pyramid.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="DX3D\Source\DX3D\Graphics\Drawable\Cone.hpp">
+    <ClInclude Include="DX3D\Source\DX3D\Graphics\Drawable\Models\Cone.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="DX3D\Source\DX3D\Utils\Surface.hpp">
@@ -245,7 +245,7 @@
     <ClInclude Include="DX3D\Source\DX3D\Graphics\Drawable\Sheet.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="DX3D\Source\DX3D\Graphics\Drawable\Plane.hpp">
+    <ClInclude Include="DX3D\Source\DX3D\Graphics\Drawable\Models\Plane.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="DX3D\Source\DX3D\Graphics\Bindable\Sampler.hpp">
@@ -281,7 +281,7 @@
     <ClInclude Include="DX3D\Source\DX3D\Window\ImguiManager.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="DX3D\Source\DX3D\Game\Camera.hpp">
+    <ClInclude Include="DX3D\Source\DX3D\Graphics\Camera\Camera.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="DX3D\Source\DX3D\Graphics\Light\PointLight.hpp">

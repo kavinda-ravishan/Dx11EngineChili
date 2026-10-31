@@ -157,7 +157,7 @@
     </Manifest>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="DX3D\Source\DX3D\Game\Camera.cpp" />
+    <ClCompile Include="DX3D\Source\DX3D\Graphics\Camera\Camera.cpp" />
     <ClCompile Include="DX3D\Source\DX3D\Graphics\Drawable\Box.cpp" />
     <ClCompile Include="DX3D\Source\DX3D\Graphics\Drawable\Drawable.cpp" />
     <ClCompile Include="DX3D\Source\DX3D\Graphics\Drawable\Melon.cpp" />
@@ -202,20 +202,20 @@
     <ClInclude Include="DX3D\Include\DX3D\Core\Common.hpp" />
     <ClInclude Include="DX3D\Include\DX3D\Core\Core.hpp" />
     <ClInclude Include="DX3D\Include\DX3D\Core\Logger.hpp" />
-    <ClInclude Include="DX3D\Source\DX3D\Game\Camera.hpp" />
+    <ClInclude Include="DX3D\Source\DX3D\Graphics\Camera\Camera.hpp" />
     <ClInclude Include="DX3D\Source\DX3D\Graphics\Drawable\Box.hpp" />
-    <ClInclude Include="DX3D\Source\DX3D\Graphics\Drawable\Cone.hpp" />
-    <ClInclude Include="DX3D\Source\DX3D\Graphics\Drawable\Cube.hpp" />
+    <ClInclude Include="DX3D\Source\DX3D\Graphics\Drawable\Models\Cone.hpp" />
+    <ClInclude Include="DX3D\Source\DX3D\Graphics\Drawable\Models\Cube.hpp" />
     <ClInclude Include="DX3D\Source\DX3D\Graphics\Drawable\Drawable.hpp" />
     <ClInclude Include="DX3D\Source\DX3D\Graphics\Drawable\DrawableBase.hpp" />
     <ClInclude Include="DX3D\Source\DX3D\Graphics\Drawable\IndexedTriangleList.hpp" />
-    <ClInclude Include="DX3D\Source\DX3D\Graphics\Drawable\Plane.hpp" />
-    <ClInclude Include="DX3D\Source\DX3D\Graphics\Drawable\Prism.hpp" />
+    <ClInclude Include="DX3D\Source\DX3D\Graphics\Drawable\Models\Plane.hpp" />
+    <ClInclude Include="DX3D\Source\DX3D\Graphics\Drawable\Models\Prism.hpp" />
     <ClInclude Include="DX3D\Source\DX3D\Graphics\Drawable\Pyramid.hpp" />
     <ClInclude Include="DX3D\Source\DX3D\Graphics\Drawable\Sheet.hpp" />
     <ClInclude Include="DX3D\Source\DX3D\Graphics\Drawable\SkinnedBox.hpp" />
     <ClInclude Include="DX3D\Source\DX3D\Graphics\Drawable\SolidSphere.hpp" />
-    <ClInclude Include="DX3D\Source\DX3D\Graphics\Drawable\Sphere.hpp" />
+    <ClInclude Include="DX3D\Source\DX3D\Graphics\Drawable\Models\Sphere.hpp" />
     <ClInclude Include="DX3D\Source\DX3D\Graphics\Bindable\Bindable.hpp" />
     <ClInclude Include="DX3D\Source\DX3D\Graphics\Bindable\BindableBase.hpp" />
     <ClInclude Include="DX3D\Source\DX3D\Graphics\Bindable\ConstantBuffers.hpp" />
