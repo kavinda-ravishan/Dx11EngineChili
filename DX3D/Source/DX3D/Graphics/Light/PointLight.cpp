@@ -22,7 +22,6 @@ void dx3d::PointLight::SpawnControlWindow() noexcept {
 		ImGui::SliderFloat("Intensity", &_cb_data.diffuse_intensity, 0.01f, 2.0f, "%.2f", ImGuiSliderFlags_Logarithmic);
 		ImGui::ColorEdit3("Diffuse Color", &_cb_data.diffuse_color.x);
 		ImGui::ColorEdit3("Ambient", &_cb_data.ambient.x);
-		ImGui::ColorEdit3("Material", &_cb_data.material_color.x);
 
 		ImGui::Text("Falloff");
 		ImGui::SliderFloat("Constant", &_cb_data.att_const, 0.05f, 10.0f, "%.2f", ImGuiSliderFlags_Logarithmic);
@@ -42,7 +41,6 @@ void dx3d::PointLight::Reset() noexcept {
 		{ 0.0f,0.0f,0.0f },
 		{ 0.05f,0.05f,0.05f },
 		{ 1.0f,1.0f,1.0f },
-		{ 0.7f, 0.7f, 0.9f },
 		1.0f,
 		1.0f,
 		0.045f,

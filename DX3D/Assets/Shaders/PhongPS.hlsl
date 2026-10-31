@@ -3,11 +3,15 @@ cbuffer LightCBuf
     float3 light_pos;
     float3 ambient;
     float3 diffuse_color;
-    float3 material_color;
     float diffuse_intensity;
     float att_const;
     float att_lin;
     float att_quad;
+};
+
+cbuffer ObjectCBuf
+{
+    float3 material_color;
 };
 
 float4 main(float3 world_pos : Position, float3 n : Normal) : SV_Target

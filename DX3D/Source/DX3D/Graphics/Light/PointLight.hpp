@@ -18,7 +18,6 @@ namespace dx3d {
 			alignas(16) DirectX::XMFLOAT3 pos;
 			alignas(16) DirectX::XMFLOAT3 ambient;
 			alignas(16) DirectX::XMFLOAT3 diffuse_color;
-			alignas(16) DirectX::XMFLOAT3 material_color;
 			float diffuse_intensity;
 			float att_const;
 			float att_lin;

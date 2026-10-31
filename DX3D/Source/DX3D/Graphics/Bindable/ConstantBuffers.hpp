@@ -8,7 +8,9 @@ namespace dx3d {
 	template<typename C>
 	class ConstantBuffer : public Bindable {
 		public:
-			ConstantBuffer(const BindableDesc& desc, Graphics& graphics) : Bindable(desc) {
+			ConstantBuffer(const BindableDesc& desc, Graphics& graphics, UINT slot = 0u)
+				: Bindable(desc), _slot(slot)
+			{
 
 				D3D11_BUFFER_DESC constant_buffer_desc{};
 				constant_buffer_desc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
@@ -24,7 +26,9 @@ namespace dx3d {
 				);
 			}
 
-			ConstantBuffer(const BindableDesc& desc, Graphics& graphics, const C& consts) : Bindable(desc) {
+			ConstantBuffer(const BindableDesc& desc, Graphics& graphics, const C& consts, UINT slot = 0u)
+				: Bindable(desc), _slot(slot)
+			{
 		
 				D3D11_BUFFER_DESC constant_buffer_desc{};
 				constant_buffer_desc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
@@ -58,35 +62,38 @@ namespace dx3d {
 			}
 		protected:
 			Microsoft::WRL::ComPtr<ID3D11Buffer> _constant_buffer{};
+			const UINT _slot{};
 	};
 
 	template<typename C>
 	class VertexConstantBuffer final : public ConstantBuffer<C> {
 		using ConstantBuffer<C>::_constant_buffer;
+		using ConstantBuffer<C>::_slot;
 		using Bindable::GetContext;
 	public:
 		using ConstantBuffer<C>::ConstantBuffer;
 
-		VertexConstantBuffer(const BindableDesc& desc, Graphics& graphics) : ConstantBuffer<C>(desc, graphics) {}
-		VertexConstantBuffer(const BindableDesc& desc, Graphics& graphics, const C& consts) : ConstantBuffer<C>(desc, graphics, consts) {}
+		VertexConstantBuffer(const BindableDesc& desc, Graphics& graphics, UINT slot = 0u) : ConstantBuffer<C>(desc, graphics, slot) {}
+		VertexConstantBuffer(const BindableDesc& desc, Graphics& graphics, const C& consts, UINT slot = 0u) : ConstantBuffer<C>(desc, graphics, consts, slot) {}
 
 		void Bind(Graphics& graphics) noexcept override {
-			GetContext(graphics)->VSSetConstantBuffers(0u, 1u, _constant_buffer.GetAddressOf());
+			GetContext(graphics)->VSSetConstantBuffers(_slot, 1u, _constant_buffer.GetAddressOf());
 		}
 	};
 	
 	template<typename C>
 	class PixelConstantBuffer final : public ConstantBuffer<C> {
 		using ConstantBuffer<C>::_constant_buffer;
+		using ConstantBuffer<C>::_slot;
 		using Bindable::GetContext;
 	public:
 		using ConstantBuffer<C>::ConstantBuffer;
 
-		PixelConstantBuffer(const BindableDesc& desc, Graphics& graphics) : ConstantBuffer<C>(desc, graphics) {}
-		PixelConstantBuffer(const BindableDesc& desc, Graphics& graphics, const C& consts) : ConstantBuffer<C>(desc, graphics, consts) {}
+		PixelConstantBuffer(const BindableDesc& desc, Graphics& graphics, UINT slot = 0u) : ConstantBuffer<C>(desc, graphics, slot) {}
+		PixelConstantBuffer(const BindableDesc& desc, Graphics& graphics, const C& consts, UINT slot = 0u) : ConstantBuffer<C>(desc, graphics, consts, slot) {}
 
 		void Bind(Graphics& graphics) noexcept override {
-			GetContext(graphics)->PSSetConstantBuffers(0u, 1u, _constant_buffer.GetAddressOf());
+			GetContext(graphics)->PSSetConstantBuffers(_slot, 1u, _constant_buffer.GetAddressOf());
 		}
 	};
 } // namespace dx3d

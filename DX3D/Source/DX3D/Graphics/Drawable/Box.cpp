@@ -10,7 +10,8 @@ dx3d::Box::Box(
 	std::uniform_real_distribution<float>& ddist, 
 	std::uniform_real_distribution<float>& odist, 
 	std::uniform_real_distribution<float>& rdist, 
-	std::uniform_real_distribution<float>& bdist)
+	std::uniform_real_distribution<float>& bdist,
+	DirectX::XMFLOAT3 material_color)
 	: 
 	DrawableBase<Box>(desc),
 	_r(rdist(rng)),
@@ -62,8 +63,17 @@ dx3d::Box::Box(
 		SetIndexFromStatic();
 	}
 	
-	// bind vertex transform constant buffer
+	// bind vertex transform constant buffer to VS
 	AddBind(std::make_unique<TransformCbuf>(BINDABLE_DESC, graphics, *this));
+
+	// bind material data to PS
+	struct PSMaterialConstant
+	{
+		alignas(16) DirectX::XMFLOAT3 color;
+	} color_const;
+	color_const.color = material_color;
+
+	AddBind(std::make_unique<PixelConstantBuffer<PSMaterialConstant>>(BINDABLE_DESC, graphics, color_const, 1u));
 
 	// model deformation transform (per instance, not stored as bind)
 	DirectX::XMStoreFloat3x3(

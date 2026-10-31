@@ -39,9 +39,10 @@ dx3d::Game::Game(const GameDesc& desc) :
 		Factory(Logger& logger, Graphics& graphics) : _logger(logger), _graphics(graphics) {}
 
 		std::unique_ptr<Drawable> operator()() {
+			const DirectX::XMFLOAT3 mat_color{ _cdist(_rng), _cdist(_rng) , _cdist(_rng) };
 			return std::make_unique<Box>(
 				DrawableDesc({ _logger }), _graphics, _rng, _adist, _ddist,
-				_odist, _rdist, _bdist
+				_odist, _rdist, _bdist, mat_color
 			);
 
 			//switch (_typedist(_rng)) {
@@ -83,8 +84,9 @@ dx3d::Game::Game(const GameDesc& desc) :
 		std::uniform_real_distribution<float> _adist{ 0.0f,PI * 2.0f };
 		std::uniform_real_distribution<float> _ddist{ 0.0f,PI * 0.5f };
 		std::uniform_real_distribution<float> _odist{ 0.0f,PI * 0.08f };
-		std::uniform_real_distribution<float> _rdist{ 6.0f,20.0f };
-		std::uniform_real_distribution<float> _bdist{ 0.4f,3.0f };
+		std::uniform_real_distribution<float> _rdist{ 6.0f, 20.0f };
+		std::uniform_real_distribution<float> _bdist{ 0.4f, 3.0f };
+		std::uniform_real_distribution<float> _cdist{ 0.0f, 1.0f };
 		//std::uniform_int_distribution<int> _latdist{ 5,20 };
 		//std::uniform_int_distribution<int> _longdist{ 10,40 };
 		//std::uniform_int_distribution<int> _typedist{ 0,4 };

@@ -16,7 +16,7 @@ namespace dx3d {
 		};
 
 	public:
-		TransformCbuf(const BindableDesc& desc, Graphics& graphics, const Drawable& parent);
+		TransformCbuf(const BindableDesc& desc, Graphics& graphics, const Drawable& parent, UINT slot=0u);
 		void Bind(Graphics& graphics) noexcept override;
 	
 	private:
