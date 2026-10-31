@@ -4,7 +4,7 @@
 
 namespace dx3d {
 
-	class SkinnedBox : public DrawableBase<SkinnedBox>
+	class SkinnedBox final : public DrawableBase<SkinnedBox>
 	{
 	public:
 		SkinnedBox(

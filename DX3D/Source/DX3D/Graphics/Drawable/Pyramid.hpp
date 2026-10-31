@@ -3,7 +3,7 @@
 #include <DX3D/Graphics/Drawable/DrawableBase.hpp>
 
 namespace dx3d {
-	class Pyramid : public DrawableBase<Pyramid>
+	class Pyramid final : public DrawableBase<Pyramid>
 	{
 	public:
 		Pyramid(const DrawableDesc& desc,

@@ -3,7 +3,7 @@
 #include <DX3D/Graphics/Drawable/DrawableBase.hpp>
 
 namespace dx3d {
-	class Melon : public DrawableBase<Melon> {
+	class Melon final : public DrawableBase<Melon> {
 	public:
 		Melon(const DrawableDesc& desc,
 			Graphics& gfx, std::mt19937& rng,

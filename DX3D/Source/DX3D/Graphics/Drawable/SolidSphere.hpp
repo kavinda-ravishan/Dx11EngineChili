@@ -2,7 +2,7 @@
 #include <DX3D/Graphics/Drawable/DrawableBase.hpp>
 
 namespace dx3d {
-	class SolidSphere : public DrawableBase<SolidSphere> {
+	class SolidSphere final : public DrawableBase<SolidSphere> {
 	public:
 		SolidSphere(const DrawableDesc& desc, Graphics& graphics, float radius);
 		void Update(float dt) noexcept override;

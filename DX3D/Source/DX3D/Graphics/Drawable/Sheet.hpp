@@ -4,7 +4,7 @@
 
 namespace dx3d {
 
-	class Sheet : public DrawableBase<Sheet>
+	class Sheet final : public DrawableBase<Sheet>
 	{
 	public:
 		Sheet(
