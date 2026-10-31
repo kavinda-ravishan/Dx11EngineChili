@@ -70,7 +70,9 @@ dx3d::Box::Box(
 	struct PSMaterialConstant
 	{
 		alignas(16) DirectX::XMFLOAT3 color;
-	} color_const;
+		float specular_intensity{ 0.6f };
+		float specular_power{ 30.0f };
+	} color_const{};
 	color_const.color = material_color;
 
 	AddBind(std::make_unique<PixelConstantBuffer<PSMaterialConstant>>(BINDABLE_DESC, graphics, color_const, 1u));

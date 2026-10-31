@@ -185,7 +185,7 @@ void dx3d::Game::OnInternalUpdate() {
 
 	_graphics->BeginFrame(0.07f, 0.0f, 0.12f);
 	_graphics->SetCamera(_camera->GetMatrix());
-	_point_light->Bind(*_graphics);
+	_point_light->Bind(*_graphics, _camera->GetMatrix());
 	
 	for (auto& drawable : _drawables)
 	{

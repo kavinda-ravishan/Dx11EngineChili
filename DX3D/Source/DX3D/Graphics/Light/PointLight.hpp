@@ -11,7 +11,7 @@ namespace dx3d {
 		void SpawnControlWindow() noexcept;
 		void Reset() noexcept;
 		void Draw(Graphics& graphics) const noexcept(!IS_DEBUG);
-		void Bind(Graphics& graphics) const noexcept;
+		void Bind(Graphics& graphics, DirectX::FXMMATRIX view) const noexcept;
 	private:
 		struct PointLightCBuf
 		{

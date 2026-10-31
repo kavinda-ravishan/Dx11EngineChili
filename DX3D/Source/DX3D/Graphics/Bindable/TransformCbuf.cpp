@@ -13,14 +13,13 @@ dx3d::TransformCbuf::TransformCbuf(const BindableDesc& desc, Graphics& graphics,
 
 void dx3d::TransformCbuf::Bind(Graphics& graphics) noexcept {
 
-	const auto model = _parent.GetTransformXM();
+	const auto model_view = _parent.GetTransformXM() * graphics.GetCamera();
 
 	const Transforms tf =
 	{
-		DirectX::XMMatrixTranspose(model),
+		DirectX::XMMatrixTranspose(model_view),
 		DirectX::XMMatrixTranspose(
-			model *
-			graphics.GetCamera() *
+			model_view *
 			graphics.GetProjection()
 		)
 	};

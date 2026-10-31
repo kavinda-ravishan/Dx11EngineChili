@@ -53,7 +53,10 @@ void dx3d::PointLight::Draw(Graphics& graphics) const noexcept(!IS_DEBUG) {
 	_mesh.Draw(graphics);
 }
 
-void dx3d::PointLight::Bind(Graphics& graphics) const noexcept {
-	_cbuf.Update(graphics, PointLightCBuf{ _cb_data });
+void dx3d::PointLight::Bind(Graphics& graphics, DirectX::FXMMATRIX view) const noexcept {
+	auto data_copy = _cb_data;
+	const auto pos = DirectX::XMLoadFloat3(&_cb_data.pos);
+	DirectX::XMStoreFloat3(&data_copy.pos, DirectX::XMVector3Transform(pos, view));
+	_cbuf.Update(graphics, data_copy);
 	_cbuf.Bind(graphics);
 }
