@@ -124,5 +124,38 @@ namespace dx3d {
 				}
 			};
 		}
+
+		template<class V>
+		static IndexedTriangleList<V> MakeIndependentTextured()
+		{
+			auto itl = MakeIndependent<V>();
+
+			itl._vertices[0].tc = { 0.0f,0.0f };
+			itl._vertices[1].tc = { 1.0f,0.0f };
+			itl._vertices[2].tc = { 0.0f,1.0f };
+			itl._vertices[3].tc = { 1.0f,1.0f };
+			itl._vertices[4].tc = { 0.0f,0.0f };
+			itl._vertices[5].tc = { 1.0f,0.0f };
+			itl._vertices[6].tc = { 0.0f,1.0f };
+			itl._vertices[7].tc = { 1.0f,1.0f };
+			itl._vertices[8].tc = { 0.0f,0.0f };
+			itl._vertices[9].tc = { 1.0f,0.0f };
+			itl._vertices[10].tc = { 0.0f,1.0f };
+			itl._vertices[11].tc = { 1.0f,1.0f };
+			itl._vertices[12].tc = { 0.0f,0.0f };
+			itl._vertices[13].tc = { 1.0f,0.0f };
+			itl._vertices[14].tc = { 0.0f,1.0f };
+			itl._vertices[15].tc = { 1.0f,1.0f };
+			itl._vertices[16].tc = { 0.0f,0.0f };
+			itl._vertices[17].tc = { 1.0f,0.0f };
+			itl._vertices[18].tc = { 0.0f,1.0f };
+			itl._vertices[19].tc = { 1.0f,1.0f };
+			itl._vertices[20].tc = { 0.0f,0.0f };
+			itl._vertices[21].tc = { 1.0f,0.0f };
+			itl._vertices[22].tc = { 0.0f,1.0f };
+			itl._vertices[23].tc = { 1.0f,1.0f };
+
+			return itl;
+		}
 	};
 } // namespace dx3d

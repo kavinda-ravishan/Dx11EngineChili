@@ -23,6 +23,7 @@
 #include <DX3D/Graphics/Drawable/Box.hpp>
 #include <DX3D/Graphics/Drawable/Cylinder.hpp>
 #include <DX3D/Graphics/Drawable/Pyramid.hpp>
+#include <DX3D/Graphics/Drawable/SkinnedBox.hpp>
 
 #include <DX3D/Graphics/Light/PointLight.hpp>
 
@@ -56,6 +57,11 @@ dx3d::Game::Game(const GameDesc& desc) :
 					DrawableDesc({ _logger }), _graphics, _rng, 
 					_adist, _ddist, _odist, _rdist, _tdist
 				);
+			case 3:
+				return std::make_unique<SkinnedBox>(
+					DrawableDesc({ _logger }), _graphics, _rng,
+					_adist, _ddist, _odist, _rdist
+				);
 			default:
 				assert(false && "bad drawable type in factory");
 				return {};
@@ -66,7 +72,7 @@ dx3d::Game::Game(const GameDesc& desc) :
 		Logger& _logger;
 		Graphics& _graphics;
 		std::mt19937 _rng{ std::random_device{}() };
-		std::uniform_int_distribution<int> _typedist{ 0,2 };
+		std::uniform_int_distribution<int> _typedist{ 0,3 };
 		std::uniform_real_distribution<float> _adist{ 0.0f,PI * 2.0f };
 		std::uniform_real_distribution<float> _ddist{ 0.0f,PI * 0.5f };
 		std::uniform_real_distribution<float> _odist{ 0.0f,PI * 0.08f };
