@@ -1,5 +1,6 @@
 #pragma once
 #include <random>
+#include <DX3D/Math/Math.hpp>
 #include <DX3D/Graphics/Drawable/DrawableBase.hpp>
 
 namespace dx3d {
@@ -33,12 +34,12 @@ namespace dx3d {
 		virtual ~TestObject() = default;
 
 		void Update(float dt) noexcept {
-			_roll += _droll * dt;
-			_pitch += _dpitch * dt;
-			_yaw += _dyaw * dt;
-			_theta += _dtheta * dt;
-			_phi += _dphi * dt;
-			_chi += _dchi * dt;
+			_roll = wrap_angle(_roll + (_droll * dt));
+			_pitch = wrap_angle(_pitch + (_dpitch * dt));
+			_yaw = wrap_angle(_yaw + (_dyaw * dt));
+			_theta = wrap_angle(_theta + (_dtheta * dt));
+			_phi = wrap_angle(_phi + (_dphi * dt));
+			_chi = wrap_angle(_chi + (_dchi * dt));
 		}
 
 		virtual DirectX::XMMATRIX GetTransformXM() const noexcept {
@@ -47,7 +48,7 @@ namespace dx3d {
 				DirectX::XMMatrixRotationRollPitchYaw(_theta, _phi, _chi);
 		}
 	
-	private:
+	protected:
 		// positional
 		float _r;
 		float _roll = 0.0f;

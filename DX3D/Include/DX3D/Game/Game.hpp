@@ -1,6 +1,8 @@
 #pragma once
 
+#include <optional>
 #include <vector>
+#include <set>
 #include <DX3D/Core/Base.hpp>
 
 namespace dx3d {
@@ -13,6 +15,9 @@ namespace dx3d {
 
 	private:
 		void OnInternalUpdate();
+		void SpawnSimulationWindow() noexcept;
+		void SpawnBoxWindowManagerWindow() noexcept;
+		void SpawnBoxWindows() noexcept;
 
 	private:
 		std::unique_ptr<Logger> _logger_ptr{};
@@ -24,11 +29,15 @@ namespace dx3d {
 		std::unique_ptr<class PointLight> _point_light{};
 		std::vector<std::unique_ptr<class Drawable>> _drawables{};
 		
-		static constexpr size_t _n_drawables{ 180 };
+		std::vector<class Box*> _boxes{};
+		std::optional<int> _combo_box_index{};
+		std::set<int> _box_control_ids{};
 		
 		bool _pause{false};
 		float _speed_factor{ 1.0f };
-
+		
 		bool _is_running{true};
+
+		static constexpr size_t _n_drawables{ 180 };
 	};
 } // namespace dx3d

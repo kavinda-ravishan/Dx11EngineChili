@@ -20,6 +20,19 @@ namespace dx3d {
 		virtual void Update(const float dt) noexcept = 0;
 	
 	protected:
+		template<class T>
+		T* QueryBindable() noexcept
+		{
+			for (auto& pb : _bindables)
+			{
+				if (auto pt = dynamic_cast<T*>(pb.get()))
+				{
+					return pt;
+				}
+			}
+			return nullptr;
+		}
+
 		void AddBind(std::unique_ptr<Bindable> bindable) noexcept(!IS_DEBUG);
 		void AddIndexBuffer(std::unique_ptr<class IndexBuffer> index_buffer) noexcept(!IS_DEBUG);
 

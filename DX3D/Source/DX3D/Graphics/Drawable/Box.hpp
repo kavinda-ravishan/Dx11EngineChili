@@ -15,7 +15,20 @@ namespace dx3d {
 			DirectX::XMFLOAT3 material_color);
 		
 		DirectX::XMMATRIX GetTransformXM() const noexcept override;
-
+	
+		// returns false if window is closed
+		bool SpawnControlWindow(int id, Graphics& gfx) noexcept;
+	private:
+		void SyncMaterial(Graphics& gfx) noexcept(!IS_DEBUG);
+	
+	private:
+		struct PSMaterialConstant
+		{
+			DirectX::XMFLOAT3 color;
+			float specular_intensity{ 0.6f };
+			float specular_power{ 30.0f };
+			float padding[3]{};
+		} material_constants;
 	private:
 		// model transform
 		DirectX::XMFLOAT3X3 _mt;

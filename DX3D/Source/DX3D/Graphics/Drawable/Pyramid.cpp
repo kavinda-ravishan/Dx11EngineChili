@@ -35,9 +35,9 @@ dx3d::Pyramid::Pyramid(
 
 		struct PSMaterialConstant
 		{
-			float specularIntensity = 0.6f;
-			float specularPower = 30.0f;
-			float padding[2];
+			float specularIntensity{ 0.6f };
+			float specularPower{ 30.0f };
+			float padding[2]{};
 		} color_const;
 		AddStaticBind(std::make_unique<PixelConstantBuffer<PSMaterialConstant>>(BINDABLE_DESC, graphics, color_const, 1u));
 	}

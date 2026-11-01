@@ -99,6 +99,13 @@ dx3d::Game::Game(const GameDesc& desc) :
 	_drawables.reserve(_n_drawables);
 	std::generate_n(std::back_inserter(_drawables), _n_drawables, f);
 
+	// init box pointers for editing instance parameters
+	for (auto& pd : _drawables) {
+		if (auto pb = dynamic_cast<Box*>(pd.get())) {
+			_boxes.push_back(pb);
+		}
+	}
+
 	const float aspect_ratio = float(_window->GetWindowSize().height) / _window->GetWindowSize().width;
 	_graphics->SetProjection(DirectX::XMMatrixPerspectiveLH(1.0f, aspect_ratio, 0.5f, 40.0f));
 	_graphics->SetCamera(DirectX::XMMatrixTranslation(0.0f, 0.0f, 20.0f));
@@ -185,19 +192,70 @@ void dx3d::Game::OnInternalUpdate() {
 	_point_light->Draw(*_graphics);
 
 	if (_graphics->IsImguiEnabled()) {
-		if (ImGui::Begin("Simulation Speed")) {
-			ImGui::SliderFloat("Speed Factor", &_speed_factor, 0.0f, 4.0f);
-			ImGui::Text("%.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
-			ImGui::Text("Status: %s", _pause ? "PAUSED" : "RUNNING (press spacebar to pause)");
-		}
-		ImGui::End();
 
+		SpawnSimulationWindow();
 		_camera->SpawnControlWindow();
 		_point_light->SpawnControlWindow();
+		SpawnBoxWindowManagerWindow();
+		SpawnBoxWindows();
 	}
+
 
 	_graphics->EndFrame();
 
 	_window->_mouse->Clear();
 	_window->_keyboard->Clear();
+}
+
+void dx3d::Game::SpawnSimulationWindow() noexcept {
+	if (ImGui::Begin("Simulation Speed")) {
+		ImGui::SliderFloat("Speed Factor", &_speed_factor, 0.0f, 4.0f);
+		ImGui::Text("%.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
+		ImGui::Text("Status: %s", _pause ? "PAUSED" : "RUNNING (press spacebar to pause)");
+	}
+	ImGui::End();
+}
+
+void dx3d::Game::SpawnBoxWindowManagerWindow() noexcept {
+	if (ImGui::Begin("Boxes")) {
+
+		using namespace std::string_literals;
+		const auto preview = _combo_box_index ? std::to_string(*_combo_box_index) : "Choose a box..."s;
+		
+		if (ImGui::BeginCombo("Box Number", preview.c_str())) {
+
+			for (int i = 0; i < _boxes.size(); i++) {
+				bool selected = false;
+
+				if (_combo_box_index.has_value()) {
+					selected = *_combo_box_index == i;
+				}
+
+				if (ImGui::Selectable(std::to_string(i).c_str(), selected)) {
+					_combo_box_index = i;
+				}
+				
+				if (selected) {
+					ImGui::SetItemDefaultFocus();
+				}
+			}
+			ImGui::EndCombo();
+		}
+
+		if (ImGui::Button("Spawn Control Window") && _combo_box_index) {
+			_box_control_ids.insert(*_combo_box_index);
+			_combo_box_index.reset();
+		}
+	}
+	ImGui::End();
+}
+
+void dx3d::Game::SpawnBoxWindows() noexcept {
+	for (auto i = _box_control_ids.begin(); i != _box_control_ids.end(); ) {
+		if (!_boxes[*i]->SpawnControlWindow(*i, *_graphics)) {
+			i = _box_control_ids.erase(i);
+		} else {
+			i++;
+		}
+	}
 }
