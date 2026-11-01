@@ -148,6 +148,32 @@ void dx3d::Game::Run() {
 void dx3d::Game::OnInternalUpdate() {
 	const auto dt = _timer->Mark() * _speed_factor;
 
+	IOControls();
+
+	_graphics->BeginFrame(0.07f, 0.0f, 0.12f);
+	_graphics->SetCamera(_camera->GetMatrix());
+	_point_light->Bind(*_graphics, _camera->GetMatrix());
+	
+	for (auto& drawable : _drawables)
+	{
+		drawable->Update(_pause ? 0.0f : dt);
+		drawable->Draw(*_graphics);
+	}
+	_point_light->Draw(*_graphics);
+
+	if (_graphics->IsImguiEnabled()) {
+
+		SpawnSimulationWindow();
+		_camera->SpawnControlWindow();
+		_point_light->SpawnControlWindow();
+		SpawnBoxWindowManagerWindow();
+		SpawnBoxWindows();
+	}
+
+	_graphics->EndFrame();
+}
+
+void dx3d::Game::IOControls() noexcept {
 	char key = '\0';
 	key = _window->_keyboard->GetCharKey();
 
@@ -172,36 +198,14 @@ void dx3d::Game::OnInternalUpdate() {
 	case '\t':
 		if (_graphics->IsImguiEnabled()) {
 			_graphics->DisableImgui();
-		} else {
+		}
+		else {
 			_graphics->EnableImgui();
 		}
 		break;
 	default:
 		break;
 	}
-
-	_graphics->BeginFrame(0.07f, 0.0f, 0.12f);
-	_graphics->SetCamera(_camera->GetMatrix());
-	_point_light->Bind(*_graphics, _camera->GetMatrix());
-	
-	for (auto& drawable : _drawables)
-	{
-		drawable->Update(_pause ? 0.0f : dt);
-		drawable->Draw(*_graphics);
-	}
-	_point_light->Draw(*_graphics);
-
-	if (_graphics->IsImguiEnabled()) {
-
-		SpawnSimulationWindow();
-		_camera->SpawnControlWindow();
-		_point_light->SpawnControlWindow();
-		SpawnBoxWindowManagerWindow();
-		SpawnBoxWindows();
-	}
-
-
-	_graphics->EndFrame();
 
 	_window->_mouse->Clear();
 	_window->_keyboard->Clear();

@@ -15,6 +15,7 @@ namespace dx3d {
 
 	private:
 		void OnInternalUpdate();
+		void IOControls() noexcept;
 		void SpawnSimulationWindow() noexcept;
 		void SpawnBoxWindowManagerWindow() noexcept;
 		void SpawnBoxWindows() noexcept;
