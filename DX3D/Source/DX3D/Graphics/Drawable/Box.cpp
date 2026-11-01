@@ -13,19 +13,8 @@ dx3d::Box::Box(
 	std::uniform_real_distribution<float>& bdist,
 	DirectX::XMFLOAT3 material_color)
 	: 
-	DrawableBase<Box>(desc),
-	_r(rdist(rng)),
-	_droll(ddist(rng)),
-	_dpitch(ddist(rng)),
-	_dyaw(ddist(rng)),
-	_dphi(odist(rng)),
-	_dtheta(odist(rng)),
-	_dchi(odist(rng)),
-	_chi(adist(rng)),
-	_theta(adist(rng)),
-	_phi(adist(rng))
+	TestObject<Box>(desc, rng, adist, ddist, odist, rdist)
 {
-
 	if (!IsStaticInitialized()) {
 		// create and set vertex buffer
 		struct Vertex {
@@ -69,9 +58,10 @@ dx3d::Box::Box(
 	// bind material data to PS
 	struct PSMaterialConstant
 	{
-		alignas(16) DirectX::XMFLOAT3 color;
+		DirectX::XMFLOAT3 color;
 		float specular_intensity{ 0.6f };
 		float specular_power{ 30.0f };
+		float padding[3];
 	} color_const{};
 	color_const.color = material_color;
 
@@ -84,19 +74,6 @@ dx3d::Box::Box(
 	);
 }
 
-void dx3d::Box::Update(const float dt) noexcept {
-	_roll += _droll * dt;
-	_pitch += _dpitch * dt;
-	_yaw += _dyaw * dt;
-	_theta += _dtheta * dt;
-	_phi += _dphi * dt;
-	_chi += _dchi * dt;
-}
-
 DirectX::XMMATRIX dx3d::Box::GetTransformXM() const noexcept {
-	return
-		DirectX::XMLoadFloat3x3(&_mt) *
-		DirectX::XMMatrixRotationRollPitchYaw(_pitch, _yaw, _roll) *
-		DirectX::XMMatrixTranslation(_r, 0.0f, 0.0f) *
-		DirectX::XMMatrixRotationRollPitchYaw(_theta, _phi, _chi);
+	return DirectX::XMLoadFloat3x3(&_mt) * TestObject::GetTransformXM();
 }
