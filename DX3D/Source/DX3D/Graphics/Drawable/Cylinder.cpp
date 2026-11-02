@@ -41,10 +41,10 @@ dx3d::Cylinder::Cylinder(
 				{ 1.0f,0.0f,1.0f },
 				{ 0.0f,1.0f,1.0f },
 			};
-			float specularIntensity = 0.6f;
-			float specularPower = 30.0f;
-		} matConst;
-		AddStaticBind(std::make_unique<PixelConstantBuffer<PSMaterialConstant>>(BINDABLE_DESC, graphics, matConst, 1u));
+			float specular_intensity{ 0.6f };
+			float specular_power{ 30.0f };
+		} mat_const;
+		AddStaticBind(std::make_unique<PixelConstantBuffer<PSMaterialConstant>>(BINDABLE_DESC, graphics, mat_const, 1u));
 	}
 
 	struct Vertex

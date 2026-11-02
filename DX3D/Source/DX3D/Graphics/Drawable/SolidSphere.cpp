@@ -24,9 +24,9 @@ dx3d::SolidSphere::SolidSphere(const DrawableDesc& desc, Graphics& graphics, flo
 		struct PSColorConstant {
 			DirectX::XMFLOAT3 color{ 1.0f,1.0f,1.0f };
 			float padding;
-		} colorConst;
+		} color_const;
 
-		AddStaticBind(std::make_unique<PixelConstantBuffer<PSColorConstant>>(BINDABLE_DESC, graphics, colorConst));
+		AddStaticBind(std::make_unique<PixelConstantBuffer<PSColorConstant>>(BINDABLE_DESC, graphics, color_const));
 
 		const std::vector<D3D11_INPUT_ELEMENT_DESC> ied {
 			{ "Position",0,DXGI_FORMAT_R32G32B32_FLOAT,0,0,D3D11_INPUT_PER_VERTEX_DATA,0 },

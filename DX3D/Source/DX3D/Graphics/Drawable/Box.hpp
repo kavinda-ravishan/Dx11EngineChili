@@ -24,7 +24,7 @@ namespace dx3d {
 	private:
 		struct PSMaterialConstant
 		{
-			DirectX::XMFLOAT3 color;
+			DirectX::XMFLOAT3 color{};
 			float specular_intensity{ 0.6f };
 			float specular_power{ 30.0f };
 			float padding[3]{};

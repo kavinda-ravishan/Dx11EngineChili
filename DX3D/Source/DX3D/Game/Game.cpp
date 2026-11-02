@@ -24,6 +24,7 @@
 #include <DX3D/Graphics/Drawable/Cylinder.hpp>
 #include <DX3D/Graphics/Drawable/Pyramid.hpp>
 #include <DX3D/Graphics/Drawable/SkinnedBox.hpp>
+#include <DX3D/Graphics/Drawable/Melon.hpp>
 
 #include <DX3D/Graphics/Light/PointLight.hpp>
 
@@ -39,7 +40,6 @@ dx3d::Game::Game(const GameDesc& desc) :
 
 		std::unique_ptr<Drawable> operator()() {
 			const DirectX::XMFLOAT3 mat_color{ _cdist(_rng), _cdist(_rng) , _cdist(_rng) };
-
 
 			switch (_typedist(_rng)) {
 			case 0:
@@ -62,6 +62,11 @@ dx3d::Game::Game(const GameDesc& desc) :
 					DrawableDesc({ _logger }), _graphics, _rng,
 					_adist, _ddist, _odist, _rdist
 				);
+			case 4:
+				return std::make_unique<Melon>(
+					DrawableDesc({ _logger }), _graphics, _rng,
+					_adist, _ddist, _odist, _rdist, _longdist, _latdist
+				);
 			default:
 				assert(false && "bad drawable type in factory");
 				return {};
@@ -72,13 +77,15 @@ dx3d::Game::Game(const GameDesc& desc) :
 		Logger& _logger;
 		Graphics& _graphics;
 		std::mt19937 _rng{ std::random_device{}() };
-		std::uniform_int_distribution<int> _typedist{ 0,3 };
+		std::uniform_int_distribution<int> _typedist{ 0,4 };
 		std::uniform_real_distribution<float> _adist{ 0.0f,PI * 2.0f };
 		std::uniform_real_distribution<float> _ddist{ 0.0f,PI * 0.5f };
 		std::uniform_real_distribution<float> _odist{ 0.0f,PI * 0.08f };
 		std::uniform_real_distribution<float> _rdist{ 6.0f, 20.0f };
 		std::uniform_real_distribution<float> _bdist{ 0.4f, 3.0f };
 		std::uniform_real_distribution<float> _cdist{ 0.0f, 1.0f };
+		std::uniform_int_distribution<int> _longdist{ 10,40 };
+		std::uniform_int_distribution<int> _latdist{ 5,20 };
 		std::uniform_int_distribution<int> _tdist{ 3,30 };
 	};
 	_imgui = std::make_unique<ImguiManager>();

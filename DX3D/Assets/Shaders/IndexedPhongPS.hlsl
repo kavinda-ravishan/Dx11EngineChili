@@ -17,7 +17,6 @@ cbuffer ObjectCBuf
     float specular_power;
 };
 
-
 float4 main(float3 world_pos : Position, float3 n : Normal, uint tid : SV_PrimitiveID) : SV_Target
 {
 	// fragment to light vector data

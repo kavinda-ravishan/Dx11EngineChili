@@ -51,9 +51,9 @@ dx3d::SkinnedBox::SkinnedBox(
 
 		struct PSMaterialConstant
 		{
-			float specular_intensity = 0.6f;
-			float specular_power = 30.0f;
-			float padding[2];
+			float specular_intensity{ 0.6f };
+			float specular_power{ 30.0f };
+			float padding[2]{};
 		} color_const;
 		AddStaticBind(std::make_unique<PixelConstantBuffer<PSMaterialConstant>>(BINDABLE_DESC, graphics, color_const, 1u));
 	}
