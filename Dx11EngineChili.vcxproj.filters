@@ -87,9 +87,6 @@
     <ClCompile Include="DX3D\Source\DX3D\Graphics\Bindable\Texture.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="DX3D\Source\DX3D\Graphics\Drawable\Sheet.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="DX3D\Source\DX3D\Graphics\Bindable\Sampler.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -127,6 +124,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="DX3D\Source\DX3D\Graphics\Light\PointLight.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DX3D\Source\DX3D\Graphics\Drawable\Cylinder.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -242,9 +242,6 @@
     <ClInclude Include="DX3D\Source\DX3D\Graphics\Bindable\Texture.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="DX3D\Source\DX3D\Graphics\Drawable\Sheet.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="DX3D\Source\DX3D\Graphics\Drawable\Models\Plane.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -293,21 +290,27 @@
     <ClInclude Include="DX3D\Source\DX3D\Graphics\Drawable\TestObject.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="DX3D\Source\DX3D\Graphics\Drawable\Cylinder.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DX3D\Source\DX3D\Graphics\Drawable\Melon.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="DX3D\Assets\Shaders\ColorIndexVS.hlsl" />
     <FxCompile Include="DX3D\Assets\Shaders\ColorIndexPS.hlsl" />
     <FxCompile Include="DX3D\Assets\Shaders\ColorBlendPS.hlsl" />
     <FxCompile Include="DX3D\Assets\Shaders\ColorBlendVS.hlsl" />
-    <FxCompile Include="DX3D\Assets\Shaders\TexturePS.hlsl" />
-    <FxCompile Include="DX3D\Assets\Shaders\TextureVS.hlsl" />
     <FxCompile Include="DX3D\Assets\Shaders\PhongVS.hlsl" />
     <FxCompile Include="DX3D\Assets\Shaders\PhongPS.hlsl" />
     <FxCompile Include="DX3D\Assets\Shaders\SolidPS.hlsl" />
     <FxCompile Include="DX3D\Assets\Shaders\SolidVS.hlsl" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="DX3D\Source\DX3D\Graphics\Drawable\Melon.hpp" />
+    <FxCompile Include="DX3D\Assets\Shaders\BlendedPhongPS.hlsl" />
+    <FxCompile Include="DX3D\Assets\Shaders\BlendedPhongVS.hlsl" />
+    <FxCompile Include="DX3D\Assets\Shaders\IndexedPhongPS.hlsl" />
+    <FxCompile Include="DX3D\Assets\Shaders\TexturedPhongPS.hlsl" />
+    <FxCompile Include="DX3D\Assets\Shaders\TexturedPhongVS.hlsl" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Assets\Images\cube.png">

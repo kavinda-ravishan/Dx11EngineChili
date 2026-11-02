@@ -176,7 +176,6 @@
     <ClCompile Include="DX3D\Source\DX3D\Graphics\Bindable\VertexShader.cpp" />
     <ClCompile Include="DX3D\Source\DX3D\Graphics\Drawable\Melon.cpp" />
     <ClCompile Include="DX3D\Source\DX3D\Graphics\Drawable\Pyramid.cpp" />
-    <ClCompile Include="DX3D\Source\DX3D\Graphics\Drawable\Sheet.cpp" />
     <ClCompile Include="DX3D\Source\DX3D\Graphics\Drawable\SkinnedBox.cpp" />
     <ClCompile Include="DX3D\Source\DX3D\Graphics\Drawable\SolidSphere.cpp" />
     <ClCompile Include="DX3D\Source\DX3D\Graphics\Light\PointLight.cpp" />
@@ -215,7 +214,6 @@
     <ClInclude Include="DX3D\Source\DX3D\Graphics\Drawable\Models\Plane.hpp" />
     <ClInclude Include="DX3D\Source\DX3D\Graphics\Drawable\Models\Prism.hpp" />
     <ClInclude Include="DX3D\Source\DX3D\Graphics\Drawable\Pyramid.hpp" />
-    <ClInclude Include="DX3D\Source\DX3D\Graphics\Drawable\Sheet.hpp" />
     <ClInclude Include="DX3D\Source\DX3D\Graphics\Drawable\SkinnedBox.hpp" />
     <ClInclude Include="DX3D\Source\DX3D\Graphics\Drawable\SolidSphere.hpp" />
     <ClInclude Include="DX3D\Source\DX3D\Graphics\Drawable\Models\Sphere.hpp" />
