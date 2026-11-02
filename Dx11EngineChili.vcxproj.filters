@@ -300,8 +300,6 @@
   <ItemGroup>
     <FxCompile Include="DX3D\Assets\Shaders\ColorIndexVS.hlsl" />
     <FxCompile Include="DX3D\Assets\Shaders\ColorIndexPS.hlsl" />
-    <FxCompile Include="DX3D\Assets\Shaders\ColorBlendPS.hlsl" />
-    <FxCompile Include="DX3D\Assets\Shaders\ColorBlendVS.hlsl" />
     <FxCompile Include="DX3D\Assets\Shaders\PhongVS.hlsl" />
     <FxCompile Include="DX3D\Assets\Shaders\PhongPS.hlsl" />
     <FxCompile Include="DX3D\Assets\Shaders\SolidPS.hlsl" />
