@@ -321,4 +321,9 @@
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="third_party_libraries\.gitignore" />
+    <None Include="third_party_libraries\README.md" />
+    <None Include="Assets\Models\.gitignore" />
+  </ItemGroup>
 </Project>

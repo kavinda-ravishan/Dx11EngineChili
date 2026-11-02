@@ -6,6 +6,10 @@
 #include <random>
 #include <sstream>
 
+#include <assimp/Importer.hpp>
+#include <assimp/scene.h>
+#include <assimp/postprocess.h>
+
 #include <DX3D/Window/ImGUI/imgui.h>
 #include <DX3D/Window/ImguiManager.hpp>
 
@@ -88,6 +92,15 @@ dx3d::Game::Game(const GameDesc& desc) :
 		std::uniform_int_distribution<int> _latdist{ 5,20 };
 		std::uniform_int_distribution<int> _tdist{ 3,30 };
 	};
+
+	{
+		Assimp::Importer imp;
+		auto model = imp.ReadFile(
+			"Assets\\Models\\suzanne.obj", 
+			aiProcess_Triangulate | aiProcess_JoinIdenticalVertices
+		);
+	}
+
 	_imgui = std::make_unique<ImguiManager>();
 	_window = std::make_unique<Window>(WindowDesc({ _logger, desc.window_size }));
 	_graphics = std::make_unique<Graphics>(
