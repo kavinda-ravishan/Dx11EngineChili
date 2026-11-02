@@ -1,11 +1,6 @@
 #pragma once
 
-#include <memory>
 #include <string>
-
-namespace cv {
-	class Mat;
-}
 
 namespace dx3d {
 	class Surface {
@@ -88,7 +83,6 @@ namespace dx3d {
 		};
 		
 		Surface(const std::string image_path);
-		Surface(unsigned int width, unsigned int height);
 		~Surface();
 
 		Surface(Surface&& source) noexcept;
@@ -98,17 +92,14 @@ namespace dx3d {
 
 		unsigned int GetWidth() const;
 		unsigned int GetHeight() const;
+		unsigned int GetChannels() const;
 
 		void* GetBufferPtr() const noexcept;
 
-		void Clear(const Color color);
-
-		void PutPixel(int x, int y, const Color color);
-		Color GetPixel(int x, int y) const;
-		void PutPixelAlpha(int x, int y, Color color);
 	private:
-		unsigned int _width{};
-		unsigned int _height{};
-		std::unique_ptr<cv::Mat> _mat{};
+		int _width{};
+		int _height{};
+		int _channels{};
+		unsigned char* _data{};
 	};
 } // namespace dx3d
