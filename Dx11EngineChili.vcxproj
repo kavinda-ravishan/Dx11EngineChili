@@ -158,6 +158,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="DX3D\Source\DX3D\Graphics\Camera\Camera.cpp" />
+    <ClCompile Include="DX3D\Source\DX3D\Graphics\Drawable\AssImpTest.cpp" />
     <ClCompile Include="DX3D\Source\DX3D\Graphics\Drawable\Box.cpp" />
     <ClCompile Include="DX3D\Source\DX3D\Graphics\Drawable\Cylinder.cpp" />
     <ClCompile Include="DX3D\Source\DX3D\Graphics\Drawable\Drawable.cpp" />
@@ -203,6 +204,7 @@
     <ClInclude Include="DX3D\Include\DX3D\Core\Core.hpp" />
     <ClInclude Include="DX3D\Include\DX3D\Core\Logger.hpp" />
     <ClInclude Include="DX3D\Source\DX3D\Graphics\Camera\Camera.hpp" />
+    <ClInclude Include="DX3D\Source\DX3D\Graphics\Drawable\AssImpTest.hpp" />
     <ClInclude Include="DX3D\Source\DX3D\Graphics\Drawable\Box.hpp" />
     <ClInclude Include="DX3D\Source\DX3D\Graphics\Drawable\Cylinder.hpp" />
     <ClInclude Include="DX3D\Source\DX3D\Graphics\Drawable\Melon.hpp" />

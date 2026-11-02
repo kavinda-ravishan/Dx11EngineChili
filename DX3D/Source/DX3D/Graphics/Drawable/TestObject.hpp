@@ -42,7 +42,7 @@ namespace dx3d {
 			_chi = wrap_angle(_chi + (_dchi * dt));
 		}
 
-		virtual DirectX::XMMATRIX GetTransformXM() const noexcept {
+		virtual DirectX::XMMATRIX GetTransformXM() const noexcept override {
 			return DirectX::XMMatrixRotationRollPitchYaw(_pitch, _yaw, _roll) *
 				DirectX::XMMatrixTranslation(_r, 0.0f, 0.0f) *
 				DirectX::XMMatrixRotationRollPitchYaw(_theta, _phi, _chi);

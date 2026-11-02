@@ -1,0 +1,19 @@
+#pragma once
+#include <DX3D/Graphics/Drawable/TestObject.hpp>
+
+namespace dx3d {
+	class AssImpTest final : public TestObject<AssImpTest>
+	{
+	public:
+		AssImpTest(
+			const DrawableDesc& desc,
+			Graphics& graphics,
+			std::mt19937& rng,
+			std::uniform_real_distribution<float>& adist,
+			std::uniform_real_distribution<float>& ddist,
+			std::uniform_real_distribution<float>& odist,
+			std::uniform_real_distribution<float>& rdist,
+			DirectX::XMFLOAT3 material,
+			float scale);
+	};
+} // namespace dx3d
