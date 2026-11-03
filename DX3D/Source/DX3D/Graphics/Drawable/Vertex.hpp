@@ -5,16 +5,9 @@
 #include <type_traits>
 #include <vector>
 #include <DX3D/Core/Core.hpp>
+#include <DX3D/Math/Color.hpp>
 
-namespace dx3dexp {
-
-	struct BGRAColor
-	{
-		unsigned char a;
-		unsigned char r;
-		unsigned char g;
-		unsigned char b;
-	};
+namespace dx3d {
 
 	class VertexLayout
 	{
@@ -69,7 +62,7 @@ namespace dx3dexp {
 		};
 		template<> struct Map<BGRAColor>
 		{
-			using SysType = dx3dexp::BGRAColor;
+			using SysType = dx3d::BGRAColor;
 			static constexpr DXGI_FORMAT dxgiFormat = DXGI_FORMAT_R8G8B8A8_UNORM;
 			static constexpr const char* semantic = "Color";
 		};

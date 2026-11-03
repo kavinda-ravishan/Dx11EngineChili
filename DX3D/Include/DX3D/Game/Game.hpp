@@ -28,12 +28,12 @@ namespace dx3d {
 		std::unique_ptr<class Model> _nano{};
 		struct
 		{
-			float roll = 0.0f;
-			float pitch = 0.0f;
-			float yaw = 0.0f;
-			float x = 0.0f;
-			float y = 0.0f;
-			float z = 0.0f;
+			float roll {0.0f};
+			float pitch {3.144f};
+			float yaw {0.0f};
+			float x {0.0f};
+			float y {-10.0f};
+			float z{15.0f};
 		} pos;
 
 		bool _pause{false};

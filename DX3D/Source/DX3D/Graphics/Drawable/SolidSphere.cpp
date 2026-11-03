@@ -1,6 +1,6 @@
 #include <DX3D/Graphics/Drawable/SolidSphere.hpp>
 #include <DX3D/Graphics/Drawable/Models/Sphere.hpp>
-#include <DX3D/Graphics/Bindable/BindableBase.hpp>
+#include <DX3D/Graphics/Bindable/BindableCommon.hpp>
 
 dx3d::SolidSphere::SolidSphere(const DrawableDesc& desc, Graphics& graphics, float radius)
     : DrawableBase(desc)
@@ -12,7 +12,7 @@ dx3d::SolidSphere::SolidSphere(const DrawableDesc& desc, Graphics& graphics, flo
 
 		auto model = Sphere::Make<Vertex>();
 		model.Transform(DirectX::XMMatrixScaling(radius, radius, radius));
-		AddBind(std::make_unique<VertexBuffer>(BINDABLE_DESC, graphics, model._vertices));
+		AddBind(std::make_unique<VertexBufferB>(BINDABLE_DESC, graphics, model._vertices));
 		AddIndexBuffer(std::make_unique<IndexBuffer>(BINDABLE_DESC, graphics, model._indices));
 
 		auto pvs = std::make_unique<VertexShader>(BINDABLE_DESC, graphics, L"SolidVS.cso");

@@ -3,7 +3,7 @@
 #include <assimp/postprocess.h>
 
 #include <DX3D/Graphics/Drawable/Vertex.hpp>
-#include <DX3D/Graphics/Bindable/BindableBase.hpp>
+#include <DX3D/Graphics/Bindable/BindableCommon.hpp>
 #include <DX3D/Graphics/Drawable/AssImpTest.hpp>
 
 dx3d::AssImpTest::AssImpTest(
@@ -19,10 +19,10 @@ dx3d::AssImpTest::AssImpTest(
 {
 	if (!IsStaticInitialized())
 	{
-		dx3dexp::VertexBuffer vbuf(std::move(
-			dx3dexp::VertexLayout{}
-			.Append(dx3dexp::VertexLayout::Position3D)
-			.Append(dx3dexp::VertexLayout::Normal)
+		VertexBuffer vbuf(std::move(
+			VertexLayout{}
+			.Append(VertexLayout::Position3D)
+			.Append(VertexLayout::Normal)
 		));
 
 		Assimp::Importer imp;
@@ -51,7 +51,7 @@ dx3d::AssImpTest::AssImpTest(
 			indices.push_back(face.mIndices[2]);
 		}
 
-		AddStaticBind(std::make_unique<VertexBuffer>(BINDABLE_DESC, graphics, vbuf));
+		AddStaticBind(std::make_unique<VertexBufferB>(BINDABLE_DESC, graphics, vbuf));
 
 		AddStaticIndexBuffer(std::make_unique<IndexBuffer>(BINDABLE_DESC, graphics, indices));
 

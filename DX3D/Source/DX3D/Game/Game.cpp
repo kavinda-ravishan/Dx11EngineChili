@@ -14,7 +14,7 @@
 #include <DX3D/Timer/Timer.hpp>
 
 #include <DX3D/Graphics/Graphics.hpp>
-#include <DX3D/Graphics/Drawable/Model.hpp>
+#include <DX3D/Graphics/Drawable/Mesh.hpp>
 #include <DX3D/Graphics/Camera/Camera.hpp>
 #include <DX3D/Graphics/Light/PointLight.hpp>
 

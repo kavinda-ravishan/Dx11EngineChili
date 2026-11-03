@@ -6,11 +6,11 @@
 #include <DX3D/Graphics/GraphicsLogUtils.hpp>
 
 namespace dx3d {
-	class VertexBuffer : public Bindable
+	class VertexBufferB : public Bindable
 	{
 	public:
 		template<class V>
-		VertexBuffer(const BindableDesc& desc, Graphics& graphics, const std::vector<V>& vertices)
+		VertexBufferB(const BindableDesc& desc, Graphics& graphics, const std::vector<V>& vertices)
 			: Bindable(desc), _stride(sizeof(V))
 		{
 			D3D11_BUFFER_DESC vertex_buffer_desc{};
@@ -33,7 +33,7 @@ namespace dx3d {
 			);
 		}
 
-		VertexBuffer(const BindableDesc& desc, Graphics& graphics, const dx3dexp::VertexBuffer& vbuf)
+		VertexBufferB(const BindableDesc& desc, Graphics& graphics, const dx3d::VertexBuffer& vbuf)
 			: Bindable(desc), _stride((UINT)vbuf.GetLayout().Size())
 		{
 			D3D11_BUFFER_DESC vertex_buffer_desc{};
