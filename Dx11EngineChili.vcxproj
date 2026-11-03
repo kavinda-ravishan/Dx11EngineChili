@@ -236,6 +236,7 @@
     <ClInclude Include="DX3D\Source\DX3D\Graphics\Bindable\VertexBuffer.hpp" />
     <ClInclude Include="DX3D\Source\DX3D\Graphics\Bindable\VertexShader.hpp" />
     <ClInclude Include="DX3D\Source\DX3D\Graphics\Drawable\TestObject.hpp" />
+    <ClInclude Include="DX3D\Source\DX3D\Graphics\Drawable\Vertex.hpp" />
     <ClInclude Include="DX3D\Source\DX3D\Graphics\GraphicsLogUtils.hpp" />
     <ClInclude Include="DX3D\Include\DX3D\Math\Math.hpp" />
     <ClInclude Include="DX3D\Source\DX3D\Graphics\Light\PointLight.hpp" />

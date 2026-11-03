@@ -305,6 +305,9 @@
     <ClInclude Include="DX3D\Source\DX3D\Graphics\Drawable\AssImpTest.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="DX3D\Source\DX3D\Graphics\Drawable\Vertex.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="DX3D\Assets\Shaders\ColorIndexVS.hlsl" />

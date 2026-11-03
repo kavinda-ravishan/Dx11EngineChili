@@ -2,6 +2,7 @@
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
 
+#include <DX3D/Graphics/Drawable/Vertex.hpp>
 #include <DX3D/Graphics/Bindable/BindableBase.hpp>
 #include <DX3D/Graphics/Drawable/AssImpTest.hpp>
 
@@ -18,11 +19,11 @@ dx3d::AssImpTest::AssImpTest(
 {
 	if (!IsStaticInitialized())
 	{
-		struct Vertex
-		{
-			DirectX::XMFLOAT3 pos;
-			DirectX::XMFLOAT3 n;
-		};
+		dx3dexp::VertexBuffer vbuf(std::move(
+			dx3dexp::VertexLayout{}
+			.Append<dx3dexp::VertexLayout::Position3D>()
+			.Append<dx3dexp::VertexLayout::Normal>()
+		));
 
 		Assimp::Importer imp;
 		const auto models = imp.ReadFile("Assets\\Models\\suzanne.obj", 
@@ -31,14 +32,12 @@ dx3d::AssImpTest::AssImpTest(
 		);
 		const auto mesh = models->mMeshes[0];
 
-		std::vector<Vertex> vertices;
-		vertices.reserve(mesh->mNumVertices);
 		for (unsigned int i = 0; i < mesh->mNumVertices; i++)
 		{
-			vertices.push_back({
-				{ mesh->mVertices[i].x * scale,mesh->mVertices[i].y * scale,mesh->mVertices[i].z * scale },
+			vbuf.EmplaceBack(
+				DirectX::XMFLOAT3(mesh->mVertices[i].x * scale, mesh->mVertices[i].y * scale, mesh->mVertices[i].z * scale), 
 				*reinterpret_cast<DirectX::XMFLOAT3*>(&mesh->mNormals[i])
-				});
+			);
 		}
 
 		std::vector<unsigned short> indices;
@@ -52,7 +51,7 @@ dx3d::AssImpTest::AssImpTest(
 			indices.push_back(face.mIndices[2]);
 		}
 
-		AddStaticBind(std::make_unique<VertexBuffer>(BINDABLE_DESC, graphics, vertices));
+		AddStaticBind(std::make_unique<VertexBuffer>(BINDABLE_DESC, graphics, vbuf));
 
 		AddStaticIndexBuffer(std::make_unique<IndexBuffer>(BINDABLE_DESC, graphics, indices));
 
