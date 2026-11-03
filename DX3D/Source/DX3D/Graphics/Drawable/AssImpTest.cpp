@@ -21,8 +21,8 @@ dx3d::AssImpTest::AssImpTest(
 	{
 		dx3dexp::VertexBuffer vbuf(std::move(
 			dx3dexp::VertexLayout{}
-			.Append<dx3dexp::VertexLayout::Position3D>()
-			.Append<dx3dexp::VertexLayout::Normal>()
+			.Append(dx3dexp::VertexLayout::Position3D)
+			.Append(dx3dexp::VertexLayout::Normal)
 		));
 
 		Assimp::Importer imp;
@@ -61,12 +61,7 @@ dx3d::AssImpTest::AssImpTest(
 
 		AddStaticBind(std::make_unique<PixelShader>(BINDABLE_DESC, graphics, L"PhongPS.cso"));
 
-		const std::vector<D3D11_INPUT_ELEMENT_DESC> ied =
-		{
-			{ "Position",0,DXGI_FORMAT_R32G32B32_FLOAT,0,0,D3D11_INPUT_PER_VERTEX_DATA,0 },
-			{ "Normal",0,DXGI_FORMAT_R32G32B32_FLOAT,0,12,D3D11_INPUT_PER_VERTEX_DATA,0 },
-		};
-		AddStaticBind(std::make_unique<InputLayout>(BINDABLE_DESC, graphics, ied, pvsbc));
+		AddStaticBind(std::make_unique<InputLayout>(BINDABLE_DESC, graphics, vbuf.GetLayout().GetD3DLayout(), pvsbc));
 
 		AddStaticBind(std::make_unique<Topology>(BINDABLE_DESC, graphics, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST));
 	}
