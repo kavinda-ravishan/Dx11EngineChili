@@ -17,7 +17,7 @@ namespace dx3d {
 		void Draw(Graphics& graphics) const noexcept(!IS_DEBUG);
 
 		virtual DirectX::XMMATRIX GetTransformXM() const noexcept = 0;
-		virtual void Update(const float dt) noexcept = 0;
+		virtual void Update(const float dt) noexcept {}
 	
 	protected:
 		template<class T>

@@ -1,11 +1,6 @@
 #include <DX3D/Core/WinSwitches.hpp>
 #include <Windows.h>
 
-#include <cmath>
-#include <memory>
-#include <random>
-#include <sstream>
-
 #include <DX3D/Window/ImGUI/imgui.h>
 #include <DX3D/Window/ImguiManager.hpp>
 
@@ -19,14 +14,8 @@
 #include <DX3D/Timer/Timer.hpp>
 
 #include <DX3D/Graphics/Graphics.hpp>
+#include <DX3D/Graphics/Drawable/Model.hpp>
 #include <DX3D/Graphics/Camera/Camera.hpp>
-#include <DX3D/Graphics/Drawable/Box.hpp>
-#include <DX3D/Graphics/Drawable/Cylinder.hpp>
-#include <DX3D/Graphics/Drawable/Pyramid.hpp>
-#include <DX3D/Graphics/Drawable/SkinnedBox.hpp>
-#include <DX3D/Graphics/Drawable/Melon.hpp>
-#include <DX3D/Graphics/Drawable/AssImpTest.hpp>
-
 #include <DX3D/Graphics/Light/PointLight.hpp>
 
 dx3d::Game::Game(const GameDesc& desc) :
@@ -34,66 +23,6 @@ dx3d::Game::Game(const GameDesc& desc) :
     _logger_ptr{ &_logger } 
 {
 	DX3DLogInfo("Initializing game");
-
-	class Factory {
-	public:
-		Factory(Logger& logger, Graphics& graphics) : _logger(logger), _graphics(graphics) {}
-
-		std::unique_ptr<Drawable> operator()() {
-			const DirectX::XMFLOAT3 mat_color{ _cdist(_rng), _cdist(_rng) , _cdist(_rng) };
-
-			switch (_typedist(_rng)) {
-			case 0:
-				return std::make_unique<Box>(
-					DrawableDesc({ _logger }), _graphics, _rng, _adist, _ddist,
-					_odist, _rdist, _bdist, mat_color
-				);
-			case 1:
-				return std::make_unique<Cylinder>(
-					DrawableDesc({ _logger }), _graphics, _rng, _adist, _ddist,
-					_odist, _rdist, _bdist, _tdist
-				);
-			case 2:
-				return std::make_unique<Pyramid>(
-					DrawableDesc({ _logger }), _graphics, _rng, 
-					_adist, _ddist, _odist, _rdist, _tdist
-				);
-			case 3:
-				return std::make_unique<SkinnedBox>(
-					DrawableDesc({ _logger }), _graphics, _rng,
-					_adist, _ddist, _odist, _rdist
-				);
-			case 4:
-				return std::make_unique<Melon>(
-					DrawableDesc({ _logger }), _graphics, _rng,
-					_adist, _ddist, _odist, _rdist, _longdist, _latdist
-				);
-			case 5:
-				return std::make_unique<AssImpTest>(
-					DrawableDesc({ _logger }), _graphics, _rng,
-					_adist, _ddist, _odist, _rdist, mat_color, 1.0f
-				);
-			default:
-				assert(false && "bad drawable type in factory");
-				return {};
-			}
-		}
-
-	private:
-		Logger& _logger;
-		Graphics& _graphics;
-		std::mt19937 _rng{ std::random_device{}() };
-		std::uniform_int_distribution<int> _typedist{ 0,5 };
-		std::uniform_real_distribution<float> _adist{ 0.0f,PI * 2.0f };
-		std::uniform_real_distribution<float> _ddist{ 0.0f,PI * 0.5f };
-		std::uniform_real_distribution<float> _odist{ 0.0f,PI * 0.08f };
-		std::uniform_real_distribution<float> _rdist{ 6.0f, 20.0f };
-		std::uniform_real_distribution<float> _bdist{ 0.4f, 3.0f };
-		std::uniform_real_distribution<float> _cdist{ 0.0f, 1.0f };
-		std::uniform_int_distribution<int> _longdist{ 10,40 };
-		std::uniform_int_distribution<int> _latdist{ 5,20 };
-		std::uniform_int_distribution<int> _tdist{ 3,30 };
-	};
 
 	_imgui = std::make_unique<ImguiManager>();
 	_window = std::make_unique<Window>(WindowDesc({ _logger, desc.window_size }));
@@ -109,16 +38,7 @@ dx3d::Game::Game(const GameDesc& desc) :
 		BaseDesc(_logger), DrawableDesc({_logger}), BindableDesc({_logger}), *_graphics
 	);
 
-	Factory f(_logger, *_graphics);
-	_drawables.reserve(_n_drawables);
-	std::generate_n(std::back_inserter(_drawables), _n_drawables, f);
-
-	// init box pointers for editing instance parameters
-	for (auto& pd : _drawables) {
-		if (auto pb = dynamic_cast<Box*>(pd.get())) {
-			_boxes.push_back(pb);
-		}
-	}
+	_nano = std::make_unique<Model>(BaseDesc({ _logger }), *_graphics, "Assets\\Models\\nanosuit.obj");
 
 	const float aspect_ratio = float(_window->GetWindowSize().height) / _window->GetWindowSize().width;
 	_graphics->SetProjection(DirectX::XMMatrixPerspectiveLH(1.0f, aspect_ratio, 0.5f, 40.0f));
@@ -167,21 +87,18 @@ void dx3d::Game::OnInternalUpdate() {
 	_graphics->BeginFrame(0.07f, 0.0f, 0.12f);
 	_graphics->SetCamera(_camera->GetMatrix());
 	_point_light->Bind(*_graphics, _camera->GetMatrix());
-	
-	for (auto& drawable : _drawables)
-	{
-		drawable->Update(_pause ? 0.0f : dt);
-		drawable->Draw(*_graphics);
-	}
+
+	const auto nano_transform = DirectX::XMMatrixRotationRollPitchYaw(pos.roll, pos.pitch, pos.yaw) *
+		DirectX::XMMatrixTranslation(pos.x, pos.y, pos.z);
+	_nano->Draw(*_graphics, nano_transform);
+
 	_point_light->Draw(*_graphics);
 
 	if (_graphics->IsImguiEnabled()) {
-
+		ShowModelWindow();
 		SpawnSimulationWindow();
 		_camera->SpawnControlWindow();
 		_point_light->SpawnControlWindow();
-		SpawnBoxWindowManagerWindow();
-		SpawnBoxWindows();
 	}
 
 	_graphics->EndFrame();
@@ -234,46 +151,20 @@ void dx3d::Game::SpawnSimulationWindow() noexcept {
 	ImGui::End();
 }
 
-void dx3d::Game::SpawnBoxWindowManagerWindow() noexcept {
-	if (ImGui::Begin("Boxes")) {
-
+void dx3d::Game::ShowModelWindow() {
+	if (ImGui::Begin("Model"))
+	{
 		using namespace std::string_literals;
-		const auto preview = _combo_box_index ? std::to_string(*_combo_box_index) : "Choose a box..."s;
-		
-		if (ImGui::BeginCombo("Box Number", preview.c_str())) {
 
-			for (int i = 0; i < _boxes.size(); i++) {
-				bool selected = false;
+		ImGui::Text("Orientation");
+		ImGui::SliderAngle("Roll", &pos.roll, -180.0f, 180.0f);
+		ImGui::SliderAngle("Pitch", &pos.pitch, -180.0f, 180.0f);
+		ImGui::SliderAngle("Yaw", &pos.yaw, -180.0f, 180.0f);
 
-				if (_combo_box_index.has_value()) {
-					selected = *_combo_box_index == i;
-				}
-
-				if (ImGui::Selectable(std::to_string(i).c_str(), selected)) {
-					_combo_box_index = i;
-				}
-				
-				if (selected) {
-					ImGui::SetItemDefaultFocus();
-				}
-			}
-			ImGui::EndCombo();
-		}
-
-		if (ImGui::Button("Spawn Control Window") && _combo_box_index) {
-			_box_control_ids.insert(*_combo_box_index);
-			_combo_box_index.reset();
-		}
+		ImGui::Text("Position");
+		ImGui::SliderFloat("X", &pos.x, -20.0f, 20.0f);
+		ImGui::SliderFloat("Y", &pos.y, -20.0f, 20.0f);
+		ImGui::SliderFloat("Z", &pos.z, -20.0f, 20.0f);
 	}
 	ImGui::End();
-}
-
-void dx3d::Game::SpawnBoxWindows() noexcept {
-	for (auto i = _box_control_ids.begin(); i != _box_control_ids.end(); ) {
-		if (!_boxes[*i]->SpawnControlWindow(*i, *_graphics)) {
-			i = _box_control_ids.erase(i);
-		} else {
-			i++;
-		}
-	}
 }

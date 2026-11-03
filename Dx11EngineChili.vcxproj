@@ -208,6 +208,7 @@
     <ClInclude Include="DX3D\Source\DX3D\Graphics\Drawable\Box.hpp" />
     <ClInclude Include="DX3D\Source\DX3D\Graphics\Drawable\Cylinder.hpp" />
     <ClInclude Include="DX3D\Source\DX3D\Graphics\Drawable\Melon.hpp" />
+    <ClInclude Include="DX3D\Source\DX3D\Graphics\Drawable\Model.hpp" />
     <ClInclude Include="DX3D\Source\DX3D\Graphics\Drawable\Models\Cone.hpp" />
     <ClInclude Include="DX3D\Source\DX3D\Graphics\Drawable\Models\Cube.hpp" />
     <ClInclude Include="DX3D\Source\DX3D\Graphics\Drawable\Drawable.hpp" />
