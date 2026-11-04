@@ -1,6 +1,8 @@
 #include <DX3D/Core/WinSwitches.hpp>
 #include <Windows.h>
 
+#include <sstream>
+
 #include <DX3D/Window/ImGUI/imgui.h>
 #include <DX3D/Window/ImguiManager.hpp>
 
@@ -11,7 +13,6 @@
 #include <DX3D/Game/Game.hpp>
 #include <DX3D/IO/Mouse.hpp>
 #include <DX3D/IO/Keyboard.hpp>
-#include <DX3D/Timer/Timer.hpp>
 
 #include <DX3D/Graphics/Graphics.hpp>
 #include <DX3D/Graphics/Drawable/Mesh.hpp>
@@ -32,7 +33,6 @@ dx3d::Game::Game(const GameDesc& desc) :
 		_window->GetWindowSize())
 	);
 	_camera = std::make_unique<Camera>();
-	_timer = std::make_unique<Timer>();
 
 	_point_light = std::make_unique<PointLight>(
 		BaseDesc(_logger), DrawableDesc({_logger}), BindableDesc({_logger}), *_graphics
@@ -80,8 +80,6 @@ void dx3d::Game::Run() {
 }
 
 void dx3d::Game::OnInternalUpdate() {
-	const auto dt = _timer->Mark() * _speed_factor;
-
 	IOControls();
 
 	_graphics->BeginFrame(0.07f, 0.0f, 0.12f);
@@ -96,7 +94,6 @@ void dx3d::Game::OnInternalUpdate() {
 
 	if (_graphics->IsImguiEnabled()) {
 		ShowModelWindow();
-		SpawnSimulationWindow();
 		_camera->SpawnControlWindow();
 		_point_light->SpawnControlWindow();
 	}
@@ -105,27 +102,9 @@ void dx3d::Game::OnInternalUpdate() {
 }
 
 void dx3d::Game::IOControls() noexcept {
-	char key = '\0';
-	key = _window->_keyboard->GetCharKey();
-
-	const auto wheel_delta = _window->_mouse->GetWheelDelta();
-	if (wheel_delta > 0) {
-		key = '+';
-	}
-	else if (wheel_delta < 0) {
-		key = '-';
-	}
+	const char key = _window->_keyboard->GetCharKey();
 
 	switch (key) {
-	case '+':
-		_speed_factor = std::min(_speed_factor + 0.1f, 4.0f);
-		break;
-	case '-':
-		_speed_factor = std::max(0.0f, _speed_factor - 0.1f);
-		break;
-	case ' ':
-		_pause = !_pause;
-		break;
 	case '\t':
 		if (_graphics->IsImguiEnabled()) {
 			_graphics->DisableImgui();
@@ -140,15 +119,6 @@ void dx3d::Game::IOControls() noexcept {
 
 	_window->_mouse->Clear();
 	_window->_keyboard->Clear();
-}
-
-void dx3d::Game::SpawnSimulationWindow() noexcept {
-	if (ImGui::Begin("Simulation Speed")) {
-		ImGui::SliderFloat("Speed Factor", &_speed_factor, 0.0f, 4.0f);
-		ImGui::Text("%.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
-		ImGui::Text("Status: %s", _pause ? "PAUSED" : "RUNNING (press spacebar to pause)");
-	}
-	ImGui::End();
 }
 
 void dx3d::Game::ShowModelWindow() {
