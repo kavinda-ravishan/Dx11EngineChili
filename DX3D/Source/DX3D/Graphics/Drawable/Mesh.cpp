@@ -1,3 +1,4 @@
+#include <DX3D/Window/ImGUI/imgui.h>
 #include <DX3D/Graphics/Drawable/Mesh.hpp>
 
 // Mesh
@@ -39,8 +40,8 @@ DirectX::XMMATRIX dx3d::Mesh::GetTransformXM() const noexcept
 }
 
 // Node
-dx3d::Node::Node(std::vector<Mesh*> mesh_ptrs, const DirectX::XMMATRIX& transform) noexcept(!IS_DEBUG)
-	: _mesh_ptrs(std::move(mesh_ptrs))
+dx3d::Node::Node(const std::string& name, std::vector<Mesh*> mesh_ptrs, const DirectX::XMMATRIX& transform) noexcept(!IS_DEBUG)
+	: _name(name), _mesh_ptrs(std::move(mesh_ptrs))
 {
 	DirectX::XMStoreFloat4x4(&this->_transform, transform);
 }
@@ -58,15 +59,84 @@ void dx3d::Node::Draw(Graphics& gfx, DirectX::FXMMATRIX accumulated_transform) c
 	}
 }
 
+void dx3d::Node::ShowTree(int& node_index_tracked, std::optional<int>& selected_index) const noexcept
+{
+	// nodeIndex serves as the uid for gui tree nodes, incremented throughout recursion
+	const int current_node_index = node_index_tracked;
+	node_index_tracked++;
+	// build up flags for current node
+	const auto node_flags = ImGuiTreeNodeFlags_OpenOnArrow
+		| ((current_node_index == selected_index.value_or(-1)) ? ImGuiTreeNodeFlags_Selected : 0)
+		| ((_child_ptrs.empty()) ? ImGuiTreeNodeFlags_Leaf : 0);
+	// if tree node expanded, recursively render all children
+	if (ImGui::TreeNodeEx((void*)(intptr_t)current_node_index, node_flags, _name.c_str()))
+	{
+		selected_index = ImGui::IsItemClicked() ? current_node_index : selected_index;
+		for (const auto& pChild : _child_ptrs)
+		{
+			pChild->ShowTree(node_index_tracked, selected_index);
+		}
+		ImGui::TreePop();
+	}
+}
+
 void dx3d::Node::AddChild(std::unique_ptr<Node> child) noexcept(!IS_DEBUG)
 {
 	assert(child);
 	_child_ptrs.push_back(std::move(child));
 }
 
-//Model
+// ModelWindow
+namespace dx3d {
+
+	class ModelWindow // pImpl idiom, only defined in this .cpp
+	{
+	public:
+		void Show(const char* windowName, const Node& root) noexcept
+		{
+			// window name defaults to "Model"
+			windowName = windowName ? windowName : "Model";
+			// need an ints to track node indices and selected node
+			int node_index_tracked = 0;
+			if (ImGui::Begin(windowName))
+			{
+				ImGui::Columns(2, nullptr, true);
+				root.ShowTree(node_index_tracked, _selected_index);
+
+				ImGui::NextColumn();
+				ImGui::Text("Orientation");
+				ImGui::SliderAngle("Roll", &_pos.roll, -180.0f, 180.0f);
+				ImGui::SliderAngle("Pitch", &_pos.pitch, -180.0f, 180.0f);
+				ImGui::SliderAngle("Yaw", &_pos.yaw, -180.0f, 180.0f);
+				ImGui::Text("Position");
+				ImGui::SliderFloat("X", &_pos.x, -20.0f, 20.0f);
+				ImGui::SliderFloat("Y", &_pos.y, -20.0f, 20.0f);
+				ImGui::SliderFloat("Z", &_pos.z, -20.0f, 20.0f);
+			}
+			ImGui::End();
+		}
+		DirectX::XMMATRIX GetTransform() const noexcept
+		{
+			return DirectX::XMMatrixRotationRollPitchYaw(_pos.roll, _pos.pitch, _pos.yaw) *
+				DirectX::XMMatrixTranslation(_pos.x, _pos.y, _pos.z);
+		}
+	private:
+		std::optional<int> _selected_index{};
+		struct
+		{
+			float roll{ 0.0f };
+			float pitch{ 3.144f };
+			float yaw{ 0.0f };
+			float x{ 0.0f };
+			float y{ -10.0f };
+			float z{ 15.0f };
+		} _pos;
+	};
+} // namespace dx3d
+
+// Model
 dx3d::Model::Model(const BaseDesc& desc, Graphics& graphics, const std::string file_name)
-	: Base(desc)
+	: Base(desc), _window(std::make_unique<ModelWindow>())
 {
 	Assimp::Importer imp;
 	const auto scene = imp.ReadFile(file_name.c_str(),
@@ -80,6 +150,18 @@ dx3d::Model::Model(const BaseDesc& desc, Graphics& graphics, const std::string f
 	}
 
 	_root = ParseNode(*scene->mRootNode);
+}
+
+dx3d::Model::~Model() noexcept {}
+
+void dx3d::Model::Draw(Graphics& graphics) const
+{
+	_root->Draw(graphics, _window->GetTransform());
+}
+
+void dx3d::Model::ShowWindow(const char* window_name) noexcept
+{
+	_window->Show(window_name, *_root);
 }
 
 std::unique_ptr<dx3d::Mesh> dx3d::Model::ParseMesh(const BaseDesc& desc, Graphics& graphics, const aiMesh& mesh)
@@ -152,16 +234,11 @@ std::unique_ptr<dx3d::Node> dx3d::Model::ParseNode(const aiNode& node)
 		cur_mesh_ptrs.push_back(_mesh_ptrs.at(meshIdx).get());
 	}
 
-	auto node_ptr = std::make_unique<Node>(std::move(cur_mesh_ptrs), transform);
+	auto node_ptr = std::make_unique<Node>(node.mName.C_Str(), std::move(cur_mesh_ptrs), transform);
 	for (size_t i = 0; i < node.mNumChildren; i++)
 	{
 		node_ptr->AddChild(ParseNode(*node.mChildren[i]));
 	}
 
 	return node_ptr;
-}
-
-void dx3d::Model::Draw(Graphics& graphics, DirectX::FXMMATRIX transform) const
-{
-	_root->Draw(graphics, transform);
 }

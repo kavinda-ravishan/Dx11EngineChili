@@ -86,16 +86,13 @@ void dx3d::Game::OnInternalUpdate() {
 	_graphics->SetCamera(_camera->GetMatrix());
 	_point_light->Bind(*_graphics, _camera->GetMatrix());
 
-	const auto nano_transform = DirectX::XMMatrixRotationRollPitchYaw(pos.roll, pos.pitch, pos.yaw) *
-		DirectX::XMMatrixTranslation(pos.x, pos.y, pos.z);
-	_nano->Draw(*_graphics, nano_transform);
-
+	_nano->Draw(*_graphics);
 	_point_light->Draw(*_graphics);
 
 	if (_graphics->IsImguiEnabled()) {
-		ShowModelWindow();
 		_camera->SpawnControlWindow();
 		_point_light->SpawnControlWindow();
+		_nano->ShowWindow();
 	}
 
 	_graphics->EndFrame();
@@ -119,22 +116,4 @@ void dx3d::Game::IOControls() noexcept {
 
 	_window->_mouse->Clear();
 	_window->_keyboard->Clear();
-}
-
-void dx3d::Game::ShowModelWindow() {
-	if (ImGui::Begin("Model"))
-	{
-		using namespace std::string_literals;
-
-		ImGui::Text("Orientation");
-		ImGui::SliderAngle("Roll", &pos.roll, -180.0f, 180.0f);
-		ImGui::SliderAngle("Pitch", &pos.pitch, -180.0f, 180.0f);
-		ImGui::SliderAngle("Yaw", &pos.yaw, -180.0f, 180.0f);
-
-		ImGui::Text("Position");
-		ImGui::SliderFloat("X", &pos.x, -20.0f, 20.0f);
-		ImGui::SliderFloat("Y", &pos.y, -20.0f, 20.0f);
-		ImGui::SliderFloat("Z", &pos.z, -20.0f, 20.0f);
-	}
-	ImGui::End();
 }
