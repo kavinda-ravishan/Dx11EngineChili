@@ -40,7 +40,7 @@ namespace dx3d {
 		const std::string _name{};
 		std::vector<std::unique_ptr<Node>> _child_ptrs{};
 		std::vector<Mesh*> _mesh_ptrs{};
-		DirectX::XMFLOAT4X4 _base_transform{};
+		DirectX::XMFLOAT4X4 _transform{};
 		DirectX::XMFLOAT4X4 _applied_transform{};
 	};
 

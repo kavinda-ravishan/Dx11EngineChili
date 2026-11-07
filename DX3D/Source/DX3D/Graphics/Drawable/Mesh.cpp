@@ -45,7 +45,7 @@ DirectX::XMMATRIX dx3d::Mesh::GetTransformXM() const noexcept
 dx3d::Node::Node(const std::string& name, std::vector<Mesh*> mesh_ptrs, const DirectX::XMMATRIX& transform) noexcept(!IS_DEBUG)
 	: _name(name), _mesh_ptrs(std::move(mesh_ptrs))
 {
-	DirectX::XMStoreFloat4x4(&_base_transform, transform);
+	DirectX::XMStoreFloat4x4(&_transform, transform);
 	DirectX::XMStoreFloat4x4(&_applied_transform, DirectX::XMMatrixIdentity());
 }
 
@@ -57,8 +57,8 @@ void dx3d::Node::SetAppliedTransform(DirectX::FXMMATRIX transform) noexcept
 void dx3d::Node::Draw(Graphics& graphics, DirectX::FXMMATRIX accumulated_transform) const noexcept(!IS_DEBUG)
 {
 	const auto built = 
-		DirectX::XMLoadFloat4x4(&_base_transform) * 
 		DirectX::XMLoadFloat4x4(&_applied_transform) * 
+		DirectX::XMLoadFloat4x4(&_transform) * 
 		accumulated_transform;
 
 	for (const auto pm : _mesh_ptrs)
