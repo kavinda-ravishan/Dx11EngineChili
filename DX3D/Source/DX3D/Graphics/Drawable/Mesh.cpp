@@ -170,8 +170,15 @@ dx3d::Model::Model(const BaseDesc& desc, Graphics& graphics, const std::string f
 	Assimp::Importer imp;
 	const auto scene = imp.ReadFile(file_name.c_str(),
 		aiProcess_Triangulate |
-		aiProcess_JoinIdenticalVertices
+		aiProcess_JoinIdenticalVertices | 
+		aiProcess_ConvertToLeftHanded |
+		aiProcess_GenNormals
 	);
+
+	if (scene == nullptr)
+	{
+		DX3DLogThrowError(("Failed to load the model " + file_name).c_str());
+	}
 
 	for (size_t i = 0; i < scene->mNumMeshes; i++)
 	{
