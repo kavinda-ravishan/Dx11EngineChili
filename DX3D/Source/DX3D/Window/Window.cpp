@@ -127,6 +127,20 @@ int64_t dx3d::Window::HandleMessage(void* arg_hwnd, uint32_t arg_msg, uint64_t a
     case WM_KILLFOCUS:
         _keyboard->ClearState();
         break;
+    case WM_ACTIVATE:
+    {
+        if (!_cursor_enabled) {
+            if (wparam & WA_ACTIVE) {
+                HideCursor();
+                ConfineCursor();
+            }
+            else {
+                ShowCursor();
+                FreeCursor();
+            }
+        }
+        break;
+    }
     
     // Keyboard events
     case WM_KEYDOWN:
@@ -167,6 +181,11 @@ int64_t dx3d::Window::HandleMessage(void* arg_hwnd, uint32_t arg_msg, uint64_t a
     case WM_LBUTTONDOWN:
     {
         if (ImGui::GetIO().WantCaptureMouse) break;
+
+        if (!_cursor_enabled) {
+            ConfineCursor();
+            HideCursor();
+        }
 
         const POINTS pt = MAKEPOINTS(lparam);
         _mouse->OnLeftPressed(pt.x, pt.y);
@@ -233,4 +252,46 @@ int64_t dx3d::Window::HandleMessage(void* arg_hwnd, uint32_t arg_msg, uint64_t a
     }
 
     return 0;
+}
+
+void dx3d::Window::EnableCursor() noexcept {
+    _cursor_enabled = true;
+    ShowCursor();
+    EnableImGuiMouse();
+    FreeCursor();
+}
+
+void dx3d::Window::DisableCursor() noexcept {
+    _cursor_enabled = false;
+    HideCursor();
+    DisableImGuiMouse();
+    ConfineCursor();
+}
+
+void dx3d::Window::HideCursor() noexcept {
+    while (::ShowCursor(FALSE) >= 0);
+}
+
+void dx3d::Window::ShowCursor() noexcept {
+    while (::ShowCursor(TRUE) < 0);
+}
+
+void dx3d::Window::EnableImGuiMouse() noexcept {
+    ImGui::GetIO().ConfigFlags &= ~ImGuiConfigFlags_NoMouse;
+}
+
+void dx3d::Window::DisableImGuiMouse() noexcept {
+    ImGui::GetIO().ConfigFlags |= ImGuiConfigFlags_NoMouse;
+}
+
+void dx3d::Window::ConfineCursor() noexcept {
+    const auto h_wnd = static_cast<HWND>(_window_handle);
+    RECT rect;
+    GetClientRect(h_wnd, &rect);
+    MapWindowPoints(h_wnd, nullptr, reinterpret_cast<POINT*>(&rect), 2);
+    ClipCursor(&rect);
+}
+
+void dx3d::Window::FreeCursor() noexcept {
+    ClipCursor(nullptr);
 }

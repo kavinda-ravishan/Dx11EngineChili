@@ -14,13 +14,26 @@ namespace dx3d {
 		
 		int64_t HandleMessage(void* arg_hwnd, uint32_t arg_msg, uint64_t arg_wparam, int64_t arg_lparam);
 
+		void EnableCursor() noexcept;
+		void DisableCursor() noexcept;
+	
+	private:
+		void HideCursor() noexcept;
+		void ShowCursor() noexcept;
+		void EnableImGuiMouse() noexcept;
+		void DisableImGuiMouse() noexcept;
+		void ConfineCursor() noexcept;
+		void FreeCursor() noexcept;
+
+	public:
 		std::unique_ptr<Keyboard> _keyboard{};
 		std::unique_ptr<Mouse> _mouse{};
-	
+
 	private:
 		const Rect _window_size{};
 		void* const _h_instance{}; // HINSTANCE
 		void* _window_handle{}; // HWND
+		bool _cursor_enabled{ true };
 	};
 
 } // namespace dx3d

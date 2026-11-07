@@ -24,6 +24,11 @@ const int32_t dx3d::Mouse::GetWheelDelta() const noexcept {
 }
 
 void dx3d::Mouse::OnMouseMove(int x, int y) noexcept {
+    //std::ostringstream oss;
+    //oss << "[Mouse] : " << "Mouse moved to " << x << ", " << y;
+
+    //DX3DLogInfo(oss.str().c_str());
+
     _pos[0] = x;
     _pos[1] = y;
 }
