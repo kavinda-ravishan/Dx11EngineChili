@@ -13,8 +13,8 @@ dx3d::Graphics::Graphics(const GraphicsDesc& desc)
 
 	DXGI_SWAP_CHAIN_DESC swap_chain_desc{};
 
-	swap_chain_desc.BufferDesc.Height = std::max(1, desc.window_size.height);
-	swap_chain_desc.BufferDesc.Width = std::max(1, desc.window_size.width);
+	swap_chain_desc.BufferDesc.Height = std::max(1, _window_size.height);
+	swap_chain_desc.BufferDesc.Width = std::max(1, _window_size.width);
 	swap_chain_desc.BufferDesc.Format = DXGI_FORMAT_B8G8R8A8_UNORM;
 	swap_chain_desc.BufferDesc.RefreshRate.Numerator = 0;
 	swap_chain_desc.BufferDesc.RefreshRate.Denominator = 0;
