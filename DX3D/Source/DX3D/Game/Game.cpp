@@ -9,15 +9,16 @@
 #include <DX3D/Math/Math.hpp>
 #include <DX3D/Core/Logger.hpp>
 
-#include <DX3D/Window/Window.hpp>
-#include <DX3D/Game/Game.hpp>
-#include <DX3D/IO/Mouse.hpp>
-#include <DX3D/IO/Keyboard.hpp>
-
 #include <DX3D/Graphics/Graphics.hpp>
 #include <DX3D/Graphics/Drawable/Mesh.hpp>
 #include <DX3D/Graphics/Camera/Camera.hpp>
 #include <DX3D/Graphics/Light/PointLight.hpp>
+
+#include <DX3D/IO/Mouse.hpp>
+#include <DX3D/IO/Keyboard.hpp>
+
+#include <DX3D/Window/Window.hpp>
+#include <DX3D/Game/Game.hpp>
 
 dx3d::Game::Game(const GameDesc& desc) :
     Base({ *std::make_unique<Logger>(desc.log_level).release() }),
