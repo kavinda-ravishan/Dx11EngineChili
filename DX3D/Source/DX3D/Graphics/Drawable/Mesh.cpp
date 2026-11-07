@@ -80,16 +80,20 @@ void dx3d::Node::ShowTree(int& node_index_tracked, std::optional<int>& selected_
 	const auto node_flags = ImGuiTreeNodeFlags_OpenOnArrow
 		| ((current_node_index == selected_index.value_or(-1)) ? ImGuiTreeNodeFlags_Selected : 0)
 		| ((_child_ptrs.empty()) ? ImGuiTreeNodeFlags_Leaf : 0);
-	// if tree node expanded, recursively render all children
-	if (ImGui::TreeNodeEx((void*)(intptr_t)current_node_index, node_flags, _name.c_str()))
-	{
-		// detecting / setting selected node
-		if (ImGui::IsItemClicked())
-		{
-			selected_index = current_node_index;
-			selected_node_ptr = const_cast<Node*>(this);
-		}
 
+	// render this node
+	const auto expanded = ImGui::TreeNodeEx((void*)(intptr_t)current_node_index, node_flags, _name.c_str());
+
+	// process for selection node
+	if(ImGui::IsItemClicked())
+	{
+		selected_index = current_node_index;
+		selected_node_ptr = const_cast<Node*>(this);
+	}
+
+	//recursively rendering of open node's children
+	if (expanded)
+	{
 		for (const auto& child_ptr : _child_ptrs)
 		{
 			child_ptr->ShowTree(node_index_tracked, selected_index, selected_node_ptr);
