@@ -87,6 +87,16 @@ dx3d::Window::Window(const WindowDesc& desc) :
         DX3DLogThrowError("Failed to create window");
     }
 
+    // register mouse raw input device
+    RAWINPUTDEVICE rid;
+    rid.usUsagePage = 0x01; // mouse page
+    rid.usUsage = 0x02; // mouse usage
+    rid.dwFlags = 0;
+    rid.hwndTarget = nullptr;
+    if (RegisterRawInputDevices(&rid, 1, sizeof(rid)) == FALSE) {
+        DX3DLogThrowError("Failed to register mouse raw input device");
+    }
+
     ShowWindow(static_cast<HWND>(_window_handle), SW_SHOWDEFAULT);
 
     ImGui_ImplWin32_Init(static_cast<HWND>(_window_handle));
@@ -129,7 +139,7 @@ int64_t dx3d::Window::HandleMessage(void* arg_hwnd, uint32_t arg_msg, uint64_t a
         break;
     case WM_ACTIVATE:
     {
-        if (!_cursor_enabled) {
+        if (!_menu_state) {
             if (wparam & WA_ACTIVE) {
                 HideCursor();
                 ConfineCursor();
@@ -182,7 +192,7 @@ int64_t dx3d::Window::HandleMessage(void* arg_hwnd, uint32_t arg_msg, uint64_t a
     {
         if (ImGui::GetIO().WantCaptureMouse) break;
 
-        if (!_cursor_enabled) {
+        if (!_menu_state) {
             ConfineCursor();
             HideCursor();
         }
@@ -247,6 +257,45 @@ int64_t dx3d::Window::HandleMessage(void* arg_hwnd, uint32_t arg_msg, uint64_t a
         break;
     }
     
+    // Mouse raw events
+    case WM_INPUT:
+    {
+        if (_menu_state) break;
+
+        UINT size{};
+        // first get the size of the input data
+        if (GetRawInputData(
+            reinterpret_cast<HRAWINPUT>(lparam),
+            RID_INPUT,
+            nullptr,
+            &size,
+            sizeof(RAWINPUTHEADER)) == -1)
+        {
+            // bail msg processing if error
+            break;
+        }
+        _raw_buffer.resize(size);
+        // read in the input data
+        if (GetRawInputData(
+            reinterpret_cast<HRAWINPUT>(lparam),
+            RID_INPUT,
+            _raw_buffer.data(),
+            &size,
+            sizeof(RAWINPUTHEADER)) != size)
+        {
+            // bail msg processing if error
+            break;
+        }
+        // process the raw input data
+        auto& ri = reinterpret_cast<const RAWINPUT&>(*_raw_buffer.data());
+        if (ri.header.dwType == RIM_TYPEMOUSE &&
+            (ri.data.mouse.lLastX != 0 || ri.data.mouse.lLastY != 0))
+        {
+            _mouse->OnRawDelta(ri.data.mouse.lLastX, ri.data.mouse.lLastY);
+        }
+        break;
+    }
+
     default:
         return DefWindowProc(hwnd, msg, wparam, lparam);
     }
@@ -254,18 +303,22 @@ int64_t dx3d::Window::HandleMessage(void* arg_hwnd, uint32_t arg_msg, uint64_t a
     return 0;
 }
 
-void dx3d::Window::EnableCursor() noexcept {
-    _cursor_enabled = true;
+void dx3d::Window::EnableMenuState() noexcept {
+    _menu_state = true;
     ShowCursor();
     EnableImGuiMouse();
     FreeCursor();
 }
 
-void dx3d::Window::DisableCursor() noexcept {
-    _cursor_enabled = false;
+void dx3d::Window::DisableMenuState() noexcept {
+    _menu_state = false;
     HideCursor();
     DisableImGuiMouse();
     ConfineCursor();
+}
+
+bool dx3d::Window::GetMenuState() const noexcept {
+    return _menu_state;
 }
 
 void dx3d::Window::HideCursor() noexcept {

@@ -99,18 +99,17 @@ void dx3d::Game::OnInternalUpdate() {
 }
 
 void dx3d::Game::IOControls() noexcept {
+	//const auto& md = _window->_mouse->GetRawDelta();
 	const char key = _window->_keyboard->GetCharKey();
 	
 	switch (key) {
 	case '\t':
-		if (!_menu_state) {
-			_menu_state = true;
-			_window->DisableCursor();
+		if (_window->GetMenuState()) {
+			_window->DisableMenuState();
 			_graphics->DisableImgui();
 		}
 		else {
-			_menu_state = false;
-			_window->EnableCursor();
+			_window->EnableMenuState();
 			_graphics->EnableImgui();
 		}
 		break;
