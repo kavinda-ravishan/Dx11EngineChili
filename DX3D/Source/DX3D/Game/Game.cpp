@@ -41,7 +41,7 @@ dx3d::Game::Game(const GameDesc& desc) :
 		BaseDesc(_logger), DrawableDesc({_logger}), BindableDesc({_logger}), *_graphics
 	);
 
-	_nano = std::make_unique<Model>(BaseDesc({ _logger }), *_graphics, "Assets\\Models\\nano.gltf");
+	_nano = std::make_unique<Model>(BaseDesc({ _logger }), *_graphics, "Assets\\Models\\nano_hierarchy.gltf");
 
 	const float aspect_ratio = float(_window->GetWindowSize().height) / _window->GetWindowSize().width;
 	_graphics->SetProjection(DirectX::XMMatrixPerspectiveLH(1.0f, aspect_ratio, 0.5f, 40.0f));
