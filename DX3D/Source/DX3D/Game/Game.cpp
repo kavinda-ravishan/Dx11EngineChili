@@ -105,7 +105,7 @@ void dx3d::Game::IOControls() noexcept {
 	constexpr float translation_multiplier{ 2 };
 	constexpr float mouse_wheel_zoom_multiplier{ 1.0f/10.0f };
 
-	const bool free_camera_movments = !_window->GetMenuState();
+	const bool free_camera_movments = !_window->IsCursorEnabled();
 
 	const auto dt = _timer->Mark();
 
@@ -121,19 +121,26 @@ void dx3d::Game::IOControls() noexcept {
 
 	switch (key) {
 	
-	// Menu
+	// Cursor state
 	case 27: // Esc
 	{
-		if (_window->GetMenuState()) {
-			_window->DisableMenuState();
-			//_graphics->DisableImgui();
-		}
-		else {
-			_window->EnableMenuState();
-			//_graphics->EnableImgui();
+		if (_window->IsCursorEnabled()) {
+			_window->DisableCursor();
+		} else {
+			_window->EnableCursor();
 		}
 		break;
 	}
+
+	case '\t':
+		if (_show_imgui) {
+			_show_imgui = false;
+			_graphics->DisableImgui();
+		} else {
+			_show_imgui = true;
+			_graphics->EnableImgui();
+		}
+		break;
 
 	// movement controls
 	case 'w':

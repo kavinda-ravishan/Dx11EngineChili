@@ -139,7 +139,7 @@ int64_t dx3d::Window::HandleMessage(void* arg_hwnd, uint32_t arg_msg, uint64_t a
         break;
     case WM_ACTIVATE:
     {
-        if (!_menu_state) {
+        if (!_cursor_enabled) {
             if (wparam & WA_ACTIVE) {
                 HideCursor();
                 ConfineCursor();
@@ -192,7 +192,7 @@ int64_t dx3d::Window::HandleMessage(void* arg_hwnd, uint32_t arg_msg, uint64_t a
     {
         if (ImGui::GetIO().WantCaptureMouse) break;
 
-        if (!_menu_state) {
+        if (!_cursor_enabled) {
             ConfineCursor();
             HideCursor();
         }
@@ -260,7 +260,7 @@ int64_t dx3d::Window::HandleMessage(void* arg_hwnd, uint32_t arg_msg, uint64_t a
     // Mouse raw events
     case WM_INPUT:
     {
-        if (_menu_state) break;
+        if (_cursor_enabled) break;
 
         UINT size{};
         // first get the size of the input data
@@ -303,22 +303,22 @@ int64_t dx3d::Window::HandleMessage(void* arg_hwnd, uint32_t arg_msg, uint64_t a
     return 0;
 }
 
-void dx3d::Window::EnableMenuState() noexcept {
-    _menu_state = true;
+void dx3d::Window::EnableCursor() noexcept {
+    _cursor_enabled = true;
     ShowCursor();
     EnableImGuiMouse();
     FreeCursor();
 }
 
-void dx3d::Window::DisableMenuState() noexcept {
-    _menu_state = false;
+void dx3d::Window::DisableCursor() noexcept {
+    _cursor_enabled = false;
     HideCursor();
     DisableImGuiMouse();
     ConfineCursor();
 }
 
-bool dx3d::Window::GetMenuState() const noexcept {
-    return _menu_state;
+bool dx3d::Window::IsCursorEnabled() const noexcept {
+    return _cursor_enabled;
 }
 
 void dx3d::Window::HideCursor() noexcept {

@@ -15,9 +15,9 @@ namespace dx3d {
 		
 		int64_t HandleMessage(void* arg_hwnd, uint32_t arg_msg, uint64_t arg_wparam, int64_t arg_lparam);
 
-		void EnableMenuState() noexcept;
-		void DisableMenuState() noexcept;
-		bool GetMenuState() const noexcept;
+		void EnableCursor() noexcept;
+		void DisableCursor() noexcept;
+		bool IsCursorEnabled() const noexcept;
 	
 	private:
 		void HideCursor() noexcept;
@@ -35,7 +35,7 @@ namespace dx3d {
 		const Rect _window_size{};
 		void* const _h_instance{}; // HINSTANCE
 		void* _window_handle{}; // HWND
-		bool _menu_state{ true };
+		bool _cursor_enabled{ true };
 		std::vector<BYTE> _raw_buffer{};
 	};
 

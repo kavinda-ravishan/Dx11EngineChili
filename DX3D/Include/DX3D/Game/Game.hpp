@@ -25,5 +25,6 @@ namespace dx3d {
 		std::unique_ptr<class Model> _nano{};
 		
 		bool _is_running{ true };
+		bool _show_imgui{ true };
 	};
 } // namespace dx3d
