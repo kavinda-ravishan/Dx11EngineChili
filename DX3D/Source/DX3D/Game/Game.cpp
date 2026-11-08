@@ -8,6 +8,7 @@
 
 #include <DX3D/Math/Math.hpp>
 #include <DX3D/Core/Logger.hpp>
+#include <DX3D/Timer/Timer.hpp>
 
 #include <DX3D/Graphics/Graphics.hpp>
 #include <DX3D/Graphics/Drawable/Mesh.hpp>
@@ -33,6 +34,7 @@ dx3d::Game::Game(const GameDesc& desc) :
 		_window->GetWindowHandle(), 
 		_window->GetWindowSize())
 	);
+	_timer = std::make_unique<Timer>();
 	_camera = std::make_unique<Camera>();
 
 	_point_light = std::make_unique<PointLight>(
@@ -100,20 +102,59 @@ void dx3d::Game::OnInternalUpdate() {
 }
 
 void dx3d::Game::IOControls() noexcept {
-	//const auto& md = _window->_mouse->GetRawDelta();
+	constexpr float translation_multiplier{ 2 };
+	constexpr float mouse_wheel_zoom_multiplier{ 1.0f/10.0f };
+
+	const bool free_camera_movments = !_window->GetMenuState();
+
+	const auto dt = _timer->Mark();
+
+	const auto& mouse_delta = _window->_mouse->GetRawDelta();
+	const auto& mouse_wheel_delta = _window->_mouse->GetWheelDelta();
+
 	const char key = _window->_keyboard->GetCharKey();
-	
+
+	if (free_camera_movments) {
+		_camera->Rotate(static_cast<float>(mouse_delta[0]), static_cast<float>(mouse_delta[1]));
+		_camera->Translate({ 0.0f, 0.0f, static_cast<float>(mouse_wheel_delta) * mouse_wheel_zoom_multiplier });
+	}
+
 	switch (key) {
-	case '\t':
+	
+	// Menu
+	case 27: // Esc
+	{
 		if (_window->GetMenuState()) {
 			_window->DisableMenuState();
-			_graphics->DisableImgui();
+			//_graphics->DisableImgui();
 		}
 		else {
 			_window->EnableMenuState();
-			_graphics->EnableImgui();
+			//_graphics->EnableImgui();
 		}
 		break;
+	}
+
+	// movement controls
+	case 'w':
+		if (free_camera_movments) _camera->Translate({ 0.0f, 0.0f, dt * translation_multiplier });
+		break;
+	case 's':
+		if (free_camera_movments) _camera->Translate({ 0.0f, 0.0f, -dt * translation_multiplier });
+		break;
+	case 'a':
+		if (free_camera_movments) _camera->Translate({ -dt * translation_multiplier, 0.0f, 0.0f });
+		break;
+	case 'd':
+		if (free_camera_movments) _camera->Translate({ dt * translation_multiplier, 0.0f, 0.0f });
+		break;
+	case 'r':
+		if (free_camera_movments) _camera->Translate({ 0.0f, dt * translation_multiplier, 0.0f });
+		break;
+	case 'f':
+		if (free_camera_movments) _camera->Translate({ 0.0f, -dt * translation_multiplier, 0.0f });
+		break;
+	
 	default:
 		break;
 	}

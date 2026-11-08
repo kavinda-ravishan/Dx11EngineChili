@@ -82,7 +82,7 @@ void dx3d::Mouse::OnMiddleReleased(int x, int y) noexcept {
 }
 
 void dx3d::Mouse::OnWheelMove(int delta, int x, int y) noexcept {
-    _wheel_delta = delta;
+    _wheel_delta += delta;
 
     std::ostringstream oss;
     oss << "[Mouse] : " << "Mouse wheel scrolls by " << delta << " at " << x << ", " << y;
@@ -95,6 +95,6 @@ void dx3d::Mouse::OnRawDelta(int dx, int dy) noexcept {
     
     //DX3DLogInfo(oss.str().c_str());
 
-    _raw_delta[0] = dx;
-    _raw_delta[1] = dy;
+    _raw_delta[0] += dx;
+    _raw_delta[1] += dy;
 }
