@@ -1,6 +1,7 @@
 #include <unordered_map>
 
 #include <DX3D/Window/ImGUI/imgui.h>
+#include <DX3D/Utils/Surface.hpp>
 #include <DX3D/Graphics/Drawable/Mesh.hpp>
 
 // Mesh
@@ -192,7 +193,7 @@ dx3d::Model::Model(const BaseDesc& desc, Graphics& graphics, const std::string f
 
 	for (size_t i = 0; i < scene->mNumMeshes; i++)
 	{
-		_mesh_ptrs.push_back(ParseMesh(desc, graphics, *scene->mMeshes[i]));
+		_mesh_ptrs.push_back(ParseMesh(desc, graphics, *scene->mMeshes[i], scene->mMaterials));
 	}
 
 	int next_id{ 0 };
@@ -215,60 +216,82 @@ void dx3d::Model::ShowWindow(const char* window_name) noexcept
 	_window->Show(window_name, *_root);
 }
 
-std::unique_ptr<dx3d::Mesh> dx3d::Model::ParseMesh(const BaseDesc& desc, Graphics& graphics, const aiMesh& mesh)
+std::unique_ptr<dx3d::Mesh> dx3d::Model::ParseMesh(const BaseDesc& desc, Graphics& graphics, const aiMesh& ai_mesh, const aiMaterial* const* ai_materials_ptr)
 {
 	VertexBuffer vbuf(std::move(
 		VertexLayout{}
 		.Append(VertexLayout::Position3D)
 		.Append(VertexLayout::Normal)
+		.Append(VertexLayout::Texture2D)
 	));
 
-	for (unsigned int i = 0; i < mesh.mNumVertices; i++)
+	for (unsigned int i = 0; i < ai_mesh.mNumVertices; i++)
 	{
-		auto& vertex = mesh.mVertices[i];
-		auto& normal = mesh.mNormals[i];
+		auto& vertex = ai_mesh.mVertices[i];
+		auto& normal = ai_mesh.mNormals[i];
+		auto& texture_coords = ai_mesh.mTextureCoords[0][i];
 
 		vbuf.EmplaceBack(
 			*reinterpret_cast<DirectX::XMFLOAT3*>(&vertex),
-			*reinterpret_cast<DirectX::XMFLOAT3*>(&normal)
+			*reinterpret_cast<DirectX::XMFLOAT3*>(&normal),
+			*reinterpret_cast<DirectX::XMFLOAT2*>(&texture_coords)
 		);
 	}
 
 	std::vector<unsigned short> indices;
-	indices.reserve(mesh.mNumFaces * 3);
-	for (unsigned int i = 0; i < mesh.mNumFaces; i++)
+	indices.reserve(ai_mesh.mNumFaces * 3);
+	for (unsigned int i = 0; i < ai_mesh.mNumFaces; i++)
 	{
-		const auto& face = mesh.mFaces[i];
+		const auto& face = ai_mesh.mFaces[i];
 		assert(face.mNumIndices == 3);
 		indices.push_back(face.mIndices[0]);
 		indices.push_back(face.mIndices[1]);
 		indices.push_back(face.mIndices[2]);
 	}
 
-	std::vector<std::unique_ptr<Bindable>> bindables;
+	std::vector<std::unique_ptr<Bindable>> bindables_ptrs;
 
-	bindables.push_back(std::make_unique<VertexBufferB>(BindableDesc({ desc.logger }), graphics, vbuf));
+	if (ai_mesh.mMaterialIndex >= 0) {
+		using namespace std::string_literals;
+		const auto& ai_material = *ai_materials_ptr[ai_mesh.mMaterialIndex];
+		aiString ai_text_file_name;
+		ai_material.GetTexture(aiTextureType_DIFFUSE, 0, &ai_text_file_name);
 
-	bindables.push_back(std::make_unique<IndexBuffer>(BindableDesc({ desc.logger }), graphics, indices));
+		const std::string text_file_path{ "Assets\\Models\\nano_textured\\"s + ai_text_file_name.C_Str() };
+
+		bindables_ptrs.push_back(
+			std::make_unique<Texture>(
+				BindableDesc({ desc.logger }), 
+				graphics, 
+				Surface(text_file_path).RGBA2BGRA()
+			)
+		);
+		bindables_ptrs.push_back(std::make_unique<Sampler>(BindableDesc({ desc.logger }), graphics));
+
+		DX3DLog(desc.logger, Logger::LogLevel::Info, ("[Model] : Loading: " + text_file_path).c_str());
+	}
+
+	bindables_ptrs.push_back(std::make_unique<VertexBufferB>(BindableDesc({ desc.logger }), graphics, vbuf));
+
+	bindables_ptrs.push_back(std::make_unique<IndexBuffer>(BindableDesc({ desc.logger }), graphics, indices));
 
 	auto pvs = std::make_unique<VertexShader>(BindableDesc({ desc.logger }), graphics, L"PhongVS.cso");
 	auto pvsbc = pvs->GetBytecode();
-	bindables.push_back(std::move(pvs));
+	bindables_ptrs.push_back(std::move(pvs));
 
-	bindables.push_back(std::make_unique<PixelShader>(BindableDesc({ desc.logger }), graphics, L"PhongPS.cso"));
+	bindables_ptrs.push_back(std::make_unique<PixelShader>(BindableDesc({ desc.logger }), graphics, L"PhongPS.cso"));
 
-	bindables.push_back(std::make_unique<InputLayout>(BindableDesc({ desc.logger }), graphics, vbuf.GetLayout().GetD3DLayout(), pvsbc));
+	bindables_ptrs.push_back(std::make_unique<InputLayout>(BindableDesc({ desc.logger }), graphics, vbuf.GetLayout().GetD3DLayout(), pvsbc));
 
 	struct PSMaterialConstant
 	{
-		DirectX::XMFLOAT3 color{ 0.6f,0.6f,0.8f };
 		float specular_intensity{ 0.6f };
 		float specular_power{ 30.0f };
-		float padding[3]{};
+		float padding[2]{};
 	} pmc;
-	bindables.push_back(std::make_unique<PixelConstantBuffer<PSMaterialConstant>>(BindableDesc({ desc.logger }), graphics, pmc, 1u));
+	bindables_ptrs.push_back(std::make_unique<PixelConstantBuffer<PSMaterialConstant>>(BindableDesc({ desc.logger }), graphics, pmc, 1u));
 
-	return std::make_unique<Mesh>(DrawableDesc({ desc.logger }), graphics, std::move(bindables));
+	return std::make_unique<Mesh>(DrawableDesc({ desc.logger }), graphics, std::move(bindables_ptrs));
 }
 
 std::unique_ptr<dx3d::Node> dx3d::Model::ParseNode(int& next_id, const aiNode& node)

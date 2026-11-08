@@ -93,6 +93,7 @@ namespace dx3d {
 		unsigned int GetWidth() const;
 		unsigned int GetHeight() const;
 		unsigned int GetChannels() const;
+		Surface& RGBA2BGRA() noexcept;
 
 		void* GetBufferPtr() const noexcept;
 

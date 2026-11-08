@@ -55,7 +55,7 @@ void dx3d::Camera::Reset() noexcept {
 }
 
 void dx3d::Camera::Rotate(float dx, float dy) noexcept {
-	_yaw = WrapToPi(_yaw + (dx * _rotation_speed));
+	_yaw = WrapAngle(_yaw + (dx * _rotation_speed));
 	_pitch = std::clamp(_pitch + (dy * _rotation_speed), (-PI * _pitch_bound_scale) / 2.0f, (PI * _pitch_bound_scale) / 2.0f);
 }
 

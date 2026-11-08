@@ -53,6 +53,18 @@ unsigned int dx3d::Surface::GetChannels() const {
     return _channels;
 }
 
+dx3d::Surface& dx3d::Surface::RGBA2BGRA() noexcept {
+    for (int i = 0; i < _width * _height; ++i)
+    {
+        uint8_t* p = _data + i * 4;
+
+        // rgba -> bgra
+        std::swap(p[0], p[2]);
+    }
+
+    return *this;
+}
+
 void* dx3d::Surface::GetBufferPtr() const noexcept {
     return reinterpret_cast<void*>(_data);
 }

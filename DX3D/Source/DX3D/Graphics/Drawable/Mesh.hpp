@@ -56,7 +56,7 @@ namespace dx3d {
 		void ShowWindow(const char* window_name = nullptr) noexcept;
 
 	private:
-		static std::unique_ptr<Mesh> ParseMesh(const BaseDesc& desc, Graphics& graphics, const aiMesh& mesh);
+		static std::unique_ptr<Mesh> ParseMesh(const BaseDesc& desc, Graphics& graphics, const aiMesh& ai_mesh, const aiMaterial* const* ai_material);
 		std::unique_ptr<Node> ParseNode(int& next_id, const aiNode& node);
 
 	private:

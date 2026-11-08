@@ -14,20 +14,9 @@ namespace dx3d {
 	}
 
 	template<typename T>
-	T WrapAngle(T theta)
-	{
-		const T modded = fmod(theta, (T)2.0 * (T)PI_D);
-		return (modded > (T)PI_D) ?
-			(modded - (T)2.0 * (T)PI_D) :
-			modded;
-	}
-
-	template<typename T>
-	T WrapToPi(T angle) {
+	T WrapAngle(T angle) {
 		angle = std::fmod(angle + (T)PI_D, (T)2.0 * (T)PI_D);
-		if (angle < 0) {
-			angle += (T)2.0 * (T)PI_D;
-		}
+		angle = (angle < 0) ? angle + (T)2.0 * (T)PI_D : angle;
 		return angle - (T)PI_D;
 	}
 

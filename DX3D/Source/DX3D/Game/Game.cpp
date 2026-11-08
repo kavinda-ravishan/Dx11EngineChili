@@ -41,7 +41,7 @@ dx3d::Game::Game(const GameDesc& desc) :
 		BaseDesc(_logger), DrawableDesc({_logger}), BindableDesc({_logger}), *_graphics
 	);
 
-	_nano = std::make_unique<Model>(BaseDesc({ _logger }), *_graphics, "Assets\\Models\\nano_hierarchy.gltf");
+	_nano = std::make_unique<Model>(BaseDesc({ _logger }), *_graphics, "Assets\\Models\\nano_textured\\nanosuit.obj");
 
 	const float aspect_ratio = float(_window->GetWindowSize().height) / _window->GetWindowSize().width;
 	_graphics->SetProjection(DirectX::XMMatrixPerspectiveLH(1.0f, aspect_ratio, 0.5f, 40.0f));
@@ -102,8 +102,7 @@ void dx3d::Game::OnInternalUpdate() {
 }
 
 void dx3d::Game::IOControls() noexcept {
-	constexpr float translation_multiplier{ 2 };
-	constexpr float mouse_wheel_zoom_multiplier{ 1.0f/10.0f };
+	constexpr float translation_multiplier{ 2.0f };
 
 	const bool free_camera_movments = !_window->IsCursorEnabled();
 
@@ -116,7 +115,7 @@ void dx3d::Game::IOControls() noexcept {
 
 	if (free_camera_movments) {
 		_camera->Rotate(static_cast<float>(mouse_delta[0]), static_cast<float>(mouse_delta[1]));
-		_camera->Translate({ 0.0f, 0.0f, static_cast<float>(mouse_wheel_delta) * mouse_wheel_zoom_multiplier });
+		_camera->Translate({ 0.0f, static_cast<float>(mouse_wheel_delta) * dt * translation_multiplier, 0.0f });
 	}
 
 	switch (key) {
