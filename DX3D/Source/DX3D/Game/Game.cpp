@@ -121,8 +121,22 @@ void dx3d::Game::IOControls() noexcept {
 
 	switch (key) {
 	
+	// imGUI menu state
+	case 27:
+	{
+		if (_show_imgui) {
+			_show_imgui = false;
+			_graphics->DisableImgui();
+		}
+		else {
+			_show_imgui = true;
+			_graphics->EnableImgui();
+		}
+		break;
+	}
+
 	// Cursor state
-	case 27: // Esc
+	case '\t': // Esc
 	{
 		if (_window->IsCursorEnabled()) {
 			_window->DisableCursor();
@@ -131,16 +145,6 @@ void dx3d::Game::IOControls() noexcept {
 		}
 		break;
 	}
-
-	case '\t':
-		if (_show_imgui) {
-			_show_imgui = false;
-			_graphics->DisableImgui();
-		} else {
-			_show_imgui = true;
-			_graphics->EnableImgui();
-		}
-		break;
 
 	// movement controls
 	case 'w':

@@ -288,11 +288,34 @@
   <ItemGroup>
     <Image Include="Assets\Images\cube.png" />
     <Image Include="Assets\Images\kappa50.png" />
+    <Image Include="Assets\Models\nano_textured\arm_dif.png" />
+    <Image Include="Assets\Models\nano_textured\arm_showroom_ddn.png" />
+    <Image Include="Assets\Models\nano_textured\arm_showroom_spec.png" />
+    <Image Include="Assets\Models\nano_textured\body_dif.png" />
+    <Image Include="Assets\Models\nano_textured\body_showroom_ddn.png" />
+    <Image Include="Assets\Models\nano_textured\body_showroom_spec.png" />
+    <Image Include="Assets\Models\nano_textured\glass_ddn.png" />
+    <Image Include="Assets\Models\nano_textured\glass_dif.png" />
+    <Image Include="Assets\Models\nano_textured\hand_dif.png" />
+    <Image Include="Assets\Models\nano_textured\hand_showroom_ddn.png" />
+    <Image Include="Assets\Models\nano_textured\hand_showroom_spec.png" />
+    <Image Include="Assets\Models\nano_textured\helmet_diff.png" />
+    <Image Include="Assets\Models\nano_textured\helmet_showroom_ddn.png" />
+    <Image Include="Assets\Models\nano_textured\helmet_showroom_spec.png" />
+    <Image Include="Assets\Models\nano_textured\leg_dif.png" />
+    <Image Include="Assets\Models\nano_textured\leg_showroom_ddn.png" />
+    <Image Include="Assets\Models\nano_textured\leg_showroom_spec.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Models\.gitignore" />
+    <None Include="Assets\Models\boxy.gltf" />
+    <None Include="Assets\Models\nano_hierarchy.gltf" />
+    <None Include="Assets\Models\nano_textured\nanosuit.mtl" />
     <None Include="third_party_libraries\.gitignore" />
     <None Include="third_party_libraries\README.md" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="Assets\Models\nano_textured\LICENSE.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

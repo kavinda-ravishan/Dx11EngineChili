@@ -117,9 +117,6 @@
     <ClCompile Include="DX3D\Source\DX3D\Graphics\Drawable\Mesh.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="DX3D\Source\DX3D\Graphics\Drawable\AssImpTest.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DX3D\Include\DX3D\Core\Base.hpp">
@@ -209,25 +206,13 @@
     <ClInclude Include="DX3D\Source\DX3D\Graphics\Drawable\IndexedTriangleList.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="DX3D\Source\DX3D\Graphics\Drawable\Models\Cube.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="DX3D\Source\DX3D\Graphics\Drawable\Models\Sphere.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="DX3D\Source\DX3D\Graphics\Drawable\Models\Prism.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="DX3D\Source\DX3D\Graphics\Drawable\Models\Cone.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="DX3D\Source\DX3D\Utils\Surface.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="DX3D\Source\DX3D\Graphics\Bindable\Texture.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="DX3D\Source\DX3D\Graphics\Drawable\Models\Plane.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="DX3D\Source\DX3D\Graphics\Bindable\Sampler.hpp">
@@ -269,9 +254,6 @@
     <ClInclude Include="DX3D\Source\DX3D\Graphics\Drawable\SolidSphere.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="DX3D\Source\DX3D\Graphics\Drawable\TestObject.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="DX3D\Source\DX3D\Utils\stb_image.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -282,9 +264,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="DX3D\Include\DX3D\Math\Color.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="DX3D\Source\DX3D\Graphics\Drawable\AssImpTest.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -301,10 +280,67 @@
     <Image Include="Assets\Images\kappa50.png">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="Assets\Models\nano_textured\arm_dif.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Assets\Models\nano_textured\arm_showroom_ddn.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Assets\Models\nano_textured\arm_showroom_spec.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Assets\Models\nano_textured\body_dif.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Assets\Models\nano_textured\body_showroom_ddn.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Assets\Models\nano_textured\body_showroom_spec.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Assets\Models\nano_textured\glass_ddn.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Assets\Models\nano_textured\glass_dif.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Assets\Models\nano_textured\hand_dif.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Assets\Models\nano_textured\hand_showroom_ddn.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Assets\Models\nano_textured\hand_showroom_spec.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Assets\Models\nano_textured\helmet_diff.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Assets\Models\nano_textured\helmet_showroom_ddn.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Assets\Models\nano_textured\helmet_showroom_spec.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Assets\Models\nano_textured\leg_dif.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Assets\Models\nano_textured\leg_showroom_ddn.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Assets\Models\nano_textured\leg_showroom_spec.png">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <None Include="third_party_libraries\.gitignore" />
     <None Include="third_party_libraries\README.md" />
     <None Include="Assets\Models\.gitignore" />
+    <None Include="Assets\Models\boxy.gltf" />
+    <None Include="Assets\Models\nano_hierarchy.gltf" />
+    <None Include="Assets\Models\nano_textured\nanosuit.mtl" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="Assets\Models\nano_textured\LICENSE.txt" />
   </ItemGroup>
 </Project>
