@@ -42,8 +42,8 @@ DirectX::XMMATRIX dx3d::Mesh::GetTransformXM() const noexcept
 }
 
 // Node
-dx3d::Node::Node(const std::string& name, std::vector<Mesh*> mesh_ptrs, const DirectX::XMMATRIX& transform) noexcept(!IS_DEBUG)
-	: _name(name), _mesh_ptrs(std::move(mesh_ptrs))
+dx3d::Node::Node(const int id, const std::string& name, std::vector<Mesh*> mesh_ptrs, const DirectX::XMMATRIX& transform) noexcept(!IS_DEBUG)
+	: _id(id), _name(name), _mesh_ptrs(std::move(mesh_ptrs))
 {
 	DirectX::XMStoreFloat4x4(&_transform, transform);
 	DirectX::XMStoreFloat4x4(&_applied_transform, DirectX::XMMatrixIdentity());
@@ -52,6 +52,43 @@ dx3d::Node::Node(const std::string& name, std::vector<Mesh*> mesh_ptrs, const Di
 void dx3d::Node::SetAppliedTransform(DirectX::FXMMATRIX transform) noexcept
 {
 	DirectX::XMStoreFloat4x4(&_applied_transform, transform);
+}
+
+void dx3d::Node::ShowTree(Node*& selected_node_ptr) const noexcept
+{
+	// if there is no selected node, set selectedId to an impossible value
+	const int selected_id = (selected_node_ptr == nullptr) ? -1 : selected_node_ptr->GetID();
+
+	// build up flags for current node
+	const auto node_flags = ImGuiTreeNodeFlags_OpenOnArrow
+		| ((GetID() == selected_id) ? ImGuiTreeNodeFlags_Selected : 0)
+		| ((_child_ptrs.empty()) ? ImGuiTreeNodeFlags_Leaf : 0);
+
+	// render this node
+	const auto expanded = ImGui::TreeNodeEx((
+		void*)(intptr_t)GetID(), node_flags, _name.c_str()
+	);
+
+	// process for selection node
+	if (ImGui::IsItemClicked())
+	{
+		selected_node_ptr = const_cast<Node*>(this);
+	}
+
+	//recursively rendering of open node's children
+	if (expanded)
+	{
+		for (const auto& child_ptr : _child_ptrs)
+		{
+			child_ptr->ShowTree(selected_node_ptr);
+		}
+		ImGui::TreePop();
+	}
+}
+
+
+int dx3d::Node::GetID() const noexcept {
+	return _id;
 }
 
 void dx3d::Node::Draw(Graphics& graphics, DirectX::FXMMATRIX accumulated_transform) const noexcept(!IS_DEBUG)
@@ -68,37 +105,6 @@ void dx3d::Node::Draw(Graphics& graphics, DirectX::FXMMATRIX accumulated_transfo
 	for (const auto& pc : _child_ptrs)
 	{
 		pc->Draw(graphics, built);
-	}
-}
-
-void dx3d::Node::ShowTree(int& node_index_tracked, std::optional<int>& selected_index, Node*& selected_node_ptr) const noexcept
-{
-	// nodeIndex serves as the uid for gui tree nodes, incremented throughout recursion
-	const int current_node_index = node_index_tracked;
-	node_index_tracked++;
-	// build up flags for current node
-	const auto node_flags = ImGuiTreeNodeFlags_OpenOnArrow
-		| ((current_node_index == selected_index.value_or(-1)) ? ImGuiTreeNodeFlags_Selected : 0)
-		| ((_child_ptrs.empty()) ? ImGuiTreeNodeFlags_Leaf : 0);
-
-	// render this node
-	const auto expanded = ImGui::TreeNodeEx((void*)(intptr_t)current_node_index, node_flags, _name.c_str());
-
-	// process for selection node
-	if(ImGui::IsItemClicked())
-	{
-		selected_index = current_node_index;
-		selected_node_ptr = const_cast<Node*>(this);
-	}
-
-	//recursively rendering of open node's children
-	if (expanded)
-	{
-		for (const auto& child_ptr : _child_ptrs)
-		{
-			child_ptr->ShowTree(node_index_tracked, selected_index, selected_node_ptr);
-		}
-		ImGui::TreePop();
 	}
 }
 
@@ -123,12 +129,12 @@ namespace dx3d {
 			if (ImGui::Begin(window_name))
 			{
 				ImGui::Columns(2, nullptr, true);
-				root.ShowTree(node_index_tracked, _selected_index, _selected_node_ptr);
+				root.ShowTree(_selected_node_ptr);
 
 				ImGui::NextColumn();
 				if (_selected_node_ptr != nullptr)
 				{
-					auto& transform = _transforms[*_selected_index];
+					auto& transform = _transforms[_selected_node_ptr->GetID()];
 					ImGui::Text("Orientation");
 					ImGui::SliderAngle("Roll", &transform.roll, -180.0f, 180.0f);
 					ImGui::SliderAngle("Pitch", &transform.pitch, -180.0f, 180.0f);
@@ -143,7 +149,8 @@ namespace dx3d {
 		}
 		DirectX::XMMATRIX GetTransform() const noexcept
 		{
-			const auto& transform = _transforms.at(*_selected_index);
+			assert(_selected_node_ptr != nullptr);
+			const auto& transform = _transforms.at(_selected_node_ptr->GetID());
 			return DirectX::XMMatrixRotationRollPitchYaw(transform.roll, transform.pitch, transform.yaw) *
 				DirectX::XMMatrixTranslation(transform.x, transform.y, transform.z);
 		}
@@ -152,7 +159,6 @@ namespace dx3d {
 			return _selected_node_ptr;
 		}
 	private:
-		std::optional<int> _selected_index{};
 		Node* _selected_node_ptr{};
 		struct TransformParameters
 		{
@@ -189,7 +195,8 @@ dx3d::Model::Model(const BaseDesc& desc, Graphics& graphics, const std::string f
 		_mesh_ptrs.push_back(ParseMesh(desc, graphics, *scene->mMeshes[i]));
 	}
 
-	_root = ParseNode(*scene->mRootNode);
+	int next_id{ 0 };
+	_root = ParseNode(next_id, *scene->mRootNode);
 }
 
 dx3d::Model::~Model() noexcept {}
@@ -264,7 +271,7 @@ std::unique_ptr<dx3d::Mesh> dx3d::Model::ParseMesh(const BaseDesc& desc, Graphic
 	return std::make_unique<Mesh>(DrawableDesc({ desc.logger }), graphics, std::move(bindables));
 }
 
-std::unique_ptr<dx3d::Node> dx3d::Model::ParseNode(const aiNode& node)
+std::unique_ptr<dx3d::Node> dx3d::Model::ParseNode(int& next_id, const aiNode& node)
 {
 	const auto transform = DirectX::XMMatrixTranspose(DirectX::XMLoadFloat4x4(
 		reinterpret_cast<const DirectX::XMFLOAT4X4*>(&node.mTransformation)
@@ -278,10 +285,10 @@ std::unique_ptr<dx3d::Node> dx3d::Model::ParseNode(const aiNode& node)
 		cur_mesh_ptrs.push_back(_mesh_ptrs.at(meshIdx).get());
 	}
 
-	auto node_ptr = std::make_unique<Node>(node.mName.C_Str(), std::move(cur_mesh_ptrs), transform);
+	auto node_ptr = std::make_unique<Node>(next_id++, node.mName.C_Str(), std::move(cur_mesh_ptrs), transform);
 	for (size_t i = 0; i < node.mNumChildren; i++)
 	{
-		node_ptr->AddChild(ParseNode(*node.mChildren[i]));
+		node_ptr->AddChild(ParseNode(next_id, *node.mChildren[i]));
 	}
 
 	return node_ptr;

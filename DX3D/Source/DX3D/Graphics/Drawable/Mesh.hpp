@@ -26,17 +26,19 @@ namespace dx3d {
 	class Node final
 	{
 		friend class Model;
-		friend class ModelWindow;
 	public:
-		Node(const std::string& name, std::vector<Mesh*> mesh_ptrs, const DirectX::XMMATRIX& transform) noexcept(!IS_DEBUG);
+		Node(const int id, const std::string& name, std::vector<Mesh*> mesh_ptrs, const DirectX::XMMATRIX& transform) noexcept(!IS_DEBUG);
 
 		void Draw(Graphics& graphics, DirectX::FXMMATRIX accumulated_transform) const noexcept(!IS_DEBUG);
-		void ShowTree(int& node_index_tracked, std::optional<int>& selected_index, Node*& selected_node_ptr) const noexcept;
 		void SetAppliedTransform(DirectX::FXMMATRIX transform) noexcept;
+		void ShowTree(Node*& selected_node_ptr) const noexcept;
+		int GetID() const noexcept;
+
 	private:
 		void AddChild(std::unique_ptr<Node> child) noexcept(!IS_DEBUG);
 
 	private:
+		const int _id{};
 		const std::string _name{};
 		std::vector<std::unique_ptr<Node>> _child_ptrs{};
 		std::vector<Mesh*> _mesh_ptrs{};
@@ -55,7 +57,7 @@ namespace dx3d {
 
 	private:
 		static std::unique_ptr<Mesh> ParseMesh(const BaseDesc& desc, Graphics& graphics, const aiMesh& mesh);
-		std::unique_ptr<Node> ParseNode(const aiNode& node);
+		std::unique_ptr<Node> ParseNode(int& next_id, const aiNode& node);
 
 	private:
 		std::unique_ptr<Node> _root{};
