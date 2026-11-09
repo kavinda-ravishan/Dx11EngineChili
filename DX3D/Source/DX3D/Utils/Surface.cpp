@@ -4,9 +4,9 @@
 #include <stdexcept>
 #include <DX3D/Utils/Surface.hpp>
 
-dx3d::Surface::Surface(const std::string image_path) {
+dx3d::Surface::Surface(const std::filesystem::path image_path) {
     _data = stbi_load(
-        image_path.c_str(),
+        image_path.string().c_str(),
         &_width,
         &_height,
         &_channels,

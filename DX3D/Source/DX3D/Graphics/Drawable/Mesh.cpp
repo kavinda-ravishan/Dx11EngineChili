@@ -175,11 +175,11 @@ namespace dx3d {
 } // namespace dx3d
 
 // Model
-dx3d::Model::Model(const BaseDesc& desc, Graphics& graphics, const std::string file_name)
+dx3d::Model::Model(const BaseDesc& desc, Graphics& graphics, const std::filesystem::path file_path, const std::filesystem::path resource_path)
 	: Base(desc), _window(std::make_unique<ModelWindow>())
 {
 	Assimp::Importer imp;
-	const auto scene = imp.ReadFile(file_name.c_str(),
+	const auto scene = imp.ReadFile(file_path.string().c_str(),
 		aiProcess_Triangulate |
 		aiProcess_JoinIdenticalVertices | 
 		aiProcess_ConvertToLeftHanded |
@@ -188,12 +188,12 @@ dx3d::Model::Model(const BaseDesc& desc, Graphics& graphics, const std::string f
 
 	if (scene == nullptr)
 	{
-		DX3DLogThrowError(("Failed to load the model " + file_name).c_str());
+		DX3DLogThrowError(("Failed to load the model " + file_path.string()).c_str());
 	}
 
 	for (size_t i = 0; i < scene->mNumMeshes; i++)
 	{
-		_mesh_ptrs.push_back(ParseMesh(desc, graphics, *scene->mMeshes[i], scene->mMaterials));
+		_mesh_ptrs.push_back(ParseMesh(desc, graphics, resource_path , *scene->mMeshes[i], scene->mMaterials));
 	}
 
 	int next_id{ 0 };
@@ -216,7 +216,12 @@ void dx3d::Model::ShowWindow(const char* window_name) noexcept
 	_window->Show(window_name, *_root);
 }
 
-std::unique_ptr<dx3d::Mesh> dx3d::Model::ParseMesh(const BaseDesc& desc, Graphics& graphics, const aiMesh& ai_mesh, const aiMaterial* const* ai_materials_ptr)
+std::unique_ptr<dx3d::Mesh> dx3d::Model::ParseMesh(
+	const BaseDesc& desc, 
+	Graphics& graphics, 
+	const std::filesystem::path resource_path,
+	const aiMesh& ai_mesh, 
+	const aiMaterial* const* ai_materials_ptr)
 {
 	VertexBuffer vbuf(std::move(
 		VertexLayout{}
@@ -252,13 +257,12 @@ std::unique_ptr<dx3d::Mesh> dx3d::Model::ParseMesh(const BaseDesc& desc, Graphic
 	std::vector<std::unique_ptr<Bindable>> bindables_ptrs;
 
 	if (ai_mesh.mMaterialIndex >= 0) {
-		using namespace std::string_literals;
 		const auto& ai_material = *ai_materials_ptr[ai_mesh.mMaterialIndex];
 		aiString ai_text_file_name;
 		ai_material.GetTexture(aiTextureType_DIFFUSE, 0, &ai_text_file_name);
 
-		const std::string text_file_path{ "Assets\\Models\\nano_textured\\"s + ai_text_file_name.C_Str() };
-		DX3DLog(desc.logger, Logger::LogLevel::Info, ("[Model] : Loading: " + text_file_path).c_str());
+		const std::filesystem::path text_file_path{ resource_path / ai_text_file_name.C_Str() };
+		DX3DLog(desc.logger, Logger::LogLevel::Info, ("[Model] : Loading: " + text_file_path.string()).c_str());
 
 		bindables_ptrs.push_back(
 			std::make_unique<Texture>(

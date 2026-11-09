@@ -1,5 +1,6 @@
 #pragma once
 #include <optional>
+#include <filesystem>
 
 #include <assimp/Importer.hpp>
 #include <assimp/scene.h>
@@ -49,14 +50,20 @@ namespace dx3d {
 	class Model final : public Base
 	{
 	public:
-		Model(const BaseDesc& desc, Graphics& graphics, const std::string file_name);
+		Model(const BaseDesc& desc, Graphics& graphics, const std::filesystem::path file_path, const std::filesystem::path resource_path);
 		~Model() noexcept;
 		
 		void Draw(Graphics& graphics) const;
 		void ShowWindow(const char* window_name = nullptr) noexcept;
 
 	private:
-		static std::unique_ptr<Mesh> ParseMesh(const BaseDesc& desc, Graphics& graphics, const aiMesh& ai_mesh, const aiMaterial* const* ai_material);
+		static std::unique_ptr<Mesh> ParseMesh(
+			const BaseDesc& desc, 
+			Graphics& graphics, 
+			const std::filesystem::path resource_path,
+			const aiMesh& ai_mesh, 
+			const aiMaterial* const* ai_material
+		);
 		std::unique_ptr<Node> ParseNode(int& next_id, const aiNode& node);
 
 	private:

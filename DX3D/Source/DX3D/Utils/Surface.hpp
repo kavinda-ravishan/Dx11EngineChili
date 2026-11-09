@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include <filesystem>
 
 namespace dx3d {
 	class Surface {
@@ -82,7 +83,7 @@ namespace dx3d {
 			}
 		};
 		
-		Surface(const std::string image_path);
+		Surface(const std::filesystem::path image_path);
 		~Surface();
 
 		Surface(Surface&& source) noexcept;
