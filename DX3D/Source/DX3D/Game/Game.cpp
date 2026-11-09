@@ -42,10 +42,9 @@ dx3d::Game::Game(const GameDesc& desc) :
 		BaseDesc(_logger), DrawableDesc({_logger}), BindableDesc({_logger}), *_graphics, 0.2f
 	);
 
-	const std::filesystem::path nano_textured_path{ "Assets\\Models\\nano_textured\\" };
-	const std::filesystem::path nano_textured_file_name{ "nanosuit.obj" };
+	const std::filesystem::path nano_textured_file_path{ "Assets\\Models\\nano_textured\\nanosuit.obj" };
 
-	_nano = std::make_unique<Model>(BaseDesc({ _logger }), *_graphics, nano_textured_path / nano_textured_file_name, nano_textured_path);
+	_nano = std::make_unique<Model>(BaseDesc({ _logger }), *_graphics, nano_textured_file_path, nano_textured_file_path.parent_path());
 
 	const float aspect_ratio = float(_window->GetWindowSize().height) / _window->GetWindowSize().width;
 	_graphics->SetProjection(DirectX::XMMatrixPerspectiveLH(1.0f, aspect_ratio, 0.5f, 40.0f));
