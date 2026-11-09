@@ -38,7 +38,7 @@ dx3d::Game::Game(const GameDesc& desc) :
 	_camera = std::make_unique<Camera>();
 
 	_point_light = std::make_unique<PointLight>(
-		BaseDesc(_logger), DrawableDesc({_logger}), BindableDesc({_logger}), *_graphics
+		BaseDesc(_logger), DrawableDesc({_logger}), BindableDesc({_logger}), *_graphics, 0.2f
 	);
 
 	_nano = std::make_unique<Model>(BaseDesc({ _logger }), *_graphics, "Assets\\Models\\nano_textured\\nanosuit.obj");

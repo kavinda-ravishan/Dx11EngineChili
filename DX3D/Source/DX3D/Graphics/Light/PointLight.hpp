@@ -7,7 +7,7 @@ namespace dx3d {
 	class PointLight final : public Base
 	{
 	public:
-		PointLight(const BaseDesc& desc, const DrawableDesc& drawable_desc, const BindableDesc& bindable_desc, Graphics& graphics, float radius = 0.5f);
+		PointLight(const BaseDesc& desc, const DrawableDesc& drawable_desc, const BindableDesc& bindable_desc, Graphics& graphics, float radius);
 		void SpawnControlWindow() noexcept;
 		void Reset() noexcept;
 		void Draw(Graphics& graphics) const noexcept(!IS_DEBUG);
