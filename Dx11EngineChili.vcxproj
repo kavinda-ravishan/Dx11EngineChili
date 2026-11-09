@@ -202,7 +202,6 @@
     <ClInclude Include="DX3D\Source\DX3D\Graphics\Camera\Camera.hpp" />
     <ClInclude Include="DX3D\Source\DX3D\Graphics\Drawable\Mesh.hpp" />
     <ClInclude Include="DX3D\Source\DX3D\Graphics\Drawable\Drawable.hpp" />
-    <ClInclude Include="DX3D\Source\DX3D\Graphics\Drawable\DrawableBase.hpp" />
     <ClInclude Include="DX3D\Source\DX3D\Graphics\Drawable\IndexedTriangleList.hpp" />
     <ClInclude Include="DX3D\Source\DX3D\Graphics\Drawable\SolidSphere.hpp" />
     <ClInclude Include="DX3D\Source\DX3D\Graphics\Drawable\Models\Sphere.hpp" />

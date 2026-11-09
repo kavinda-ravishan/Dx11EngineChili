@@ -7,9 +7,6 @@
 
 namespace dx3d {
 	class Drawable : public Base {
-		template<class T>
-		friend class DrawableBase;
-	
 	public:
 		Drawable(const DrawableDesc& desc);
 		virtual ~Drawable() = default;
@@ -17,7 +14,6 @@ namespace dx3d {
 		void Draw(Graphics& graphics) const noexcept(!IS_DEBUG);
 
 		virtual DirectX::XMMATRIX GetTransformXM() const noexcept = 0;
-		virtual void Update(const float dt) noexcept {}
 	
 	protected:
 		template<class T>
@@ -33,14 +29,11 @@ namespace dx3d {
 			return nullptr;
 		}
 
-		void AddBind(std::unique_ptr<Bindable> bindable) noexcept(!IS_DEBUG);
-		void AddIndexBuffer(std::unique_ptr<class IndexBuffer> index_buffer) noexcept(!IS_DEBUG);
-
-	private:
-		virtual const std::vector<std::unique_ptr<Bindable>>&  GetStaticBindables() const noexcept = 0;
+	protected:
+		void AddBind(std::shared_ptr<Bindable> bindable) noexcept(!IS_DEBUG);
 
 	private:
 		const class IndexBuffer* _index_buffer_ptr{ nullptr };
-		std::vector<std::unique_ptr<Bindable>> _bindables{};
+		std::vector<std::shared_ptr<Bindable>> _bindables{};
 	};
 } // namespace dx3d

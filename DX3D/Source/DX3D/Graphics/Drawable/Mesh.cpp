@@ -5,30 +5,16 @@
 #include <DX3D/Graphics/Drawable/Mesh.hpp>
 
 // Mesh
-dx3d::Mesh::Mesh(const DrawableDesc& desc, Graphics& graphics, std::vector<std::unique_ptr<Bindable>> bindables)
-: DrawableBase<Mesh>(desc)
+dx3d::Mesh::Mesh(const DrawableDesc& desc, Graphics& graphics, std::vector<std::shared_ptr<Bindable>> bindables)
+: Drawable(desc)
 {
-	{
-		if (!IsStaticInitialized())
-		{
-			AddStaticBind(std::make_unique<Topology>(BINDABLE_DESC, graphics, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST));
-		}
+	AddBind(std::make_shared<Topology>(BINDABLE_DESC, graphics, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST));
 
-		for (auto& bindable : bindables)
-		{
-			if (auto pi = dynamic_cast<IndexBuffer*>(bindable.get()))
-			{
-				AddIndexBuffer(std::unique_ptr<IndexBuffer>{ pi });
-				bindable.release();
-			}
-			else
-			{
-				AddBind(std::move(bindable));
-			}
-		}
-
-		AddBind(std::make_unique<TransformCbuf>(BINDABLE_DESC, graphics, *this));
+	for (auto& bindable : bindables) {
+		AddBind(std::move(bindable));
 	}
+
+	AddBind(std::make_shared<TransformCbuf>(BINDABLE_DESC, graphics, *this));
 }
 
 void dx3d::Mesh::Draw(Graphics& graphics, DirectX::FXMMATRIX accumulated_transform) const noexcept(!IS_DEBUG)
@@ -86,7 +72,6 @@ void dx3d::Node::ShowTree(Node*& selected_node_ptr) const noexcept
 		ImGui::TreePop();
 	}
 }
-
 
 int dx3d::Node::GetID() const noexcept {
 	return _id;
@@ -254,7 +239,7 @@ std::unique_ptr<dx3d::Mesh> dx3d::Model::ParseMesh(
 		indices.push_back(face.mIndices[2]);
 	}
 
-	std::vector<std::unique_ptr<Bindable>> bindables_ptrs;
+	std::vector<std::shared_ptr<Bindable>> bindable_ptrs;
 	bool has_specular_map{ false };
 	float shininess{ 35.0f };
 
@@ -268,8 +253,8 @@ std::unique_ptr<dx3d::Mesh> dx3d::Model::ParseMesh(
 		const std::filesystem::path diffuse_text_file_path{ resource_path / ai_text_file_name.C_Str() };
 		DX3DLog(desc.logger, Logger::LogLevel::Info, ("[Model] : Loading: " + diffuse_text_file_path.string()).c_str());
 
-		bindables_ptrs.push_back(
-			std::make_unique<Texture>(
+		bindable_ptrs.push_back(
+			std::make_shared<Texture>(
 				BindableDesc({ desc.logger }), 
 				graphics, 
 				Surface(diffuse_text_file_path)
@@ -282,8 +267,8 @@ std::unique_ptr<dx3d::Mesh> dx3d::Model::ParseMesh(
 			const std::filesystem::path specular_text_file_path{ resource_path / ai_text_file_name.C_Str() };
 			DX3DLog(desc.logger, Logger::LogLevel::Info, ("[Model] : Loading: " + specular_text_file_path.string()).c_str());
 		
-			bindables_ptrs.push_back(
-				std::make_unique<Texture>(
+			bindable_ptrs.push_back(
+				std::make_shared<Texture>(
 					BindableDesc({ desc.logger }),
 					graphics,
 					Surface(specular_text_file_path),
@@ -298,24 +283,24 @@ std::unique_ptr<dx3d::Mesh> dx3d::Model::ParseMesh(
 		}
 		
 		// bind sampler
-		bindables_ptrs.push_back(std::make_unique<Sampler>(BindableDesc({ desc.logger }), graphics));
+		bindable_ptrs.push_back(std::make_shared<Sampler>(BindableDesc({ desc.logger }), graphics));
 	}
 
-	bindables_ptrs.push_back(std::make_unique<VertexBufferB>(BindableDesc({ desc.logger }), graphics, vbuf));
+	bindable_ptrs.push_back(std::make_shared<VertexBufferB>(BindableDesc({ desc.logger }), graphics, vbuf));
 
-	bindables_ptrs.push_back(std::make_unique<IndexBuffer>(BindableDesc({ desc.logger }), graphics, indices));
+	bindable_ptrs.push_back(std::make_shared<IndexBuffer>(BindableDesc({ desc.logger }), graphics, indices));
 
-	auto pvs = std::make_unique<VertexShader>(BindableDesc({ desc.logger }), graphics, L"PhongVS.cso");
+	auto pvs = std::make_shared<VertexShader>(BindableDesc({ desc.logger }), graphics, L"PhongVS.cso");
 	auto pvsbc = pvs->GetBytecode();
-	bindables_ptrs.push_back(std::move(pvs));
+	bindable_ptrs.push_back(std::move(pvs));
 
-	bindables_ptrs.push_back(std::make_unique<InputLayout>(BindableDesc({ desc.logger }), graphics, vbuf.GetLayout().GetD3DLayout(), pvsbc));
+	bindable_ptrs.push_back(std::make_shared<InputLayout>(BindableDesc({ desc.logger }), graphics, vbuf.GetLayout().GetD3DLayout(), pvsbc));
 
 	if (has_specular_map) {
-		bindables_ptrs.push_back(std::make_unique<PixelShader>(BindableDesc({ desc.logger }), graphics, L"PhongPSSpecMap.cso"));
+		bindable_ptrs.push_back(std::make_shared<PixelShader>(BindableDesc({ desc.logger }), graphics, L"PhongPSSpecMap.cso"));
 	}
 	else {
-		bindables_ptrs.push_back(std::make_unique<PixelShader>(BindableDesc({ desc.logger }), graphics, L"PhongPS.cso"));
+		bindable_ptrs.push_back(std::make_shared<PixelShader>(BindableDesc({ desc.logger }), graphics, L"PhongPS.cso"));
 
 		struct PSMaterialConstant
 		{
@@ -325,10 +310,10 @@ std::unique_ptr<dx3d::Mesh> dx3d::Model::ParseMesh(
 		} pmc;
 		pmc.specular_power = shininess;
 	
-		bindables_ptrs.push_back(std::make_unique<PixelConstantBuffer<PSMaterialConstant>>(BindableDesc({ desc.logger }), graphics, pmc, 1u));
+		bindable_ptrs.push_back(std::make_shared<PixelConstantBuffer<PSMaterialConstant>>(BindableDesc({ desc.logger }), graphics, pmc, 1u));
 	}
 
-	return std::make_unique<Mesh>(DrawableDesc({ desc.logger }), graphics, std::move(bindables_ptrs));
+	return std::make_unique<Mesh>(DrawableDesc({ desc.logger }), graphics, std::move(bindable_ptrs));
 }
 
 std::unique_ptr<dx3d::Node> dx3d::Model::ParseNode(int& next_id, const aiNode& node)

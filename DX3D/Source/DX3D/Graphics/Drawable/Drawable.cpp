@@ -11,20 +11,16 @@ void dx3d::Drawable::Draw(Graphics& graphics) const noexcept(!IS_DEBUG) {
 		bindable->Bind(graphics);
 	}
 
-	for (auto& bindable : GetStaticBindables()) {
-		bindable->Bind(graphics);
-	}
-
 	graphics.DrawIndexed(_index_buffer_ptr->GetCount());
 }
 
-void dx3d::Drawable::AddBind(std::unique_ptr<Bindable> bindable) noexcept(!IS_DEBUG) {
-	assert("*Must* use AddIndexBuffer to bind index buffer" && typeid(*bindable) != typeid(IndexBuffer));
-	_bindables.push_back(std::move(bindable));
-}
+void dx3d::Drawable::AddBind(std::shared_ptr<Bindable> bindable) noexcept(!IS_DEBUG) {
 
-void dx3d::Drawable::AddIndexBuffer(std::unique_ptr<IndexBuffer> index_buffer) noexcept(!IS_DEBUG) {
-	assert("Attempting to add index buffer a second time" && _index_buffer_ptr == nullptr);
-	_index_buffer_ptr = index_buffer.get();
-	_bindables.push_back(std::move(index_buffer));
+	// special case for index buffer
+	if (typeid(*bindable) == typeid(IndexBuffer)) {
+		assert("Binding multiple index buffers not allowed" && _index_buffer_ptr == nullptr);
+		_index_buffer_ptr = &static_cast<IndexBuffer&>(*bindable);
+	}
+
+	_bindables.push_back(std::move(bindable));
 }

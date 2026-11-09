@@ -7,15 +7,15 @@
 #include <assimp/postprocess.h>
 
 #include <DX3D/Graphics/Bindable/BindableCommon.hpp>
-#include <DX3D/Graphics/Drawable/DrawableBase.hpp>
+#include <DX3D/Graphics/Drawable/Drawable.hpp>
 #include <DX3D/Graphics/Drawable/Vertex.hpp>
 
 namespace dx3d {
 
-	class Mesh final : public DrawableBase<Mesh>
+	class Mesh final : public Drawable
 	{
 	public:
-		Mesh(const DrawableDesc& desc, Graphics& graphics, std::vector<std::unique_ptr<Bindable>> bindables);
+		Mesh(const DrawableDesc& desc, Graphics& graphics, std::vector<std::shared_ptr<Bindable>> bindables);
 
 		void Draw(Graphics& graphics, DirectX::FXMMATRIX accumulated_transform) const noexcept(!IS_DEBUG);
 
