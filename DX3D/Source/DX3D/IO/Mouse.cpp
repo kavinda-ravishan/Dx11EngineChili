@@ -32,7 +32,6 @@ const int32_t dx3d::Mouse::GetWheelDelta() const noexcept {
 void dx3d::Mouse::OnMouseMove(int x, int y) noexcept {
     //std::ostringstream oss;
     //oss << "[Mouse] : " << "Mouse moved to " << x << ", " << y;
-
     //DX3DLogInfo(oss.str().c_str());
 
     _pos[0] = x;
@@ -40,59 +39,52 @@ void dx3d::Mouse::OnMouseMove(int x, int y) noexcept {
 }
 
 void dx3d::Mouse::OnLeftPressed(int x, int y) noexcept {
-    std::ostringstream oss;
-    oss << "[Mouse] : " << "Mouse left button pressed at " << x << ", " << y;
-
-    DX3DLogInfo(oss.str().c_str());
+    //std::ostringstream oss;
+    //oss << "[Mouse] : " << "Mouse left button pressed at " << x << ", " << y;
+    //DX3DLogInfo(oss.str().c_str());
 }
 
 void dx3d::Mouse::OnLeftReleased(int x, int y) noexcept {
-    std::ostringstream oss;
-    oss << "[Mouse] : " << "Mouse left button released at " << x << ", " << y;
-
-    DX3DLogInfo(oss.str().c_str());
+    //std::ostringstream oss;
+    //oss << "[Mouse] : " << "Mouse left button released at " << x << ", " << y;
+    //DX3DLogInfo(oss.str().c_str());
 }
 
 void dx3d::Mouse::OnRightPressed(int x, int y) noexcept {
-    std::ostringstream oss;
-    oss << "[Mouse] : " << "Mouse right button pressed at " << x << ", " << y;
-
-    DX3DLogInfo(oss.str().c_str());
+    //std::ostringstream oss;
+    //oss << "[Mouse] : " << "Mouse right button pressed at " << x << ", " << y;
+    //DX3DLogInfo(oss.str().c_str());
 }
 
 void dx3d::Mouse::OnRightReleased(int x, int y) noexcept {
-    std::ostringstream oss;
-    oss << "[Mouse] : " << "Mouse right button released at " << x << ", " << y;
-
-    DX3DLogInfo(oss.str().c_str());
+    //std::ostringstream oss;
+    //oss << "[Mouse] : " << "Mouse right button released at " << x << ", " << y;
+    //DX3DLogInfo(oss.str().c_str());
 }
 
 void dx3d::Mouse::OnMiddlePressed(int x, int y) noexcept {
-    std::ostringstream oss;
-    oss << "[Mouse] : " << "Mouse middle button pressed at " << x << ", " << y;
-
-    DX3DLogInfo(oss.str().c_str());
+    //std::ostringstream oss;
+    //oss << "[Mouse] : " << "Mouse middle button pressed at " << x << ", " << y;
+    //DX3DLogInfo(oss.str().c_str());
 }
 
 void dx3d::Mouse::OnMiddleReleased(int x, int y) noexcept {
-    std::ostringstream oss;
-    oss << "[Mouse] : " << "Mouse middle button released at " << x << ", " << y;
-
-    DX3DLogInfo(oss.str().c_str());
+    //std::ostringstream oss;
+    //oss << "[Mouse] : " << "Mouse middle button released at " << x << ", " << y;
+    //DX3DLogInfo(oss.str().c_str());
 }
 
 void dx3d::Mouse::OnWheelMove(int delta, int x, int y) noexcept {
     _wheel_delta += delta;
 
-    std::ostringstream oss;
-    oss << "[Mouse] : " << "Mouse wheel scrolls by " << delta << " at " << x << ", " << y;
-    DX3DLogInfo(oss.str().c_str());
+    //std::ostringstream oss;
+    //oss << "[Mouse] : " << "Mouse wheel scrolls by " << delta << " at " << x << ", " << y;
+    //DX3DLogInfo(oss.str().c_str());
 }
 
 void dx3d::Mouse::OnRawDelta(int dx, int dy) noexcept {
     //std::ostringstream oss;
     //oss << "[Mouse] : " << "Mouse moved delta " << dx << ", " << dy;
-    
     //DX3DLogInfo(oss.str().c_str());
 
     _raw_delta[0] += dx;
