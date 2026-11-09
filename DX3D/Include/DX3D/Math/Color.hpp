@@ -1,11 +1,11 @@
 #pragma once
 
 namespace dx3d {
-	struct BGRAColor
+	struct RGBAColor
 	{
-		unsigned char a;
 		unsigned char r;
 		unsigned char g;
 		unsigned char b;
+		unsigned char a;
 	};
 } // namespace dx3d

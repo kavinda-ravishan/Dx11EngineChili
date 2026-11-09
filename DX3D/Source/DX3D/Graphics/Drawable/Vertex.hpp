@@ -20,7 +20,7 @@ namespace dx3d {
 			Normal,
 			Float3Color,
 			Float4Color,
-			BGRAColor,
+			RGBAColor,
 			Count,
 		};
 		template<ElementType> struct Map;
@@ -60,9 +60,9 @@ namespace dx3d {
 			static constexpr DXGI_FORMAT dxgiFormat = DXGI_FORMAT_R32G32B32A32_FLOAT;
 			static constexpr const char* semantic = "Color";
 		};
-		template<> struct Map<BGRAColor>
+		template<> struct Map<RGBAColor>
 		{
-			using SysType = dx3d::BGRAColor;
+			using SysType = dx3d::RGBAColor;
 			static constexpr DXGI_FORMAT dxgiFormat = DXGI_FORMAT_R8G8B8A8_UNORM;
 			static constexpr const char* semantic = "Color";
 		};
@@ -104,8 +104,8 @@ namespace dx3d {
 					return sizeof(Map<Float3Color>::SysType);
 				case Float4Color:
 					return sizeof(Map<Float4Color>::SysType);
-				case BGRAColor:
-					return sizeof(Map<BGRAColor>::SysType);
+				case RGBAColor:
+					return sizeof(Map<RGBAColor>::SysType);
 				}
 				assert("Invalid element type" && false);
 				return 0u;
@@ -130,8 +130,8 @@ namespace dx3d {
 					return GenerateDesc<Float3Color>(GetOffset());
 				case Float4Color:
 					return GenerateDesc<Float4Color>(GetOffset());
-				case BGRAColor:
-					return GenerateDesc<BGRAColor>(GetOffset());
+				case RGBAColor:
+					return GenerateDesc<RGBAColor>(GetOffset());
 				}
 				assert("Invalid element type" && false);
 				return { "INVALID",0,DXGI_FORMAT_UNKNOWN,0,0,D3D11_INPUT_PER_VERTEX_DATA,0 };
@@ -226,8 +226,8 @@ namespace dx3d {
 			case VertexLayout::Float4Color:
 				SetAttribute<VertexLayout::Float4Color>(pAttribute, std::forward<T>(val));
 				break;
-			case VertexLayout::BGRAColor:
-				SetAttribute<VertexLayout::BGRAColor>(pAttribute, std::forward<T>(val));
+			case VertexLayout::RGBAColor:
+				SetAttribute<VertexLayout::RGBAColor>(pAttribute, std::forward<T>(val));
 				break;
 			default:
 				assert("Bad element type" && false);
