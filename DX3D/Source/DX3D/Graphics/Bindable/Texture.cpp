@@ -2,8 +2,8 @@
 #include <DX3D/Graphics/GraphicsLogUtils.hpp>
 #include <DX3D/Graphics/Bindable/Texture.hpp>
 
-dx3d::Texture::Texture(const BindableDesc& desc, Graphics& graphics, const Surface& surface)
-	: Bindable(desc)
+dx3d::Texture::Texture(const BindableDesc& desc, Graphics& graphics, const Surface& surface, unsigned int slot)
+	: Bindable(desc), _slot(slot)
 {
 	// create texture resource
 	D3D11_TEXTURE2D_DESC texture_desc{};
@@ -40,5 +40,5 @@ dx3d::Texture::Texture(const BindableDesc& desc, Graphics& graphics, const Surfa
 }
 
 void dx3d::Texture::Bind(Graphics& graphics) noexcept {
-	GetContext(graphics)->PSSetShaderResources(0u, 1u, _texture_view.GetAddressOf());
+	GetContext(graphics)->PSSetShaderResources(_slot, 1u, _texture_view.GetAddressOf());
 }

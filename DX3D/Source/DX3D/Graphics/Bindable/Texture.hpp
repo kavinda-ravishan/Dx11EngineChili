@@ -6,9 +6,13 @@
 namespace dx3d {
 	class Texture : public Bindable {
 	public:
-		Texture(const BindableDesc& desc, Graphics& graphics, const class Surface& surface);
+		Texture(const BindableDesc& desc, Graphics& graphics, const class Surface& surface, unsigned int slot = 0);
 		void Bind(Graphics& graphics) noexcept override;
+	
 	protected:
 		Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> _texture_view{};
+
+	private:
+		const unsigned int _slot{};
 	};
 } // namespace dx3d

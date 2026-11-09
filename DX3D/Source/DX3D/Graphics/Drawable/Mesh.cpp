@@ -255,23 +255,49 @@ std::unique_ptr<dx3d::Mesh> dx3d::Model::ParseMesh(
 	}
 
 	std::vector<std::unique_ptr<Bindable>> bindables_ptrs;
+	bool has_specular_map{ false };
+	float shininess{ 35.0f };
 
 	if (ai_mesh.mMaterialIndex >= 0) {
 		const auto& ai_material = *ai_materials_ptr[ai_mesh.mMaterialIndex];
 		aiString ai_text_file_name;
+
+		// load and bind diffuse texture
 		ai_material.GetTexture(aiTextureType_DIFFUSE, 0, &ai_text_file_name);
 
-		const std::filesystem::path text_file_path{ resource_path / ai_text_file_name.C_Str() };
-		DX3DLog(desc.logger, Logger::LogLevel::Info, ("[Model] : Loading: " + text_file_path.string()).c_str());
+		const std::filesystem::path diffuse_text_file_path{ resource_path / ai_text_file_name.C_Str() };
+		DX3DLog(desc.logger, Logger::LogLevel::Info, ("[Model] : Loading: " + diffuse_text_file_path.string()).c_str());
 
 		bindables_ptrs.push_back(
 			std::make_unique<Texture>(
 				BindableDesc({ desc.logger }), 
 				graphics, 
-				Surface(text_file_path)
+				Surface(diffuse_text_file_path)
 			)
 		);
 
+		// load and bind specular texture
+		if (ai_material.GetTexture(aiTextureType_SPECULAR, 0, &ai_text_file_name) == aiReturn_SUCCESS) {
+
+			const std::filesystem::path specular_text_file_path{ resource_path / ai_text_file_name.C_Str() };
+			DX3DLog(desc.logger, Logger::LogLevel::Info, ("[Model] : Loading: " + specular_text_file_path.string()).c_str());
+		
+			bindables_ptrs.push_back(
+				std::make_unique<Texture>(
+					BindableDesc({ desc.logger }),
+					graphics,
+					Surface(specular_text_file_path),
+					1u
+				)
+			);
+
+			has_specular_map = true;
+
+		} else {
+			ai_material.Get(AI_MATKEY_SHININESS, shininess);
+		}
+		
+		// bind sampler
 		bindables_ptrs.push_back(std::make_unique<Sampler>(BindableDesc({ desc.logger }), graphics));
 	}
 
@@ -283,17 +309,24 @@ std::unique_ptr<dx3d::Mesh> dx3d::Model::ParseMesh(
 	auto pvsbc = pvs->GetBytecode();
 	bindables_ptrs.push_back(std::move(pvs));
 
-	bindables_ptrs.push_back(std::make_unique<PixelShader>(BindableDesc({ desc.logger }), graphics, L"PhongPS.cso"));
-
 	bindables_ptrs.push_back(std::make_unique<InputLayout>(BindableDesc({ desc.logger }), graphics, vbuf.GetLayout().GetD3DLayout(), pvsbc));
 
-	struct PSMaterialConstant
-	{
-		float specular_intensity{ 0.6f };
-		float specular_power{ 30.0f };
-		float padding[2]{};
-	} pmc;
-	bindables_ptrs.push_back(std::make_unique<PixelConstantBuffer<PSMaterialConstant>>(BindableDesc({ desc.logger }), graphics, pmc, 1u));
+	if (has_specular_map) {
+		bindables_ptrs.push_back(std::make_unique<PixelShader>(BindableDesc({ desc.logger }), graphics, L"PhongPSSpecMap.cso"));
+	}
+	else {
+		bindables_ptrs.push_back(std::make_unique<PixelShader>(BindableDesc({ desc.logger }), graphics, L"PhongPS.cso"));
+
+		struct PSMaterialConstant
+		{
+			float specular_intensity{ 1.6f };
+			float specular_power{};
+			float padding[2]{};
+		} pmc;
+		pmc.specular_power = shininess;
+	
+		bindables_ptrs.push_back(std::make_unique<PixelConstantBuffer<PSMaterialConstant>>(BindableDesc({ desc.logger }), graphics, pmc, 1u));
+	}
 
 	return std::make_unique<Mesh>(DrawableDesc({ desc.logger }), graphics, std::move(bindables_ptrs));
 }

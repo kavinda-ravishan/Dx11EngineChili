@@ -34,9 +34,10 @@ float4 main(float3 world_pos : Position, float3 n : Normal, float2 tc : Texcoord
     // reflected light vector
     const float3 w = n * dot(v_to_l, n);
     const float3 r = w * 2.0f - v_to_l;
-	// calculate specular intensity based on angle between viewing vector and reflection vector, narrow with power function
+	
+    // calculate specular intensity based on angle between viewing vector and reflection vector, narrow with power function
     const float3 specular = att * (diffuse_color * diffuse_intensity) * specular_intensity * pow(max(0.0f, dot(normalize(-r), normalize(world_pos))), specular_power);
     
     // final color
-    return float4(saturate(diffuse + ambient + specular), 1.0f) * tex.Sample(splr, tc);
+    return float4(saturate(diffuse + ambient) * tex.Sample(splr, tc).rgb + specular, 1.0f);
 }
