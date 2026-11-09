@@ -258,17 +258,17 @@ std::unique_ptr<dx3d::Mesh> dx3d::Model::ParseMesh(const BaseDesc& desc, Graphic
 		ai_material.GetTexture(aiTextureType_DIFFUSE, 0, &ai_text_file_name);
 
 		const std::string text_file_path{ "Assets\\Models\\nano_textured\\"s + ai_text_file_name.C_Str() };
+		DX3DLog(desc.logger, Logger::LogLevel::Info, ("[Model] : Loading: " + text_file_path).c_str());
 
 		bindables_ptrs.push_back(
 			std::make_unique<Texture>(
 				BindableDesc({ desc.logger }), 
 				graphics, 
-				Surface(text_file_path).RGBA2BGRA()
+				Surface(text_file_path)
 			)
 		);
-		bindables_ptrs.push_back(std::make_unique<Sampler>(BindableDesc({ desc.logger }), graphics));
 
-		DX3DLog(desc.logger, Logger::LogLevel::Info, ("[Model] : Loading: " + text_file_path).c_str());
+		bindables_ptrs.push_back(std::make_unique<Sampler>(BindableDesc({ desc.logger }), graphics));
 	}
 
 	bindables_ptrs.push_back(std::make_unique<VertexBufferB>(BindableDesc({ desc.logger }), graphics, vbuf));

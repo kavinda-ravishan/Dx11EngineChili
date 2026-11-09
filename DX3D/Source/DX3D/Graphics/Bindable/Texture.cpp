@@ -11,7 +11,7 @@ dx3d::Texture::Texture(const BindableDesc& desc, Graphics& graphics, const Surfa
 	texture_desc.Height = surface.GetHeight();
 	texture_desc.MipLevels = 1;
 	texture_desc.ArraySize = 1;
-	texture_desc.Format = DXGI_FORMAT_B8G8R8A8_UNORM;
+	texture_desc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
 	texture_desc.SampleDesc.Count = 1;
 	texture_desc.SampleDesc.Quality = 0;
 	texture_desc.Usage = D3D11_USAGE_DEFAULT;

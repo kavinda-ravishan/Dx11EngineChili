@@ -25,19 +25,28 @@ dx3d::Surface::~Surface() {
 
 dx3d::Surface::Surface(Surface&& source) noexcept
     :
-    _data(_data),
+    _data(source._data),
     _width(source._width),
     _height(source._height),
     _channels(source._channels)
-{}
+{
+    source._data = nullptr;
+}
 
-dx3d::Surface& dx3d::Surface::operator=(Surface&& donor) noexcept {
-    _width = donor._width;
-    _height = donor._height;
-    _channels = donor._channels;
+dx3d::Surface& dx3d::Surface::operator=(dx3d::Surface&& donor) noexcept
+{
+    if (this != &donor)
+    {
+        stbi_image_free(_data);
 
-    _data = donor._data;
-    donor._data = nullptr;
+        _data = donor._data;
+        _width = donor._width;
+        _height = donor._height;
+        _channels = donor._channels;
+
+        donor._data = nullptr;
+    }
+
     return *this;
 }
 
