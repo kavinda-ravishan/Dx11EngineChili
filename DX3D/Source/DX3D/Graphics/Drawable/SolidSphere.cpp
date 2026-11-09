@@ -5,11 +5,9 @@
 dx3d::SolidSphere::SolidSphere(const DrawableDesc& desc, Graphics& graphics, float radius)
     : Drawable(desc)
 {
-	struct Vertex {
-		DirectX::XMFLOAT3 pos;
-	};
 
-	auto model = Sphere::Make<Vertex>();
+	auto model = Sphere::Make();
+
 	model.Transform(DirectX::XMMatrixScaling(radius, radius, radius));
 	AddBind(std::make_shared<VertexBufferB>(BINDABLE_DESC, graphics, model._vertices));
 	AddBind(std::make_shared<IndexBuffer>(BINDABLE_DESC, graphics, model._indices));
@@ -22,16 +20,12 @@ dx3d::SolidSphere::SolidSphere(const DrawableDesc& desc, Graphics& graphics, flo
 
 	struct PSColorConstant {
 		DirectX::XMFLOAT3 color{ 1.0f,1.0f,1.0f };
-		float padding;
+		float padding{};
 	} color_const;
 
 	AddBind(std::make_shared<PixelConstantBuffer<PSColorConstant>>(BINDABLE_DESC, graphics, color_const));
 
-	const std::vector<D3D11_INPUT_ELEMENT_DESC> ied {
-		{ "Position",0,DXGI_FORMAT_R32G32B32_FLOAT,0,0,D3D11_INPUT_PER_VERTEX_DATA,0 },
-	};
-
-	AddBind(std::make_shared<InputLayout>(BINDABLE_DESC, graphics, ied, pvsbc));
+	AddBind(std::make_shared<InputLayout>(BINDABLE_DESC, graphics, model._vertices.GetLayout().GetD3DLayout(), pvsbc));
 
 	AddBind(std::make_shared<Topology>(BINDABLE_DESC, graphics, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST));
 

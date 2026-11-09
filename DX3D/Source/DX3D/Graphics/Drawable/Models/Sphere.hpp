@@ -1,102 +1,117 @@
 #pragma once
+
 #include <DX3D/Core/WinSwitches.hpp>
 #include <DirectXMath.h>
+
+#include <optional>
+
 #include <DX3D/Math/Math.hpp>
+#include <DX3D/Graphics/Drawable/Vertex.hpp>
 #include <DX3D/Graphics/Drawable/IndexedTriangleList.hpp>
 
 namespace dx3d {
 	class Sphere
 	{
 	public:
-		template<class V>
-		static IndexedTriangleList<V> MakeTesselated(int latDiv, int longDiv)
+		static IndexedTriangleList MakeTesselated(VertexLayout layout, int lat_div, int long_div)
 		{
-			namespace dx = DirectX;
-			assert(latDiv >= 3);
-			assert(longDiv >= 3);
+			assert(lat_div >= 3);
+			assert(long_div >= 3);
 
 			constexpr float radius = 1.0f;
-			const auto base = dx::XMVectorSet(0.0f, 0.0f, radius, 0.0f);
-			const float lattitudeAngle = PI / latDiv;
-			const float longitudeAngle = 2.0f * PI / longDiv;
+			const auto base = DirectX::XMVectorSet(0.0f, 0.0f, radius, 0.0f);
+			const float lattitude_angle = PI / lat_div;
+			const float longitude_angle = 2.0f * PI / long_div;
 
-			std::vector<V> vertices;
-			for (int iLat = 1; iLat < latDiv; iLat++)
+			VertexBuffer vb{ std::move(layout) };
+			for (int i_lat = 1; i_lat < lat_div; i_lat++)
 			{
-				const auto latBase = dx::XMVector3Transform(
+				const auto lat_base = DirectX::XMVector3Transform(
 					base,
-					dx::XMMatrixRotationX(lattitudeAngle * iLat)
+					DirectX::XMMatrixRotationX(lattitude_angle * i_lat)
 				);
-				for (int iLong = 0; iLong < longDiv; iLong++)
+				for (int i_long = 0; i_long < long_div; i_long++)
 				{
-					vertices.emplace_back();
-					auto v = dx::XMVector3Transform(
-						latBase,
-						dx::XMMatrixRotationZ(longitudeAngle * iLong)
+					DirectX::XMFLOAT3 calculated_pos;
+					auto v = DirectX::XMVector3Transform(
+						lat_base,
+						DirectX::XMMatrixRotationZ(longitude_angle * i_long)
 					);
-					dx::XMStoreFloat3(&vertices.back().pos, v);
+					DirectX::XMStoreFloat3(&calculated_pos, v);
+					vb.EmplaceBack(calculated_pos);
 				}
 			}
 
 			// add the cap vertices
-			const auto iNorthPole = (unsigned short)vertices.size();
-			vertices.emplace_back();
-			dx::XMStoreFloat3(&vertices.back().pos, base);
-			const auto iSouthPole = (unsigned short)vertices.size();
-			vertices.emplace_back();
-			dx::XMStoreFloat3(&vertices.back().pos, dx::XMVectorNegate(base));
-
-			const auto calcIdx = [latDiv, longDiv](unsigned short iLat, unsigned short iLong)
-				{ return iLat * longDiv + iLong; };
-			std::vector<unsigned short> indices;
-			for (unsigned short iLat = 0; iLat < latDiv - 2; iLat++)
+			const auto i_north_pole = (unsigned short)vb.Size();
 			{
-				for (unsigned short iLong = 0; iLong < longDiv - 1; iLong++)
+				DirectX::XMFLOAT3 northPos;
+				DirectX::XMStoreFloat3(&northPos, base);
+				vb.EmplaceBack(northPos);
+			}
+			const auto i_south_pole = (unsigned short)vb.Size();
+			{
+				DirectX::XMFLOAT3 southPos;
+				DirectX::XMStoreFloat3(&southPos, DirectX::XMVectorNegate(base));
+				vb.EmplaceBack(southPos);
+			}
+
+			const auto calc_idx = [lat_div, long_div](unsigned short i_lat, unsigned short i_long)
+				{ return i_lat * long_div + i_long; };
+			std::vector<unsigned short> indices;
+			for (unsigned short i_lat = 0; i_lat < lat_div - 2; i_lat++)
+			{
+				for (unsigned short i_long = 0; i_long < long_div - 1; i_long++)
 				{
-					indices.push_back(calcIdx(iLat, iLong));
-					indices.push_back(calcIdx(iLat + 1, iLong));
-					indices.push_back(calcIdx(iLat, iLong + 1));
-					indices.push_back(calcIdx(iLat, iLong + 1));
-					indices.push_back(calcIdx(iLat + 1, iLong));
-					indices.push_back(calcIdx(iLat + 1, iLong + 1));
+					indices.push_back(calc_idx(i_lat, i_long));
+					indices.push_back(calc_idx(i_lat + 1, i_long));
+					indices.push_back(calc_idx(i_lat, i_long + 1));
+					indices.push_back(calc_idx(i_lat, i_long + 1));
+					indices.push_back(calc_idx(i_lat + 1, i_long));
+					indices.push_back(calc_idx(i_lat + 1, i_long + 1));
 				}
 				// wrap band
-				indices.push_back(calcIdx(iLat, longDiv - 1));
-				indices.push_back(calcIdx(iLat + 1, longDiv - 1));
-				indices.push_back(calcIdx(iLat, 0));
-				indices.push_back(calcIdx(iLat, 0));
-				indices.push_back(calcIdx(iLat + 1, longDiv - 1));
-				indices.push_back(calcIdx(iLat + 1, 0));
+				indices.push_back(calc_idx(i_lat, long_div - 1));
+				indices.push_back(calc_idx(i_lat + 1, long_div - 1));
+				indices.push_back(calc_idx(i_lat, 0));
+				indices.push_back(calc_idx(i_lat, 0));
+				indices.push_back(calc_idx(i_lat + 1, long_div - 1));
+				indices.push_back(calc_idx(i_lat + 1, 0));
 			}
 
 			// cap fans
-			for (unsigned short iLong = 0; iLong < longDiv - 1; iLong++)
+			for (unsigned short i_long = 0; i_long < long_div - 1; i_long++)
 			{
 				// north
-				indices.push_back(iNorthPole);
-				indices.push_back(calcIdx(0, iLong));
-				indices.push_back(calcIdx(0, iLong + 1));
+				indices.push_back(i_north_pole);
+				indices.push_back(calc_idx(0, i_long));
+				indices.push_back(calc_idx(0, i_long + 1));
 				// south
-				indices.push_back(calcIdx(latDiv - 2, iLong + 1));
-				indices.push_back(calcIdx(latDiv - 2, iLong));
-				indices.push_back(iSouthPole);
+				indices.push_back(calc_idx(lat_div - 2, i_long + 1));
+				indices.push_back(calc_idx(lat_div - 2, i_long));
+				indices.push_back(i_south_pole);
 			}
 			// wrap triangles
 			// north
-			indices.push_back(iNorthPole);
-			indices.push_back(calcIdx(0, longDiv - 1));
-			indices.push_back(calcIdx(0, 0));
+			indices.push_back(i_north_pole);
+			indices.push_back(calc_idx(0, long_div - 1));
+			indices.push_back(calc_idx(0, 0));
 			// south
-			indices.push_back(calcIdx(latDiv - 2, 0));
-			indices.push_back(calcIdx(latDiv - 2, longDiv - 1));
-			indices.push_back(iSouthPole);
+			indices.push_back(calc_idx(lat_div - 2, 0));
+			indices.push_back(calc_idx(lat_div - 2, long_div - 1));
+			indices.push_back(i_south_pole);
 
-			return { std::move(vertices),std::move(indices) };
+			return { std::move(vb),std::move(indices) };
 		}
-		template<class V>
-		static IndexedTriangleList<V> Make()
+		
+		static IndexedTriangleList Make(std::optional<VertexLayout> layout = std::nullopt)
 		{
-			return MakeTesselated<V>(12, 24);
+			using Element = VertexLayout::ElementType;
+			if (!layout)
+			{
+				layout = VertexLayout{}.Append(Element::Position3D);
+			}
+			return MakeTesselated(std::move(*layout), 12, 24);
 		}
 	};
 } // namespace dx3d
