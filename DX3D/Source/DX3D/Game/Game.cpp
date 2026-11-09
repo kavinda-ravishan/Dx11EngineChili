@@ -102,7 +102,7 @@ void dx3d::Game::OnInternalUpdate() {
 }
 
 void dx3d::Game::IOControls() noexcept {
-	constexpr float translation_multiplier{ 2.0f };
+	constexpr float translation_multiplier{ 1.0f };
 
 	const bool free_camera_movments = !_window->IsCursorEnabled();
 
@@ -123,12 +123,9 @@ void dx3d::Game::IOControls() noexcept {
 	// imGUI menu state
 	case 27:
 	{
-		if (_show_imgui) {
-			_show_imgui = false;
+		if (_graphics->IsImguiEnabled()) {
 			_graphics->DisableImgui();
-		}
-		else {
-			_show_imgui = true;
+		} else {
 			_graphics->EnableImgui();
 		}
 		break;
