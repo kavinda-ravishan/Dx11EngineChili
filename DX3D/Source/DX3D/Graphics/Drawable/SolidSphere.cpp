@@ -29,7 +29,6 @@ dx3d::SolidSphere::SolidSphere(const DrawableDesc& desc, Graphics& graphics, flo
 
 	AddBind(std::make_shared<Topology>(BINDABLE_DESC, graphics, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST));
 
-
 	AddBind(std::make_shared<TransformCbuf>(BINDABLE_DESC, graphics, *this));
 }
 
