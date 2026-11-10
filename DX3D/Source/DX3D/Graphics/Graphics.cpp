@@ -8,6 +8,8 @@
 #pragma comment(lib, "d3d11.lib")
 #pragma comment(lib, "D3DCompiler.lib")
 
+#define NEW_FLIP_MODE
+
 dx3d::Graphics::Graphics(const GraphicsDesc& desc) 
 : Base(desc.base), _window_size(desc.window_size) {
 	DX3DLogInfo("Initializing Graphics");
@@ -24,12 +26,15 @@ dx3d::Graphics::Graphics(const GraphicsDesc& desc)
 	swap_chain_desc.SampleDesc.Count = 1;
 	swap_chain_desc.SampleDesc.Quality = 0;
 	swap_chain_desc.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
-	//swap_chain_desc.BufferCount = 1; // legacy [DXGI_SWAP_EFFECT_DISCARD] settings
+#ifdef NEW_FLIP_MODE
 	swap_chain_desc.BufferCount = 2;
+	swap_chain_desc.SwapEffect = DXGI_SWAP_EFFECT_FLIP_DISCARD;
+#else // NEW_FLIP_MODE
+	swap_chain_desc.BufferCount = 1;
+	swap_chain_desc.SwapEffect = DXGI_SWAP_EFFECT_DISCARD;
+#endif // NEW_FLIP_MODE
 	swap_chain_desc.OutputWindow = static_cast<HWND>(desc.win_handle);
 	swap_chain_desc.Windowed = TRUE;
-	//swap_chain_desc.SwapEffect = DXGI_SWAP_EFFECT_DISCARD; // legacy [DXGI_SWAP_EFFECT_DISCARD] settings
-	swap_chain_desc.SwapEffect = DXGI_SWAP_EFFECT_FLIP_DISCARD;
 	swap_chain_desc.Flags = 0;
 
 	UINT create_device_flags{};
@@ -173,8 +178,9 @@ void dx3d::Graphics::EndFrame() {
 }
 
 void dx3d::Graphics::BeginFrame(float red, float green, float blue) noexcept {
-	// Added with [DXGI_SWAP_EFFECT_FLIP_DISCARD] flag
+#ifdef NEW_FLIP_MODE
 	_context->OMSetRenderTargets(1, _target_view.GetAddressOf(), _depth_stencil_view.Get());
+#endif // NEW_FLIP_MODE
 	
 	if (_imgui_enabled) {
 		ImGui_ImplDX11_NewFrame();
