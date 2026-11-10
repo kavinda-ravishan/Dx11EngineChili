@@ -22,6 +22,84 @@
 #include <DX3D/Window/Window.hpp>
 #include <DX3D/Game/Game.hpp>
 
+static void ShowPerformanceWindow()
+{
+	static float frame_times[120] = {};
+	static int offset = 0;
+
+	ImGuiIO& io = ImGui::GetIO();
+
+	float currentFrameTime = 1000.0f / io.Framerate;
+
+	frame_times[offset] = currentFrameTime;
+	offset = (offset + 1) % IM_ARRAYSIZE(frame_times);
+
+	// Calculate averages
+	float avg_frame_time = 0.0f;
+	float min_frame_time = FLT_MAX;
+	float max_frame_time = 0.0f;
+
+	for (float ft : frame_times)
+	{
+		avg_frame_time += ft;
+		min_frame_time = std::min(min_frame_time, ft);
+		max_frame_time = std::max(max_frame_time, ft);
+	}
+
+	avg_frame_time /= IM_ARRAYSIZE(frame_times);
+
+	float avg_fps = 1000.0f / avg_frame_time;
+	float min_fps = 1000.0f / max_frame_time;
+	float max_fps = 1000.0f / min_frame_time;
+
+	ImGui::Begin("Performance Monitor");
+
+	// FPS color
+	ImVec4 fpsColor;
+	if (io.Framerate >= 120.0f)
+		fpsColor = ImVec4(0.2f, 1.0f, 0.2f, 1.0f);      // Green
+	else if (io.Framerate >= 60.0f)
+		fpsColor = ImVec4(1.0f, 1.0f, 0.0f, 1.0f);      // Yellow
+	else
+		fpsColor = ImVec4(1.0f, 0.3f, 0.3f, 1.0f);      // Red
+
+	ImGui::TextColored(fpsColor, "FPS: %.1f", io.Framerate);
+
+	ImGui::Separator();
+
+	ImGui::Text("Current Frame: %.2f ms", currentFrameTime);
+	ImGui::Text("Average Frame: %.2f ms", avg_frame_time);
+
+	ImGui::Spacing();
+
+	ImGui::TextColored(ImVec4(0.3f, 0.8f, 1.0f, 1.0f),
+		"Average FPS: %.1f", avg_fps);
+
+	ImGui::Text("Min FPS: %.1f", min_fps);
+	ImGui::Text("Max FPS: %.1f", max_fps);
+
+	ImGui::Spacing();
+
+	// Blue graph
+	ImGui::PushStyleColor(ImGuiCol_PlotLines,
+		ImVec4(0.2f, 0.7f, 1.0f, 1.0f));
+
+	ImGui::PlotLines(
+		"Frame Time (ms)",
+		frame_times,
+		IM_ARRAYSIZE(frame_times),
+		offset,
+		nullptr,
+		0.0f,
+		40.0f,
+		ImVec2(0, 100)
+	);
+
+	ImGui::PopStyleColor();
+
+	ImGui::End();
+}
+
 dx3d::Game::Game(const GameDesc& desc) :
     Base({ *std::make_unique<Logger>(desc.log_level).release() }),
     _logger_ptr{ &_logger } 
@@ -99,6 +177,7 @@ void dx3d::Game::OnInternalUpdate() {
 		_camera->SpawnControlWindow();
 		_point_light->SpawnControlWindow();
 		_nano->ShowWindow();
+		ShowPerformanceWindow();
 	}
 
 	_graphics->EndFrame();
@@ -172,3 +251,5 @@ void dx3d::Game::IOControls() noexcept {
 	_window->_mouse->Clear();
 	_window->_keyboard->Clear();
 }
+
+
