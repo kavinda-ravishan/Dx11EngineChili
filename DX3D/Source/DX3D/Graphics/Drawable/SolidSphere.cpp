@@ -26,9 +26,9 @@ dx3d::SolidSphere::SolidSphere(const DrawableDesc& desc, Graphics& graphics, flo
 		float padding{};
 	} color_const;
 
-	AddBind(std::make_shared<PixelConstantBuffer<PSColorConstant>>(BINDABLE_DESC, graphics, color_const));
+	AddBind(BPixelConstantBuffer<PSColorConstant>::Resolve(BINDABLE_DESC, graphics, color_const));
 
-	AddBind(std::make_shared<InputLayout>(BINDABLE_DESC, graphics, model._vertices.GetLayout().GetD3DLayout(), pvsbc));
+	AddBind(BInputLayout::Resolve(BINDABLE_DESC, graphics, model._vertices.GetLayout(), pvsbc));
 
 	AddBind(BTopology::Resolve(BINDABLE_DESC, graphics, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST));
 

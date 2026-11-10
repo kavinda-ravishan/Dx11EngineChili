@@ -290,7 +290,7 @@ std::unique_ptr<dx3d::Mesh> dx3d::Model::ParseMesh(
 	auto pvsbc = pvs->GetBytecode();
 	bindable_ptrs.push_back(std::move(pvs));
 
-	bindable_ptrs.push_back(std::make_shared<InputLayout>(BindableDesc({ desc.logger }), graphics, vbuf.GetLayout().GetD3DLayout(), pvsbc));
+	bindable_ptrs.push_back(BInputLayout::Resolve(BindableDesc({ desc.logger }), graphics, vbuf.GetLayout(), pvsbc));
 
 	if (has_specular_map) {
 		bindable_ptrs.push_back(BPixelShader::Resolve(BindableDesc({ desc.logger }), graphics, "PhongPSSpecMap.cso"));
@@ -306,7 +306,7 @@ std::unique_ptr<dx3d::Mesh> dx3d::Model::ParseMesh(
 		} pmc;
 		pmc.specular_power = shininess;
 	
-		bindable_ptrs.push_back(std::make_shared<PixelConstantBuffer<PSMaterialConstant>>(BindableDesc({ desc.logger }), graphics, pmc, 1u));
+		bindable_ptrs.push_back(BPixelConstantBuffer<PSMaterialConstant>::Resolve(BindableDesc({ desc.logger }), graphics, pmc, 1u));
 	}
 
 	return std::make_unique<Mesh>(DrawableDesc({ desc.logger }), graphics, std::move(bindable_ptrs));

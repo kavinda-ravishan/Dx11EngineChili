@@ -45,5 +45,5 @@ std::string dx3d::BVertexBuffer::GetUID() const noexcept {
 
 std::string dx3d::BVertexBuffer::GenerateUID_(const std::string& tag) {
 	using namespace std::string_literals;
-	return typeid(VertexBuffer).name() + "#"s + tag;
+	return typeid(BVertexBuffer).name() + "#"s + tag;
 }

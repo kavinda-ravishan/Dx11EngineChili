@@ -6,7 +6,7 @@
 
 namespace dx3d {
 	template<typename C>
-	class VertexConstantBuffer;
+	class BVertexConstantBuffer;
 
 	class BTransformCbuf : public Bindable {
 	private:
@@ -20,7 +20,7 @@ namespace dx3d {
 		void Bind(Graphics& graphics) noexcept override;
 	
 	private:
-		static std::unique_ptr<VertexConstantBuffer<Transforms>> _static_vertex_constant_buffer;
+		static std::unique_ptr<BVertexConstantBuffer<Transforms>> _static_vertex_constant_buffer;
 		const Drawable& _parent;
 	};
 } // namespace dx3d

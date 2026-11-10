@@ -1,14 +1,15 @@
 #pragma once
 #include <DX3D/Core/WinSwitches.hpp>
 #include <wrl.h>
-#include <DX3D/Graphics/Bindable/Bindable.hpp>
 #include <DX3D/Graphics/GraphicsLogUtils.hpp>
+#include <DX3D/Graphics/Bindable/BindableCodex.hpp>
+#include <DX3D/Graphics/Bindable/Bindable.hpp>
 
 namespace dx3d {
 	template<typename C>
-	class ConstantBuffer : public Bindable {
+	class BConstantBuffer : public Bindable {
 		public:
-			ConstantBuffer(const BindableDesc& desc, Graphics& graphics, UINT slot = 0u)
+			BConstantBuffer(const BindableDesc& desc, Graphics& graphics, UINT slot = 0u)
 				: Bindable(desc), _slot(slot)
 			{
 
@@ -26,7 +27,7 @@ namespace dx3d {
 				);
 			}
 
-			ConstantBuffer(const BindableDesc& desc, Graphics& graphics, const C& consts, UINT slot = 0u)
+			BConstantBuffer(const BindableDesc& desc, Graphics& graphics, const C& consts, UINT slot = 0u)
 				: Bindable(desc), _slot(slot)
 			{
 		
@@ -47,7 +48,7 @@ namespace dx3d {
 				);
 			}
 			
-			virtual ~ConstantBuffer() = default;
+			virtual ~BConstantBuffer() = default;
 
 			void Update(Graphics& graphics, const C& consts) {
 
@@ -61,39 +62,81 @@ namespace dx3d {
 				GetContext(graphics)->Unmap(_constant_buffer.Get(), 0u);
 			}
 		protected:
-			Microsoft::WRL::ComPtr<ID3D11Buffer> _constant_buffer{};
 			const UINT _slot{};
+			Microsoft::WRL::ComPtr<ID3D11Buffer> _constant_buffer{};
 	};
 
 	template<typename C>
-	class VertexConstantBuffer final : public ConstantBuffer<C> {
-		using ConstantBuffer<C>::_constant_buffer;
-		using ConstantBuffer<C>::_slot;
+	class BVertexConstantBuffer final : public BConstantBuffer<C> {
+		using BConstantBuffer<C>::_constant_buffer;
+		using BConstantBuffer<C>::_slot;
 		using Bindable::GetContext;
 	public:
-		using ConstantBuffer<C>::ConstantBuffer;
+		using BConstantBuffer<C>::BConstantBuffer;
 
-		VertexConstantBuffer(const BindableDesc& desc, Graphics& graphics, UINT slot = 0u) : ConstantBuffer<C>(desc, graphics, slot) {}
-		VertexConstantBuffer(const BindableDesc& desc, Graphics& graphics, const C& consts, UINT slot = 0u) : ConstantBuffer<C>(desc, graphics, consts, slot) {}
+		BVertexConstantBuffer(const BindableDesc& desc, Graphics& graphics, UINT slot = 0u) : BConstantBuffer<C>(desc, graphics, slot) {}
+		BVertexConstantBuffer(const BindableDesc& desc, Graphics& graphics, const C& consts, UINT slot = 0u) : BConstantBuffer<C>(desc, graphics, consts, slot) {}
 
 		void Bind(Graphics& graphics) noexcept override {
 			GetContext(graphics)->VSSetConstantBuffers(_slot, 1u, _constant_buffer.GetAddressOf());
 		}
+
+		static std::shared_ptr<BVertexConstantBuffer> Resolve(const BindableDesc& desc, Graphics& graphics, const C& consts, UINT slot = 0) {
+			return Codex::Resolve<BVertexConstantBuffer>(desc, graphics, consts, slot);
+		}
+
+		static std::shared_ptr<BVertexConstantBuffer> Resolve(const BindableDesc& desc, Graphics& graphics, UINT slot = 0) {
+			return Codex::Resolve<BVertexConstantBuffer>(desc, graphics, slot);
+		}
+
+		static std::string GenerateUID(const C&, UINT slot) {
+			return GenerateUID(slot);
+		}
+
+		static std::string GenerateUID(UINT slot = 0) {
+			using namespace std::string_literals;
+			return typeid(BVertexConstantBuffer).name() + "#"s + std::to_string(slot);
+		}
+
+		std::string GetUID() const noexcept override {
+			return GenerateUID(_slot);
+		}
 	};
 	
 	template<typename C>
-	class PixelConstantBuffer final : public ConstantBuffer<C> {
-		using ConstantBuffer<C>::_constant_buffer;
-		using ConstantBuffer<C>::_slot;
+	class BPixelConstantBuffer final : public BConstantBuffer<C> {
+		using BConstantBuffer<C>::_constant_buffer;
+		using BConstantBuffer<C>::_slot;
 		using Bindable::GetContext;
 	public:
-		using ConstantBuffer<C>::ConstantBuffer;
+		using BConstantBuffer<C>::BConstantBuffer;
 
-		PixelConstantBuffer(const BindableDesc& desc, Graphics& graphics, UINT slot = 0u) : ConstantBuffer<C>(desc, graphics, slot) {}
-		PixelConstantBuffer(const BindableDesc& desc, Graphics& graphics, const C& consts, UINT slot = 0u) : ConstantBuffer<C>(desc, graphics, consts, slot) {}
+		BPixelConstantBuffer(const BindableDesc& desc, Graphics& graphics, UINT slot = 0u) : BConstantBuffer<C>(desc, graphics, slot) {}
+		BPixelConstantBuffer(const BindableDesc& desc, Graphics& graphics, const C& consts, UINT slot = 0u) : BConstantBuffer<C>(desc, graphics, consts, slot) {}
 
 		void Bind(Graphics& graphics) noexcept override {
 			GetContext(graphics)->PSSetConstantBuffers(_slot, 1u, _constant_buffer.GetAddressOf());
+		}
+
+		static std::shared_ptr<BPixelConstantBuffer> Resolve(const BindableDesc& desc, Graphics& graphics, const C& consts, UINT slot = 0) {
+			return Codex::Resolve<BPixelConstantBuffer>(desc, graphics, consts, slot);
+		}
+
+		static std::shared_ptr<BPixelConstantBuffer> Resolve(const BindableDesc& desc, Graphics& graphics, UINT slot = 0) {
+			return Codex::Resolve<BPixelConstantBuffer>(desc, graphics, slot);
+		}
+
+		static std::string GenerateUID(const C&, UINT slot) {
+			return GenerateUID(slot);
+		}
+
+		static std::string GenerateUID(UINT slot = 0) {
+			using namespace std::string_literals;
+			return typeid(BPixelConstantBuffer).name() + "#"s + std::to_string(slot);
+		}
+
+		std::string GetUID() const noexcept override {
+			return GenerateUID(_slot);
 		}
 	};
 } // namespace dx3d

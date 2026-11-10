@@ -26,6 +26,6 @@ namespace dx3d {
 	private:
 		PointLightCBuf _cb_data{};
 		mutable SolidSphere _mesh;
-		mutable PixelConstantBuffer<PointLightCBuf> _cbuf;
+		mutable BPixelConstantBuffer<PointLightCBuf> _cbuf;
 	};
 } // namespace dx3d

@@ -7,7 +7,7 @@ dx3d::BTransformCbuf::BTransformCbuf(const BindableDesc& desc, Graphics& graphic
 	: Bindable(desc), _parent(parent) 
 {
 	if (!_static_vertex_constant_buffer) {
-		_static_vertex_constant_buffer = std::make_unique<VertexConstantBuffer<Transforms>>(desc, graphics, slot);
+		_static_vertex_constant_buffer = std::make_unique<BVertexConstantBuffer<Transforms>>(desc, graphics, slot);
 	}
 }
 
@@ -28,4 +28,4 @@ void dx3d::BTransformCbuf::Bind(Graphics& graphics) noexcept {
 	_static_vertex_constant_buffer->Bind(graphics);
 }
 
-std::unique_ptr<dx3d::VertexConstantBuffer<dx3d::BTransformCbuf::Transforms>> dx3d::BTransformCbuf::_static_vertex_constant_buffer;
+std::unique_ptr<dx3d::BVertexConstantBuffer<dx3d::BTransformCbuf::Transforms>> dx3d::BTransformCbuf::_static_vertex_constant_buffer;
