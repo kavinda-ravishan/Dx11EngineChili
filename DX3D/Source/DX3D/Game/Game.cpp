@@ -29,9 +29,9 @@ static void ShowPerformanceWindow()
 
 	ImGuiIO& io = ImGui::GetIO();
 
-	float currentFrameTime = 1000.0f / io.Framerate;
+	float current_frame_time = 1000.0f / io.Framerate;
 
-	frame_times[offset] = currentFrameTime;
+	frame_times[offset] = current_frame_time;
 	offset = (offset + 1) % IM_ARRAYSIZE(frame_times);
 
 	// Calculate averages
@@ -55,19 +55,19 @@ static void ShowPerformanceWindow()
 	ImGui::Begin("Performance Monitor");
 
 	// FPS color
-	ImVec4 fpsColor;
-	if (io.Framerate >= 120.0f)
-		fpsColor = ImVec4(0.2f, 1.0f, 0.2f, 1.0f);      // Green
-	else if (io.Framerate >= 60.0f)
-		fpsColor = ImVec4(1.0f, 1.0f, 0.0f, 1.0f);      // Yellow
+	ImVec4 fps_color;
+	if (io.Framerate > 58.0f)
+		fps_color = ImVec4(0.2f, 1.0f, 0.2f, 1.0f);      // Green
+	else if (io.Framerate > 28.0f)
+		fps_color = ImVec4(1.0f, 1.0f, 0.0f, 1.0f);      // Yellow
 	else
-		fpsColor = ImVec4(1.0f, 0.3f, 0.3f, 1.0f);      // Red
+		fps_color = ImVec4(1.0f, 0.3f, 0.3f, 1.0f);      // Red
 
-	ImGui::TextColored(fpsColor, "FPS: %.1f", io.Framerate);
+	ImGui::TextColored(fps_color, "FPS: %.1f", io.Framerate);
 
 	ImGui::Separator();
 
-	ImGui::Text("Current Frame: %.2f ms", currentFrameTime);
+	ImGui::Text("Current Frame: %.2f ms", current_frame_time);
 	ImGui::Text("Average Frame: %.2f ms", avg_frame_time);
 
 	ImGui::Spacing();
