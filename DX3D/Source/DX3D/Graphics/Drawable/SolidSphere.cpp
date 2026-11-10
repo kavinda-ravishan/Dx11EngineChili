@@ -12,11 +12,12 @@ dx3d::SolidSphere::SolidSphere(const DrawableDesc& desc, Graphics& graphics, flo
 	AddBind(std::make_shared<VertexBufferB>(BINDABLE_DESC, graphics, model._vertices));
 	AddBind(std::make_shared<IndexBuffer>(BINDABLE_DESC, graphics, model._indices));
 
-	auto pvs = std::make_shared<VertexShader>(BINDABLE_DESC, graphics, L"SolidVS.cso");
+	auto pvs = VertexShader::Resolve(BINDABLE_DESC, graphics, "SolidVS.cso");
+
 	auto pvsbc = pvs->GetBytecode();
 	AddBind(std::move(pvs));
 
-	AddBind(std::make_shared<PixelShader>(BINDABLE_DESC, graphics, L"SolidPS.cso"));
+	AddBind(PixelShader::Resolve(BINDABLE_DESC, graphics, "SolidPS.cso"));
 
 	struct PSColorConstant {
 		DirectX::XMFLOAT3 color{ 1.0f,1.0f,1.0f };

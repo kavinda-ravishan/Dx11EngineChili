@@ -1,6 +1,7 @@
 #pragma once
 #include <DX3D/Core/WinSwitches.hpp>
 #include <d3d11.h>
+#include <string>
 #include <DX3D/Core/Base.hpp>
 #include <DX3D/Core/Common.hpp>
 
@@ -12,6 +13,7 @@ namespace dx3d {
 		explicit Bindable(const BindableDesc& desc);
 		virtual ~Bindable() = default;
 
+		virtual std::string GetUID() const noexcept;
 		virtual void Bind(Graphics& graphics) noexcept = 0;
 
 	protected:

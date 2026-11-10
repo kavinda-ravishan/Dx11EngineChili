@@ -1,7 +1,13 @@
 #include <DX3D/Graphics/Bindable/Bindable.hpp>
 #include <DX3D/Graphics/Graphics.hpp>
+#include "Bindable.hpp"
 
 dx3d::Bindable::Bindable(const BindableDesc& desc) : Base(desc.base) {}
+
+std::string dx3d::Bindable::GetUID() const noexcept {
+    assert(false);
+    return "";
+}
 
 ID3D11DeviceContext* dx3d::Bindable::GetContext(Graphics& graphics) noexcept {
     return graphics._context.Get();

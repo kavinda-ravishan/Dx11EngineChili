@@ -290,17 +290,17 @@ std::unique_ptr<dx3d::Mesh> dx3d::Model::ParseMesh(
 
 	bindable_ptrs.push_back(std::make_shared<IndexBuffer>(BindableDesc({ desc.logger }), graphics, indices));
 
-	auto pvs = std::make_shared<VertexShader>(BindableDesc({ desc.logger }), graphics, L"PhongVS.cso");
+	auto pvs = VertexShader::Resolve(BindableDesc({ desc.logger }), graphics, "PhongVS.cso");
 	auto pvsbc = pvs->GetBytecode();
 	bindable_ptrs.push_back(std::move(pvs));
 
 	bindable_ptrs.push_back(std::make_shared<InputLayout>(BindableDesc({ desc.logger }), graphics, vbuf.GetLayout().GetD3DLayout(), pvsbc));
 
 	if (has_specular_map) {
-		bindable_ptrs.push_back(std::make_shared<PixelShader>(BindableDesc({ desc.logger }), graphics, L"PhongPSSpecMap.cso"));
+		bindable_ptrs.push_back(PixelShader::Resolve(BindableDesc({ desc.logger }), graphics, "PhongPSSpecMap.cso"));
 	}
 	else {
-		bindable_ptrs.push_back(std::make_shared<PixelShader>(BindableDesc({ desc.logger }), graphics, L"PhongPS.cso"));
+		bindable_ptrs.push_back(PixelShader::Resolve(BindableDesc({ desc.logger }), graphics, "PhongPS.cso"));
 
 		struct PSMaterialConstant
 		{
