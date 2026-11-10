@@ -1,10 +1,14 @@
 #include <DX3D/Utils/Surface.hpp>
 #include <DX3D/Graphics/GraphicsLogUtils.hpp>
+#include <DX3D/Graphics/Bindable/BindableCodex.hpp>
 #include <DX3D/Graphics/Bindable/Texture.hpp>
 
-dx3d::Texture::Texture(const BindableDesc& desc, Graphics& graphics, const Surface& surface, unsigned int slot)
-	: Bindable(desc), _slot(slot)
+dx3d::BTexture::BTexture(const BindableDesc& desc, Graphics& graphics, const std::string& path, unsigned int slot)
+	: Bindable(desc), _path(path), _slot(slot)
 {
+	DX3DLogInfo(("[Texture] : Loading: " + path).c_str());
+	const auto surface = Surface(path);
+
 	// create texture resource
 	D3D11_TEXTURE2D_DESC texture_desc{};
 	texture_desc.Width = surface.GetWidth();
@@ -39,6 +43,19 @@ dx3d::Texture::Texture(const BindableDesc& desc, Graphics& graphics, const Surfa
 	), "Failed to create texture resource view");
 }
 
-void dx3d::Texture::Bind(Graphics& graphics) noexcept {
+void dx3d::BTexture::Bind(Graphics& graphics) noexcept {
 	GetContext(graphics)->PSSetShaderResources(_slot, 1u, _texture_view.GetAddressOf());
+}
+
+std::shared_ptr<dx3d::BTexture> dx3d::BTexture::Resolve(const BindableDesc& desc, Graphics& graphics, const std::string& path, unsigned int slot) {
+	return Codex::Resolve<BTexture>(desc, graphics, path, slot);
+}
+
+std::string dx3d::BTexture::GenerateUID(const std::string& path, unsigned int slot) {
+	using namespace std::string_literals;
+	return typeid(BTexture).name() + "#"s + path + "#" + std::to_string(slot);;
+}
+
+std::string dx3d::BTexture::GetUID() const noexcept {
+	return GenerateUID(_path, _slot);
 }

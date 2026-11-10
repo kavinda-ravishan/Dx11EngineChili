@@ -34,7 +34,7 @@ namespace dx3d {
 		void AddBind(std::shared_ptr<Bindable> bindable) noxnd;
 
 	private:
-		const class IndexBuffer* _index_buffer_ptr{ nullptr };
+		const class BIndexBuffer* _index_buffer_ptr{ nullptr };
 		std::vector<std::shared_ptr<Bindable>> _bindables{};
 	};
 } // namespace dx3d

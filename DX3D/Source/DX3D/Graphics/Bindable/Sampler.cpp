@@ -1,7 +1,8 @@
 #include <DX3D/Graphics/GraphicsLogUtils.hpp>
+#include <DX3D/Graphics/Bindable/BindableCodex.hpp>
 #include <DX3D/Graphics/Bindable/Sampler.hpp>
 
-dx3d::Sampler::Sampler(const BindableDesc& desc, Graphics& graphics)
+dx3d::BSampler::BSampler(const BindableDesc& desc, Graphics& graphics)
 	: Bindable(desc)
 {
 	D3D11_SAMPLER_DESC sampler_desc{};
@@ -21,6 +22,18 @@ dx3d::Sampler::Sampler(const BindableDesc& desc, Graphics& graphics)
 	);
 }
 
-void dx3d::Sampler::Bind(Graphics& graphics) noexcept {
+void dx3d::BSampler::Bind(Graphics& graphics) noexcept {
 	GetContext(graphics)->PSSetSamplers(0u, 1u, _sampler.GetAddressOf());
+}
+
+std::shared_ptr<dx3d::BSampler> dx3d::BSampler::Resolve(const BindableDesc& desc, Graphics& graphics) {
+	return Codex::Resolve<BSampler>(desc, graphics);
+}
+
+std::string dx3d::BSampler::GenerateUID() {
+	return typeid(BSampler).name();
+}
+
+std::string dx3d::BSampler::GetUID() const noexcept {
+	return GenerateUID();
 }

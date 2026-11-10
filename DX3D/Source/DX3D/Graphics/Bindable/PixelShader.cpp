@@ -5,7 +5,7 @@
 #include <DX3D/Graphics/Bindable/BindableCodex.hpp>
 #include <DX3D/Graphics/Bindable/PixelShader.hpp>
 
-dx3d::PixelShader::PixelShader(const BindableDesc& desc, Graphics& graphics, const std::string& path) 
+dx3d::BPixelShader::BPixelShader(const BindableDesc& desc, Graphics& graphics, const std::string& path) 
 	: Bindable(desc), _path(path)
 {
 	Microsoft::WRL::ComPtr<ID3DBlob> ps_blod{};
@@ -21,19 +21,19 @@ dx3d::PixelShader::PixelShader(const BindableDesc& desc, Graphics& graphics, con
 
 }
 
-void dx3d::PixelShader::Bind(Graphics& graphics) noexcept {
+void dx3d::BPixelShader::Bind(Graphics& graphics) noexcept {
 	GetContext(graphics)->PSSetShader(_pixel_shader.Get(), nullptr, 0u);
 }
 
-std::shared_ptr<dx3d::PixelShader> dx3d::PixelShader::Resolve(const BindableDesc& desc, Graphics& graphics, const std::string& path) {
-	return Codex::Resolve<dx3d::PixelShader>(desc, graphics, path);
+std::shared_ptr<dx3d::BPixelShader> dx3d::BPixelShader::Resolve(const BindableDesc& desc, Graphics& graphics, const std::string& path) {
+	return Codex::Resolve<BPixelShader>(desc, graphics, path);
 }
 
-std::string dx3d::PixelShader::GenerateUID(const std::string& path) {
+std::string dx3d::BPixelShader::GenerateUID(const std::string& path) {
 	using namespace std::string_literals;
-	return typeid(PixelShader).name() + "#"s + path;
+	return typeid(BPixelShader).name() + "#"s + path;
 }
 
-std::string dx3d::PixelShader::GetUID() const noexcept {
+std::string dx3d::BPixelShader::GetUID() const noexcept {
 	return GenerateUID(_path);
 }

@@ -3,7 +3,7 @@
 #include <DX3D/Graphics/Bindable/ConstantBuffers.hpp>
 #include <DX3D/Graphics/Drawable/Drawable.hpp>
 
-dx3d::TransformCbuf::TransformCbuf(const BindableDesc& desc, Graphics& graphics, const Drawable& parent, UINT slot)
+dx3d::BTransformCbuf::BTransformCbuf(const BindableDesc& desc, Graphics& graphics, const Drawable& parent, UINT slot)
 	: Bindable(desc), _parent(parent) 
 {
 	if (!_static_vertex_constant_buffer) {
@@ -11,7 +11,7 @@ dx3d::TransformCbuf::TransformCbuf(const BindableDesc& desc, Graphics& graphics,
 	}
 }
 
-void dx3d::TransformCbuf::Bind(Graphics& graphics) noexcept {
+void dx3d::BTransformCbuf::Bind(Graphics& graphics) noexcept {
 
 	const auto model_view = _parent.GetTransformXM() * graphics.GetCamera();
 
@@ -28,4 +28,4 @@ void dx3d::TransformCbuf::Bind(Graphics& graphics) noexcept {
 	_static_vertex_constant_buffer->Bind(graphics);
 }
 
-std::unique_ptr<dx3d::VertexConstantBuffer<dx3d::TransformCbuf::Transforms>> dx3d::TransformCbuf::_static_vertex_constant_buffer;
+std::unique_ptr<dx3d::VertexConstantBuffer<dx3d::BTransformCbuf::Transforms>> dx3d::BTransformCbuf::_static_vertex_constant_buffer;

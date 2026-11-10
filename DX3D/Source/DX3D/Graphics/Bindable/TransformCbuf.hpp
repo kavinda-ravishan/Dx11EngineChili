@@ -8,7 +8,7 @@ namespace dx3d {
 	template<typename C>
 	class VertexConstantBuffer;
 
-	class TransformCbuf : public Bindable {
+	class BTransformCbuf : public Bindable {
 	private:
 		struct Transforms {
 			DirectX::XMMATRIX model_view_proj;
@@ -16,7 +16,7 @@ namespace dx3d {
 		};
 
 	public:
-		TransformCbuf(const BindableDesc& desc, Graphics& graphics, const Drawable& parent, UINT slot=0u);
+		BTransformCbuf(const BindableDesc& desc, Graphics& graphics, const Drawable& parent, UINT slot=0u);
 		void Bind(Graphics& graphics) noexcept override;
 	
 	private:

@@ -8,13 +8,13 @@
 dx3d::Mesh::Mesh(const DrawableDesc& desc, Graphics& graphics, std::vector<std::shared_ptr<Bindable>> bindables)
 : Drawable(desc)
 {
-	AddBind(std::make_shared<Topology>(BINDABLE_DESC, graphics, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST));
+	AddBind(BTopology::Resolve(BINDABLE_DESC, graphics, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST));
 
 	for (auto& bindable : bindables) {
 		AddBind(std::move(bindable));
 	}
 
-	AddBind(std::make_shared<TransformCbuf>(BINDABLE_DESC, graphics, *this));
+	AddBind(std::make_shared<BTransformCbuf>(BINDABLE_DESC, graphics, *this));
 }
 
 void dx3d::Mesh::Draw(Graphics& graphics, DirectX::FXMMATRIX accumulated_transform) const noxnd
@@ -251,13 +251,11 @@ std::unique_ptr<dx3d::Mesh> dx3d::Model::ParseMesh(
 		ai_material.GetTexture(aiTextureType_DIFFUSE, 0, &ai_text_file_name);
 
 		const std::filesystem::path diffuse_text_file_path{ resource_path / ai_text_file_name.C_Str() };
-		DX3DLog(desc.logger, Logger::LogLevel::Info, ("[Model] : Loading: " + diffuse_text_file_path.string()).c_str());
-
 		bindable_ptrs.push_back(
-			std::make_shared<Texture>(
+			BTexture::Resolve(
 				BindableDesc({ desc.logger }), 
 				graphics, 
-				Surface(diffuse_text_file_path)
+				diffuse_text_file_path.string()
 			)
 		);
 
@@ -265,13 +263,11 @@ std::unique_ptr<dx3d::Mesh> dx3d::Model::ParseMesh(
 		if (ai_material.GetTexture(aiTextureType_SPECULAR, 0, &ai_text_file_name) == aiReturn_SUCCESS) {
 
 			const std::filesystem::path specular_text_file_path{ resource_path / ai_text_file_name.C_Str() };
-			DX3DLog(desc.logger, Logger::LogLevel::Info, ("[Model] : Loading: " + specular_text_file_path.string()).c_str());
-		
 			bindable_ptrs.push_back(
-				std::make_shared<Texture>(
+				BTexture::Resolve(
 					BindableDesc({ desc.logger }),
 					graphics,
-					Surface(specular_text_file_path),
+					specular_text_file_path.string(),
 					1u
 				)
 			);
@@ -283,24 +279,24 @@ std::unique_ptr<dx3d::Mesh> dx3d::Model::ParseMesh(
 		}
 		
 		// bind sampler
-		bindable_ptrs.push_back(std::make_shared<Sampler>(BindableDesc({ desc.logger }), graphics));
+		bindable_ptrs.push_back(BSampler::Resolve(BindableDesc({ desc.logger }), graphics));
 	}
 
-	bindable_ptrs.push_back(std::make_shared<VertexBufferB>(BindableDesc({ desc.logger }), graphics, vbuf));
+	const std::string mesh_tag{ resource_path.string() + "%" + ai_mesh.mName.C_Str() };
+	bindable_ptrs.push_back(BVertexBuffer::Resolve(BindableDesc({ desc.logger }), graphics, mesh_tag, vbuf));
+	bindable_ptrs.push_back(BIndexBuffer::Resolve(BindableDesc({ desc.logger }), graphics, mesh_tag, indices));
 
-	bindable_ptrs.push_back(std::make_shared<IndexBuffer>(BindableDesc({ desc.logger }), graphics, indices));
-
-	auto pvs = VertexShader::Resolve(BindableDesc({ desc.logger }), graphics, "PhongVS.cso");
+	auto pvs = BVertexShader::Resolve(BindableDesc({ desc.logger }), graphics, "PhongVS.cso");
 	auto pvsbc = pvs->GetBytecode();
 	bindable_ptrs.push_back(std::move(pvs));
 
 	bindable_ptrs.push_back(std::make_shared<InputLayout>(BindableDesc({ desc.logger }), graphics, vbuf.GetLayout().GetD3DLayout(), pvsbc));
 
 	if (has_specular_map) {
-		bindable_ptrs.push_back(PixelShader::Resolve(BindableDesc({ desc.logger }), graphics, "PhongPSSpecMap.cso"));
+		bindable_ptrs.push_back(BPixelShader::Resolve(BindableDesc({ desc.logger }), graphics, "PhongPSSpecMap.cso"));
 	}
 	else {
-		bindable_ptrs.push_back(PixelShader::Resolve(BindableDesc({ desc.logger }), graphics, "PhongPS.cso"));
+		bindable_ptrs.push_back(BPixelShader::Resolve(BindableDesc({ desc.logger }), graphics, "PhongPS.cso"));
 
 		struct PSMaterialConstant
 		{

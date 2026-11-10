@@ -7,12 +7,12 @@
 
 namespace dx3d {
 
-	class PixelShader : public Bindable {
+	class BPixelShader : public Bindable {
 	public:
-		PixelShader(const BindableDesc& desc, Graphics& graphics, const std::string& path);
+		BPixelShader(const BindableDesc& desc, Graphics& graphics, const std::string& path);
 		void Bind(Graphics& graphics) noexcept override;
 
-		static std::shared_ptr<PixelShader> Resolve(const BindableDesc& desc, Graphics& graphics, const std::string& path);
+		static std::shared_ptr<BPixelShader> Resolve(const BindableDesc& desc, Graphics& graphics, const std::string& path);
 		static std::string GenerateUID(const std::string& path);
 		std::string GetUID() const noexcept override;
 

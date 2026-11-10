@@ -1,18 +1,24 @@
 #pragma once
 #include <DX3D/Core/WinSwitches.hpp>
 #include <wrl.h>
+#include <string>
 #include <DX3D/Graphics/Bindable/Bindable.hpp>
 
 namespace dx3d {
-	class Texture : public Bindable {
+	class BTexture : public Bindable {
 	public:
-		Texture(const BindableDesc& desc, Graphics& graphics, const class Surface& surface, unsigned int slot = 0);
+		BTexture(const BindableDesc& desc, Graphics& graphics, const std::string& path, unsigned int slot = 0);
 		void Bind(Graphics& graphics) noexcept override;
 	
+		static std::shared_ptr<BTexture> Resolve(const BindableDesc& desc, Graphics& graphics, const std::string& path, unsigned int slot = 0);
+		static std::string GenerateUID(const std::string& path, unsigned int slot = 0);
+		std::string GetUID() const noexcept override;
+
 	protected:
 		Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> _texture_view{};
 
 	private:
+		const std::string _path{};
 		const unsigned int _slot{};
 	};
 } // namespace dx3d

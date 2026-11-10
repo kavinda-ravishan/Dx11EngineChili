@@ -21,14 +21,14 @@ namespace dx3d
 		std::shared_ptr<T> Resolve_(const BindableDesc& desc, Graphics& graphics, Params&&...p) noxnd {
 			const auto key = T::GenerateUID(std::forward<Params>(p)...);
 			const auto i = _bindable.find(key);
-			if (i == _bindable.end())
-			{
+			
+			if (i == _bindable.end()) {
+				
 				auto bindable = std::make_shared<T>(desc, graphics, std::forward<Params>(p)...);
 				_bindable[key] = bindable;
 				return bindable;
-			}
-			else
-			{
+
+			} else {
 				return std::static_pointer_cast<T>(i->second);
 			}
 		}
