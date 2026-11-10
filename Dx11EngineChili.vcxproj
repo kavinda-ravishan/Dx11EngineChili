@@ -196,9 +196,11 @@
     <ClInclude Include="DX3D\Include\DX3D\All.hpp" />
     <ClInclude Include="DX3D\Include\DX3D\Core\Base.hpp" />
     <ClInclude Include="DX3D\Include\DX3D\Core\Common.hpp" />
+    <ClInclude Include="DX3D\Include\DX3D\Core\ConditionalNoexcept.hpp" />
     <ClInclude Include="DX3D\Include\DX3D\Core\Core.hpp" />
     <ClInclude Include="DX3D\Include\DX3D\Core\Logger.hpp" />
     <ClInclude Include="DX3D\Include\DX3D\Math\Color.hpp" />
+    <ClInclude Include="DX3D\Source\DX3D\Graphics\Bindable\BindableCodex.hpp" />
     <ClInclude Include="DX3D\Source\DX3D\Graphics\Camera\Camera.hpp" />
     <ClInclude Include="DX3D\Source\DX3D\Graphics\Drawable\Mesh.hpp" />
     <ClInclude Include="DX3D\Source\DX3D\Graphics\Drawable\Drawable.hpp" />

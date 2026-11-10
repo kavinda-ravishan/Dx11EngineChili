@@ -33,7 +33,7 @@ namespace dx3d {
 		}
 		
 		//// asserts face-independent vertices w/ normals cleared to zero
-		//void SetNormalsIndependentFlat() noexcept(!IS_DEBUG)
+		//void SetNormalsIndependentFlat() noxnd
 		//{
 		//	using namespace DirectX;
 		//	assert(_indices.size() % 3 == 0 && _indices.size() > 0);

@@ -17,7 +17,7 @@ dx3d::Mesh::Mesh(const DrawableDesc& desc, Graphics& graphics, std::vector<std::
 	AddBind(std::make_shared<TransformCbuf>(BINDABLE_DESC, graphics, *this));
 }
 
-void dx3d::Mesh::Draw(Graphics& graphics, DirectX::FXMMATRIX accumulated_transform) const noexcept(!IS_DEBUG)
+void dx3d::Mesh::Draw(Graphics& graphics, DirectX::FXMMATRIX accumulated_transform) const noxnd
 {
 	DirectX::XMStoreFloat4x4(&_transform, accumulated_transform);
 	Drawable::Draw(graphics);
@@ -29,7 +29,7 @@ DirectX::XMMATRIX dx3d::Mesh::GetTransformXM() const noexcept
 }
 
 // Node
-dx3d::Node::Node(const int id, const std::string& name, std::vector<Mesh*> mesh_ptrs, const DirectX::XMMATRIX& transform) noexcept(!IS_DEBUG)
+dx3d::Node::Node(const int id, const std::string& name, std::vector<Mesh*> mesh_ptrs, const DirectX::XMMATRIX& transform) noxnd
 	: _id(id), _name(name), _mesh_ptrs(std::move(mesh_ptrs))
 {
 	DirectX::XMStoreFloat4x4(&_transform, transform);
@@ -77,7 +77,7 @@ int dx3d::Node::GetID() const noexcept {
 	return _id;
 }
 
-void dx3d::Node::Draw(Graphics& graphics, DirectX::FXMMATRIX accumulated_transform) const noexcept(!IS_DEBUG)
+void dx3d::Node::Draw(Graphics& graphics, DirectX::FXMMATRIX accumulated_transform) const noxnd
 {
 	const auto built = 
 		DirectX::XMLoadFloat4x4(&_applied_transform) * 
@@ -94,7 +94,7 @@ void dx3d::Node::Draw(Graphics& graphics, DirectX::FXMMATRIX accumulated_transfo
 	}
 }
 
-void dx3d::Node::AddChild(std::unique_ptr<Node> child) noexcept(!IS_DEBUG)
+void dx3d::Node::AddChild(std::unique_ptr<Node> child) noxnd
 {
 	assert(child);
 	_child_ptrs.push_back(std::move(child));

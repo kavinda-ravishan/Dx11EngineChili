@@ -17,7 +17,7 @@ namespace dx3d {
 	public:
 		Mesh(const DrawableDesc& desc, Graphics& graphics, std::vector<std::shared_ptr<Bindable>> bindables);
 
-		void Draw(Graphics& graphics, DirectX::FXMMATRIX accumulated_transform) const noexcept(!IS_DEBUG);
+		void Draw(Graphics& graphics, DirectX::FXMMATRIX accumulated_transform) const noxnd;
 
 		DirectX::XMMATRIX GetTransformXM() const noexcept override;
 	private:
@@ -28,15 +28,15 @@ namespace dx3d {
 	{
 		friend class Model;
 	public:
-		Node(const int id, const std::string& name, std::vector<Mesh*> mesh_ptrs, const DirectX::XMMATRIX& transform) noexcept(!IS_DEBUG);
+		Node(const int id, const std::string& name, std::vector<Mesh*> mesh_ptrs, const DirectX::XMMATRIX& transform) noxnd;
 
-		void Draw(Graphics& graphics, DirectX::FXMMATRIX accumulated_transform) const noexcept(!IS_DEBUG);
+		void Draw(Graphics& graphics, DirectX::FXMMATRIX accumulated_transform) const noxnd;
 		void SetAppliedTransform(DirectX::FXMMATRIX transform) noexcept;
 		void ShowTree(Node*& selected_node_ptr) const noexcept;
 		int GetID() const noexcept;
 
 	private:
-		void AddChild(std::unique_ptr<Node> child) noexcept(!IS_DEBUG);
+		void AddChild(std::unique_ptr<Node> child) noxnd;
 
 	private:
 		const int _id{};

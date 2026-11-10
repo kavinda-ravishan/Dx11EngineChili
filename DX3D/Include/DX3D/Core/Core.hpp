@@ -4,12 +4,6 @@
 #include <stdexcept>
 #include <memory>
 
-#ifdef NDEBUG
-constexpr bool IS_DEBUG = false;
-#else
-constexpr bool IS_DEBUG = true;
-#endif
-
 namespace dx3d {
 
 	class Logger;

@@ -10,7 +10,7 @@ namespace dx3d {
 		PointLight(const BaseDesc& desc, const DrawableDesc& drawable_desc, const BindableDesc& bindable_desc, Graphics& graphics, float radius);
 		void SpawnControlWindow() noexcept;
 		void Reset() noexcept;
-		void Draw(Graphics& graphics) const noexcept(!IS_DEBUG);
+		void Draw(Graphics& graphics) const noxnd;
 		void Bind(Graphics& graphics, DirectX::FXMMATRIX view) const noexcept;
 	private:
 		struct PointLightCBuf

@@ -2,6 +2,7 @@
 #include <vector>
 #include <DX3D/Core/WinSwitches.hpp>
 #include <DirectXMath.h>
+#include <DX3D/Core/ConditionalNoexcept.hpp>
 #include <DX3D/Core/Base.hpp>
 #include <DX3D/Core/Core.hpp>
 
@@ -11,7 +12,7 @@ namespace dx3d {
 		Drawable(const DrawableDesc& desc);
 		virtual ~Drawable() = default;
 		
-		void Draw(Graphics& graphics) const noexcept(!IS_DEBUG);
+		void Draw(Graphics& graphics) const noxnd;
 
 		virtual DirectX::XMMATRIX GetTransformXM() const noexcept = 0;
 	
@@ -30,7 +31,7 @@ namespace dx3d {
 		}
 
 	protected:
-		void AddBind(std::shared_ptr<Bindable> bindable) noexcept(!IS_DEBUG);
+		void AddBind(std::shared_ptr<Bindable> bindable) noxnd;
 
 	private:
 		const class IndexBuffer* _index_buffer_ptr{ nullptr };

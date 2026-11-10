@@ -1,6 +1,7 @@
 #include <DX3D/Core/WinSwitches.hpp>
 #include <DX3D/Window/ImGUI/imgui_impl_dx11.h>
 #include <DX3D/Window/ImGUI/imgui_impl_win32.h>
+#include <DX3D/Core/ConditionalNoexcept.hpp>
 #include <DX3D/Graphics/GraphicsLogUtils.hpp>
 #include <DX3D/Graphics/Graphics.hpp>
 
@@ -181,7 +182,7 @@ void dx3d::Graphics::BeginFrame(float red, float green, float blue) noexcept {
 	_context->ClearDepthStencilView(_depth_stencil_view.Get(), D3D11_CLEAR_DEPTH, 1.0f, 0u);
 }
 
-void dx3d::Graphics::DrawIndexed(UINT count) noexcept(!IS_DEBUG) {
+void dx3d::Graphics::DrawIndexed(UINT count) noxnd {
 	_context->DrawIndexed(count, 0u, 0u);
 }
 

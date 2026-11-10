@@ -48,7 +48,7 @@ void dx3d::PointLight::Reset() noexcept {
 	};
 }
 
-void dx3d::PointLight::Draw(Graphics& graphics) const noexcept(!IS_DEBUG) {
+void dx3d::PointLight::Draw(Graphics& graphics) const noxnd {
 	_mesh.SetPos(_cb_data.pos);
 	_mesh.Draw(graphics);
 }

@@ -4,6 +4,7 @@
 #include <wrl.h>
 #include <d3d11.h>
 #include <DirectXMath.h>
+#include <DX3D/Core/ConditionalNoexcept.hpp>
 #include <DX3D/Core/Base.hpp>
 
 namespace dx3d {
@@ -17,7 +18,7 @@ namespace dx3d {
 
 		void EndFrame();
 		void BeginFrame(float red, float green, float blue) noexcept;
-		void DrawIndexed(UINT count) noexcept(!IS_DEBUG);
+		void DrawIndexed(UINT count) noxnd;
 
 		void SetProjection(DirectX::FXMMATRIX projection) noexcept;
 		DirectX::XMMATRIX GetProjection() const noexcept;
