@@ -16,7 +16,7 @@ dx3d::Graphics::Graphics(const GraphicsDesc& desc)
 
 	swap_chain_desc.BufferDesc.Height = std::max(1, _window_size.height);
 	swap_chain_desc.BufferDesc.Width = std::max(1, _window_size.width);
-	swap_chain_desc.BufferDesc.Format = DXGI_FORMAT_B8G8R8A8_UNORM;
+	swap_chain_desc.BufferDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
 	swap_chain_desc.BufferDesc.RefreshRate.Numerator = 0;
 	swap_chain_desc.BufferDesc.RefreshRate.Denominator = 0;
 	swap_chain_desc.BufferDesc.Scaling = DXGI_MODE_SCALING_UNSPECIFIED;
@@ -24,10 +24,12 @@ dx3d::Graphics::Graphics(const GraphicsDesc& desc)
 	swap_chain_desc.SampleDesc.Count = 1;
 	swap_chain_desc.SampleDesc.Quality = 0;
 	swap_chain_desc.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
-	swap_chain_desc.BufferCount = 1;
+	//swap_chain_desc.BufferCount = 1; // legacy [DXGI_SWAP_EFFECT_DISCARD] settings
+	swap_chain_desc.BufferCount = 2;
 	swap_chain_desc.OutputWindow = static_cast<HWND>(desc.win_handle);
 	swap_chain_desc.Windowed = TRUE;
-	swap_chain_desc.SwapEffect = DXGI_SWAP_EFFECT_DISCARD;
+	//swap_chain_desc.SwapEffect = DXGI_SWAP_EFFECT_DISCARD; // legacy [DXGI_SWAP_EFFECT_DISCARD] settings
+	swap_chain_desc.SwapEffect = DXGI_SWAP_EFFECT_FLIP_DISCARD;
 	swap_chain_desc.Flags = 0;
 
 	UINT create_device_flags{};
@@ -62,7 +64,7 @@ dx3d::Graphics::Graphics(const GraphicsDesc& desc)
 			&_device,
 			&feature_levels,
 			&_context
-		), 
+		),
 		"Failed to create D3D11 device, swap chain and context"
 	);
 
@@ -171,13 +173,16 @@ void dx3d::Graphics::EndFrame() {
 }
 
 void dx3d::Graphics::BeginFrame(float red, float green, float blue) noexcept {
+	// Added with [DXGI_SWAP_EFFECT_FLIP_DISCARD] flag
+	_context->OMSetRenderTargets(1, _target_view.GetAddressOf(), _depth_stencil_view.Get());
+	
 	if (_imgui_enabled) {
 		ImGui_ImplDX11_NewFrame();
 		ImGui_ImplWin32_NewFrame();
 		ImGui::NewFrame();
 	}
 
-	const float color[] = { red, green, blue };
+	const float color[] = { red, green, blue, 1.0f };
 	_context->ClearRenderTargetView(_target_view.Get(), color);
 	_context->ClearDepthStencilView(_depth_stencil_view.Get(), D3D11_CLEAR_DEPTH, 1.0f, 0u);
 }
