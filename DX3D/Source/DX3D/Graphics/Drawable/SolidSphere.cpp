@@ -5,7 +5,6 @@
 dx3d::SolidSphere::SolidSphere(const DrawableDesc& desc, Graphics& graphics, float radius)
     : Drawable(desc)
 {
-
 	auto model = Sphere::Make();
 
 	model.Transform(DirectX::XMMatrixScaling(radius, radius, radius));
