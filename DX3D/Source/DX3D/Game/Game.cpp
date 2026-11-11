@@ -185,6 +185,7 @@ void dx3d::Game::OnInternalUpdate() {
 		_camera->SpawnControlWindow();
 		_point_light->SpawnControlWindow();
 		_nano->ShowWindow("Nano");
+		_plane->SpawnControlWindow(*_graphics);
 		ShowPerformanceWindow();
 	}
 

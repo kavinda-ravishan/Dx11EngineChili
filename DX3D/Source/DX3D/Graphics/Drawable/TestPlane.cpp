@@ -1,4 +1,5 @@
 #include <string>
+#include <DX3D/Window/ImGUI/imgui.h>
 #include <DX3D/Graphics/Drawable/Models/Plane.hpp>
 #include <DX3D/Graphics/Drawable/TestPlane.hpp>
 #include <DX3D/Graphics/Bindable/BindableCommon.hpp>
@@ -14,19 +15,15 @@ dx3d::TestPlane::TestPlane(const DrawableDesc& desc, Graphics& graphics, float s
 	AddBind(BIndexBuffer::Resolve(BINDABLE_DESC, graphics, geometry_tag, model._indices));
 
 	AddBind(BTexture::Resolve(BINDABLE_DESC, graphics, "Assets\\Images\\brickwall.jpg"));
+	AddBind(BTexture::Resolve(BINDABLE_DESC, graphics, "Assets\\Images\\brickwall_normal.jpg", 1u));
 
 	auto pvs = BVertexShader::Resolve(BINDABLE_DESC, graphics, "PhongVS.cso");
 	auto pvsbc = pvs->GetBytecode();
 	AddBind(std::move(pvs));
 
-	AddBind(BPixelShader::Resolve(BINDABLE_DESC, graphics, "PhongPS.cso"));
+	AddBind(BPixelShader::Resolve(BINDABLE_DESC, graphics, "PhongPSNormalMap.cso"));
 
-	struct PSMaterialConstant {
-		float specularIntensity{ 0.8f };
-		float specularPower{ 45.0f };
-		float padding[2]{};
-	} pmc;
-	AddBind(BPixelConstantBuffer<PSMaterialConstant>::Resolve(BINDABLE_DESC, graphics, pmc, 1u));
+	AddBind(BPixelConstantBuffer<PSMaterialConstant>::Resolve(BINDABLE_DESC, graphics, _pmc, 1u));
 
 	AddBind(BInputLayout::Resolve(BINDABLE_DESC, graphics, model._vertices.GetLayout(), pvsbc));
 
@@ -48,4 +45,29 @@ void dx3d::TestPlane::SetRotation(float roll, float pitch, float yaw) noexcept {
 DirectX::XMMATRIX dx3d::TestPlane::GetTransformXM() const noexcept {
 	return DirectX::XMMatrixRotationRollPitchYaw(_roll, _pitch, _yaw) *
 		DirectX::XMMatrixTranslation(_pos.x, _pos.y, _pos.z);
+}
+
+void dx3d::TestPlane::SpawnControlWindow(Graphics& graphics) noexcept {
+	if (ImGui::Begin("Plane"))
+	{
+		ImGui::Text("Position");
+		ImGui::SliderFloat("X", &_pos.x, -80.0f, 80.0f, "%.1f");
+		ImGui::SliderFloat("Y", &_pos.y, -80.0f, 80.0f, "%.1f");
+		ImGui::SliderFloat("Z", &_pos.z, -80.0f, 80.0f, "%.1f");
+		ImGui::Text("Orientation");
+		ImGui::SliderAngle("Roll", &_roll, -180.0f, 180.0f);
+		ImGui::SliderAngle("Pitch", &_pitch, -180.0f, 180.0f);
+		ImGui::SliderAngle("Yaw", &_yaw, -180.0f, 180.0f);
+		ImGui::Text("Shading");
+		bool changed0 = ImGui::SliderFloat("Spec. Int.", &_pmc.specular_intensity, 0.0f, 1.0f);
+		bool changed1 = ImGui::SliderFloat("Spec. Power", &_pmc.specular_power, 0.0f, 100.0f);
+		bool check_state = _pmc.normal_mapping_enabled == TRUE;
+		bool changed2 = ImGui::Checkbox("Enable Normal Map", &check_state);
+		_pmc.normal_mapping_enabled = check_state ? TRUE : FALSE;
+		if (changed0 || changed1 || changed2)
+		{
+			QueryBindable<BPixelConstantBuffer<PSMaterialConstant>>()->Update(graphics, _pmc);
+		}
+	}
+	ImGui::End();
 }

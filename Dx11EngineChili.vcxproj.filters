@@ -288,6 +288,7 @@
     <FxCompile Include="DX3D\Assets\Shaders\SolidPS.hlsl" />
     <FxCompile Include="DX3D\Assets\Shaders\SolidVS.hlsl" />
     <FxCompile Include="DX3D\Assets\Shaders\PhongPSSpecMap.hlsl" />
+    <FxCompile Include="DX3D\Assets\Shaders\PhongPSNormalMap.hlsl" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Assets\Images\cube.png">
