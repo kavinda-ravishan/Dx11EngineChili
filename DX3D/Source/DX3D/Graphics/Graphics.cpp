@@ -179,7 +179,7 @@ void dx3d::Graphics::EndFrame() {
 
 void dx3d::Graphics::BeginFrame(float red, float green, float blue) noexcept {
 #ifdef NEW_FLIP_MODE
-	_context->OMSetRenderTargets(1, _target_view.GetAddressOf(), _depth_stencil_view.Get());
+	_context->OMSetRenderTargets(1u, _target_view.GetAddressOf(), _depth_stencil_view.Get());
 #endif // NEW_FLIP_MODE
 	
 	if (_imgui_enabled) {
