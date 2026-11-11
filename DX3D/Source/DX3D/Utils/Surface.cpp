@@ -1,5 +1,5 @@
 #define STB_IMAGE_IMPLEMENTATION
-#include "stb_image.h"
+#include <DX3D/Utils/stb_image.h>
 
 #include <stdexcept>
 #include <DX3D/Utils/Surface.hpp>

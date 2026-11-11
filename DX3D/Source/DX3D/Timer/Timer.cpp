@@ -1,4 +1,4 @@
-#include "Timer.hpp"
+#include <DX3D/Timer/Timer.hpp>
 
 dx3d::Timer::Timer() noexcept {
 	using namespace std::chrono;
