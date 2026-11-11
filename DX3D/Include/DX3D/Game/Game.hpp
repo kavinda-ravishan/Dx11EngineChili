@@ -24,6 +24,7 @@ namespace dx3d {
 		std::unique_ptr<class PointLight> _point_light{};
 		std::unique_ptr<class Model> _nano{};
 		std::unique_ptr<class TestPlane> _plane{};
+		std::unique_ptr<class TestCube> _cube{};
 		
 		bool _is_running{ true };
 	};

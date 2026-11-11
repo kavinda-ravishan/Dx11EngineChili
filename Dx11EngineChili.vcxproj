@@ -175,6 +175,7 @@
     <ClCompile Include="DX3D\Source\DX3D\Graphics\Bindable\VertexShader.cpp" />
     <ClCompile Include="DX3D\Source\DX3D\Graphics\Drawable\Mesh.cpp" />
     <ClCompile Include="DX3D\Source\DX3D\Graphics\Drawable\SolidSphere.cpp" />
+    <ClCompile Include="DX3D\Source\DX3D\Graphics\Drawable\TestCube.cpp" />
     <ClCompile Include="DX3D\Source\DX3D\Graphics\Drawable\TestPlane.cpp" />
     <ClCompile Include="DX3D\Source\DX3D\Graphics\Drawable\Vertex.cpp" />
     <ClCompile Include="DX3D\Source\DX3D\Graphics\Light\PointLight.cpp" />
@@ -209,6 +210,7 @@
     <ClInclude Include="DX3D\Source\DX3D\Graphics\Drawable\Mesh.hpp" />
     <ClInclude Include="DX3D\Source\DX3D\Graphics\Drawable\Drawable.hpp" />
     <ClInclude Include="DX3D\Source\DX3D\Graphics\Drawable\IndexedTriangleList.hpp" />
+    <ClInclude Include="DX3D\Source\DX3D\Graphics\Drawable\Models\Cube.hpp" />
     <ClInclude Include="DX3D\Source\DX3D\Graphics\Drawable\Models\Plane.hpp" />
     <ClInclude Include="DX3D\Source\DX3D\Graphics\Drawable\SolidSphere.hpp" />
     <ClInclude Include="DX3D\Source\DX3D\Graphics\Drawable\Models\Sphere.hpp" />
@@ -228,6 +230,7 @@
     <ClInclude Include="DX3D\Source\DX3D\Graphics\Bindable\TransformCbuf.hpp" />
     <ClInclude Include="DX3D\Source\DX3D\Graphics\Bindable\VertexBuffer.hpp" />
     <ClInclude Include="DX3D\Source\DX3D\Graphics\Bindable\VertexShader.hpp" />
+    <ClInclude Include="DX3D\Source\DX3D\Graphics\Drawable\TestCube.hpp" />
     <ClInclude Include="DX3D\Source\DX3D\Graphics\Drawable\TestPlane.hpp" />
     <ClInclude Include="DX3D\Source\DX3D\Graphics\Drawable\Vertex.hpp" />
     <ClInclude Include="DX3D\Source\DX3D\Graphics\GraphicsLogUtils.hpp" />
