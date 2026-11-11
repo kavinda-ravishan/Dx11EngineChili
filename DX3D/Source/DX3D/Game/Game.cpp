@@ -64,37 +64,41 @@ static void ShowPerformanceWindow()
 		fps_color = ImVec4(1.0f, 0.3f, 0.3f, 1.0f);      // Red
 
 	ImGui::TextColored(fps_color, "FPS: %.1f", io.Framerate);
-
-	ImGui::Separator();
-
-	ImGui::Text("Current Frame: %.2f ms", current_frame_time);
-	ImGui::Text("Average Frame: %.2f ms", avg_frame_time);
-
-	ImGui::Spacing();
-
+	
 	ImGui::TextColored(ImVec4(0.3f, 0.8f, 1.0f, 1.0f),
 		"Average FPS: %.1f", avg_fps);
-
-	ImGui::Text("Min FPS: %.1f", min_fps);
-	ImGui::Text("Max FPS: %.1f", max_fps);
-
+	
 	ImGui::Spacing();
+
+	ImGui::Text("FPS: %.1f (Min) - %.1f (Max)", min_fps, max_fps);
+
+	ImGui::Separator();
+	
+	ImGui::TextColored(ImVec4(0.3f, 0.8f, 1.0f, 1.0f), 
+		"Average Frame: %.2f ms", avg_frame_time);
+	
+	ImGui::Separator();
 
 	// Blue graph
 	ImGui::PushStyleColor(ImGuiCol_PlotLines,
 		ImVec4(0.2f, 0.7f, 1.0f, 1.0f));
 
+	char overlay[64];
+	snprintf(overlay, sizeof(overlay), "Frame Time: %.2f ms", current_frame_time);
+
+	ImGui::PushItemWidth(-1);
 	ImGui::PlotLines(
-		"Frame Time (ms)",
+		"##FTG",
 		frame_times,
 		IM_ARRAYSIZE(frame_times),
 		offset,
-		nullptr,
+		overlay,       // overlay text
 		0.0f,
 		40.0f,
 		ImVec2(0, 100)
 	);
-
+	ImGui::PopItemWidth();
+	
 	ImGui::PopStyleColor();
 
 	ImGui::End();
