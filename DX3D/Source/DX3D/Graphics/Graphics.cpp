@@ -167,13 +167,15 @@ void dx3d::Graphics::EndFrame() {
 		ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
 	}
 
+	// Change this logic in EndFrame:
 	HRESULT hr{};
 	if (FAILED(hr = _swap_chain->Present(1u, 0u))) {
 		if (hr == DXGI_ERROR_DEVICE_REMOVED) {
-			DX3DGraphicsLogThrowOnFail(_device->GetDeviceRemovedReason(), "Failed the Present call [DEVICE_REMOVED]");
+			DX3DGraphicsLogThrowOnFail(_device->GetDeviceRemovedReason(), "Device Removed");
 		}
-	} else {
-		DX3DGraphicsLogThrowOnFail(hr, "Failed the Present call");
+		else {
+			DX3DGraphicsLogThrowOnFail(hr, "Failed the Present call");
+		}
 	}
 }
 
