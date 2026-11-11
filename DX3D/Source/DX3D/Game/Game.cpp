@@ -9,7 +9,7 @@
 
 #include <DX3D/Math/Math.hpp>
 #include <DX3D/Core/Logger.hpp>
-#include <DX3D/Timer/Timer.hpp>
+#include <DX3D/Utils/Timer.hpp>
 
 #include <DX3D/Graphics/Graphics.hpp>
 #include <DX3D/Graphics/Drawable/Mesh.hpp>

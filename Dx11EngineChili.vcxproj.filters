@@ -69,7 +69,7 @@
     <ClCompile Include="DX3D\Source\DX3D\Graphics\Bindable\TransformCbuf.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="DX3D\Source\DX3D\Timer\Timer.cpp">
+    <ClCompile Include="DX3D\Source\DX3D\Utils\Timer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="DX3D\Source\DX3D\Utils\Surface.cpp">
@@ -203,7 +203,7 @@
     <ClInclude Include="DX3D\Source\DX3D\Graphics\Bindable\TransformCbuf.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="DX3D\Source\DX3D\Timer\Timer.hpp">
+    <ClInclude Include="DX3D\Source\DX3D\Utils\Timer.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="DX3D\Source\DX3D\Graphics\Drawable\IndexedTriangleList.hpp">

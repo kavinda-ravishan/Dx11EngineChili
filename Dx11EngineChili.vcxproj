@@ -177,7 +177,7 @@
     <ClCompile Include="DX3D\Source\DX3D\Graphics\Drawable\TestPlane.cpp" />
     <ClCompile Include="DX3D\Source\DX3D\Graphics\Drawable\Vertex.cpp" />
     <ClCompile Include="DX3D\Source\DX3D\Graphics\Light\PointLight.cpp" />
-    <ClCompile Include="DX3D\Source\DX3D\Timer\Timer.cpp" />
+    <ClCompile Include="DX3D\Source\DX3D\Utils\Timer.cpp" />
     <ClCompile Include="DX3D\Source\DX3D\Utils\Surface.cpp" />
     <ClCompile Include="DX3D\Source\DX3D\Window\ImguiManager.cpp" />
     <ClCompile Include="DX3D\Source\DX3D\Window\ImGUI\imgui_impl_dx11.cpp" />
@@ -231,7 +231,7 @@
     <ClInclude Include="DX3D\Source\DX3D\Graphics\GraphicsLogUtils.hpp" />
     <ClInclude Include="DX3D\Include\DX3D\Math\Math.hpp" />
     <ClInclude Include="DX3D\Source\DX3D\Graphics\Light\PointLight.hpp" />
-    <ClInclude Include="DX3D\Source\DX3D\Timer\Timer.hpp" />
+    <ClInclude Include="DX3D\Source\DX3D\Utils\Timer.hpp" />
     <ClInclude Include="DX3D\Source\DX3D\Utils\stb_image.h" />
     <ClInclude Include="DX3D\Source\DX3D\Utils\Surface.hpp" />
     <ClInclude Include="DX3D\Source\DX3D\Window\ImguiManager.hpp" />
