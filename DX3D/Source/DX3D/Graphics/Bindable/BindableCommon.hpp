@@ -6,6 +6,7 @@
 #include <DX3D/Graphics/Bindable/PixelShader.hpp>
 #include <DX3D/Graphics/Bindable/Topology.hpp>
 #include <DX3D/Graphics/Bindable/TransformCbuf.hpp>
+#include <DX3D/Graphics/Bindable/TransformCbufDouble.hpp>
 #include <DX3D/Graphics/Bindable/VertexShader.hpp>
 #include <DX3D/Graphics/Bindable/VertexBuffer.hpp>
 #include <DX3D/Graphics/Bindable/Texture.hpp>

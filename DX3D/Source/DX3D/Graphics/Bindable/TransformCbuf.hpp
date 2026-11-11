@@ -9,16 +9,20 @@ namespace dx3d {
 	class BVertexConstantBuffer;
 
 	class BTransformCbuf : public Bindable {
-	private:
+	protected:
 		struct Transforms {
+			DirectX::XMMATRIX model_view;
 			DirectX::XMMATRIX model_view_proj;
-			DirectX::XMMATRIX model;
 		};
 
 	public:
 		BTransformCbuf(const BindableDesc& desc, Graphics& graphics, const Drawable& parent, UINT slot=0u);
 		void Bind(Graphics& graphics) noexcept override;
 	
+	protected:
+		void UpdateBindImpl(Graphics& graphics, const Transforms& tf) noexcept;
+		Transforms GetTransforms(Graphics& graphics) noexcept;
+
 	private:
 		static std::unique_ptr<BVertexConstantBuffer<Transforms>> _static_vertex_constant_buffer;
 		const Drawable& _parent;

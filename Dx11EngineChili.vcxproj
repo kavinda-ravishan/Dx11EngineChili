@@ -157,6 +157,7 @@
     </Manifest>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="DX3D\Source\DX3D\Graphics\Bindable\TransformCbufDouble.cpp" />
     <ClCompile Include="DX3D\Source\DX3D\Graphics\Camera\Camera.cpp" />
     <ClCompile Include="DX3D\Source\DX3D\Graphics\Drawable\Drawable.cpp" />
     <ClCompile Include="DX3D\Source\DX3D\Graphics\Bindable\Bindable.cpp" />
@@ -203,6 +204,7 @@
     <ClInclude Include="DX3D\Include\DX3D\Core\Logger.hpp" />
     <ClInclude Include="DX3D\Include\DX3D\Math\Color.hpp" />
     <ClInclude Include="DX3D\Source\DX3D\Graphics\Bindable\BindableCodex.hpp" />
+    <ClInclude Include="DX3D\Source\DX3D\Graphics\Bindable\TransformCbufDouble.hpp" />
     <ClInclude Include="DX3D\Source\DX3D\Graphics\Camera\Camera.hpp" />
     <ClInclude Include="DX3D\Source\DX3D\Graphics\Drawable\Mesh.hpp" />
     <ClInclude Include="DX3D\Source\DX3D\Graphics\Drawable\Drawable.hpp" />

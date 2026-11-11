@@ -12,10 +12,18 @@ dx3d::BTransformCbuf::BTransformCbuf(const BindableDesc& desc, Graphics& graphic
 }
 
 void dx3d::BTransformCbuf::Bind(Graphics& graphics) noexcept {
+	UpdateBindImpl(graphics, GetTransforms(graphics));
+}
 
+void dx3d::BTransformCbuf::UpdateBindImpl(Graphics& graphics, const Transforms& tf) noexcept {
+	_static_vertex_constant_buffer->Update(graphics, tf);
+	_static_vertex_constant_buffer->Bind(graphics);
+}
+
+dx3d::BTransformCbuf::Transforms dx3d::BTransformCbuf::GetTransforms(Graphics& graphics) noexcept {
 	const auto model_view = _parent.GetTransformXM() * graphics.GetCamera();
 
-	const Transforms tf =
+	return
 	{
 		DirectX::XMMatrixTranspose(model_view),
 		DirectX::XMMatrixTranspose(
@@ -23,9 +31,6 @@ void dx3d::BTransformCbuf::Bind(Graphics& graphics) noexcept {
 			graphics.GetProjection()
 		)
 	};
-
-	_static_vertex_constant_buffer->Update(graphics, tf);
-	_static_vertex_constant_buffer->Bind(graphics);
 }
 
 std::unique_ptr<dx3d::BVertexConstantBuffer<dx3d::BTransformCbuf::Transforms>> dx3d::BTransformCbuf::_static_vertex_constant_buffer;
