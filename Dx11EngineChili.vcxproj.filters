@@ -120,6 +120,9 @@
     <ClCompile Include="DX3D\Source\DX3D\Graphics\Drawable\Vertex.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="DX3D\Source\DX3D\Graphics\Drawable\TestPlane.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DX3D\Include\DX3D\Core\Base.hpp">
@@ -272,6 +275,12 @@
     <ClInclude Include="DX3D\Include\DX3D\Core\ConditionalNoexcept.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="DX3D\Source\DX3D\Graphics\Drawable\Models\Plane.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DX3D\Source\DX3D\Graphics\Drawable\TestPlane.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="DX3D\Assets\Shaders\PhongVS.hlsl" />
@@ -336,6 +345,12 @@
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="Assets\Models\nano_textured\leg_showroom_spec.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Assets\Images\brickwall.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Assets\Images\brickwall_normal.jpg">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>

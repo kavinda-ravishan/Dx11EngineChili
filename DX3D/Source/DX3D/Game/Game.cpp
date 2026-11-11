@@ -13,6 +13,7 @@
 
 #include <DX3D/Graphics/Graphics.hpp>
 #include <DX3D/Graphics/Drawable/Mesh.hpp>
+#include <DX3D/Graphics/Drawable/TestPlane.hpp>
 #include <DX3D/Graphics/Camera/Camera.hpp>
 #include <DX3D/Graphics/Light/PointLight.hpp>
 
@@ -126,8 +127,9 @@ dx3d::Game::Game(const GameDesc& desc) :
 
 	const std::filesystem::path nano_textured_file_path{ "Assets\\Models\\nano_textured\\nanosuit.obj" };
 
-	_nano1 = std::make_unique<Model>(BaseDesc({ _logger }), *_graphics, nano_textured_file_path, nano_textured_file_path.parent_path());
-	_nano2 = std::make_unique<Model>(BaseDesc({ _logger }), *_graphics, nano_textured_file_path, nano_textured_file_path.parent_path());
+	_nano = std::make_unique<Model>(BaseDesc({ _logger }), *_graphics, nano_textured_file_path, nano_textured_file_path.parent_path());
+	_plane = std::make_unique<TestPlane>(DrawableDesc({ _logger }), *_graphics, 3.0f);
+	_plane->SetPos({ 1.0f, 17.0f, -1.0f });
 
 	const float aspect_ratio = float(_window->GetWindowSize().height) / _window->GetWindowSize().width;
 	_graphics->SetProjection(DirectX::XMMatrixPerspectiveLH(1.0f, aspect_ratio, 0.5f, 40.0f));
@@ -175,15 +177,14 @@ void dx3d::Game::OnInternalUpdate() {
 	_graphics->SetCamera(_camera->GetMatrix());
 	_point_light->Bind(*_graphics, _camera->GetMatrix());
 
-	_nano1->Draw(*_graphics);
-	_nano2->Draw(*_graphics);
+	_nano->Draw(*_graphics);
+	_plane->Draw(*_graphics);
 	_point_light->Draw(*_graphics);
 
 	if (_graphics->IsImguiEnabled()) {
 		_camera->SpawnControlWindow();
 		_point_light->SpawnControlWindow();
-		_nano1->ShowWindow("Nano 1");
-		_nano2->ShowWindow("Nano 2");
+		_nano->ShowWindow("Nano");
 		ShowPerformanceWindow();
 	}
 

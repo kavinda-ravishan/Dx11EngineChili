@@ -22,8 +22,8 @@ namespace dx3d {
 		std::unique_ptr<class Timer> _timer{};
 		std::unique_ptr<class Camera> _camera{};
 		std::unique_ptr<class PointLight> _point_light{};
-		std::unique_ptr<class Model> _nano1{};
-		std::unique_ptr<class Model> _nano2{};
+		std::unique_ptr<class Model> _nano{};
+		std::unique_ptr<class TestPlane> _plane{};
 		
 		bool _is_running{ true };
 	};

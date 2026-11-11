@@ -25,7 +25,7 @@ dx3d::SolidSphere::SolidSphere(const DrawableDesc& desc, Graphics& graphics, flo
 		float padding{};
 	} color_const;
 
-	AddBind(BPixelConstantBuffer<PSColorConstant>::Resolve(BINDABLE_DESC, graphics, color_const));
+	AddBind(BPixelConstantBuffer<PSColorConstant>::Resolve(BINDABLE_DESC, graphics, color_const, 1u));
 
 	AddBind(BInputLayout::Resolve(BINDABLE_DESC, graphics, model._vertices.GetLayout(), pvsbc));
 
