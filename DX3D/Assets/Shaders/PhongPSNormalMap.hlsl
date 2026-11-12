@@ -18,18 +18,28 @@ cbuffer ObjectCBuf
 };
 
 Texture2D tex;
-Texture2D nmap;
+Texture2D nmap : register(t2);
 
 SamplerState splr;
 
-float4 main(float3 world_pos : Position, float3 n : Normal, float2 tc : Texcoord) : SV_Target
+float4 main(float3 world_pos : Position, float3 n : Normal, float3 tan : Tangent, float3 bitan : Bitangent, float2 tc : Texcoord) : SV_Target
 {
     if (normal_map_enables)
     {
+        // build the tranform (rotation) into tangent space
+        const float3x3 tan_to_view = float3x3(
+            normalize(tan),
+            normalize(bitan),
+            normalize(n)
+        );
+        
        const float3 normal_sample = nmap.Sample(splr, tc).xyz;
         n.x = (normal_sample.x * 2.0f) - 1.0f;
         n.y = -(normal_sample.y * 2.0f) + 1.0f;
-        n.z = -normal_sample.z;
+        n.z = normal_sample.z;
+        
+        // bring normal from tanspace into view space
+        n = mul(n, tan_to_view);
     }
     
 	// fragment to light vector data

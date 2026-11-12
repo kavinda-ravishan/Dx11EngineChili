@@ -168,7 +168,8 @@ dx3d::Model::Model(const BaseDesc& desc, Graphics& graphics, const std::filesyst
 		aiProcess_Triangulate |
 		aiProcess_JoinIdenticalVertices | 
 		aiProcess_ConvertToLeftHanded |
-		aiProcess_GenNormals
+		aiProcess_GenNormals |
+		aiProcess_CalcTangentSpace
 	);
 
 	if (scene == nullptr)
@@ -212,6 +213,8 @@ std::unique_ptr<dx3d::Mesh> dx3d::Model::ParseMesh(
 		VertexLayout{}
 		.Append(VertexLayout::Position3D)
 		.Append(VertexLayout::Normal)
+		.Append(VertexLayout::Tangent)
+		.Append(VertexLayout::Bitangent)
 		.Append(VertexLayout::Texture2D)
 	));
 
@@ -219,11 +222,15 @@ std::unique_ptr<dx3d::Mesh> dx3d::Model::ParseMesh(
 	{
 		auto& vertex = ai_mesh.mVertices[i];
 		auto& normal = ai_mesh.mNormals[i];
+		auto& tangent = ai_mesh.mTangents[i];
+		auto& bitangent = ai_mesh.mBitangents[i];
 		auto& texture_coords = ai_mesh.mTextureCoords[0][i];
 
 		vbuf.EmplaceBack(
 			*reinterpret_cast<DirectX::XMFLOAT3*>(&vertex),
 			*reinterpret_cast<DirectX::XMFLOAT3*>(&normal),
+			*reinterpret_cast<DirectX::XMFLOAT3*>(&tangent),
+			*reinterpret_cast<DirectX::XMFLOAT3*>(&bitangent),
 			*reinterpret_cast<DirectX::XMFLOAT2*>(&texture_coords)
 		);
 	}
@@ -245,9 +252,9 @@ std::unique_ptr<dx3d::Mesh> dx3d::Model::ParseMesh(
 
 	if (ai_mesh.mMaterialIndex >= 0) {
 		const auto& ai_material = *ai_materials_ptr[ai_mesh.mMaterialIndex];
-		aiString ai_text_file_name;
 
 		// load and bind diffuse texture
+		aiString ai_text_file_name;
 		ai_material.GetTexture(aiTextureType_DIFFUSE, 0, &ai_text_file_name);
 
 		const std::filesystem::path diffuse_text_file_path{ resource_path / ai_text_file_name.C_Str() };
@@ -277,6 +284,20 @@ std::unique_ptr<dx3d::Mesh> dx3d::Model::ParseMesh(
 		} else {
 			ai_material.Get(AI_MATKEY_SHININESS, shininess);
 		}
+
+		// load and bind normals
+		aiString ai_normals_file_name;
+		ai_material.GetTexture(aiTextureType_NORMALS, 0, &ai_normals_file_name);
+
+		const std::filesystem::path normals_file_path{ resource_path / ai_normals_file_name.C_Str() };
+		bindable_ptrs.push_back(
+			BTexture::Resolve(
+				BindableDesc({ desc.logger }),
+				graphics,
+				normals_file_path.string(),
+				2u
+			)
+		);
 		
 		// bind sampler
 		bindable_ptrs.push_back(BSampler::Resolve(BindableDesc({ desc.logger }), graphics));
@@ -286,26 +307,38 @@ std::unique_ptr<dx3d::Mesh> dx3d::Model::ParseMesh(
 	bindable_ptrs.push_back(BVertexBuffer::Resolve(BindableDesc({ desc.logger }), graphics, mesh_tag, vbuf));
 	bindable_ptrs.push_back(BIndexBuffer::Resolve(BindableDesc({ desc.logger }), graphics, mesh_tag, indices));
 
-	auto pvs = BVertexShader::Resolve(BindableDesc({ desc.logger }), graphics, "PhongVS.cso");
+	auto pvs = BVertexShader::Resolve(BindableDesc({ desc.logger }), graphics, "PhongVSNormalMap.cso");
 	auto pvsbc = pvs->GetBytecode();
 	bindable_ptrs.push_back(std::move(pvs));
 
 	bindable_ptrs.push_back(BInputLayout::Resolve(BindableDesc({ desc.logger }), graphics, vbuf.GetLayout(), pvsbc));
 
 	if (has_specular_map) {
-		bindable_ptrs.push_back(BPixelShader::Resolve(BindableDesc({ desc.logger }), graphics, "PhongPSSpecMap.cso"));
-	}
-	else {
-		bindable_ptrs.push_back(BPixelShader::Resolve(BindableDesc({ desc.logger }), graphics, "PhongPS.cso"));
+		bindable_ptrs.push_back(BPixelShader::Resolve(BindableDesc({ desc.logger }), graphics, "PhongPSSpecNormalMap.cso"));
 
 		struct PSMaterialConstant
 		{
-			float specular_intensity{ 1.6f };
+			BOOL normal_map_enabled{ TRUE };
+			float padding[3]{};
+		} pmc;
+		// this is CLEARLY an issue... all meshes will share same mat const, but may have different
+		// Ns (specular power) specified for each in the material properties... bad conflict
+		bindable_ptrs.push_back(BPixelConstantBuffer<PSMaterialConstant>::Resolve(BindableDesc({ desc.logger }), graphics, pmc, 1u));
+	}
+	else {
+		bindable_ptrs.push_back(BPixelShader::Resolve(BindableDesc({ desc.logger }), graphics, "PhongPSNormalMap.cso"));
+
+		struct PSMaterialConstant
+		{
+			float specular_intensity{ 0.8f };
 			float specular_power{};
-			float padding[2]{};
+			BOOL normal_map_enabled{ TRUE };
+			float padding[1]{};
 		} pmc;
 		pmc.specular_power = shininess;
 	
+		// this is CLEARLY an issue... all meshes will share same mat const, but may have different
+		// Ns (specular power) specified for each in the material properties... bad conflict
 		bindable_ptrs.push_back(BPixelConstantBuffer<PSMaterialConstant>::Resolve(BindableDesc({ desc.logger }), graphics, pmc, 1u));
 	}
 

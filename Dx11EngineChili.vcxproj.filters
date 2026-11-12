@@ -302,8 +302,9 @@
     <FxCompile Include="DX3D\Assets\Shaders\PhongPS.hlsl" />
     <FxCompile Include="DX3D\Assets\Shaders\SolidPS.hlsl" />
     <FxCompile Include="DX3D\Assets\Shaders\SolidVS.hlsl" />
-    <FxCompile Include="DX3D\Assets\Shaders\PhongPSSpecMap.hlsl" />
+    <FxCompile Include="DX3D\Assets\Shaders\PhongPSSpecNormalMap.hlsl" />
     <FxCompile Include="DX3D\Assets\Shaders\PhongPSNormalMap.hlsl" />
+    <FxCompile Include="DX3D\Assets\Shaders\PhongVSNormalMap.hlsl" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Assets\Images\cube.png">
@@ -369,6 +370,12 @@
     <Image Include="Assets\Images\brickwall_normal.jpg">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="Assets\Models\brick_wall\brick_wall_diffuse.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Assets\Models\brick_wall\brick_wall_normal.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <None Include="third_party_libraries\.gitignore" />
@@ -377,6 +384,7 @@
     <None Include="Assets\Models\boxy.gltf" />
     <None Include="Assets\Models\nano_hierarchy.gltf" />
     <None Include="Assets\Models\nano_textured\nanosuit.mtl" />
+    <None Include="Assets\Models\brick_wall\brick_wall.mtl" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="Assets\Models\nano_textured\LICENSE.txt" />
