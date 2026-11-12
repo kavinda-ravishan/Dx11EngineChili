@@ -131,8 +131,6 @@ dx3d::Game::Game(const GameDesc& desc) :
 	_nano = std::make_unique<Model>(BaseDesc({ _logger }), *_graphics, nano_textured_file_path, nano_textured_file_path.parent_path());
 	_plane = std::make_unique<TestPlane>(DrawableDesc({ _logger }), *_graphics, 3.0f);
 	_plane->SetPos({ 1.0f, 17.0f, -1.0f });
-	_cube = std::make_unique<TestCube>(DrawableDesc({ _logger }), *_graphics, 4.0f);
-	_cube->SetPos({ 3.0f, 14.0f, -2.0f });
 
 	const float aspect_ratio = float(_window->GetWindowSize().height) / _window->GetWindowSize().width;
 	_graphics->SetProjection(DirectX::XMMatrixPerspectiveLH(1.0f, aspect_ratio, 0.5f, 40.0f));
@@ -182,7 +180,6 @@ void dx3d::Game::OnInternalUpdate() {
 
 	_nano->Draw(*_graphics);
 	_plane->Draw(*_graphics);
-	_cube->Draw(*_graphics);
 	_point_light->Draw(*_graphics);
 
 	if (_graphics->IsImguiEnabled()) {
@@ -190,7 +187,6 @@ void dx3d::Game::OnInternalUpdate() {
 		_point_light->SpawnControlWindow();
 		_nano->ShowWindow("Nano");
 		_plane->SpawnControlWindow(*_graphics);
-		_cube->SpawnControlWindow(*_graphics);
 		ShowPerformanceWindow();
 	}
 

@@ -17,12 +17,6 @@ cbuffer ObjectCBuf
     float padding[1];
 };
 
-cbuffer CBuf
-{
-    matrix model_view;
-    matrix model_view_proj;
-};
-
 Texture2D tex;
 Texture2D nmap;
 
@@ -36,8 +30,6 @@ float4 main(float3 world_pos : Position, float3 n : Normal, float2 tc : Texcoord
         n.x = (normal_sample.x * 2.0f) - 1.0f;
         n.y = -(normal_sample.y * 2.0f) + 1.0f;
         n.z = -normal_sample.z;
-        n = mul(n, (float3x3) model_view);
-
     }
     
 	// fragment to light vector data
