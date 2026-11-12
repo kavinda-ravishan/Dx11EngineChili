@@ -97,11 +97,13 @@ namespace dx3d {
 		Surface& RGBA2BGRA() noexcept;
 
 		void* GetBufferPtr() const noexcept;
+		bool AlphaLoaded() const noexcept;
 
 	private:
+		unsigned char* _data{};
 		int _width{};
 		int _height{};
 		int _channels{};
-		unsigned char* _data{};
+		bool _alpha_loaded{};
 	};
 } // namespace dx3d

@@ -13,6 +13,7 @@ namespace dx3d {
 		static std::shared_ptr<BTexture> Resolve(const BindableDesc& desc, Graphics& graphics, const std::string& path, unsigned int slot = 0);
 		static std::string GenerateUID(const std::string& path, unsigned int slot = 0);
 		std::string GetUID() const noexcept override;
+		bool HasAlpha() const noexcept;
 
 	protected:
 		Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> _texture_view{};
@@ -20,5 +21,6 @@ namespace dx3d {
 	private:
 		const std::string _path{};
 		const unsigned int _slot{};
+		bool _has_alpha{};
 	};
 } // namespace dx3d

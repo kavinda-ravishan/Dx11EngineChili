@@ -2,12 +2,14 @@
 #include <DX3D/Graphics/GraphicsLogUtils.hpp>
 #include <DX3D/Graphics/Bindable/BindableCodex.hpp>
 #include <DX3D/Graphics/Bindable/Texture.hpp>
+#include "Texture.hpp"
 
 dx3d::BTexture::BTexture(const BindableDesc& desc, Graphics& graphics, const std::string& path, unsigned int slot)
 	: Bindable(desc), _path(path), _slot(slot)
 {
 	DX3DLogInfo(("[Texture] : Loading: " + path).c_str());
 	const auto surface = Surface(path);
+	_has_alpha = surface.AlphaLoaded();
 
 	// create texture resource
 	D3D11_TEXTURE2D_DESC texture_desc{};
@@ -58,4 +60,8 @@ std::string dx3d::BTexture::GenerateUID(const std::string& path, unsigned int sl
 
 std::string dx3d::BTexture::GetUID() const noexcept {
 	return GenerateUID(_path, _slot);
+}
+
+bool dx3d::BTexture::HasAlpha() const noexcept {
+	return _has_alpha;
 }

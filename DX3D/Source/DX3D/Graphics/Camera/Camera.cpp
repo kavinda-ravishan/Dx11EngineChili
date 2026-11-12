@@ -49,9 +49,9 @@ void dx3d::Camera::SpawnControlWindow() noexcept {
 }
 
 void dx3d::Camera::Reset() noexcept {
-	_pos = { 0.0f, 0.0f, -10.0f };
+	_pos = { -10.0f, 0.0f, -20.0f };
 	_pitch = 0.0f;
-	_yaw = 0.0f;
+	_yaw = 0.45f;
 }
 
 void dx3d::Camera::Rotate(float dx, float dy) noexcept {

@@ -17,6 +17,20 @@ dx3d::Surface::Surface(const std::filesystem::path image_path) {
     {
         throw std::runtime_error(stbi_failure_reason());
     }
+
+    _alpha_loaded = false;
+
+    long total_pixels = _width * _height;
+
+    for (long i = 0; i < total_pixels; ++i) {
+        // Alpha is the last component of each pixel (index 1 for 2-channel, index 3 for 4-channel)
+        unsigned char alpha = _data[(i * _channels) + (_channels - 1)];
+
+        if (alpha < 255) {
+            _alpha_loaded = true;
+            break; // Found a transparent or semi-transparent pixel
+        }
+    }
 }
 
 dx3d::Surface::~Surface() {
@@ -28,7 +42,8 @@ dx3d::Surface::Surface(Surface&& source) noexcept
     _data(source._data),
     _width(source._width),
     _height(source._height),
-    _channels(source._channels)
+    _channels(source._channels),
+    _alpha_loaded(source._alpha_loaded)
 {
     source._data = nullptr;
 }
@@ -43,6 +58,7 @@ dx3d::Surface& dx3d::Surface::operator=(dx3d::Surface&& donor) noexcept
         _width = donor._width;
         _height = donor._height;
         _channels = donor._channels;
+        _alpha_loaded = donor._alpha_loaded;
 
         donor._data = nullptr;
     }
@@ -76,4 +92,8 @@ dx3d::Surface& dx3d::Surface::RGBA2BGRA() noexcept {
 
 void* dx3d::Surface::GetBufferPtr() const noexcept {
     return reinterpret_cast<void*>(_data);
+}
+
+bool dx3d::Surface::AlphaLoaded() const noexcept {
+    return _alpha_loaded;
 }

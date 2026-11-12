@@ -216,6 +216,7 @@ std::unique_ptr<dx3d::Mesh> dx3d::Model::ParseMesh(
 	std::vector<std::shared_ptr<Bindable>> bindable_ptrs;
 
 	bool has_specular_map = false;
+	bool has_alpha_gloss = false;
 	bool has_normal_map = false;
 	bool has_diffuse_map = false;
 	float shininess = 35.0f;
@@ -233,17 +234,22 @@ std::unique_ptr<dx3d::Mesh> dx3d::Model::ParseMesh(
 
 		if (material.GetTexture(aiTextureType_SPECULAR, 0, &tex_file_name) == aiReturn_SUCCESS)
 		{
-			bindable_ptrs.push_back(BTexture::Resolve(BindableDesc({ desc.logger }), graphics, (resource_path / tex_file_name.C_Str()).string(), 1u));
+			auto tex = BTexture::Resolve(BindableDesc({ desc.logger }), graphics, (resource_path / tex_file_name.C_Str()).string(), 1u);
+			has_alpha_gloss = tex->HasAlpha();
+			bindable_ptrs.push_back(std::move(tex));
 			has_specular_map = true;
 		}
-		else
+		
+		if(!has_alpha_gloss)
 		{
 			material.Get(AI_MATKEY_SHININESS, shininess);
 		}
 
 		if (material.GetTexture(aiTextureType_NORMALS, 0, &tex_file_name) == aiReturn_SUCCESS)
 		{
-			bindable_ptrs.push_back(BTexture::Resolve(BindableDesc({ desc.logger }), graphics, (resource_path / tex_file_name.C_Str()).string(), 2u));
+			auto tex = BTexture::Resolve(BindableDesc({ desc.logger }), graphics, (resource_path / tex_file_name.C_Str()).string(), 2u);
+			has_alpha_gloss = tex->HasAlpha();
+			bindable_ptrs.push_back(std::move(tex));
 			has_normal_map = true;
 		}
 
@@ -305,8 +311,12 @@ std::unique_ptr<dx3d::Mesh> dx3d::Model::ParseMesh(
 		struct PSMaterialConstantFullmonte
 		{
 			BOOL  normal_map_enabled{ TRUE };
-			float padding[3]{};
+			BOOL  has_gloss_map{};
+			float specular_power{};
+			float padding[1]{};
 		} pmc;
+		pmc.specular_power = shininess;
+		pmc.has_gloss_map = has_alpha_gloss ? TRUE : FALSE;
 		// this is CLEARLY an issue... all meshes will share same mat const, but may have different
 		// Ns (specular power) specified for each in the material properties... bad conflict
 		bindable_ptrs.push_back(BPixelConstantBuffer<PSMaterialConstantFullmonte>::Resolve(BindableDesc({ desc.logger }), graphics, pmc, 1u));
@@ -461,7 +471,7 @@ std::unique_ptr<dx3d::Mesh> dx3d::Model::ParseMesh(
 
 		struct PSMaterialConstantNotex
 		{
-			DirectX::XMFLOAT4 material_color{ 0.65f,0.65f,0.85f,1.0f };
+			DirectX::XMFLOAT4 material_color{ 0.45f,0.45f,0.85f,1.0f };
 			float specular_intensity{ 0.18f };
 			float specular_power{};
 			float padding[2]{};

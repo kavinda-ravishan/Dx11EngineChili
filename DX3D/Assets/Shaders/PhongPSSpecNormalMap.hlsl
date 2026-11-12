@@ -11,8 +11,10 @@ cbuffer LightCBuf
 
 cbuffer ObjectCBuf
 {
-    bool normal_map_enables;
-    float padding[3];
+    bool normal_map_enabled;
+    bool has_gloss;
+    float specular_power_const;
+    float padding[1];
 };
 
 Texture2D tex;
@@ -23,7 +25,7 @@ SamplerState splr;
 
 float4 main(float3 view_pos : Position, float3 n : Normal, float3 tan : Tangent, float3 bitan : Bitangent, float2 tc : Texcoord) : SV_Target
 {
-    if (normal_map_enables)
+    if (normal_map_enabled)
     {
         // build the tranform (rotation) into tangent space
         const float3x3 tan_to_view = float3x3(
@@ -57,7 +59,16 @@ float4 main(float3 view_pos : Position, float3 n : Normal, float3 tan : Tangent,
     const float4 specular_sample = spec.Sample(splr, tc);
     
     const float3 specular_reflection_color = specular_sample.rgb;
-    const float3 specular_power = pow(2.0f, specular_sample.a * 13.0f);
+    
+    float3 specular_power;
+    if(has_gloss)
+    {
+        specular_power = pow(2.0f, specular_sample.a * 13.0f);
+    }
+    else
+    {
+        specular_power = specular_power_const;
+    }
     
     const float3 specular = att * pow(max(0.0f, dot(normalize(-r), normalize(view_pos))), specular_power);
     
