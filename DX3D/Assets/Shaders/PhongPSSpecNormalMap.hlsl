@@ -33,9 +33,7 @@ float4 main(float3 view_pos : Position, float3 n : Normal, float3 tan : Tangent,
         );
         
         const float3 normal_sample = nmap.Sample(splr, tc).xyz;
-        n.x = (normal_sample.x * 2.0f) - 1.0f;
-        n.y = -(normal_sample.y * 2.0f) + 1.0f;
-        n.z = normal_sample.z;
+        n = normal_sample * 2.0f - 1.0f;
         
         // bring normal from tanspace into view space
         n = mul(n, tan_to_view);

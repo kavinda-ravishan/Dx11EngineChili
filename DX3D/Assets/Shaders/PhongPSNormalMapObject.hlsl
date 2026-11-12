@@ -19,8 +19,8 @@ cbuffer ObjectCBuf
 
 cbuffer TransformCBuf
 {
-    matrix modelView;
-    matrix modelViewProj;
+    matrix model_view;
+    matrix model_view_proj;
 };
 
 Texture2D tex;
@@ -36,8 +36,8 @@ float4 main(float3 view_pos : Position, float3 n : Normal, float2 tc : Texcoord)
         const float3 normal_sample = nmap.Sample(splr, tc).xyz;
         n.x = (normal_sample.x * 2.0f) - 1.0f;
         n.y = -(normal_sample.y * 2.0f) + 1.0f;
-        n.z = -normal_sample.z;
-        n = mul(n, (float3x3) modelView);
+        n.z = -(normal_sample.z * 2.0f) + 1.0f;
+        n = mul(n, (float3x3) model_view);
     }
     
 	// fragment to light vector data

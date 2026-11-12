@@ -253,7 +253,7 @@ std::unique_ptr<dx3d::Mesh> dx3d::Model::ParseMesh(
 
 	std::vector<std::shared_ptr<Bindable>> bindable_ptrs;
 	bool has_specular_map{ false };
-	float shininess{ 35.0f };
+	float shininess{ 18.0f };
 
 	if (ai_mesh.mMaterialIndex >= 0) {
 		const auto& ai_material = *ai_materials_ptr[ai_mesh.mMaterialIndex];
@@ -335,7 +335,7 @@ std::unique_ptr<dx3d::Mesh> dx3d::Model::ParseMesh(
 
 		struct PSMaterialConstant
 		{
-			float specular_intensity{ 0.8f };
+			float specular_intensity{ 0.18f };
 			float specular_power{};
 			BOOL normal_map_enabled{ TRUE };
 			float padding[1]{};

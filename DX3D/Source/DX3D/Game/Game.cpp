@@ -132,7 +132,7 @@ dx3d::Game::Game(const GameDesc& desc) :
 	_wall = std::make_unique<Model>(BaseDesc({ _logger }), *_graphics, wall_textured_file_path, wall_textured_file_path.parent_path());
 	_wall->SetRootTransform(DirectX::XMMatrixTranslation(-1.5f, 0.0f, 0.0f));
 
-	_plane = std::make_unique<TestPlane>(DrawableDesc({ _logger }), *_graphics, 1.0f);
+	_plane = std::make_unique<TestPlane>(DrawableDesc({ _logger }), *_graphics, 2.0f);
 	_plane->SetPos({ 1.5f,0.0f,0.0f });
 
 	const float aspect_ratio = float(_window->GetWindowSize().height) / _window->GetWindowSize().width;
