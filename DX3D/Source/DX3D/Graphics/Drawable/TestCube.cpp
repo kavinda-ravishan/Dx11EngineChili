@@ -16,7 +16,7 @@ dx3d::TestCube::TestCube(const DrawableDesc& desc, Graphics& graphics, float siz
 	AddBind(BIndexBuffer::Resolve(BINDABLE_DESC, graphics, geometry_tag, model._indices));
 
 	AddBind(BTexture::Resolve(BINDABLE_DESC, graphics, "Assets\\Images\\brickwall.jpg"));
-	AddBind(BTexture::Resolve(BINDABLE_DESC, graphics, "Assets\\Images\\brickwall_normal.jpg", 1u));
+	AddBind(BTexture::Resolve(BINDABLE_DESC, graphics, "Assets\\Images\\brickwall_normal.jpg", 2u));
 
 	auto pvs = BVertexShader::Resolve(BINDABLE_DESC, graphics, "PhongVS.cso");
 	auto pvsbc = pvs->GetBytecode();
