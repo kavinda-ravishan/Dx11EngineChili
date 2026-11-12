@@ -22,7 +22,7 @@ Texture2D nmap : register(t2);
 
 SamplerState splr;
 
-float4 main(float3 world_pos : Position, float3 n : Normal, float3 tan : Tangent, float3 bitan : Bitangent, float2 tc : Texcoord) : SV_Target
+float4 main(float3 view_pos : Position, float3 n : Normal, float3 tan : Tangent, float3 bitan : Bitangent, float2 tc : Texcoord) : SV_Target
 {
     if (normal_map_enables)
     {
@@ -43,7 +43,7 @@ float4 main(float3 world_pos : Position, float3 n : Normal, float3 tan : Tangent
     }
     
 	// fragment to light vector data
-    const float3 v_to_l = light_pos - world_pos;
+    const float3 v_to_l = light_pos - view_pos;
     const float dist_to_l = length(v_to_l);
     const float3 dir_to_l = v_to_l / dist_to_l;
 	
@@ -57,7 +57,7 @@ float4 main(float3 world_pos : Position, float3 n : Normal, float3 tan : Tangent
     const float3 r = w * 2.0f - v_to_l;
 	
     // calculate specular intensity based on angle between viewing vector and reflection vector, narrow with power function
-    const float3 specular = att * (diffuse_color * diffuse_intensity) * specular_intensity * pow(max(0.0f, dot(normalize(-r), normalize(world_pos))), specular_power);
+    const float3 specular = att * (diffuse_color * diffuse_intensity) * specular_intensity * pow(max(0.0f, dot(normalize(-r), normalize(view_pos))), specular_power);
     
     // final color
     return float4(saturate(diffuse + ambient) * tex.Sample(splr, tc).rgb + specular, 1.0f);

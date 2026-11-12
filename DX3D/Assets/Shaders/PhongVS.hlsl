@@ -6,7 +6,7 @@ cbuffer CBuf
 
 struct VSOut
 {
-    float3 world_pos : Position;
+    float3 view_pos : Position;
     float3 normal : Normal;
     float2 tc : Texcoord;
     float4 pos : SV_Position;
@@ -15,7 +15,7 @@ struct VSOut
 VSOut main(float3 pos : Position, float3 n : Normal, float2 tc : Texcoord)
 {
     VSOut vso;
-    vso.world_pos = (float3) mul(float4(pos, 1.0f), model_view);
+    vso.view_pos = (float3) mul(float4(pos, 1.0f), model_view);
     vso.normal = mul(n, (float3x3) model_view);
     vso.pos = mul(float4(pos, 1.0f), model_view_proj);
     vso.tc = tc;

@@ -1,6 +1,6 @@
 cbuffer CBuf
 {
-    matrix model;
+    matrix model_view;
     matrix model_view_proj;
 };
 
