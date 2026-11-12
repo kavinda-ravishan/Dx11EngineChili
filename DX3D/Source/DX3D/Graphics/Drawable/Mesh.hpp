@@ -61,7 +61,7 @@ namespace dx3d {
 		static std::unique_ptr<Mesh> ParseMesh(
 			const BaseDesc& desc, 
 			Graphics& graphics, 
-			const std::filesystem::path resource_path,
+			const std::filesystem::path& resource_path,
 			const aiMesh& ai_mesh, 
 			const aiMaterial* const* ai_material
 		);

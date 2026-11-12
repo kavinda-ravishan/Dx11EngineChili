@@ -284,6 +284,16 @@
       <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ProjectDir)%(Filename).cso</ObjectFileOutput>
       <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ProjectDir)%(Filename).cso</ObjectFileOutput>
     </FxCompile>
+    <FxCompile Include="DX3D\Assets\Shaders\PhongPSNotex.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ProjectDir)%(Filename).cso</ObjectFileOutput>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ProjectDir)%(Filename).cso</ObjectFileOutput>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
+    </FxCompile>
     <FxCompile Include="DX3D\Assets\Shaders\PhongVS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
@@ -295,6 +305,16 @@
       <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ProjectDir)%(Filename).cso</ObjectFileOutput>
     </FxCompile>
     <FxCompile Include="DX3D\Assets\Shaders\PhongVSNormalMap.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ProjectDir)%(Filename).cso</ObjectFileOutput>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ProjectDir)%(Filename).cso</ObjectFileOutput>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
+    </FxCompile>
+    <FxCompile Include="DX3D\Assets\Shaders\PhongVSNotex.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>
@@ -338,37 +358,10 @@
     <Image Include="Assets\Images\brickwall_normal.jpg" />
     <Image Include="Assets\Images\cube.png" />
     <Image Include="Assets\Images\kappa50.png" />
-    <Image Include="Assets\Models\brick_wall\brick_wall_diffuse.jpg" />
-    <Image Include="Assets\Models\brick_wall\brick_wall_normal.jpg" />
-    <Image Include="Assets\Models\nano_textured\arm_dif.png" />
-    <Image Include="Assets\Models\nano_textured\arm_showroom_ddn.png" />
-    <Image Include="Assets\Models\nano_textured\arm_showroom_spec.png" />
-    <Image Include="Assets\Models\nano_textured\body_dif.png" />
-    <Image Include="Assets\Models\nano_textured\body_showroom_ddn.png" />
-    <Image Include="Assets\Models\nano_textured\body_showroom_spec.png" />
-    <Image Include="Assets\Models\nano_textured\glass_ddn.png" />
-    <Image Include="Assets\Models\nano_textured\glass_dif.png" />
-    <Image Include="Assets\Models\nano_textured\hand_dif.png" />
-    <Image Include="Assets\Models\nano_textured\hand_showroom_ddn.png" />
-    <Image Include="Assets\Models\nano_textured\hand_showroom_spec.png" />
-    <Image Include="Assets\Models\nano_textured\helmet_diff.png" />
-    <Image Include="Assets\Models\nano_textured\helmet_showroom_ddn.png" />
-    <Image Include="Assets\Models\nano_textured\helmet_showroom_spec.png" />
-    <Image Include="Assets\Models\nano_textured\leg_dif.png" />
-    <Image Include="Assets\Models\nano_textured\leg_showroom_ddn.png" />
-    <Image Include="Assets\Models\nano_textured\leg_showroom_spec.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Assets\Models\.gitignore" />
-    <None Include="Assets\Models\boxy.gltf" />
-    <None Include="Assets\Models\brick_wall\brick_wall.mtl" />
-    <None Include="Assets\Models\nano_hierarchy.gltf" />
-    <None Include="Assets\Models\nano_textured\nanosuit.mtl" />
     <None Include="third_party_libraries\.gitignore" />
     <None Include="third_party_libraries\README.md" />
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="Assets\Models\nano_textured\LICENSE.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
