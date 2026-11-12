@@ -21,8 +21,8 @@ namespace dx3d {
 			assert(divisions_x >= 1);
 			assert(divisions_y >= 1);
 
-			constexpr float width = 1.0f;
-			constexpr float height = 1.0f;
+			constexpr float width = 2.0f;
+			constexpr float height = 2.0f;
 			const int nVertices_x = divisions_x + 1;
 			const int nVertices_y = divisions_y + 1;
 			VertexBuffer vb{ std::move(layout) };
@@ -37,11 +37,11 @@ namespace dx3d {
 
 				for (int y = 0, i = 0; y < nVertices_y; y++)
 				{
-					const float y_pos = float(y) * divisionSize_y - 1.0f;
+					const float y_pos = float(y) * divisionSize_y - side_y;
 					const float y_pos_tc = 1.0f - float(y) * divisionSize_y_tc;
 					for (int x = 0; x < nVertices_x; x++, i++)
 					{
-						const float x_pos = float(x) * divisionSize_x - 1.0f;
+						const float x_pos = float(x) * divisionSize_x - side_x;
 						const float x_pos_tc = float(x) * divisionSize_x_tc;
 						vb.EmplaceBack(
 							dx::XMFLOAT3{ x_pos,y_pos,0.0f },
