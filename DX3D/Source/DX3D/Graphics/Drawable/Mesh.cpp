@@ -3,6 +3,7 @@
 #include <DX3D/Window/ImGUI/imgui.h>
 #include <DX3D/Utils/Surface.hpp>
 #include <DX3D/Graphics/Drawable/Mesh.hpp>
+#include "Mesh.hpp"
 
 // Mesh
 dx3d::Mesh::Mesh(const DrawableDesc& desc, Graphics& graphics, std::vector<std::shared_ptr<Bindable>> bindables)
@@ -200,6 +201,10 @@ void dx3d::Model::Draw(Graphics& graphics) const
 void dx3d::Model::ShowWindow(const char* window_name) noexcept
 {
 	_window->Show(window_name, *_root);
+}
+
+void dx3d::Model::SetRootTransform(DirectX::FXMMATRIX tf) noexcept {
+	_root->SetAppliedTransform(tf);
 }
 
 std::unique_ptr<dx3d::Mesh> dx3d::Model::ParseMesh(

@@ -49,7 +49,7 @@ void dx3d::Camera::SpawnControlWindow() noexcept {
 }
 
 void dx3d::Camera::Reset() noexcept {
-	_pos = { 0.0f, 7.5f, -18.0f };
+	_pos = { 0.0f, 0.0f, -10.0f };
 	_pitch = 0.0f;
 	_yaw = 0.0f;
 }

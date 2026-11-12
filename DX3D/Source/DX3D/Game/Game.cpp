@@ -13,6 +13,7 @@
 
 #include <DX3D/Graphics/Graphics.hpp>
 #include <DX3D/Graphics/Drawable/Mesh.hpp>
+#include <DX3D/Graphics/Drawable/TestPlane.hpp>
 #include <DX3D/Graphics/Camera/Camera.hpp>
 #include <DX3D/Graphics/Light/PointLight.hpp>
 
@@ -129,6 +130,10 @@ dx3d::Game::Game(const GameDesc& desc) :
 
 	const std::filesystem::path wall_textured_file_path{ "Assets\\Models\\brick_wall\\brick_wall.obj" };
 	_wall = std::make_unique<Model>(BaseDesc({ _logger }), *_graphics, wall_textured_file_path, wall_textured_file_path.parent_path());
+	_wall->SetRootTransform(DirectX::XMMatrixTranslation(-1.5f, 0.0f, 0.0f));
+
+	_plane = std::make_unique<TestPlane>(DrawableDesc({ _logger }), *_graphics, 1.0f);
+	_plane->SetPos({ 1.5f,0.0f,0.0f });
 
 	const float aspect_ratio = float(_window->GetWindowSize().height) / _window->GetWindowSize().width;
 	_graphics->SetProjection(DirectX::XMMatrixPerspectiveLH(1.0f, aspect_ratio, 0.5f, 40.0f));
@@ -178,6 +183,7 @@ void dx3d::Game::OnInternalUpdate() {
 
 	//_nano->Draw(*_graphics);
 	_wall->Draw(*_graphics);
+	_plane->Draw(*_graphics);
 	_point_light->Draw(*_graphics);
 
 	if (_graphics->IsImguiEnabled()) {
@@ -185,6 +191,7 @@ void dx3d::Game::OnInternalUpdate() {
 		_point_light->SpawnControlWindow();
 		//_nano->ShowWindow("Nano");
 		_wall->ShowWindow("Wall");
+		_plane->SpawnControlWindow(*_graphics);
 		ShowPerformanceWindow();
 	}
 

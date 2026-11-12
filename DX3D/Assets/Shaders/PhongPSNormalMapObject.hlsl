@@ -1,0 +1,62 @@
+cbuffer LightCBuf
+{
+    float3 light_pos;
+    float3 ambient;
+    float3 diffuse_color;
+    float diffuse_intensity;
+    float att_const;
+    float att_lin;
+    float att_quad;
+};
+
+cbuffer ObjectCBuf
+{
+    float specular_intensity;
+    float specular_power;
+    bool normal_map_enables;
+    float padding[1];
+};
+
+cbuffer TransformCBuf
+{
+    matrix modelView;
+    matrix modelViewProj;
+};
+
+Texture2D tex;
+Texture2D nmap : register(t2);
+
+SamplerState splr;
+
+float4 main(float3 view_pos : Position, float3 n : Normal, float2 tc : Texcoord) : SV_Target
+{
+    if (normal_map_enables)
+    {
+        // unpack normal data
+        const float3 normal_sample = nmap.Sample(splr, tc).xyz;
+        n.x = (normal_sample.x * 2.0f) - 1.0f;
+        n.y = -(normal_sample.y * 2.0f) + 1.0f;
+        n.z = -normal_sample.z;
+        n = mul(n, (float3x3) modelView);
+    }
+    
+	// fragment to light vector data
+    const float3 v_to_l = light_pos - view_pos;
+    const float dist_to_l = length(v_to_l);
+    const float3 dir_to_l = v_to_l / dist_to_l;
+	
+    // diffuse attenuation
+    const float att = 1.0f / ((att_const) + (att_lin * dist_to_l) + (att_quad * dist_to_l * dist_to_l));
+	// diffuse intensity
+    const float3 diffuse = diffuse_color * diffuse_intensity * att * max(0.0f, dot(dir_to_l, n));
+	
+    // reflected light vector
+    const float3 w = n * dot(v_to_l, n);
+    const float3 r = w * 2.0f - v_to_l;
+	
+    // calculate specular intensity based on angle between viewing vector and reflection vector, narrow with power function
+    const float3 specular = att * (diffuse_color * diffuse_intensity) * specular_intensity * pow(max(0.0f, dot(normalize(-r), normalize(view_pos))), specular_power);
+    
+    // final color
+    return float4(saturate(diffuse + ambient) * tex.Sample(splr, tc).rgb + specular, 1.0f);
+}

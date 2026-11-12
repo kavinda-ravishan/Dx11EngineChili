@@ -305,6 +305,7 @@
     <FxCompile Include="DX3D\Assets\Shaders\PhongPSSpecNormalMap.hlsl" />
     <FxCompile Include="DX3D\Assets\Shaders\PhongPSNormalMap.hlsl" />
     <FxCompile Include="DX3D\Assets\Shaders\PhongVSNormalMap.hlsl" />
+    <FxCompile Include="DX3D\Assets\Shaders\PhongPSNormalMapObject.hlsl" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Assets\Images\cube.png">

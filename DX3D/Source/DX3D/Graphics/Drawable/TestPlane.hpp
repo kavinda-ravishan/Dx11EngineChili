@@ -12,13 +12,13 @@ namespace dx3d {
 	private:
 		struct PSMaterialConstant
 		{
-			float specular_intensity{ 0.1f };
-			float specular_power{ 20.0f };
+			float specular_intensity{ 0.18f };
+			float specular_power{ 18.0f };
 			BOOL normal_mapping_enabled{ TRUE };
 			float padding[1]{};
 		} _pmc;
 
-		DirectX::XMFLOAT3 _pos{ 1.0f,1.0f,1.0f };
+		DirectX::XMFLOAT3 _pos{ 0.0f, 0.0f, 0.0f };
 		float _roll{ 0.0f };
 		float _pitch{ 0.0f };
 		float _yaw{ 0.0f };

@@ -55,6 +55,7 @@ namespace dx3d {
 		
 		void Draw(Graphics& graphics) const;
 		void ShowWindow(const char* window_name = nullptr) noexcept;
+		void SetRootTransform(DirectX::FXMMATRIX tf) noexcept;
 
 	private:
 		static std::unique_ptr<Mesh> ParseMesh(
