@@ -160,7 +160,7 @@ namespace dx3d {
 } // namespace dx3d
 
 // Model
-dx3d::Model::Model(const BaseDesc& desc, Graphics& graphics, const std::filesystem::path file_path, const std::filesystem::path resource_path)
+dx3d::Model::Model(const BaseDesc& desc, Graphics& graphics, const std::filesystem::path file_path)
 	: Base(desc), _window(std::make_unique<ModelWindow>())
 {
 	Assimp::Importer imp;
@@ -179,7 +179,7 @@ dx3d::Model::Model(const BaseDesc& desc, Graphics& graphics, const std::filesyst
 
 	for (size_t i = 0; i < scene->mNumMeshes; i++)
 	{
-		_mesh_ptrs.push_back(ParseMesh(desc, graphics, resource_path , *scene->mMeshes[i], scene->mMaterials));
+		_mesh_ptrs.push_back(ParseMesh(desc, graphics, file_path.parent_path(), *scene->mMeshes[i], scene->mMaterials));
 	}
 
 	int next_id{ 0 };

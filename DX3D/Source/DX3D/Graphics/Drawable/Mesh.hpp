@@ -50,7 +50,7 @@ namespace dx3d {
 	class Model final : public Base
 	{
 	public:
-		Model(const BaseDesc& desc, Graphics& graphics, const std::filesystem::path file_path, const std::filesystem::path resource_path);
+		Model(const BaseDesc& desc, Graphics& graphics, const std::filesystem::path file_path);
 		~Model() noexcept;
 		
 		void Draw(Graphics& graphics) const;

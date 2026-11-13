@@ -125,11 +125,9 @@ dx3d::Game::Game(const GameDesc& desc) :
 		BaseDesc(_logger), DrawableDesc({_logger}), BindableDesc({_logger}), *_graphics, 0.2f
 	);
 
-	const std::filesystem::path nano_textured_file_path{ "Assets\\Models\\gobber\\GoblinX.obj" };
-	_gobber = std::make_unique<Model>(BaseDesc({ _logger }), *_graphics, nano_textured_file_path, nano_textured_file_path.parent_path());
+	_gobber = std::make_unique<Model>(BaseDesc({ _logger }), *_graphics, "Assets\\Models\\gobber\\GoblinX.obj");
 
-	//const std::filesystem::path wall_textured_file_path{ "Assets\\Models\\brick_wall\\brick_wall.obj" };
-	//_wall = std::make_unique<Model>(BaseDesc({ _logger }), *_graphics, wall_textured_file_path, wall_textured_file_path.parent_path());
+	//_wall = std::make_unique<Model>(BaseDesc({ _logger }), *_graphics, "Assets\\Models\\brick_wall\\brick_wall.obj");
 	//_wall->SetRootTransform(DirectX::XMMatrixTranslation(-1.5f, 0.0f, 0.0f));
 
 	//_plane = std::make_unique<TestPlane>(DrawableDesc({ _logger }), *_graphics, 1.0f);
