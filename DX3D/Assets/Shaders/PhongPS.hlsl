@@ -21,6 +21,9 @@ SamplerState splr;
 
 float4 main(float3 view_pos : Position, float3 view_normal : Normal, float2 tc : Texcoord) : SV_Target
 {
+    // renormalize interpolated normal
+    view_normal = normalize(view_normal);
+    
 	// fragment to light vector data
     const float3 v_to_l = light_pos - view_pos;
     const float dist_to_l = length(v_to_l);

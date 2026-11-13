@@ -36,13 +36,13 @@ float4 main(float3 view_pos : Position, float3 view_normal : Normal, float3 tan 
             normalize(view_normal)
         );
         
-        // unpack normal data
+        // sample and unpack the normal from texture into tangent space
         const float3 normal_sample = nmap.Sample(splr, tc).xyz;
         float3 tan_normal;
         tan_normal = (normal_sample * 2.0f) - 1.0f;
         tan_normal.y = -tan_normal.y;
         // bring normal from tanspace into view space
-        view_normal = mul(tan_normal, tan_to_view);
+        view_normal = normalize(mul(tan_normal, tan_to_view));
     }
     
 	// fragment to light vector data

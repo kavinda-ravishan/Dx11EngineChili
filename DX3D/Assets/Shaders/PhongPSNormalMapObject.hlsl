@@ -32,12 +32,12 @@ float4 main(float3 view_pos : Position, float3 view_normal : Normal, float2 tc :
 {
     if (normal_map_enables)
     {
-        // unpack normal data
+        // sanple and unpack normal data
         const float3 normal_sample = nmap.Sample(splr, tc).xyz;
         view_normal.x = (normal_sample.x * 2.0f) - 1.0f;
         view_normal.y = -(normal_sample.y * 2.0f) + 1.0f;
         view_normal.z = -(normal_sample.z * 2.0f) + 1.0f;
-        view_normal = mul(view_normal, (float3x3) model_view);
+        view_normal = normalize(mul(view_normal, (float3x3) model_view));
     }
     
 	// fragment to light vector data
