@@ -326,5 +326,7 @@
   <ItemGroup>
     <None Include="third_party_libraries\.gitignore" />
     <None Include="third_party_libraries\README.md" />
+    <None Include="DX3D\Assets\Shaders\ShaderOps.hlsli" />
+    <None Include="DX3D\Assets\Shaders\PointLight.hlsli" />
   </ItemGroup>
 </Project>

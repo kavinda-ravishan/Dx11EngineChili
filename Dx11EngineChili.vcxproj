@@ -360,6 +360,8 @@
     <Image Include="Assets\Images\kappa50.png" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="DX3D\Assets\Shaders\PointLight.hlsli" />
+    <None Include="DX3D\Assets\Shaders\ShaderOps.hlsli" />
     <None Include="third_party_libraries\.gitignore" />
     <None Include="third_party_libraries\README.md" />
   </ItemGroup>
