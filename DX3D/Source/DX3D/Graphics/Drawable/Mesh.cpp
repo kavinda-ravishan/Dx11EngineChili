@@ -310,10 +310,12 @@ std::unique_ptr<dx3d::Mesh> dx3d::Model::ParseMesh(
 
 		struct PSMaterialConstantFullmonte
 		{
-			BOOL  normal_map_enabled{ TRUE };
-			BOOL  has_gloss_map{};
+			BOOL normal_map_enabled{ TRUE };
+			BOOL specular_map_enabled{ TRUE };
+			BOOL has_gloss_map{};
 			float specular_power{};
-			float padding[1]{};
+			DirectX::XMFLOAT3 specular_color{ 0.75f, 0.75f, 0.75f };
+			float specular_map_weight{ 0.671f };
 		} pmc;
 		pmc.specular_power = shininess;
 		pmc.has_gloss_map = has_alpha_gloss ? TRUE : FALSE;

@@ -12,9 +12,11 @@ cbuffer LightCBuf
 cbuffer ObjectCBuf
 {
     bool normal_map_enabled;
+    bool specular_map_enabled;
     bool has_gloss;
     float specular_power_const;
-    float padding[1];
+    float3 specular_color;
+    float specular_map_weight;
 };
 
 Texture2D tex;
@@ -56,21 +58,23 @@ float4 main(float3 view_pos : Position, float3 n : Normal, float3 tan : Tangent,
     const float3 r = w * 2.0f - v_to_l;
 	
     // calculate specular intensity based on angle between viewing vector and reflection vector, narrow with power function
-    const float4 specular_sample = spec.Sample(splr, tc);
-    
-    const float3 specular_reflection_color = specular_sample.rgb;
-    
-    float3 specular_power;
-    if(has_gloss)
+    float3 specular_reflection_color;
+    float specular_power = specular_power_const;
+    if(specular_map_enabled)
     {
-        specular_power = pow(2.0f, specular_sample.a * 13.0f);
+        const float4 specular_sample = spec.Sample(splr, tc);
+        specular_reflection_color = specular_sample.rgb * specular_map_weight;
+        if(has_gloss)
+        {
+            specular_power = pow(2.0f, specular_sample * 13.0f);
+        }
     }
     else
     {
-        specular_power = specular_power_const;
+        specular_reflection_color = specular_color;
     }
     
-    const float3 specular = att * pow(max(0.0f, dot(normalize(-r), normalize(view_pos))), specular_power);
+    const float3 specular = att * (diffuse_color * diffuse_intensity) * pow(max(0.0f, dot(normalize(-r), normalize(view_pos))), specular_power);
     
     // final color
     return float4(saturate(diffuse + ambient) * tex.Sample(splr, tc).rgb + (specular * specular_reflection_color), 1.0f);
