@@ -160,7 +160,7 @@ namespace dx3d {
 } // namespace dx3d
 
 // Model
-dx3d::Model::Model(const BaseDesc& desc, Graphics& graphics, const std::filesystem::path file_path)
+dx3d::Model::Model(const BaseDesc& desc, Graphics& graphics, const std::filesystem::path file_path, const float scale)
 	: Base(desc), _window(std::make_unique<ModelWindow>())
 {
 	Assimp::Importer imp;
@@ -179,7 +179,7 @@ dx3d::Model::Model(const BaseDesc& desc, Graphics& graphics, const std::filesyst
 
 	for (size_t i = 0; i < scene->mNumMeshes; i++)
 	{
-		_mesh_ptrs.push_back(ParseMesh(desc, graphics, file_path, *scene->mMeshes[i], scene->mMaterials));
+		_mesh_ptrs.push_back(ParseMesh(desc, graphics, file_path, *scene->mMeshes[i], scene->mMaterials, scale));
 	}
 
 	int next_id{ 0 };
@@ -211,7 +211,8 @@ std::unique_ptr<dx3d::Mesh> dx3d::Model::ParseMesh(
 	Graphics& graphics, 
 	const std::filesystem::path& file_path, 
 	const aiMesh& ai_mesh, 
-	const aiMaterial* const* ai_materials_ptr)
+	const aiMaterial* const* ai_materials_ptr, 
+	const float scale)
 {
 	const std::filesystem::path resource_path{ file_path.parent_path() };
 
@@ -274,8 +275,6 @@ std::unique_ptr<dx3d::Mesh> dx3d::Model::ParseMesh(
 	}
 
 	const auto mesh_tag = file_path.string() + "%" + ai_mesh.mName.C_Str();
-
-	const float scale = 6.0f;
 
 	if (has_diffuse_map && has_normal_map && has_specular_map)
 	{

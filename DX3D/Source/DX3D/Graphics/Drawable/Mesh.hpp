@@ -50,7 +50,7 @@ namespace dx3d {
 	class Model final : public Base
 	{
 	public:
-		Model(const BaseDesc& desc, Graphics& graphics, const std::filesystem::path file_path);
+		Model(const BaseDesc& desc, Graphics& graphics, const std::filesystem::path file_path, const float scale = 1.0f);
 		~Model() noexcept;
 		
 		void Draw(Graphics& graphics) const;
@@ -63,7 +63,8 @@ namespace dx3d {
 			Graphics& graphics, 
 			const std::filesystem::path& file_path, 
 			const aiMesh& ai_mesh, 
-			const aiMaterial* const* ai_material
+			const aiMaterial* const* ai_material, 
+			const float scale
 		);
 		std::unique_ptr<Node> ParseNode(int& next_id, const aiNode& node);
 

@@ -125,13 +125,17 @@ dx3d::Game::Game(const GameDesc& desc) :
 		BaseDesc(_logger), DrawableDesc({_logger}), BindableDesc({_logger}), *_graphics, 0.2f
 	);
 
-	_gobber = std::make_unique<Model>(BaseDesc({ _logger }), *_graphics, "Assets\\Models\\gobber\\GoblinX.obj");
+	_nano = std::make_unique<Model>(BaseDesc({ _logger }), *_graphics, "Assets\\Models\\nano_textured\\nanosuit.obj", 2.0f);
+	_nano->SetRootTransform(DirectX::XMMatrixTranslation(0.0f, -7.0f, 6.0f));
+	
+	_gobber = std::make_unique<Model>(BaseDesc({ _logger }), *_graphics, "Assets\\Models\\gobber\\GoblinX.obj", 6.0f);
+	_gobber->SetRootTransform(DirectX::XMMatrixTranslation(0.0f, 0.0f, -4.0f));
 
-	//_wall = std::make_unique<Model>(BaseDesc({ _logger }), *_graphics, "Assets\\Models\\brick_wall\\brick_wall.obj");
-	//_wall->SetRootTransform(DirectX::XMMatrixTranslation(-1.5f, 0.0f, 0.0f));
+	_wall = std::make_unique<Model>(BaseDesc({ _logger }), *_graphics, "Assets\\Models\\brick_wall\\brick_wall.obj", 6.0f);
+	_wall->SetRootTransform(DirectX::XMMatrixTranslation(-12.0f, 0.0f, 0.0f));
 
-	//_plane = std::make_unique<TestPlane>(DrawableDesc({ _logger }), *_graphics, 1.0f);
-	//_plane->SetPos({ 1.5f,0.0f,0.0f });
+	_plane = std::make_unique<TestPlane>(DrawableDesc({ _logger }), *_graphics, 6.0f);
+	_plane->SetPos({ 12.0f, 0.0f, 0.0f });
 
 	const float aspect_ratio = float(_window->GetWindowSize().height) / _window->GetWindowSize().width;
 	_graphics->SetProjection(DirectX::XMMatrixPerspectiveLH(1.0f, aspect_ratio, 0.5f, 40.0f));
@@ -179,17 +183,19 @@ void dx3d::Game::OnInternalUpdate() {
 	_graphics->SetCamera(_camera->GetMatrix());
 	_point_light->Bind(*_graphics, _camera->GetMatrix());
 
+	_nano->Draw(*_graphics);
 	_gobber->Draw(*_graphics);
-	//_wall->Draw(*_graphics);
-	//_plane->Draw(*_graphics);
+	_wall->Draw(*_graphics);
+	_plane->Draw(*_graphics);
 	_point_light->Draw(*_graphics);
 
 	if (_graphics->IsImguiEnabled()) {
 		_camera->SpawnControlWindow();
 		_point_light->SpawnControlWindow();
+		_nano->ShowWindow("Nano");
 		_gobber->ShowWindow("Gobber");
-		//_wall->ShowWindow("Wall");
-		//_plane->SpawnControlWindow(*_graphics);
+		_wall->ShowWindow("Wall");
+		_plane->SpawnControlWindow(*_graphics);
 		ShowPerformanceWindow();
 	}
 
