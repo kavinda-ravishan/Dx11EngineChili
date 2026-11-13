@@ -28,25 +28,18 @@ SamplerState splr;
 float3 MapNormal(
     const in float3 tan, 
     const in float3 bitan, 
-    const in float3 view_normal, 
+    const in float3 normal, 
     const in float2 tc, 
     uniform Texture2D nmap, 
     uniform SamplerState splr)
 {
     // build the tranform (rotation) into same space as tan/bitan/normal (target space)
-    const float3x3 tan_to_view = float3x3(
-            normalize(tan),
-            normalize(bitan),
-            normalize(view_normal)
-        );
-        
+    const float3x3 tan_to_target = float3x3(tan, bitan, normal);
     // sample and unpack the normal from texture into tangent space
     const float3 normal_sample = nmap.Sample(splr, tc).xyz;
-    float3 tan_normal;
-    tan_normal = (normal_sample * 2.0f) - 1.0f;
-    tan_normal.y = -tan_normal.y;
-        // bring normal from tanspace into view space
-    return normalize(mul(tan_normal, tan_to_view));
+    const float3 tan_normal = (normal_sample * 2.0f) - 1.0f;
+    // bring normal from tanspace into view space
+    return normalize(mul(tan_normal, tan_to_target));
 }
 
 float Attenuate(uniform float att_const, uniform float att_lin, uniform float att_quad, const in float dist_frag_to_l)
@@ -85,11 +78,11 @@ float3 Specular(
     return att * (diffuse_color * diffuse_intensity) * pow(max(0.0f, dot(-r, view_cam_to_frag)), specular_power);
 }
 
-float4 main(float3 view_pos : Position, float3 view_normal : Normal, float3 tan : Tangent, float3 bitan : Bitangent, float2 tc : Texcoord) : SV_Target
+float4 main(float3 view_pos : Position, float3 view_normal : Normal, float3 view_tan : Tangent, float3 view_bitan : Bitangent, float2 tc : Texcoord) : SV_Target
 {
     if (normal_map_enabled)
     {
-        view_normal = MapNormal(tan, bitan, view_normal, tc, nmap, splr);
+        view_normal = MapNormal(view_tan, view_bitan, view_normal, tc, nmap, splr);
     }
     
 	// fragment to light vector data
