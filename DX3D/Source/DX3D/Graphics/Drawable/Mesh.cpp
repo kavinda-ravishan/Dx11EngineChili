@@ -219,7 +219,11 @@ std::unique_ptr<dx3d::Mesh> dx3d::Model::ParseMesh(
 	bool has_alpha_gloss = false;
 	bool has_normal_map = false;
 	bool has_diffuse_map = false;
-	float shininess = 35.0f;
+	
+	float shininess = 2.0f;
+	DirectX::XMFLOAT4 specular_color{ 0.18f, 0.18f, 0.18f, 1.0f };
+	DirectX::XMFLOAT4 diffuse_color{ 0.45f, 0.45f, 0.85f, 1.0f };
+	
 	if (ai_mesh.mMaterialIndex >= 0)
 	{
 		auto& material = *ai_materials_ptr[ai_mesh.mMaterialIndex];
@@ -231,6 +235,10 @@ std::unique_ptr<dx3d::Mesh> dx3d::Model::ParseMesh(
 			bindable_ptrs.push_back(BTexture::Resolve(BindableDesc({desc.logger}), graphics, (resource_path / tex_file_name.C_Str()).string()));
 			has_diffuse_map = true;
 		}
+		else
+		{
+			material.Get(AI_MATKEY_COLOR_DIFFUSE, reinterpret_cast<aiColor3D&>(diffuse_color));
+		}
 
 		if (material.GetTexture(aiTextureType_SPECULAR, 0, &tex_file_name) == aiReturn_SUCCESS)
 		{
@@ -238,6 +246,10 @@ std::unique_ptr<dx3d::Mesh> dx3d::Model::ParseMesh(
 			has_alpha_gloss = tex->HasAlpha();
 			bindable_ptrs.push_back(std::move(tex));
 			has_specular_map = true;
+		}
+		else
+		{
+			material.Get(AI_MATKEY_COLOR_SPECULAR, reinterpret_cast<aiColor3D&>(specular_color));
 		}
 		
 		if(!has_alpha_gloss)
@@ -313,7 +325,7 @@ std::unique_ptr<dx3d::Mesh> dx3d::Model::ParseMesh(
 			BOOL normal_map_enabled{ TRUE };
 			BOOL specular_map_enabled{ TRUE };
 			BOOL has_gloss_map{};
-			float specular_power{};
+			float specular_power{ 3.1f };
 			DirectX::XMFLOAT3 specular_color{ 0.75f, 0.75f, 0.75f };
 			float specular_map_weight{ 0.671f };
 		} pmc;
@@ -370,12 +382,13 @@ std::unique_ptr<dx3d::Mesh> dx3d::Model::ParseMesh(
 
 		struct PSMaterialConstantDiffnorm
 		{
-			float specular_intensity{ 0.18f };
+			float specular_intensity{};
 			float specular_power{};
 			BOOL  normal_map_enabled{ TRUE };
 			float padding[1]{};
 		} pmc;
 		pmc.specular_power = shininess;
+		pmc.specular_intensity = (specular_color.x + specular_color.y + specular_color.z) / 3.0f;
 		// this is CLEARLY an issue... all meshes will share same mat const, but may have different
 		// Ns (specular power) specified for each in the material properties... bad conflict
 		bindable_ptrs.push_back(BPixelConstantBuffer<PSMaterialConstantDiffnorm>::Resolve(BindableDesc({ desc.logger }), graphics, pmc, 1u));
@@ -423,11 +436,12 @@ std::unique_ptr<dx3d::Mesh> dx3d::Model::ParseMesh(
 
 		struct PSMaterialConstantDiffuse
 		{
-			float specular_intensity{ 0.18f };
+			float specular_intensity{};
 			float specular_power{};
 			float padding[2]{};
 		} pmc;
 		pmc.specular_power = shininess;
+		pmc.specular_intensity = (specular_color.x + specular_color.y + specular_color.z) / 3.0f;
 		// this is CLEARLY an issue... all meshes will share same mat const, but may have different
 		// Ns (specular power) specified for each in the material properties... bad conflict
 		bindable_ptrs.push_back(BPixelConstantBuffer<PSMaterialConstantDiffuse>::Resolve(BindableDesc({ desc.logger }), graphics, pmc, 1u));
@@ -473,12 +487,14 @@ std::unique_ptr<dx3d::Mesh> dx3d::Model::ParseMesh(
 
 		struct PSMaterialConstantNotex
 		{
-			DirectX::XMFLOAT4 material_color{ 0.45f,0.45f,0.85f,1.0f };
-			float specular_intensity{ 0.18f };
+			DirectX::XMFLOAT4 material_color{};
+			DirectX::XMFLOAT4 specular_color{};
 			float specular_power{};
-			float padding[2]{};
+			float padding[3]{};
 		} pmc;
 		pmc.specular_power = shininess;
+		pmc.specular_color = specular_color;
+		pmc.material_color = diffuse_color;
 		// this is CLEARLY an issue... all meshes will share same mat const, but may have different
 		// Ns (specular power) specified for each in the material properties... bad conflict
 		bindable_ptrs.push_back(BPixelConstantBuffer<PSMaterialConstantNotex>::Resolve(BindableDesc({ desc.logger }), graphics, pmc, 1u));
