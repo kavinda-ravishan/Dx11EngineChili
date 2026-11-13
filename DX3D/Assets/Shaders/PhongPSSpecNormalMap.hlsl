@@ -25,24 +25,29 @@ Texture2D nmap;
 
 SamplerState splr;
 
-float4 main(float3 view_pos : Position, float3 view_normal : Normal, float3 tan : Tangent, float3 bitan : Bitangent, float2 tc : Texcoord) : SV_Target
+float3 MapNormalViewSpace(const float3 tan, const float3 bitan, const float3 view_normal, const float2 tc, Texture2D nmap, SamplerState splr)
 {
-    if (normal_map_enabled)
-    {
-        // build the tranform (rotation) into tangent space
-        const float3x3 tan_to_view = float3x3(
+    // build the tranform (rotation) into tangent space
+    const float3x3 tan_to_view = float3x3(
             normalize(tan),
             normalize(bitan),
             normalize(view_normal)
         );
         
         // sample and unpack the normal from texture into tangent space
-        const float3 normal_sample = nmap.Sample(splr, tc).xyz;
-        float3 tan_normal;
-        tan_normal = (normal_sample * 2.0f) - 1.0f;
-        tan_normal.y = -tan_normal.y;
+    const float3 normal_sample = nmap.Sample(splr, tc).xyz;
+    float3 tan_normal;
+    tan_normal = (normal_sample * 2.0f) - 1.0f;
+    tan_normal.y = -tan_normal.y;
         // bring normal from tanspace into view space
-        view_normal = normalize(mul(tan_normal, tan_to_view));
+    return normalize(mul(tan_normal, tan_to_view));
+}
+
+float4 main(float3 view_pos : Position, float3 view_normal : Normal, float3 tan : Tangent, float3 bitan : Bitangent, float2 tc : Texcoord) : SV_Target
+{
+    if (normal_map_enabled)
+    {
+        view_normal = MapNormalViewSpace(tan, bitan, view_normal, tc, nmap, splr);
     }
     
 	// fragment to light vector data
