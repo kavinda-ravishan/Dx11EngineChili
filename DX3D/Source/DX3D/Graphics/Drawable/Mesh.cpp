@@ -179,7 +179,7 @@ dx3d::Model::Model(const BaseDesc& desc, Graphics& graphics, const std::filesyst
 
 	for (size_t i = 0; i < scene->mNumMeshes; i++)
 	{
-		_mesh_ptrs.push_back(ParseMesh(desc, graphics, file_path.parent_path(), *scene->mMeshes[i], scene->mMaterials));
+		_mesh_ptrs.push_back(ParseMesh(desc, graphics, file_path, *scene->mMeshes[i], scene->mMaterials));
 	}
 
 	int next_id{ 0 };
@@ -209,11 +209,12 @@ void dx3d::Model::SetRootTransform(DirectX::FXMMATRIX tf) noexcept {
 std::unique_ptr<dx3d::Mesh> dx3d::Model::ParseMesh(
 	const BaseDesc& desc, 
 	Graphics& graphics, 
-	const std::filesystem::path file_path, 
-	const std::filesystem::path& resource_path, 
+	const std::filesystem::path& file_path, 
 	const aiMesh& ai_mesh, 
 	const aiMaterial* const* ai_materials_ptr)
 {
+	const std::filesystem::path resource_path{ file_path.parent_path() };
+
 	std::vector<std::shared_ptr<Bindable>> bindable_ptrs;
 
 	bool has_specular_map = false;
