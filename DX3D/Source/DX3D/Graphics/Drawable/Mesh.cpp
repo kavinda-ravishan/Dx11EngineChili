@@ -209,7 +209,8 @@ void dx3d::Model::SetRootTransform(DirectX::FXMMATRIX tf) noexcept {
 std::unique_ptr<dx3d::Mesh> dx3d::Model::ParseMesh(
 	const BaseDesc& desc, 
 	Graphics& graphics, 
-	const std::filesystem::path& resource_path,
+	const std::filesystem::path file_path, 
+	const std::filesystem::path& resource_path, 
 	const aiMesh& ai_mesh, 
 	const aiMaterial* const* ai_materials_ptr)
 {
@@ -271,7 +272,7 @@ std::unique_ptr<dx3d::Mesh> dx3d::Model::ParseMesh(
 		}
 	}
 
-	const auto mesh_tag = resource_path.string() + "%" + ai_mesh.mName.C_Str();
+	const auto mesh_tag = file_path.string() + "%" + ai_mesh.mName.C_Str();
 
 	const float scale = 6.0f;
 
