@@ -1,6 +1,6 @@
 cbuffer LightCBuf
 {
-    float3 light_pos;
+    float3 view_light_pos;
     float3 ambient;
     float3 diffuse_color;
     float diffuse_intensity;
@@ -51,18 +51,18 @@ float4 main(float3 view_pos : Position, float3 view_normal : Normal, float3 tan 
     }
     
 	// fragment to light vector data
-    const float3 v_to_l = light_pos - view_pos;
-    const float dist_to_l = length(v_to_l);
-    const float3 dir_to_l = v_to_l / dist_to_l;
+    const float3 view_frag_to_l = view_light_pos - view_pos;
+    const float dist_frag_to_l = length(view_frag_to_l);
+    const float3 view_dir_frag_to_l = view_frag_to_l / dist_frag_to_l;
 	
     // diffuse attenuation
-    const float att = 1.0f / ((att_const) + (att_lin * dist_to_l) + (att_quad * dist_to_l * dist_to_l));
+    const float att = 1.0f / ((att_const) + (att_lin * dist_frag_to_l) + (att_quad * dist_frag_to_l * dist_frag_to_l));
 	// diffuse intensity
-    const float3 diffuse = diffuse_color * diffuse_intensity * att * max(0.0f, dot(dir_to_l, view_normal));
+    const float3 diffuse = diffuse_color * diffuse_intensity * att * max(0.0f, dot(view_dir_frag_to_l, view_normal));
 	
     // reflected light vector
-    const float3 w = view_normal * dot(v_to_l, view_normal);
-    const float3 r = w * 2.0f - v_to_l;
+    const float3 w = view_normal * dot(view_frag_to_l, view_normal);
+    const float3 r = w * 2.0f - view_frag_to_l;
 	
     // calculate specular intensity based on angle between viewing vector and reflection vector, narrow with power function
     float3 specular_reflection_color;
