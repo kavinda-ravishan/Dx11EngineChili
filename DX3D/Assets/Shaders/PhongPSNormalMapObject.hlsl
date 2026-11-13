@@ -1,62 +1,46 @@
-cbuffer LightCBuf
-{
-    float3 light_pos;
-    float3 ambient;
-    float3 diffuse_color;
-    float diffuse_intensity;
-    float att_const;
-    float att_lin;
-    float att_quad;
-};
+#include "ShaderOps.hlsli"
+#include "LightVectorData.hlsli"
+
+#include "PointLight.hlsli"
 
 cbuffer ObjectCBuf
 {
     float specular_intensity;
     float specular_power;
-    bool normal_map_enables;
+    bool normal_map_enabled;
     float padding[1];
 };
 
-cbuffer TransformCBuf
-{
-    matrix model_view;
-    matrix model_view_proj;
-};
+#include "Transform.hlsli"
 
 Texture2D tex;
 Texture2D nmap : register(t2);
 
 SamplerState splr;
 
-float4 main(float3 view_pos : Position, float3 view_normal : Normal, float2 tc : Texcoord) : SV_Target
+
+float4 main(float3 view_frag_pos : Position, float3 view_normal : Normal, float2 tc : Texcoord) : SV_Target
 {
-    if (normal_map_enables)
+	// sample normal from map if normal mapping enabled
+    if (normal_map_enabled)
     {
-        // sanple and unpack normal data
+        // sample and unpack normal data
         const float3 normal_sample = nmap.Sample(splr, tc).xyz;
-        view_normal.x = (normal_sample.x * 2.0f) - 1.0f;
-        view_normal.y = -(normal_sample.y * 2.0f) + 1.0f;
-        view_normal.z = -(normal_sample.z * 2.0f) + 1.0f;
-        view_normal = normalize(mul(view_normal, (float3x3) model_view));
+        const float3 object_normal = normal_sample * 2.0f - 1.0f;
+        // bring normal from object space into view space
+        view_normal = normalize(mul(object_normal, (float3x3) model_view));
     }
-    
 	// fragment to light vector data
-    const float3 v_to_l = light_pos - view_pos;
-    const float dist_to_l = length(v_to_l);
-    const float3 dir_to_l = v_to_l / dist_to_l;
-	
-    // diffuse attenuation
-    const float att = 1.0f / ((att_const) + (att_lin * dist_to_l) + (att_quad * dist_to_l * dist_to_l));
+    const LightVectorData lv = CalculateLightVectorData(view_light_pos, view_frag_pos);
+	// attenuation
+    const float att = Attenuate(att_const, att_lin, att_quad, lv.dist_to_l);
 	// diffuse intensity
-    const float3 diffuse = diffuse_color * diffuse_intensity * att * max(0.0f, dot(dir_to_l, view_normal));
-	
-    // reflected light vector
-    const float3 w = view_normal * dot(v_to_l, view_normal);
-    const float3 r = w * 2.0f - v_to_l;
-	
-    // calculate specular intensity based on angle between viewing vector and reflection vector, narrow with power function
-    const float3 specular = att * (diffuse_color * diffuse_intensity) * specular_intensity * pow(max(0.0f, dot(normalize(-r), normalize(view_pos))), specular_power);
-    
-    // final color
-    return float4(saturate(diffuse + ambient) * tex.Sample(splr, tc).rgb + specular, 1.0f);
+    const float3 diffuse = Diffuse(diffuse_color, diffuse_intensity, att, lv.dir_to_l, view_normal);
+	// specular
+    const float3 specular = Specular(
+        specular_intensity.rrr, 1.0f, view_normal, lv.v_to_l,
+        view_frag_pos, att, specular_power
+    );
+	// final color
+    return float4(saturate((diffuse + ambient) * tex.Sample(splr, tc).rgb + specular), 1.0f);
 }

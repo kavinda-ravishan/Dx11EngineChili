@@ -328,5 +328,7 @@
     <None Include="third_party_libraries\README.md" />
     <None Include="DX3D\Assets\Shaders\ShaderOps.hlsli" />
     <None Include="DX3D\Assets\Shaders\PointLight.hlsli" />
+    <None Include="DX3D\Assets\Shaders\LightVectorData.hlsli" />
+    <None Include="DX3D\Assets\Shaders\Transform.hlsli" />
   </ItemGroup>
 </Project>
