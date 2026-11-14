@@ -10,6 +10,9 @@ dx3d::BSampler::BSampler(const BindableDesc& desc, Graphics& graphics)
 	sampler_desc.AddressU = D3D11_TEXTURE_ADDRESS_WRAP;
 	sampler_desc.AddressV = D3D11_TEXTURE_ADDRESS_WRAP;
 	sampler_desc.AddressW = D3D11_TEXTURE_ADDRESS_WRAP;
+	sampler_desc.MipLODBias = 0.0f;
+	sampler_desc.MinLOD = 0.0f;
+	sampler_desc.MaxLOD = D3D11_FLOAT32_MAX;
 
 	sampler_desc.BorderColor[0] = 0.0f;
 	sampler_desc.BorderColor[1] = 1.0f;
