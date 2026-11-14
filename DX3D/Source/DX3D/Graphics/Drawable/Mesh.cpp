@@ -601,8 +601,6 @@ std::unique_ptr<dx3d::Mesh> dx3d::Model::ParseMesh(
 		throw std::runtime_error("terrible combination of textures in material smh");
 	}
 
-	bindable_ptrs.push_back(BBlender::Resolve(BindableDesc({ desc.logger }), graphics, has_alpha_diffuse));
-
 	return std::make_unique<Mesh>(DrawableDesc({ desc.logger }), graphics, std::move(bindable_ptrs));
 }
 

@@ -22,6 +22,10 @@ SamplerState splr;
 
 float4 main(float3 view_frag_pos : Position, float3 view_normal : Normal, float3 view_tan : Tangent, float3 view_bitan : Bitangent, float2 tc : Texcoord) : SV_Target
 {
+    // sample diffuse texture
+    float4 dtex = tex.Sample(splr, tc);
+    clip(dtex.a < 0.1f ? -1 : 1);
+    
     // normalize the mesh normal
     view_normal = normalize(view_normal);
     // replace normal with mapped if normal mapping enabled
@@ -57,9 +61,6 @@ float4 main(float3 view_frag_pos : Position, float3 view_normal : Normal, float3
         specular_reflection_color, 1.0f, view_normal,
         lv.v_to_l, view_frag_pos, att, specular_power
     );
-    
-    // sample diffuse texture
-    float4 dtex = tex.Sample(splr, tc);
     
 	// final color = attenuate diffuse & ambient by diffuse texture color and add specular reflected
     return float4(saturate((diffuse + ambient) * dtex.rgb + specular_reflected), dtex.a);
