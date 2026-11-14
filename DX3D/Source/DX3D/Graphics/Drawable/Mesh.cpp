@@ -4,6 +4,30 @@
 #include <DX3D/Utils/Surface.hpp>
 #include <DX3D/Graphics/Drawable/Mesh.hpp>
 
+static DirectX::XMFLOAT3 ExtractEulerAngles(const DirectX::XMFLOAT4X4& mat)
+{
+	DirectX::XMFLOAT3 euler{};
+
+	euler.x = asinf(-mat._32);                 // Pitch
+	if (cosf(euler.x) > 0.0001)                // Not at poles
+	{
+		euler.y = atan2f(mat._31, mat._33);      // Yaw
+		euler.z = atan2f(mat._12, mat._22);      // Roll
+	}
+	else
+	{
+		euler.y = 0.0f;                           // Yaw
+		euler.z = atan2f(-mat._21, mat._11);     // Roll
+	}
+
+	return euler;
+}
+
+static DirectX::XMFLOAT3 ExtractTranslation(const DirectX::XMFLOAT4X4& matrix)
+{
+	return { matrix._41,matrix._42,matrix._43 };
+}
+
 // Mesh
 dx3d::Mesh::Mesh(const DrawableDesc& desc, Graphics& graphics, std::vector<std::shared_ptr<Bindable>> bindables)
 : Drawable(desc)
@@ -39,6 +63,10 @@ dx3d::Node::Node(const int id, const std::string& name, std::vector<Mesh*> mesh_
 void dx3d::Node::SetAppliedTransform(DirectX::FXMMATRIX transform) noexcept
 {
 	DirectX::XMStoreFloat4x4(&_applied_transform, transform);
+}
+
+const DirectX::XMFLOAT4X4& dx3d::Node::GetAppliedTransform() const noexcept {
+	return _applied_transform;
 }
 
 void dx3d::Node::ShowTree(Node*& selected_node_ptr) const noexcept
@@ -120,7 +148,24 @@ namespace dx3d {
 				ImGui::NextColumn();
 				if (_selected_node_ptr != nullptr)
 				{
-					auto& transform = _transforms[_selected_node_ptr->GetID()];
+					const auto id = _selected_node_ptr->GetID();
+					auto i = _transforms.find(id);
+					if (i == _transforms.end())
+					{
+						const auto& applied = _selected_node_ptr->GetAppliedTransform();
+						const auto angles = ExtractEulerAngles(applied);
+						const auto translation = ExtractTranslation(applied);
+						TransformParameters tp;
+						tp.roll = angles.z;
+						tp.pitch = angles.x;
+						tp.yaw = angles.y;
+						tp.x = translation.x;
+						tp.y = translation.y;
+						tp.z = translation.z;
+						std::tie(i, std::ignore) = _transforms.insert({ id,tp });
+					}
+					auto& transform = i->second;
+
 					ImGui::Text("Orientation");
 					ImGui::SliderAngle("Roll", &transform.roll, -180.0f, 180.0f);
 					ImGui::SliderAngle("Pitch", &transform.pitch, -180.0f, 180.0f);
