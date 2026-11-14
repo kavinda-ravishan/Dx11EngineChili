@@ -1,13 +1,7 @@
-cbuffer LightCBuf
-{
-    float3 light_pos;
-    float3 ambient;
-    float3 diffuse_color;
-    float diffuse_intensity;
-    float att_const;
-    float att_lin;
-    float att_quad;
-};
+#include "ShaderOps.hlsli"
+#include "LightVectorData.hlsli"
+
+#include "PointLight.hlsli"
 
 cbuffer ObjectCBuf
 {
@@ -17,28 +11,21 @@ cbuffer ObjectCBuf
     float padding[3];
 };
 
-float4 main(float3 view_pos : Position, float3 view_normal : Normal) : SV_Target
+float4 main(float3 view_frag_pos : Position, float3 view_normal : Normal) : SV_Target
 {
-    // renormalize interpolated normal
+    // normalize the mesh normal
     view_normal = normalize(view_normal);
-    
 	// fragment to light vector data
-    const float3 v_to_l = light_pos - view_pos;
-    const float dist_to_l = length(v_to_l);
-    const float3 dir_to_l = v_to_l / dist_to_l;
-	
-    // diffuse attenuation
-    const float att = 1.0f / ((att_const) + (att_lin * dist_to_l) + (att_quad * dist_to_l * dist_to_l));
-	// diffuse intensity
-    const float3 diffuse = diffuse_color * diffuse_intensity * att * max(0.0f, dot(dir_to_l, view_normal));
-	
-    // reflected light vector
-    const float3 w = view_normal * dot(v_to_l, view_normal);
-    const float3 r = w * 2.0f - v_to_l;
-	
-    // calculate specular intensity based on angle between viewing vector and reflection vector, narrow with power function
-    const float4 specular = att * (float4(diffuse_color, 1.0f) * diffuse_intensity) * specular_color * pow(max(0.0f, dot(normalize(-r), normalize(view_pos))), specular_power);
-    
-    // final color
-    return saturate(float4(diffuse + ambient, 1.0f) * material_color + specular);
+    const LightVectorData lv = CalculateLightVectorData(view_light_pos, view_frag_pos);
+	// attenuation
+    const float att = Attenuate(att_const, att_lin, att_quad, lv.dist_to_l);
+	// diffuse
+    const float3 diffuse = Diffuse(diffuse_color, diffuse_intensity, att, lv.dir_to_l, view_normal);
+    // specular
+    const float3 specular = Specular(
+        specular_color.rgb, 1.0f, view_normal,
+        lv.v_to_l, view_frag_pos, att, specular_power
+    );
+	// final color
+    return float4(saturate((diffuse + ambient) * material_color.rgb + specular), 1.0f);
 }

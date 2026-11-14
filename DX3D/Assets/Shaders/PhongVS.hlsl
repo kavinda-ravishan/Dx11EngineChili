@@ -1,8 +1,4 @@
-cbuffer CBuf
-{
-    matrix model_view;
-    matrix model_view_proj;
-};
+#include "Transform.hlsli"
 
 struct VSOut
 {
