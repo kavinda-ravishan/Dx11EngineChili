@@ -215,7 +215,7 @@ void dx3d::Game::OnInternalUpdate() {
 }
 
 void dx3d::Game::IOControls() noexcept {
-	constexpr float translation_multiplier{ 3.0f };
+	static float translation_multiplier{ 1.0f };
 
 	const bool free_camera_movments = !_window->IsCursorEnabled();
 
@@ -228,7 +228,7 @@ void dx3d::Game::IOControls() noexcept {
 
 	if (free_camera_movments) {
 		_camera->Rotate(static_cast<float>(mouse_delta[0]), static_cast<float>(mouse_delta[1]));
-		_camera->Translate({ 0.0f, static_cast<float>(mouse_wheel_delta) * dt * translation_multiplier, 0.0f });
+		translation_multiplier = std::clamp(translation_multiplier + (mouse_wheel_delta / 5.0f), 0.0f, 5.0f);
 	}
 
 	switch (key) {
