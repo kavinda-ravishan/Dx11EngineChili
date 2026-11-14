@@ -11,3 +11,4 @@
 #include <DX3D/Graphics/Bindable/VertexBuffer.hpp>
 #include <DX3D/Graphics/Bindable/Texture.hpp>
 #include <DX3D/Graphics/Bindable/Sampler.hpp>
+#include <DX3D/Graphics/Bindable/Blender.hpp>

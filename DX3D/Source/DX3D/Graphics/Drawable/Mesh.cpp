@@ -272,6 +272,7 @@ std::unique_ptr<dx3d::Mesh> dx3d::Model::ParseMesh(
 
 	bool has_specular_map = false;
 	bool has_alpha_gloss = false;
+	bool has_alpha_diffuse = false;
 	bool has_normal_map = false;
 	bool has_diffuse_map = false;
 	
@@ -287,7 +288,9 @@ std::unique_ptr<dx3d::Mesh> dx3d::Model::ParseMesh(
 
 		if (material.GetTexture(aiTextureType_DIFFUSE, 0, &tex_file_name) == aiReturn_SUCCESS)
 		{
-			bindable_ptrs.push_back(BTexture::Resolve(BindableDesc({desc.logger}), graphics, (resource_path / tex_file_name.C_Str()).string()));
+			auto tex = BTexture::Resolve(BindableDesc({ desc.logger }), graphics, (resource_path / tex_file_name.C_Str()).string());
+			has_alpha_diffuse = tex->HasAlpha();
+			bindable_ptrs.push_back(std::move(tex));
 			has_diffuse_map = true;
 		}
 		else
@@ -597,6 +600,8 @@ std::unique_ptr<dx3d::Mesh> dx3d::Model::ParseMesh(
 	{
 		throw std::runtime_error("terrible combination of textures in material smh");
 	}
+
+	bindable_ptrs.push_back(BBlender::Resolve(BindableDesc({ desc.logger }), graphics, has_alpha_diffuse));
 
 	return std::make_unique<Mesh>(DrawableDesc({ desc.logger }), graphics, std::move(bindable_ptrs));
 }
