@@ -192,9 +192,9 @@ void dx3d::Game::OnInternalUpdate() {
 	if (_graphics->IsImguiEnabled()) {
 		_camera->SpawnControlWindow();
 		_point_light->SpawnControlWindow();
-		_nano->ShowWindow("Nano");
-		_gobber->ShowWindow("Gobber");
-		_wall->ShowWindow("Wall");
+		_nano->ShowWindow(*_graphics, "Nano");
+		_gobber->ShowWindow(*_graphics, "Gobber");
+		_wall->ShowWindow(*_graphics, "Wall");
 		_plane->SpawnControlWindow(*_graphics);
 		ShowPerformanceWindow();
 	}

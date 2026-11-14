@@ -16,7 +16,6 @@ namespace dx3d {
 
 		virtual DirectX::XMMATRIX GetTransformXM() const noexcept = 0;
 	
-	protected:
 		template<class T>
 		T* QueryBindable() noexcept
 		{

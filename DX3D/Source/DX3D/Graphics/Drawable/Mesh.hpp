@@ -1,10 +1,11 @@
 #pragma once
 #include <optional>
 #include <filesystem>
-
 #include <assimp/Importer.hpp>
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
+
+#include <DX3D/Window/ImGUI/imgui.h>
 
 #include <DX3D/Graphics/Bindable/BindableCommon.hpp>
 #include <DX3D/Graphics/Drawable/Drawable.hpp>
@@ -27,6 +28,26 @@ namespace dx3d {
 	class Node final
 	{
 		friend class Model;
+
+	public:
+		struct PSMaterialConstantFullmonte
+		{
+			BOOL normal_map_enabled{ TRUE };
+			BOOL specular_map_enabled{ TRUE };
+			BOOL has_gloss_map{};
+			float specular_power{ 3.1f };
+			DirectX::XMFLOAT3 specular_color{ 0.75f, 0.75f, 0.75f };
+			float specular_map_weight{ 0.671f };
+		};
+
+		struct PSMaterialConstantNotex
+		{
+			DirectX::XMFLOAT4 material_color{};
+			DirectX::XMFLOAT4 specular_color{};
+			float specular_power{};
+			float padding[3]{};
+		};
+
 	public:
 		Node(const int id, const std::string& name, std::vector<Mesh*> mesh_ptrs, const DirectX::XMMATRIX& transform) noxnd;
 
@@ -35,6 +56,61 @@ namespace dx3d {
 		const DirectX::XMFLOAT4X4& GetAppliedTransform() const noexcept;
 		void ShowTree(Node*& selected_node_ptr) const noexcept;
 		int GetID() const noexcept;
+
+		template<class T>
+		bool MaterialConstantControl(Graphics& graphics, T& c)
+		{
+			if (_mesh_ptrs.empty())
+			{
+				return false;
+			}
+
+			if constexpr (std::is_same<T, PSMaterialConstantFullmonte>::value)
+			{
+				if (auto pcb = _mesh_ptrs.front()->QueryBindable<BPixelConstantBuffer<T>>())
+				{
+					ImGui::Text("Material");
+
+					bool normal_map_enabled = (bool)c.normal_map_enabled;
+					ImGui::Checkbox("Norm Map", &normal_map_enabled);
+					c.normal_map_enabled = normal_map_enabled ? TRUE : FALSE;
+
+					bool specular_map_enabled = (bool)c.specular_map_enabled;
+					ImGui::Checkbox("Spec Map", &specular_map_enabled);
+					c.specular_map_enabled = specular_map_enabled ? TRUE : FALSE;
+
+					bool has_gloss_map = (bool)c.has_gloss_map;
+					ImGui::Checkbox("Gloss Alpha", &has_gloss_map);
+					c.has_gloss_map = has_gloss_map ? TRUE : FALSE;
+
+					ImGui::SliderFloat("Spec Weight", &c.specular_map_weight, 0.0f, 2.0f);
+
+					ImGui::SliderFloat("Spec Pow", &c.specular_power, 0.0f, 1000.0f, "%f", ImGuiSliderFlags_Logarithmic);
+
+					ImGui::ColorPicker3("Spec Color", reinterpret_cast<float*>(&c.specular_color));
+
+					pcb->Update(graphics, c);
+					return true;
+				}
+			}
+			else if constexpr (std::is_same<T, struct PSMaterialConstantNotex>::value)
+			{
+				if (auto pcb = _mesh_ptrs.front()->QueryBindable<BPixelConstantBuffer<T>>())
+				{
+					ImGui::Text("Material");
+
+					ImGui::ColorPicker3("Spec Color", reinterpret_cast<float*>(&c.specular_color));
+
+					ImGui::SliderFloat("Spec Pow", &c.specular_power, 0.0f, 1000.0f, "%f", ImGuiSliderFlags_Logarithmic);
+
+					ImGui::ColorPicker3("Diff Color", reinterpret_cast<float*>(&c.material_color));
+
+					pcb->Update(graphics, c);
+					return true;
+				}
+			}
+			return false;
+		}
 
 	private:
 		void AddChild(std::unique_ptr<Node> child) noxnd;
@@ -55,7 +131,7 @@ namespace dx3d {
 		~Model() noexcept;
 		
 		void Draw(Graphics& graphics) const;
-		void ShowWindow(const char* window_name = nullptr) noexcept;
+		void ShowWindow(Graphics& graphics, const char* window_name = nullptr) noexcept;
 		void SetRootTransform(DirectX::FXMMATRIX tf) noexcept;
 
 	private:

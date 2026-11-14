@@ -1,6 +1,5 @@
 #include <unordered_map>
 
-#include <DX3D/Window/ImGUI/imgui.h>
 #include <DX3D/Utils/Surface.hpp>
 #include <DX3D/Graphics/Drawable/Mesh.hpp>
 
@@ -134,7 +133,7 @@ namespace dx3d {
 	class ModelWindow final // pImpl idiom, only defined in this .cpp
 	{
 	public:
-		void Show(const char* window_name, const Node& root) noexcept
+		void Show(Graphics& graphics, const char* window_name, const Node& root) noexcept
 		{
 			// window name defaults to "Model"
 			window_name = window_name ? window_name : "Model";
@@ -174,6 +173,11 @@ namespace dx3d {
 					ImGui::SliderFloat("X", &transform.x, -20.0f, 20.0f);
 					ImGui::SliderFloat("Y", &transform.y, -20.0f, 20.0f);
 					ImGui::SliderFloat("Z", &transform.z, -20.0f, 20.0f);
+
+					if (!_selected_node_ptr->MaterialConstantControl(graphics, _skin_material))
+					{
+						_selected_node_ptr->MaterialConstantControl(graphics, _ring_material);
+					}
 				}
 			}
 			ImGui::End();
@@ -201,6 +205,9 @@ namespace dx3d {
 			float z{ 0.0f };
 		};
 		std::unordered_map<int, TransformParameters> _transforms{};
+
+		Node::PSMaterialConstantFullmonte _skin_material{};
+		Node::PSMaterialConstantNotex _ring_material{};
 	};
 } // namespace dx3d
 
@@ -242,9 +249,9 @@ void dx3d::Model::Draw(Graphics& graphics) const
 	_root->Draw(graphics, DirectX::XMMatrixIdentity());
 }
 
-void dx3d::Model::ShowWindow(const char* window_name) noexcept
+void dx3d::Model::ShowWindow(Graphics& graphics, const char* window_name) noexcept
 {
-	_window->Show(window_name, *_root);
+	_window->Show(graphics, window_name, *_root);
 }
 
 void dx3d::Model::SetRootTransform(DirectX::FXMMATRIX tf) noexcept {
@@ -366,20 +373,12 @@ std::unique_ptr<dx3d::Mesh> dx3d::Model::ParseMesh(
 
 		bindable_ptrs.push_back(BInputLayout::Resolve(BindableDesc({ desc.logger }), graphics, vbuf.GetLayout(), pvsbc));
 
-		struct PSMaterialConstantFullmonte
-		{
-			BOOL normal_map_enabled{ TRUE };
-			BOOL specular_map_enabled{ TRUE };
-			BOOL has_gloss_map{};
-			float specular_power{ 3.1f };
-			DirectX::XMFLOAT3 specular_color{ 0.75f, 0.75f, 0.75f };
-			float specular_map_weight{ 0.671f };
-		} pmc;
+		Node::PSMaterialConstantFullmonte pmc{};
 		pmc.specular_power = shininess;
 		pmc.has_gloss_map = has_alpha_gloss ? TRUE : FALSE;
 		// this is CLEARLY an issue... all meshes will share same mat const, but may have different
 		// Ns (specular power) specified for each in the material properties... bad conflict
-		bindable_ptrs.push_back(BPixelConstantBuffer<PSMaterialConstantFullmonte>::Resolve(BindableDesc({ desc.logger }), graphics, pmc, 1u));
+		bindable_ptrs.push_back(BPixelConstantBuffer<Node::PSMaterialConstantFullmonte>::Resolve(BindableDesc({ desc.logger }), graphics, pmc, 1u));
 	}
 	else if (has_diffuse_map && has_normal_map)
 	{
@@ -586,19 +585,13 @@ std::unique_ptr<dx3d::Mesh> dx3d::Model::ParseMesh(
 
 		bindable_ptrs.push_back(BInputLayout::Resolve(BindableDesc({ desc.logger }), graphics, vbuf.GetLayout(), pvsbc));
 
-		struct PSMaterialConstantNotex
-		{
-			DirectX::XMFLOAT4 material_color{};
-			DirectX::XMFLOAT4 specular_color{};
-			float specular_power{};
-			float padding[3]{};
-		} pmc;
+		Node::PSMaterialConstantNotex pmc{};
 		pmc.specular_power = shininess;
 		pmc.specular_color = specular_color;
 		pmc.material_color = diffuse_color;
 		// this is CLEARLY an issue... all meshes will share same mat const, but may have different
 		// Ns (specular power) specified for each in the material properties... bad conflict
-		bindable_ptrs.push_back(BPixelConstantBuffer<PSMaterialConstantNotex>::Resolve(BindableDesc({ desc.logger }), graphics, pmc, 1u));
+		bindable_ptrs.push_back(BPixelConstantBuffer<Node::PSMaterialConstantNotex>::Resolve(BindableDesc({ desc.logger }), graphics, pmc, 1u));
 	}
 	else
 	{
