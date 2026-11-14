@@ -39,7 +39,7 @@ void dx3d::PointLight::SpawnControlWindow() noexcept {
 void dx3d::PointLight::Reset() noexcept {
 	_cb_data = {
 		{ 2.0f,9.0f,-15.0f },
-		{ 0.25f,0.25f,0.25f },
+		{ 0.2f,0.2f,0.2f },
 		{ 1.0f,1.0f,1.0f },
 		1.0f,
 		1.0f,
