@@ -5,7 +5,7 @@
 
 namespace dx3d {
 
-	class BTopology : public Bindable {
+	class BTopology final : public Bindable {
 	public:
 		BTopology(const BindableDesc& desc, Graphics& graphics, const D3D11_PRIMITIVE_TOPOLOGY type);
 		void Bind(Graphics& graphics) noexcept override;

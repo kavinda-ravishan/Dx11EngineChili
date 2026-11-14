@@ -5,7 +5,7 @@
 #include <DX3D/Graphics/Bindable/Bindable.hpp>
 
 namespace dx3d {
-	class BTexture : public Bindable {
+	class BTexture final : public Bindable {
 	public:
 		BTexture(const BindableDesc& desc, Graphics& graphics, const std::string& path, unsigned int slot = 0);
 		void Bind(Graphics& graphics) noexcept override;

@@ -7,7 +7,7 @@
 #include <DX3D/Graphics/GraphicsLogUtils.hpp>
 
 namespace dx3d {
-	class BVertexBuffer : public Bindable {
+	class BVertexBuffer final : public Bindable {
 	public:
 		BVertexBuffer(const BindableDesc& desc, Graphics& graphics, const dx3d::VertexBuffer& vbuf);
 		BVertexBuffer(const BindableDesc& desc, Graphics& graphics, const std::string tag, const dx3d::VertexBuffer& vbuf);

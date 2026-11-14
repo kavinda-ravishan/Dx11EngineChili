@@ -6,7 +6,7 @@
 #include <DX3D/Graphics/Bindable/Bindable.hpp>
 
 namespace dx3d {
-	class BIndexBuffer : public Bindable {
+	class BIndexBuffer final : public Bindable {
 	public:
 		BIndexBuffer(const BindableDesc& desc, Graphics& graphics, const std::vector<unsigned short>& indices);
 		BIndexBuffer(const BindableDesc& desc, Graphics& graphics, const std::string& tag, const std::vector<unsigned short>& indices);

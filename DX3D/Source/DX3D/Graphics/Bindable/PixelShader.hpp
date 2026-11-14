@@ -7,7 +7,7 @@
 
 namespace dx3d {
 
-	class BPixelShader : public Bindable {
+	class BPixelShader final : public Bindable {
 	public:
 		BPixelShader(const BindableDesc& desc, Graphics& graphics, const std::string& path);
 		void Bind(Graphics& graphics) noexcept override;

@@ -4,7 +4,7 @@
 #include <DX3D/Graphics/Bindable/Bindable.hpp>
 
 namespace dx3d {
-	class BSampler : public Bindable {
+	class BSampler final : public Bindable {
 	public:
 		BSampler(const BindableDesc& desc, Graphics& graphics);
 		void Bind(Graphics& graphics) noexcept override;

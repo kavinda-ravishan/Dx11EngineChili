@@ -7,7 +7,7 @@
 
 namespace dx3d {
 
-	class BVertexShader : public Bindable {
+	class BVertexShader final : public Bindable {
 	public:
 		BVertexShader(const BindableDesc& desc, Graphics& graphics, const std::string& path);
 		void Bind(Graphics& graphics) noexcept override;

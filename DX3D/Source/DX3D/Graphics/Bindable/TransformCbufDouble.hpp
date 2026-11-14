@@ -5,7 +5,7 @@ namespace dx3d {
 	template<typename C>
 	class BPixelConstantBuffer;
 
-	class BTransformCbufDouble : public BTransformCbuf {
+	class BTransformCbufDouble final : public BTransformCbuf {
 	public:
 		BTransformCbufDouble(const BindableDesc& desc, Graphics& graphics, const Drawable& parent, UINT slot_v = 0u, UINT slot_p = 0u);
 		void Bind(Graphics& graphics) noexcept override;

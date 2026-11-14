@@ -8,7 +8,7 @@
 
 namespace dx3d {
 
-	class BInputLayout : public Bindable {
+	class BInputLayout final : public Bindable {
 	public:
 		BInputLayout(const BindableDesc& desc,
 			         Graphics&           graphics,
