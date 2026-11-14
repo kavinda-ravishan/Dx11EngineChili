@@ -236,8 +236,10 @@
     <ClInclude Include="DX3D\Source\DX3D\Graphics\GraphicsLogUtils.hpp" />
     <ClInclude Include="DX3D\Include\DX3D\Math\Math.hpp" />
     <ClInclude Include="DX3D\Source\DX3D\Graphics\Light\PointLight.hpp" />
+    <ClInclude Include="DX3D\Source\DX3D\Utils\NormalMapTwerker.hpp" />
+    <ClInclude Include="DX3D\Source\DX3D\Utils\STD_Image\stb_image_write.h" />
     <ClInclude Include="DX3D\Source\DX3D\Utils\Timer.hpp" />
-    <ClInclude Include="DX3D\Source\DX3D\Utils\stb_image.h" />
+    <ClInclude Include="DX3D\Source\DX3D\Utils\STD_Image\stb_image.h" />
     <ClInclude Include="DX3D\Source\DX3D\Utils\Surface.hpp" />
     <ClInclude Include="DX3D\Source\DX3D\Window\ImguiManager.hpp" />
     <ClInclude Include="DX3D\Source\DX3D\Window\ImGUI\imgui_impl_dx11.h" />
@@ -356,6 +358,7 @@
   <ItemGroup>
     <Image Include="Assets\Images\brickwall.jpg" />
     <Image Include="Assets\Images\brickwall_normal.jpg" />
+    <Image Include="Assets\Images\brickwall_normal_obj.png" />
     <Image Include="Assets\Images\cube.png" />
     <Image Include="Assets\Images\kappa50.png" />
   </ItemGroup>

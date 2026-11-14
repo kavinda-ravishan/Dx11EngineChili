@@ -263,7 +263,7 @@
     <ClInclude Include="DX3D\Source\DX3D\Graphics\Drawable\SolidSphere.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="DX3D\Source\DX3D\Utils\stb_image.h">
+    <ClInclude Include="DX3D\Source\DX3D\Utils\STD_Image\stb_image.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="DX3D\Source\DX3D\Graphics\Drawable\Vertex.hpp">
@@ -296,6 +296,12 @@
     <ClInclude Include="DX3D\Source\DX3D\Graphics\Drawable\TestCube.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="DX3D\Source\DX3D\Utils\NormalMapTwerker.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DX3D\Source\DX3D\Utils\STD_Image\stb_image_write.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="DX3D\Assets\Shaders\PhongVS.hlsl" />
@@ -317,6 +323,9 @@
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="Assets\Images\brickwall.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Assets\Images\brickwall_normal_obj.png">
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="Assets\Images\brickwall_normal.jpg">

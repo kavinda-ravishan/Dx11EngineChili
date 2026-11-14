@@ -8,42 +8,42 @@ namespace dx3d {
 	public:
 		class Color {
 		public:
-			uint32_t dword;
+			uint32_t _dword;
 		public:
-			constexpr Color() : dword() {}
+			constexpr Color() : _dword() {}
 			constexpr Color(const Color& col)
 				:
-				dword(col.dword)
+				_dword(col._dword)
 			{
 			}
 			constexpr Color(uint32_t dw)
 				:
-				dword(dw)
+				_dword(dw)
 			{
 			}
 			constexpr Color(unsigned char x, unsigned char r, unsigned char g, unsigned char b)
 				:
-				dword((x << 24u) | (r << 16u) | (g << 8u) | b)
+				_dword((x << 24u) | (r << 16u) | (g << 8u) | b)
 			{
 			}
 			constexpr Color(unsigned char r, unsigned char g, unsigned char b)
 				:
-				dword((r << 16u) | (g << 8u) | b)
+				_dword((r << 16u) | (g << 8u) | b)
 			{
 			}
 			constexpr Color(Color col, unsigned char x)
 				:
-				Color((x << 24u) | col.dword)
+				Color((x << 24u) | col._dword)
 			{
 			}
 			Color& operator =(Color color)
 			{
-				dword = color.dword;
+				_dword = color._dword;
 				return *this;
 			}
 			constexpr unsigned char GetX() const
 			{
-				return dword >> 24u;
+				return _dword >> 24u;
 			}
 			constexpr unsigned char GetA() const
 			{
@@ -51,19 +51,19 @@ namespace dx3d {
 			}
 			constexpr unsigned char GetR() const
 			{
-				return (dword >> 16u) & 0xFFu;
+				return (_dword >> 16u) & 0xFFu;
 			}
 			constexpr unsigned char GetG() const
 			{
-				return (dword >> 8u) & 0xFFu;
+				return (_dword >> 8u) & 0xFFu;
 			}
 			constexpr unsigned char GetB() const
 			{
-				return dword & 0xFFu;
+				return _dword & 0xFFu;
 			}
 			void SetX(unsigned char x)
 			{
-				dword = (dword & 0xFFFFFFu) | (x << 24u);
+				_dword = (_dword & 0xFFFFFFu) | (x << 24u);
 			}
 			void SetA(unsigned char a)
 			{
@@ -71,15 +71,15 @@ namespace dx3d {
 			}
 			void SetR(unsigned char r)
 			{
-				dword = (dword & 0xFF00FFFFu) | (r << 16u);
+				_dword = (_dword & 0xFF00FFFFu) | (r << 16u);
 			}
 			void SetG(unsigned char g)
 			{
-				dword = (dword & 0xFFFF00FFu) | (g << 8u);
+				_dword = (_dword & 0xFFFF00FFu) | (g << 8u);
 			}
 			void SetB(unsigned char b)
 			{
-				dword = (dword & 0xFFFFFF00u) | b;
+				_dword = (_dword & 0xFFFFFF00u) | b;
 			}
 		};
 		
@@ -96,8 +96,12 @@ namespace dx3d {
 		unsigned int GetChannels() const;
 		Surface& RGBA2BGRA() noexcept;
 
-		void* GetBufferPtr() const noexcept;
+		Color* GetBufferPtr() const noexcept;
+		const Color* GetBufferPtrConst() const noexcept;
+
 		bool AlphaLoaded() const noexcept;
+
+		void Save(const std::string& path) const;
 
 	private:
 		unsigned char* _data{};

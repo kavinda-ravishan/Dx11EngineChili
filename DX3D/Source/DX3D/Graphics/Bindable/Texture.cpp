@@ -26,7 +26,7 @@ dx3d::BTexture::BTexture(const BindableDesc& desc, Graphics& graphics, const std
 	texture_desc.MiscFlags = 0;
 	
 	D3D11_SUBRESOURCE_DATA subresource_data = {};
-	subresource_data.pSysMem = surface.GetBufferPtr();
+	subresource_data.pSysMem = reinterpret_cast<void*>(surface.GetBufferPtr());
 	subresource_data.SysMemPitch = surface.GetWidth() * sizeof(Surface::Color);
 	
 	Microsoft::WRL::ComPtr<ID3D11Texture2D> texture;

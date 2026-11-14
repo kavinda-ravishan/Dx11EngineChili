@@ -1,5 +1,8 @@
 #define STB_IMAGE_IMPLEMENTATION
-#include <DX3D/Utils/stb_image.h>
+#include <DX3D/Utils/STD_Image/stb_image.h>
+
+#define STB_IMAGE_WRITE_IMPLEMENTATION
+#include <DX3D/Utils/STD_Image/stb_image_write.h>
 
 #include <stdexcept>
 #include <DX3D/Utils/Surface.hpp>
@@ -90,10 +93,18 @@ dx3d::Surface& dx3d::Surface::RGBA2BGRA() noexcept {
     return *this;
 }
 
-void* dx3d::Surface::GetBufferPtr() const noexcept {
-    return reinterpret_cast<void*>(_data);
+dx3d::Surface::Color* dx3d::Surface::GetBufferPtr() const noexcept {
+    return reinterpret_cast<Color*>(_data);
+}
+
+const dx3d::Surface::Color* dx3d::Surface::GetBufferPtrConst() const noexcept {
+    return reinterpret_cast<const Color*>(_data);
 }
 
 bool dx3d::Surface::AlphaLoaded() const noexcept {
     return _alpha_loaded;
+}
+
+void dx3d::Surface::Save(const std::string& path) const {
+    stbi_write_png(path.c_str(), _width, _height, _channels, _data, _width * _channels);
 }
