@@ -126,11 +126,14 @@ dx3d::Game::Game(const GameDesc& desc) :
 	);
 
 	
-	_sponza = std::make_unique<Model>(BaseDesc({ _logger }), *_graphics, "Assets\\Models\\Sponza\\sponza.obj", 1.0f/20.0f);
-
+	_sponza = std::make_unique<Model>(BaseDesc({ _logger }), *_graphics, "Assets\\Models\\Sponza\\sponza.obj", 1.0f / 20.0f);
+	
+	_stripey = std::make_unique<Model>(BaseDesc({ _logger }), *_graphics, "Assets\\Models\\Stripey\\stripey.obj", 2.0f);
+	_stripey->SetRootTransform(DirectX::XMMatrixTranslation(-50.0f, 9.125f, -2.75f));
+	
 	//_nano = std::make_unique<Model>(BaseDesc({ _logger }), *_graphics, "Assets\\Models\\nano_textured\\nanosuit.obj", 2.0f);
 	//_nano->SetRootTransform(DirectX::XMMatrixTranslation(0.0f, -7.0f, 6.0f));
-	//
+	
 	//_gobber = std::make_unique<Model>(BaseDesc({ _logger }), *_graphics, "Assets\\Models\\gobber\\GoblinX.obj", 6.0f);
 	//_gobber->SetRootTransform(DirectX::XMMatrixTranslation(0.0f, 0.0f, -4.0f));
 
@@ -187,6 +190,7 @@ void dx3d::Game::OnInternalUpdate() {
 	_point_light->Bind(*_graphics, _camera->GetMatrix());
 
 	_sponza->Draw(*_graphics);
+	_stripey->Draw(*_graphics);
 	//_nano->Draw(*_graphics);
 	//_gobber->Draw(*_graphics);
 	//_wall->Draw(*_graphics);
@@ -196,11 +200,14 @@ void dx3d::Game::OnInternalUpdate() {
 	if (_graphics->IsImguiEnabled()) {
 		_camera->SpawnControlWindow();
 		_point_light->SpawnControlWindow();
+		
 		_sponza->ShowWindow(*_graphics, "Sponza");
+		_stripey->ShowWindow(*_graphics, "Stripey");
 		//_nano->ShowWindow(*_graphics, "Nano");
 		//_gobber->ShowWindow(*_graphics, "Gobber");
 		//_wall->ShowWindow(*_graphics, "Wall");
 		//_plane->SpawnControlWindow(*_graphics);
+		
 		ShowPerformanceWindow();
 	}
 

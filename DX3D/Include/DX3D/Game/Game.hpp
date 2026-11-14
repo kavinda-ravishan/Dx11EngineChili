@@ -22,7 +22,9 @@ namespace dx3d {
 		std::unique_ptr<class Timer> _timer{};
 		std::unique_ptr<class Camera> _camera{};
 		std::unique_ptr<class PointLight> _point_light{};
+		
 		std::unique_ptr<class Model> _sponza{};
+		std::unique_ptr<class Model> _stripey{};
 		//std::unique_ptr<class Model> _nano{};
 		//std::unique_ptr<class Model> _gobber{};
 		//std::unique_ptr<class Model> _wall{};
