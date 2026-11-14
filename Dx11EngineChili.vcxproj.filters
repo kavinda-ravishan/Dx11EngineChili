@@ -296,9 +296,6 @@
     <ClInclude Include="DX3D\Source\DX3D\Graphics\Drawable\TestCube.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="DX3D\Source\DX3D\Utils\NormalMapTwerker.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="DX3D\Source\DX3D\Utils\STD_Image\stb_image_write.h">
       <Filter>Header Files</Filter>
     </ClInclude>

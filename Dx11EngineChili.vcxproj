@@ -236,7 +236,6 @@
     <ClInclude Include="DX3D\Source\DX3D\Graphics\GraphicsLogUtils.hpp" />
     <ClInclude Include="DX3D\Include\DX3D\Math\Math.hpp" />
     <ClInclude Include="DX3D\Source\DX3D\Graphics\Light\PointLight.hpp" />
-    <ClInclude Include="DX3D\Source\DX3D\Utils\NormalMapTwerker.hpp" />
     <ClInclude Include="DX3D\Source\DX3D\Utils\STD_Image\stb_image_write.h" />
     <ClInclude Include="DX3D\Source\DX3D\Utils\Timer.hpp" />
     <ClInclude Include="DX3D\Source\DX3D\Utils\STD_Image\stb_image.h" />
