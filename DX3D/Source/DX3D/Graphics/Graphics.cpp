@@ -2,8 +2,6 @@
 #include <DX3D/Window/ImGUI/imgui_impl_dx11.h>
 #include <DX3D/Window/ImGUI/imgui_impl_win32.h>
 
-#include <dxtex/DirectXTex.h>
-
 #include <DX3D/Core/ConditionalNoexcept.hpp>
 #include <DX3D/Graphics/GraphicsLogUtils.hpp>
 #include <DX3D/Graphics/Graphics.hpp>
@@ -16,18 +14,6 @@
 dx3d::Graphics::Graphics(const GraphicsDesc& desc) 
 : Base(desc.base), _window_size(desc.window_size) {
 	DX3DLogInfo("Initializing Graphics");
-
-	auto scratch = DirectX::ScratchImage{};
-	DX3DGraphicsLogThrowOnFail(
-		DirectX::LoadFromWICFile(L"Assets\\Images\\brickwall.jpg", DirectX::WIC_FLAGS_NONE, nullptr, scratch),
-		"Failed to load the image"
-	);
-
-	auto image = scratch.GetImage(0, 0, 0);
-	auto a = image->pixels[0];
-	auto b = image->pixels[1];
-	auto c = image->pixels[2];
-	auto d = image->pixels[3];
 
 	DXGI_SWAP_CHAIN_DESC swap_chain_desc{};
 

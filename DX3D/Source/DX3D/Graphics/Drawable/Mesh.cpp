@@ -1,4 +1,3 @@
-#include <iostream>
 #include <unordered_map>
 
 #include <DX3D/Utils/Surface.hpp>
