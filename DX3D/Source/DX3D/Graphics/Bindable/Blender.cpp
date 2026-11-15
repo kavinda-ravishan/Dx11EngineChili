@@ -3,7 +3,7 @@
 #include <DX3D/Graphics/Bindable/Blender.hpp>
 
 dx3d::BBlender::BBlender(const BindableDesc& desc, Graphics& graphics, bool blending) 
-    : Bindable(desc)
+    : Bindable(desc), _blending(blending)
 {
 	D3D11_BLEND_DESC blend_desc {};
 	auto& brt = blend_desc.RenderTarget[0];

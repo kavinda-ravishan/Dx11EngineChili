@@ -17,6 +17,6 @@ namespace dx3d {
 
 	protected:
 		Microsoft::WRL::ComPtr<ID3D11BlendState> _blender{};
-		bool _blending{};
+		const bool _blending{};
 	};
 } // namespace dx3d
