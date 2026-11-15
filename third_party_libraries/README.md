@@ -38,10 +38,12 @@ third_party_libraries/
 ├── include/
 │   └── assimp/
 └── lib/
-    ├── assimp-vc145-mtd.lib
-    └── zlibstaticd.lib
-    ├── assimp-vc145-mt.lib
-    └── zlibstatic.lib
+    ├── Debug/
+    │   ├── assimp-vc145-mtd.lib
+    │   └── zlibstaticd.lib
+    └── Release/
+        ├── assimp-vc145-mt.lib
+        └── zlibstatic.lib
 ```
 
 ## Visual Studio Configuration
@@ -54,10 +56,16 @@ third_party_libraries\include
 
 ### Library Directories
 
-Release/Debug:
+Debug:
 
 ```text
-third_party_libraries\lib\
+third_party_libraries\lib\Debug
+```
+
+Release:
+
+```text
+third_party_libraries\lib\Release
 ```
 
 ### Additional Dependencies
