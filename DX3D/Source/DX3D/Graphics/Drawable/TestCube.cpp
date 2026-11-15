@@ -30,6 +30,10 @@ dx3d::TestCube::TestCube(const DrawableDesc& desc, Graphics& graphics, float siz
 
 	AddBind(BTopology::Resolve(BINDABLE_DESC, graphics, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST));
 
+	AddBind(BBlender::Resolve(BINDABLE_DESC, graphics, false));
+
+	AddBind(BRasterizer::Resolve(BINDABLE_DESC, graphics, false));
+
 	AddBind(std::make_shared<BTransformCbufDouble>(BINDABLE_DESC, graphics, *this, 0u, 2u));
 }
 
