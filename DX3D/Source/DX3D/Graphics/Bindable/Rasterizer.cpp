@@ -5,7 +5,7 @@
 dx3d::BRasterizer::BRasterizer(const BindableDesc& desc, Graphics& graphics, bool two_sided)
 	: Bindable(desc), _two_sided(two_sided)
 {
-	D3D11_RASTERIZER_DESC raster_desc{ CD3D11_RASTERIZER_DESC(CD3D11_DEFAULT{}) };
+	D3D11_RASTERIZER_DESC raster_desc{ CD3D11_RASTERIZER_DESC{ CD3D11_DEFAULT{} } };
 	raster_desc.CullMode = two_sided ? D3D11_CULL_NONE : D3D11_CULL_BACK;
 
 	DX3DGraphicsLogThrowOnFail(

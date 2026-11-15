@@ -5,7 +5,7 @@
 dx3d::BBlender::BBlender(const BindableDesc& desc, Graphics& graphics, bool blending) 
     : Bindable(desc), _blending(blending)
 {
-	D3D11_BLEND_DESC blend_desc {};
+	D3D11_BLEND_DESC blend_desc{ CD3D11_BLEND_DESC{ CD3D11_DEFAULT{} } };
 	auto& brt = blend_desc.RenderTarget[0];
 	if (blending)
 	{
@@ -18,11 +18,7 @@ dx3d::BBlender::BBlender(const BindableDesc& desc, Graphics& graphics, bool blen
 		brt.BlendOpAlpha = D3D11_BLEND_OP_ADD;
 		brt.RenderTargetWriteMask = D3D11_COLOR_WRITE_ENABLE_ALL;
 	}
-	else
-	{
-		brt.BlendEnable = FALSE;
-		brt.RenderTargetWriteMask = D3D11_COLOR_WRITE_ENABLE_ALL;
-	}
+
 	DX3DGraphicsLogThrowOnFail(
 		GetDevice(graphics)->CreateBlendState(&blend_desc, &_blender),
 		"Failed to create blend state"
