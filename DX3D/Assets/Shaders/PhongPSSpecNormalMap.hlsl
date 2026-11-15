@@ -24,7 +24,15 @@ float4 main(float3 view_frag_pos : Position, float3 view_normal : Normal, float3
 {
     // sample diffuse texture
     float4 dtex = tex.Sample(splr, tc);
+    
+    // bail if highly translucent
     clip(dtex.a < 0.1f ? -1 : 1);
+    
+    // flip normal when backface
+    if(dot(view_normal, view_frag_pos) >= 0.0f)
+    {
+        view_normal = -view_normal;
+    }
     
     // normalize the mesh normal
     view_normal = normalize(view_normal);
