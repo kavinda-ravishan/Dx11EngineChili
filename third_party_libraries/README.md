@@ -1,74 +1,72 @@
-# Assimp 6.0.6 Setup
+# Third-Party Libraries
+
+## Directory Layout
+
+All third-party dependencies are organized into a common include and library structure:
+
+```text
+third_party_libraries/
+├── include/
+│   ├── assimp/
+│   └── dxtex/
+│
+└── lib/
+    ├── Debug/
+    │   ├── assimp-vc145-mtd.lib
+    │   ├── zlibstaticd.lib
+    │   ├── DirectXTex.lib
+    │   └── ...
+    │
+    └── Release/
+        ├── assimp-vc145-mt.lib
+        ├── zlibstatic.lib
+        ├── DirectXTex.lib
+        └── ...
+```
+
+---
+
+# Assimp 6.0.6
 
 ## Download
 
-Download Assimp v6.0.6:
-
 https://github.com/assimp/assimp/archive/refs/tags/v6.0.6.zip
 
-## Build
-
-Generate the Visual Studio solution using CMake:
+## Generate Visual Studio Solution
 
 ```bash
-cmake -G "Visual Studio 18 2026" -DBUILD_SHARED_LIBS=OFF -DASSIMP_BUILD_TESTS=OFF -DASSIMP_INSTALL=OFF -S . -B build
+cmake -G "Visual Studio 18 2026" ^
+      -DASSIMP_BUILD_TESTS=OFF ^
+      -DASSIMP_INSTALL=OFF ^
+      -S . ^
+      -B build
 ```
 
 ## Runtime Library Configuration
 
-Before building, configure all Assimp projects to use the same runtime library as the engine:
+Prior to building, update the runtime library settings for all generated projects to match the engine:
 
 | Configuration | Runtime Library |
 |---------------|-----------------|
 | Debug         | Multi-threaded Debug (/MTd) |
 | Release       | Multi-threaded (/MT) |
 
-This should be applied to:
+Apply this to:
 
 - assimp
 - zlibstatic
-- any other generated Assimp static library projects
+- Any other generated static library projects
 
-## Directory Layout
+## Required Libraries
 
-Copy the required files into the following structure:
-
-```text
-third_party_libraries/
-├── include/
-│   └── assimp/
-└── lib/
-    ├── Debug/
-    │   ├── assimp-vc145-mtd.lib
-    │   └── zlibstaticd.lib
-    └── Release/
-        ├── assimp-vc145-mt.lib
-        └── zlibstatic.lib
-```
-
-## Visual Studio Configuration
-
-### Include Directories
+Copy the generated libraries into:
 
 ```text
-third_party_libraries\include
+third_party_libraries/lib/Debug
+third_party_libraries/lib/Release
 ```
 
-### Library Directories
-
-Debug:
-
-```text
-third_party_libraries\lib\Debug
-```
-
-Release:
-
-```text
-third_party_libraries\lib\Release
-```
-
-### Additional Dependencies
+Required libraries:
 
 Debug:
 
@@ -84,15 +82,108 @@ assimp-vc145-mt.lib
 zlibstatic.lib
 ```
 
-## Notes
+## Include Directory
 
-Assimp depends on zlib for compressed formats. When linking Assimp statically, the corresponding zlib static library must also be linked. Failure to do so will result in linker errors similar to:
+Copy Assimp headers to:
 
 ```text
-unresolved external symbol inflate
-unresolved external symbol inflateEnd
-unresolved external symbol crc32
-unresolved external symbol uncompress
+third_party_libraries/include/assimp
 ```
 
-No Assimp DLLs are required when using this configuration.
+---
+
+# DirectXTex
+
+## Download
+
+https://github.com/microsoft/DirectXTex/archive/refs/tags/may2026.zip
+
+## Runtime Library Configuration
+
+Update the DirectXTex project to use the same runtime library settings as the engine:
+
+| Configuration | Runtime Library |
+|---------------|-----------------|
+| Debug         | Multi-threaded Debug (/MTd) |
+| Release       | Multi-threaded (/MT) |
+
+Rebuild the solution after changing these settings.
+
+## Required Libraries
+
+Copy the generated DirectXTex libraries into:
+
+```text
+third_party_libraries/lib/Debug
+third_party_libraries/lib/Release
+```
+
+## Include Directory
+
+Copy DirectXTex headers to:
+
+```text
+third_party_libraries/include/dxtex
+```
+
+---
+
+# Visual Studio Configuration
+
+## Additional Include Directories
+
+```text
+$(SolutionDir)third_party_libraries/include
+```
+
+## Additional Library Directories
+
+Debug:
+
+```text
+$(SolutionDir)third_party_libraries/lib/Debug
+```
+
+Release:
+
+```text
+$(SolutionDir)third_party_libraries/lib/Release
+```
+
+## Additional Dependencies
+
+Debug:
+
+```text
+assimp-vc145-mtd.lib
+zlibstaticd.lib
+DirectXTex.lib
+```
+
+Release:
+
+```text
+assimp-vc145-mt.lib
+zlibstatic.lib
+DirectXTex.lib
+```
+
+---
+
+# Notes
+
+- All third-party libraries are statically linked.
+- All projects use the same runtime library configuration:
+  - `/MTd` for Debug
+  - `/MT` for Release
+- No Assimp DLLs are required.
+- No DirectXTex DLLs are required.
+- Assimp requires `zlibstatic(.lib)` to be linked alongside the Assimp library. Missing zlib linkage will result in unresolved symbols such as:
+
+```text
+inflate
+inflateEnd
+inflateInit2_
+crc32
+uncompress
+```
