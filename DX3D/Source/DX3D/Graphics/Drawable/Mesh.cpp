@@ -206,7 +206,7 @@ namespace dx3d {
 		};
 		std::unordered_map<int, TransformParameters> _transforms{};
 
-		Node::PSMaterialConstantFullmonte _skin_material{};
+		Node::PSMaterialConstantFull _skin_material{};
 		Node::PSMaterialConstantNotex _ring_material{};
 	};
 } // namespace dx3d
@@ -376,12 +376,12 @@ std::unique_ptr<dx3d::Mesh> dx3d::Model::ParseMesh(
 
 		bindable_ptrs.push_back(BInputLayout::Resolve(BindableDesc({ desc.logger }), graphics, vbuf.GetLayout(), pvsbc));
 
-		Node::PSMaterialConstantFullmonte pmc{};
+		Node::PSMaterialConstantFull pmc{};
 		pmc.specular_power = shininess;
 		pmc.has_gloss_map = has_alpha_gloss ? TRUE : FALSE;
 		// this is CLEARLY an issue... all meshes will share same mat const, but may have different
 		// Ns (specular power) specified for each in the material properties... bad conflict
-		bindable_ptrs.push_back(BPixelConstantBuffer<Node::PSMaterialConstantFullmonte>::Resolve(BindableDesc({ desc.logger }), graphics, pmc, 1u));
+		bindable_ptrs.push_back(BPixelConstantBuffer<Node::PSMaterialConstantFull>::Resolve(BindableDesc({ desc.logger }), graphics, pmc, 1u));
 	}
 	else if (has_diffuse_map && has_normal_map)
 	{

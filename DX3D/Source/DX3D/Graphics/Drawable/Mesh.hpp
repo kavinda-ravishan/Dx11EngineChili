@@ -30,7 +30,7 @@ namespace dx3d {
 		friend class Model;
 
 	public:
-		struct PSMaterialConstantFullmonte
+		struct PSMaterialConstantFull
 		{
 			BOOL normal_map_enabled{ TRUE };
 			BOOL specular_map_enabled{ TRUE };
@@ -65,7 +65,7 @@ namespace dx3d {
 				return false;
 			}
 
-			if constexpr (std::is_same<T, PSMaterialConstantFullmonte>::value)
+			if constexpr (std::is_same<T, PSMaterialConstantFull>::value)
 			{
 				if (auto pcb = _mesh_ptrs.front()->QueryBindable<BPixelConstantBuffer<T>>())
 				{
