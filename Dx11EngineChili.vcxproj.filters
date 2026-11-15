@@ -135,6 +135,9 @@
     <ClCompile Include="DX3D\Source\DX3D\Graphics\Bindable\Rasterizer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="DX3D\Source\DX3D\Utils\SurfaceDX.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DX3D\Include\DX3D\Core\Base.hpp">
@@ -309,6 +312,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="DX3D\Source\DX3D\Graphics\Bindable\Rasterizer.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DX3D\Source\DX3D\Utils\SurfaceDX.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

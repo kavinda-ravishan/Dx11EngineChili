@@ -4,6 +4,7 @@
 #include <DirectXMath.h>
 #include <type_traits>
 #include <vector>
+#include <string>
 #include <DX3D/Core/ConditionalNoexcept.hpp>
 #include <DX3D/Math/Color.hpp>
 

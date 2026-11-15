@@ -183,6 +183,7 @@
     <ClCompile Include="DX3D\Source\DX3D\Graphics\Drawable\TestPlane.cpp" />
     <ClCompile Include="DX3D\Source\DX3D\Graphics\Drawable\Vertex.cpp" />
     <ClCompile Include="DX3D\Source\DX3D\Graphics\Light\PointLight.cpp" />
+    <ClCompile Include="DX3D\Source\DX3D\Utils\SurfaceDX.cpp" />
     <ClCompile Include="DX3D\Source\DX3D\Utils\Timer.cpp" />
     <ClCompile Include="DX3D\Source\DX3D\Utils\Surface.cpp" />
     <ClCompile Include="DX3D\Source\DX3D\Window\ImguiManager.cpp" />
@@ -243,6 +244,7 @@
     <ClInclude Include="DX3D\Include\DX3D\Math\Math.hpp" />
     <ClInclude Include="DX3D\Source\DX3D\Graphics\Light\PointLight.hpp" />
     <ClInclude Include="DX3D\Source\DX3D\Utils\STD_Image\stb_image_write.h" />
+    <ClInclude Include="DX3D\Source\DX3D\Utils\SurfaceDX.hpp" />
     <ClInclude Include="DX3D\Source\DX3D\Utils\Timer.hpp" />
     <ClInclude Include="DX3D\Source\DX3D\Utils\STD_Image\stb_image.h" />
     <ClInclude Include="DX3D\Source\DX3D\Utils\Surface.hpp" />

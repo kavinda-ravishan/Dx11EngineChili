@@ -7,7 +7,9 @@
 #include <stdexcept>
 #include <DX3D/Utils/Surface.hpp>
 
-dx3d::Surface::Surface(const std::filesystem::path image_path) {
+dx3d::Surface::Surface(const BaseDesc& desc, const std::filesystem::path image_path)
+    : Base(desc)
+{
     _data = stbi_load(
         image_path.string().c_str(),
         &_width,
@@ -38,35 +40,6 @@ dx3d::Surface::Surface(const std::filesystem::path image_path) {
 
 dx3d::Surface::~Surface() {
     stbi_image_free(_data);
-}
-
-dx3d::Surface::Surface(Surface&& source) noexcept
-    :
-    _data(source._data),
-    _width(source._width),
-    _height(source._height),
-    _channels(source._channels),
-    _alpha_loaded(source._alpha_loaded)
-{
-    source._data = nullptr;
-}
-
-dx3d::Surface& dx3d::Surface::operator=(dx3d::Surface&& donor) noexcept
-{
-    if (this != &donor)
-    {
-        stbi_image_free(_data);
-
-        _data = donor._data;
-        _width = donor._width;
-        _height = donor._height;
-        _channels = donor._channels;
-        _alpha_loaded = donor._alpha_loaded;
-
-        donor._data = nullptr;
-    }
-
-    return *this;
 }
 
 unsigned int dx3d::Surface::GetWidth() const {

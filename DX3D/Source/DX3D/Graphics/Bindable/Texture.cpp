@@ -2,13 +2,12 @@
 #include <DX3D/Graphics/GraphicsLogUtils.hpp>
 #include <DX3D/Graphics/Bindable/BindableCodex.hpp>
 #include <DX3D/Graphics/Bindable/Texture.hpp>
-#include "Texture.hpp"
 
 dx3d::BTexture::BTexture(const BindableDesc& desc, Graphics& graphics, const std::string& path, unsigned int slot)
 	: Bindable(desc), _path(path), _slot(slot)
 {
 	DX3DLogInfo(("[Texture] : Loading: " + path).c_str());
-	const auto surface = Surface(path);
+	Surface surface(desc.base, path);
 	_has_alpha = surface.AlphaLoaded();
 
 	// create texture resource

@@ -162,17 +162,10 @@ namespace dx3d
 
 	// VertexBuffer
 	VertexBuffer::VertexBuffer(VertexLayout layout, size_t size) noxnd
-		: layout(std::move(layout))
+		:
+	layout(std::move(layout))
 	{
 		Resize(size);
-	}
-	const char* VertexBuffer::GetData() const noxnd
-	{
-		return buffer.data();
-	}
-	const VertexLayout& VertexBuffer::GetLayout() const noexcept
-	{
-		return layout;
 	}
 	void VertexBuffer::Resize(size_t newSize) noxnd
 	{
@@ -181,6 +174,14 @@ namespace dx3d
 		{
 			buffer.resize(buffer.size() + layout.Size() * (newSize - size));
 		}
+	}
+	const char* VertexBuffer::GetData() const noxnd
+	{
+		return buffer.data();
+	}
+	const VertexLayout& VertexBuffer::GetLayout() const noexcept
+	{
+		return layout;
 	}
 	size_t VertexBuffer::Size() const noxnd
 	{
