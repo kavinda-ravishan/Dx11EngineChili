@@ -1,4 +1,6 @@
 #pragma once
+#include <DX3D/Core/WinSwitches.hpp>
+#include <dxtex/DirectXTex.h>
 #include <string>
 #include <filesystem>
 #include <DX3D/Core/Base.hpp>
@@ -6,43 +8,42 @@
 namespace dx3d {
 	class Surface final : public Base {
 	public:
-		class Color {
+		class Color
+		{
 		public:
-			uint32_t _dword;
+			unsigned int dword;
 		public:
-			constexpr Color() : _dword() {}
-			constexpr Color(const Color& col)
-				:
-				_dword(col._dword)
+			constexpr Color() noexcept : dword()
 			{
 			}
-			constexpr Color(uint32_t dw)
+			constexpr Color(const Color& col) noexcept
 				:
-				_dword(dw)
+				dword(col.dword)
+			{
+			}
+			constexpr Color(unsigned int dw) noexcept
+				:
+				dword(dw)
 			{
 			}
 		};
-		
+
 		Surface(const BaseDesc& desc, const std::filesystem::path image_path);
 		~Surface();
 
 		unsigned int GetWidth() const;
 		unsigned int GetHeight() const;
-		unsigned int GetChannels() const;
-		Surface& RGBA2BGRA() noexcept;
 
-		Color* GetBufferPtr() const noexcept;
+		Color* GetBufferPtr() noexcept;
+		const Color* GetBufferPtr() const noexcept;
 		const Color* GetBufferPtrConst() const noexcept;
 
 		bool AlphaLoaded() const noexcept;
 
-		void Save(const std::string& path) const;
+		void Save(const std::filesystem::path image_path) const;
 
 	private:
-		unsigned char* _data{};
-		int _width{};
-		int _height{};
-		int _channels{};
-		bool _alpha_loaded{};
+		static constexpr DXGI_FORMAT _format{ DXGI_FORMAT::DXGI_FORMAT_R8G8B8A8_UNORM };
+		DirectX::ScratchImage _scratch{};
 	};
 } // namespace dx3d
