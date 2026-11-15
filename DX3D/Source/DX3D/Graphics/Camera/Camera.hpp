@@ -13,6 +13,7 @@ namespace dx3d {
 		void Rotate(float dx, float dy) noexcept;
 		void Roll(float roll) noexcept;
 		void Translate(DirectX::XMFLOAT3 translation) noexcept;
+		DirectX::XMFLOAT3 GetPos() const noexcept;
 
 	private:
 		DirectX::XMFLOAT3 _pos{};

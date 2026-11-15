@@ -140,9 +140,12 @@ dx3d::Game::Game(const GameDesc& desc) :
 	//_wall = std::make_unique<Model>(BaseDesc({ _logger }), *_graphics, "Assets\\Models\\brick_wall\\brick_wall.obj", 6.0f);
 	//_wall->SetRootTransform(DirectX::XMMatrixTranslation(-12.0f, 0.0f, 0.0f));
 
-	//_plane = std::make_unique<TestPlane>(DrawableDesc({ _logger }), *_graphics, 6.0f);
-	//_plane->SetPos({ 12.0f, 0.0f, 0.0f });
-
+	_blue_plane = std::make_unique<TestPlane>(DrawableDesc({ _logger }), *_graphics, 6.0f, DirectX::XMFLOAT4{ 0.3f,0.3f,1.0f,0.0f });
+	_blue_plane->SetPos(_camera->GetPos());
+	
+	_red_plane = std::make_unique<TestPlane>(DrawableDesc({ _logger }), *_graphics, 6.0f, DirectX::XMFLOAT4{ 1.0f,0.3f,0.3f,0.0f });
+	_red_plane->SetPos(_camera->GetPos());
+	
 	const float aspect_ratio = float(_window->GetWindowSize().height) / _window->GetWindowSize().width;
 	_graphics->SetProjection(DirectX::XMMatrixPerspectiveLH(1.0f, aspect_ratio, 0.5f, 400.0f));
 	_graphics->SetCamera(DirectX::XMMatrixTranslation(0.0f, 0.0f, 20.0f));
@@ -194,7 +197,9 @@ void dx3d::Game::OnInternalUpdate() {
 	//_nano->Draw(*_graphics);
 	//_gobber->Draw(*_graphics);
 	//_wall->Draw(*_graphics);
-	//_plane->Draw(*_graphics);
+	_blue_plane->Draw(*_graphics);
+	_red_plane->Draw(*_graphics);
+	
 	_point_light->Draw(*_graphics);
 
 	if (_graphics->IsImguiEnabled()) {
@@ -206,7 +211,8 @@ void dx3d::Game::OnInternalUpdate() {
 		//_nano->ShowWindow(*_graphics, "Nano");
 		//_gobber->ShowWindow(*_graphics, "Gobber");
 		//_wall->ShowWindow(*_graphics, "Wall");
-		//_plane->SpawnControlWindow(*_graphics);
+		_blue_plane->SpawnControlWindow(*_graphics, "Blue Plane");
+		_red_plane->SpawnControlWindow(*_graphics, "Red Plane");
 		
 		ShowPerformanceWindow();
 	}

@@ -4,8 +4,8 @@
 #include <DX3D/Graphics/Drawable/TestPlane.hpp>
 #include <DX3D/Graphics/Bindable/BindableCommon.hpp>
 
-dx3d::TestPlane::TestPlane(const DrawableDesc& desc, Graphics& graphics, float size) 
-	: Drawable(desc)
+dx3d::TestPlane::TestPlane(const DrawableDesc& desc, Graphics& graphics, float size, DirectX::XMFLOAT4 color)
+	: Drawable(desc), _pmc({color})
 {
 	auto model = Plane::Make();
 	model.Transform(DirectX::XMMatrixScaling(size, size, 1.0));
@@ -14,26 +14,25 @@ dx3d::TestPlane::TestPlane(const DrawableDesc& desc, Graphics& graphics, float s
 	AddBind(BVertexBuffer::Resolve(BINDABLE_DESC, graphics, geometry_tag, model._vertices));
 	AddBind(BIndexBuffer::Resolve(BINDABLE_DESC, graphics, geometry_tag, model._indices));
 
-	AddBind(BTexture::Resolve(BINDABLE_DESC, graphics, "Assets\\Images\\brickwall.jpg"));
-	AddBind(BTexture::Resolve(BINDABLE_DESC, graphics, "Assets\\Images\\brickwall_normal_obj.png", 2u));
-
-	auto pvs = BVertexShader::Resolve(BINDABLE_DESC, graphics, "PhongVS.cso");
+	auto pvs = BVertexShader::Resolve(BINDABLE_DESC, graphics, "SolidVS.cso");
 	auto pvsbc = pvs->GetBytecode();
 	AddBind(std::move(pvs));
 
-	AddBind(BPixelShader::Resolve(BINDABLE_DESC, graphics, "PhongPSNormalMapObject.cso"));
+	AddBind(BPixelShader::Resolve(BINDABLE_DESC, graphics, "SolidPS.cso"));
 
-	AddBind(BPixelConstantBuffer<PSMaterialConstant>::Resolve(BINDABLE_DESC, graphics, _pmc, 1u));
+	AddBind(
+		std::make_shared<BPixelConstantBuffer<PSMaterialConstant>>(BINDABLE_DESC, graphics, _pmc, 1u)
+	);
 
 	AddBind(BInputLayout::Resolve(BINDABLE_DESC, graphics, model._vertices.GetLayout(), pvsbc));
 
 	AddBind(BTopology::Resolve(BINDABLE_DESC, graphics, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST));
 
-	AddBind(BBlender::Resolve(BINDABLE_DESC, graphics, false));
+	AddBind(BBlender::Resolve(BINDABLE_DESC, graphics, true, 0.5f));
 
-	AddBind(BRasterizer::Resolve(BINDABLE_DESC, graphics, false));
+	AddBind(BRasterizer::Resolve(BINDABLE_DESC, graphics, true));
 
-	AddBind(std::make_shared<BTransformCbufDouble>(BINDABLE_DESC, graphics, *this, 0u, 2u));
+	AddBind(std::make_shared<BTransformCbuf>(BINDABLE_DESC, graphics, *this));
 }
 
 void dx3d::TestPlane::SetPos(DirectX::XMFLOAT3 pos) noexcept {
@@ -51,8 +50,8 @@ DirectX::XMMATRIX dx3d::TestPlane::GetTransformXM() const noexcept {
 		DirectX::XMMatrixTranslation(_pos.x, _pos.y, _pos.z);
 }
 
-void dx3d::TestPlane::SpawnControlWindow(Graphics& graphics) noexcept {
-	if (ImGui::Begin("Plane"))
+void dx3d::TestPlane::SpawnControlWindow(Graphics& graphics, const std::string& name) noexcept {
+	if (ImGui::Begin(name.c_str()))
 	{
 		ImGui::Text("Position");
 		ImGui::SliderFloat("X", &_pos.x, -80.0f, 80.0f, "%.1f");
@@ -63,15 +62,10 @@ void dx3d::TestPlane::SpawnControlWindow(Graphics& graphics) noexcept {
 		ImGui::SliderAngle("Pitch", &_pitch, -180.0f, 180.0f);
 		ImGui::SliderAngle("Yaw", &_yaw, -180.0f, 180.0f);
 		ImGui::Text("Shading");
-		bool changed0 = ImGui::SliderFloat("Spec. Int.", &_pmc.specular_intensity, 0.0f, 1.0f);
-		bool changed1 = ImGui::SliderFloat("Spec. Power", &_pmc.specular_power, 0.0f, 100.0f);
-		bool check_state = _pmc.normal_mapping_enabled == TRUE;
-		bool changed2 = ImGui::Checkbox("Enable Normal Map", &check_state);
-		_pmc.normal_mapping_enabled = check_state ? TRUE : FALSE;
-		if (changed0 || changed1 || changed2)
-		{
-			QueryBindable<BPixelConstantBuffer<PSMaterialConstant>>()->Update(graphics, _pmc);
-		}
+		auto blender = QueryBindable<BBlender>();
+		float factor = blender->GetFactor();
+		ImGui::SliderFloat("Translucency", &factor, 0.0f, 1.0f);
+		blender->SetFactor(factor);
 	}
 	ImGui::End();
 }
