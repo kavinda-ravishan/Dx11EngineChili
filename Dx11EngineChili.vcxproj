@@ -186,6 +186,7 @@
     <ClCompile Include="DX3D\Source\DX3D\Utils\SurfaceDX.cpp" />
     <ClCompile Include="DX3D\Source\DX3D\Utils\Timer.cpp" />
     <ClCompile Include="DX3D\Source\DX3D\Utils\Surface.cpp" />
+    <ClCompile Include="DX3D\Source\DX3D\Utils\Utils.cpp" />
     <ClCompile Include="DX3D\Source\DX3D\Window\ImguiManager.cpp" />
     <ClCompile Include="DX3D\Source\DX3D\Window\ImGUI\imgui_impl_dx11.cpp" />
     <ClCompile Include="DX3D\Source\DX3D\Window\ImGUI\imgui_impl_win32.cpp" />
@@ -248,6 +249,7 @@
     <ClInclude Include="DX3D\Source\DX3D\Utils\Timer.hpp" />
     <ClInclude Include="DX3D\Source\DX3D\Utils\STD_Image\stb_image.h" />
     <ClInclude Include="DX3D\Source\DX3D\Utils\Surface.hpp" />
+    <ClInclude Include="DX3D\Source\DX3D\Utils\Utils.hpp" />
     <ClInclude Include="DX3D\Source\DX3D\Window\ImguiManager.hpp" />
     <ClInclude Include="DX3D\Source\DX3D\Window\ImGUI\imgui_impl_dx11.h" />
     <ClInclude Include="DX3D\Source\DX3D\Window\ImGUI\imgui_impl_win32.h" />

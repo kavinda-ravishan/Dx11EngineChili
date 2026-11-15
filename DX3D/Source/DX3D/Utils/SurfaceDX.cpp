@@ -1,16 +1,14 @@
 #include <stdexcept>
+#include <DX3D/Utils/Utils.hpp>
 #include <DX3D/Graphics/GraphicsLogUtils.hpp>
 #include <DX3D/Utils/SurfaceDX.hpp>
 
 dx3d::SurfaceDX::SurfaceDX(const BaseDesc& desc, const std::filesystem::path image_path)
     : Base(desc)
 {
-    wchar_t wide_name[512];
-    mbstowcs_s(nullptr, wide_name, image_path.string().c_str(), _TRUNCATE);
-
     DirectX::ScratchImage scratch;
     DX3DGraphicsLogThrowOnFail(
-        DirectX::LoadFromWICFile(wide_name, DirectX::WIC_FLAGS_NONE, nullptr, scratch),
+        DirectX::LoadFromWICFile(ToWide(image_path.string()).c_str(), DirectX::WIC_FLAGS_NONE, nullptr, scratch),
         "Failed to load image"
     );
 
@@ -77,15 +75,12 @@ void dx3d::SurfaceDX::Save(const std::filesystem::path image_path) const {
         throw std::runtime_error("Image format not supported");
         };
 
-    wchar_t wide_name[512];
-    mbstowcs_s(nullptr, wide_name, image_path.string().c_str(), _TRUNCATE);
-
     DX3DGraphicsLogThrowOnFail(
         DirectX::SaveToWICFile(
             *_scratch.GetImage(0, 0, 0),
             DirectX::WIC_FLAGS_NONE,
             GetWICCodec(GetCodecID(image_path)),
-            wide_name
+            ToWide(image_path.string()).c_str()
         ),
         "Failed to save image"
     );

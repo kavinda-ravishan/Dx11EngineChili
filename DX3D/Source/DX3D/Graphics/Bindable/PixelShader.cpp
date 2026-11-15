@@ -1,6 +1,7 @@
 #pragma once
 #include <DX3D/Core/WinSwitches.hpp>
 #include <d3dcompiler.h>
+#include <DX3D/Utils/Utils.hpp>
 #include <DX3D/Graphics/GraphicsLogUtils.hpp>
 #include <DX3D/Graphics/Bindable/BindableCodex.hpp>
 #include <DX3D/Graphics/Bindable/PixelShader.hpp>
@@ -10,7 +11,7 @@ dx3d::BPixelShader::BPixelShader(const BindableDesc& desc, Graphics& graphics, c
 {
 	Microsoft::WRL::ComPtr<ID3DBlob> ps_blod{};
 	DX3DGraphicsLogThrowOnFail(
-		D3DReadFileToBlob(std::wstring(path.begin(), path.end()).c_str(), &ps_blod),
+		D3DReadFileToBlob(ToWide(path).c_str(), &ps_blod),
 		"Failed to read pixel shader binary"
 	);
 

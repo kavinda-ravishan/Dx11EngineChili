@@ -1,5 +1,6 @@
 #include <DX3D/Core/WinSwitches.hpp>
 #include <d3dcompiler.h>
+#include <DX3D/Utils/Utils.hpp>
 #include <DX3D/Graphics/GraphicsLogUtils.hpp>
 #include <DX3D/Graphics/Bindable/BindableCodex.hpp>
 #include <DX3D/Graphics/Bindable/VertexShader.hpp>
@@ -8,7 +9,7 @@ dx3d::BVertexShader::BVertexShader(const BindableDesc& desc, Graphics& graphics,
     : Bindable(desc), _path(path)
 {
 	DX3DGraphicsLogThrowOnFail(
-		D3DReadFileToBlob(std::wstring(path.begin(), path.end()).c_str(), &_bytecode_blob),
+		D3DReadFileToBlob(ToWide(path).c_str(), &_bytecode_blob),
 		"Failed to read vertex shader binary"
 	);
 
