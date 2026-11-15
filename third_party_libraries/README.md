@@ -11,12 +11,7 @@ https://github.com/assimp/assimp/archive/refs/tags/v6.0.6.zip
 Generate the Visual Studio solution using CMake:
 
 ```bash
-cmake -G "Visual Studio 18 2026" ^
-      -DBUILD_SHARED_LIBS=OFF ^
-      -DASSIMP_BUILD_TESTS=OFF ^
-      -DASSIMP_INSTALL=OFF ^
-      -S . ^
-      -B build
+cmake -G "Visual Studio 18 2026" -DBUILD_SHARED_LIBS=OFF -DASSIMP_BUILD_TESTS=OFF -DASSIMP_INSTALL=OFF -S . -B build
 ```
 
 ## Runtime Library Configuration
@@ -40,14 +35,13 @@ Copy the required files into the following structure:
 
 ```text
 third_party_libraries/
-└── assimp-6.0.6/
-    ├── include/
-    │   └── assimp/
-    └── lib/
-        ├── assimp-vc145-mtd.lib
-        └── zlibstaticd.lib
-        ├── assimp-vc145-mt.lib
-        └── zlibstatic.lib
+├── include/
+│   └── assimp/
+└── lib/
+    ├── assimp-vc145-mtd.lib
+    └── zlibstaticd.lib
+    ├── assimp-vc145-mt.lib
+    └── zlibstatic.lib
 ```
 
 ## Visual Studio Configuration
@@ -55,7 +49,7 @@ third_party_libraries/
 ### Include Directories
 
 ```text
-third_party_libraries\assimp-6.0.6\include
+third_party_libraries\include
 ```
 
 ### Library Directories
@@ -63,7 +57,7 @@ third_party_libraries\assimp-6.0.6\include
 Release/Debug:
 
 ```text
-third_party_libraries\assimp-6.0.6\lib\
+third_party_libraries\lib\
 ```
 
 ### Additional Dependencies
