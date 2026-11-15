@@ -228,7 +228,7 @@ void dx3d::Game::IOControls() noexcept {
 
 	if (free_camera_movments) {
 		_camera->Rotate(static_cast<float>(mouse_delta[0]), static_cast<float>(mouse_delta[1]));
-		translation_multiplier = std::clamp(translation_multiplier + (mouse_wheel_delta / 5.0f), 0.0f, 5.0f);
+		translation_multiplier = std::clamp(translation_multiplier + (mouse_wheel_delta / 5.0f), 0.1f, 5.0f);
 	}
 
 	switch (key) {

@@ -1,6 +1,5 @@
 #pragma once
 #include <vector>
-#include <wrl.h>
 #include <string>
 #include <DX3D/Graphics/Bindable/Bindable.hpp>
 #include <DX3D/Graphics/Drawable/Vertex.hpp>

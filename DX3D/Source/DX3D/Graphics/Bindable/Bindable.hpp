@@ -1,5 +1,6 @@
 #pragma once
 #include <DX3D/Core/WinSwitches.hpp>
+#include <wrl.h>
 #include <d3d11.h>
 #include <string>
 #include <DX3D/Core/Base.hpp>

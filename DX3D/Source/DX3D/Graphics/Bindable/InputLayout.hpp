@@ -1,7 +1,5 @@
 #pragma once
 #include <vector>
-#include <DX3D/Core/WinSwitches.hpp>
-#include <wrl.h>
 #include <memory>
 #include <DX3D/Graphics/Bindable/Bindable.hpp>
 #include <DX3D/Graphics/Drawable/Vertex.hpp>

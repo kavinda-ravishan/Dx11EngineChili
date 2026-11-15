@@ -1,6 +1,4 @@
 #pragma once
-#include <DX3D/Core/WinSwitches.hpp>
-#include <wrl.h>
 #include <memory>
 #include <string>
 #include <DX3D/Graphics/Bindable/Bindable.hpp>
