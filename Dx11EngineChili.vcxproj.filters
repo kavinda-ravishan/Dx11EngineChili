@@ -324,6 +324,7 @@
     <FxCompile Include="DX3D\Assets\Shaders\PhongPSNotex.hlsl" />
     <FxCompile Include="DX3D\Assets\Shaders\PhongVSNotex.hlsl" />
     <FxCompile Include="DX3D\Assets\Shaders\PhongPSSpec.hlsl" />
+    <FxCompile Include="DX3D\Assets\Shaders\PhongPSSpecNormalMask.hlsl" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Assets\Images\cube.png">

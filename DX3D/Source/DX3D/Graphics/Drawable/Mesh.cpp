@@ -1,3 +1,4 @@
+#include <iostream>
 #include <unordered_map>
 
 #include <DX3D/Utils/Surface.hpp>
@@ -372,7 +373,11 @@ std::unique_ptr<dx3d::Mesh> dx3d::Model::ParseMesh(
 		auto pvsbc = pvs->GetBytecode();
 		bindable_ptrs.push_back(std::move(pvs));
 
-		bindable_ptrs.push_back(BPixelShader::Resolve(BindableDesc({ desc.logger }), graphics, "PhongPSSpecNormalMap.cso"));
+		bindable_ptrs.push_back(BPixelShader::Resolve(
+			BindableDesc({ desc.logger }), 
+			graphics, 
+			has_alpha_diffuse ? "PhongPSSpecNormalMask.cso" : "PhongPSSpecNormalMap.cso"
+		));
 
 		bindable_ptrs.push_back(BInputLayout::Resolve(BindableDesc({ desc.logger }), graphics, vbuf.GetLayout(), pvsbc));
 
