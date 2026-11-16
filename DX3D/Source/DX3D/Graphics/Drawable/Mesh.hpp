@@ -10,6 +10,7 @@
 #include <DX3D/Graphics/Bindable/BindableCommon.hpp>
 #include <DX3D/Graphics/Drawable/Drawable.hpp>
 #include <DX3D/Graphics/Utils/Vertex.hpp>
+#include <DX3D/Graphics/Bindable/ConstantBuffersEx.hpp>
 
 namespace dx3d {
 
@@ -37,6 +38,8 @@ namespace dx3d {
 		const DirectX::XMFLOAT4X4& GetAppliedTransform() const noexcept;
 		void ShowTree(Node*& selected_node_ptr) const noexcept;
 		int GetID() const noexcept;
+		const dx3d_dcb::Buffer* GetMaterialConstants() const noxnd;
+		void SetMaterialConstants(const dx3d_dcb::Buffer& buf_in) noxnd;
 
 	private:
 		void AddChild(std::unique_ptr<Node> child) noxnd;
