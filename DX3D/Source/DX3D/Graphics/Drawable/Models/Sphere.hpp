@@ -12,7 +12,7 @@ namespace dx3d {
 	class Sphere
 	{
 	public:
-		static IndexedTriangleList MakeTesselated(VertexLayout layout, int lat_div, int long_div)
+		static IndexedTriangleList MakeTesselated(dx3d_vtx::VertexLayout layout, int lat_div, int long_div)
 		{
 			assert(lat_div >= 3);
 			assert(long_div >= 3);
@@ -22,7 +22,7 @@ namespace dx3d {
 			const float lattitude_angle = PI / lat_div;
 			const float longitude_angle = 2.0f * PI / long_div;
 
-			VertexBuffer vb{ std::move(layout) };
+			dx3d_vtx::VertexBuffer vb{ std::move(layout) };
 			for (int i_lat = 1; i_lat < lat_div; i_lat++)
 			{
 				const auto lat_base = DirectX::XMVector3Transform(
@@ -103,12 +103,12 @@ namespace dx3d {
 			return { std::move(vb),std::move(indices) };
 		}
 		
-		static IndexedTriangleList Make(std::optional<VertexLayout> layout = std::nullopt)
+		static IndexedTriangleList Make(std::optional<dx3d_vtx::VertexLayout> layout = std::nullopt)
 		{
-			using Element = VertexLayout::ElementType;
+			using Element = dx3d_vtx::VertexLayout::ElementType;
 			if (!layout)
 			{
-				layout = VertexLayout{}.Append(Element::Position3D);
+				layout = dx3d_vtx::VertexLayout{}.Append(Element::Position3D);
 			}
 			return MakeTesselated(std::move(*layout), 12, 24);
 		}

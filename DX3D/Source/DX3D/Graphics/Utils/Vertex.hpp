@@ -8,7 +8,7 @@
 #include <DX3D/Core/ConditionalNoexcept.hpp>
 #include <DX3D/Math/Color.hpp>
 
-namespace dx3d {
+namespace dx3d_vtx {
 
 	class VertexLayout
 	{
@@ -85,7 +85,7 @@ namespace dx3d {
 		};
 		template<> struct Map<BGRAColor>
 		{
-			using SysType = RGBAColor;
+			using SysType = dx3d::RGBAColor;
 			static constexpr DXGI_FORMAT dxgiFormat = DXGI_FORMAT_R8G8B8A8_UNORM;
 			static constexpr const char* semantic = "Color";
 			static constexpr const char* code = "C8";

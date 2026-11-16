@@ -8,11 +8,11 @@
 namespace dx3d {
 	class BVertexBuffer final : public Bindable {
 	public:
-		BVertexBuffer(const BindableDesc& desc, Graphics& graphics, const dx3d::VertexBuffer& vbuf);
-		BVertexBuffer(const BindableDesc& desc, Graphics& graphics, const std::string tag, const dx3d::VertexBuffer& vbuf);
+		BVertexBuffer(const BindableDesc& desc, Graphics& graphics, const dx3d_vtx::VertexBuffer& vbuf);
+		BVertexBuffer(const BindableDesc& desc, Graphics& graphics, const std::string tag, const dx3d_vtx::VertexBuffer& vbuf);
 		void Bind(Graphics& graphics) noexcept override;
 	
-		static std::shared_ptr<BVertexBuffer> Resolve(const BindableDesc& desc, Graphics& graphics, const std::string tag, const VertexBuffer& vbuf);
+		static std::shared_ptr<BVertexBuffer> Resolve(const BindableDesc& desc, Graphics& graphics, const std::string tag, const dx3d_vtx::VertexBuffer& vbuf);
 		
 		template<typename...Ignore>
 		static std::string GenerateUID(const std::string& tag, Ignore&&...ignore) {

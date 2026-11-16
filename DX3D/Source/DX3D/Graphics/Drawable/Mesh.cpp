@@ -333,13 +333,13 @@ std::unique_ptr<dx3d::Mesh> dx3d::Model::ParseMesh(
 
 	if (has_diffuse_map && has_normal_map && has_specular_map)
 	{
-		VertexBuffer vbuf(std::move(
-			VertexLayout{}
-			.Append(VertexLayout::Position3D)
-			.Append(VertexLayout::Normal)
-			.Append(VertexLayout::Tangent)
-			.Append(VertexLayout::Bitangent)
-			.Append(VertexLayout::Texture2D)
+		dx3d_vtx::VertexBuffer vbuf(std::move(
+			dx3d_vtx::VertexLayout{}
+			.Append(dx3d_vtx::VertexLayout::Position3D)
+			.Append(dx3d_vtx::VertexLayout::Normal)
+			.Append(dx3d_vtx::VertexLayout::Tangent)
+			.Append(dx3d_vtx::VertexLayout::Bitangent)
+			.Append(dx3d_vtx::VertexLayout::Texture2D)
 		));
 
 		for (unsigned int i = 0; i < ai_mesh.mNumVertices; i++)
@@ -389,13 +389,13 @@ std::unique_ptr<dx3d::Mesh> dx3d::Model::ParseMesh(
 	}
 	else if (has_diffuse_map && has_normal_map)
 	{
-		VertexBuffer vbuf(std::move(
-			VertexLayout{}
-			.Append(VertexLayout::Position3D)
-			.Append(VertexLayout::Normal)
-			.Append(VertexLayout::Tangent)
-			.Append(VertexLayout::Bitangent)
-			.Append(VertexLayout::Texture2D)
+		dx3d_vtx::VertexBuffer vbuf(std::move(
+			dx3d_vtx::VertexLayout{}
+			.Append(dx3d_vtx::VertexLayout::Position3D)
+			.Append(dx3d_vtx::VertexLayout::Normal)
+			.Append(dx3d_vtx::VertexLayout::Tangent)
+			.Append(dx3d_vtx::VertexLayout::Bitangent)
+			.Append(dx3d_vtx::VertexLayout::Texture2D)
 		));
 
 		for (unsigned int i = 0; i < ai_mesh.mNumVertices; i++)
@@ -447,11 +447,11 @@ std::unique_ptr<dx3d::Mesh> dx3d::Model::ParseMesh(
 	}
 	else if (has_diffuse_map && !has_normal_map && has_specular_map)
 	{
-		VertexBuffer vbuf(std::move(
-			VertexLayout{}
-			.Append(VertexLayout::Position3D)
-			.Append(VertexLayout::Normal)
-			.Append(VertexLayout::Texture2D)
+		dx3d_vtx::VertexBuffer vbuf(std::move(
+			dx3d_vtx::VertexLayout{}
+			.Append(dx3d_vtx::VertexLayout::Position3D)
+			.Append(dx3d_vtx::VertexLayout::Normal)
+			.Append(dx3d_vtx::VertexLayout::Texture2D)
 		));
 
 		for (unsigned int i = 0; i < ai_mesh.mNumVertices; i++)
@@ -502,11 +502,11 @@ std::unique_ptr<dx3d::Mesh> dx3d::Model::ParseMesh(
 	}
 	else if (has_diffuse_map)
 	{
-		VertexBuffer vbuf(std::move(
-			VertexLayout{}
-			.Append(VertexLayout::Position3D)
-			.Append(VertexLayout::Normal)
-			.Append(VertexLayout::Texture2D)
+		dx3d_vtx::VertexBuffer vbuf(std::move(
+			dx3d_vtx::VertexLayout{}
+			.Append(dx3d_vtx::VertexLayout::Position3D)
+			.Append(dx3d_vtx::VertexLayout::Normal)
+			.Append(dx3d_vtx::VertexLayout::Texture2D)
 		));
 
 		for (unsigned int i = 0; i < ai_mesh.mNumVertices; i++)
@@ -555,10 +555,10 @@ std::unique_ptr<dx3d::Mesh> dx3d::Model::ParseMesh(
 	}
 	else if (!has_diffuse_map && !has_normal_map && !has_specular_map)
 	{
-		VertexBuffer vbuf(std::move(
-			VertexLayout{}
-			.Append(VertexLayout::Position3D)
-			.Append(VertexLayout::Normal)
+		dx3d_vtx::VertexBuffer vbuf(std::move(
+			dx3d_vtx::VertexLayout{}
+			.Append(dx3d_vtx::VertexLayout::Position3D)
+			.Append(dx3d_vtx::VertexLayout::Normal)
 		));
 
 		for (unsigned int i = 0; i < ai_mesh.mNumVertices; i++)
