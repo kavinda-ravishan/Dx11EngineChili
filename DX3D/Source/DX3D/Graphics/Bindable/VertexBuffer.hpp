@@ -2,7 +2,7 @@
 #include <vector>
 #include <string>
 #include <DX3D/Graphics/Bindable/Bindable.hpp>
-#include <DX3D/Graphics/Drawable/Vertex.hpp>
+#include <DX3D/Graphics/Utils/Vertex.hpp>
 #include <DX3D/Graphics/GraphicsLogUtils.hpp>
 
 namespace dx3d {

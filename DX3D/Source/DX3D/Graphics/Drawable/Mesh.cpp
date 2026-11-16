@@ -1,6 +1,6 @@
 #include <unordered_map>
 
-#include <DX3D/Utils/Surface.hpp>
+#include <DX3D/Graphics/Utils/Surface.hpp>
 #include <DX3D/Graphics/Drawable/Mesh.hpp>
 
 static DirectX::XMFLOAT3 ExtractEulerAngles(const DirectX::XMFLOAT4X4& mat)

@@ -2,7 +2,7 @@
 #include <DX3D/Core/WinSwitches.hpp>
 #include <DirectXMath.h>
 #include <vector>
-#include <DX3D/Graphics/Drawable/Vertex.hpp>
+#include <DX3D/Graphics/Utils/Vertex.hpp>
 
 namespace dx3d {
 	class IndexedTriangleList

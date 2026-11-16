@@ -1,5 +1,5 @@
 #include <string>
-#include <DX3D/Graphics/Drawable/Vertex.hpp>
+#include <DX3D/Graphics/Utils/Vertex.hpp>
 
 namespace dx3d
 {

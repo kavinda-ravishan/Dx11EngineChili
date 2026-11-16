@@ -6,8 +6,7 @@
 #include <optional>
 
 #include <DX3D/Math/Math.hpp>
-#include <DX3D/Graphics/Drawable/Vertex.hpp>
-#include <DX3D/Graphics/Drawable/IndexedTriangleList.hpp>
+#include <DX3D/Graphics/Utils/IndexedTriangleList.hpp>
 
 namespace dx3d {
 	class Sphere

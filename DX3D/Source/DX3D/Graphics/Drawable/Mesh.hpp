@@ -9,7 +9,7 @@
 
 #include <DX3D/Graphics/Bindable/BindableCommon.hpp>
 #include <DX3D/Graphics/Drawable/Drawable.hpp>
-#include <DX3D/Graphics/Drawable/Vertex.hpp>
+#include <DX3D/Graphics/Utils/Vertex.hpp>
 
 namespace dx3d {
 
