@@ -115,7 +115,7 @@ int dx3d::Node::GetID() const noexcept {
 	return _id;
 }
 
-const dx3d_dcb::Buffer* dx3d::Node::GetMaterialConstants() const {
+const dx3d_dcb::Buffer* dx3d::Node::GetMaterialConstants() const noxnd  {
 	if (_mesh_ptrs.size() == 0)
 	{
 		return nullptr;
@@ -124,7 +124,7 @@ const dx3d_dcb::Buffer* dx3d::Node::GetMaterialConstants() const {
 	return &bindable->GetBuffer();
 }
 
-void dx3d::Node::SetMaterialConstants(const dx3d_dcb::Buffer& buf_in) {
+void dx3d::Node::SetMaterialConstants(const dx3d_dcb::Buffer& buf_in) noxnd {
 	auto pcb = _mesh_ptrs.front()->QueryBindable<BCachingPixelConstantBufferEX>();
 	assert(pcb != nullptr);
 	pcb->SetBuffer(buf_in);
