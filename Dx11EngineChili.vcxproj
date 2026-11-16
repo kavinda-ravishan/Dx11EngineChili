@@ -181,6 +181,8 @@
     <ClCompile Include="DX3D\Source\DX3D\Graphics\Drawable\SolidSphere.cpp" />
     <ClCompile Include="DX3D\Source\DX3D\Graphics\Drawable\TestCube.cpp" />
     <ClCompile Include="DX3D\Source\DX3D\Graphics\Drawable\TestPlane.cpp" />
+    <ClCompile Include="DX3D\Source\DX3D\Graphics\Utils\DynamicConstant.cpp" />
+    <ClCompile Include="DX3D\Source\DX3D\Graphics\Utils\LayoutCodex.cpp" />
     <ClCompile Include="DX3D\Source\DX3D\Graphics\Utils\Vertex.cpp" />
     <ClCompile Include="DX3D\Source\DX3D\Graphics\Light\PointLight.cpp" />
     <ClCompile Include="DX3D\Source\DX3D\Graphics\Utils\Surface.cpp" />
@@ -217,6 +219,7 @@
     <ClInclude Include="DX3D\Source\DX3D\Graphics\Camera\Camera.hpp" />
     <ClInclude Include="DX3D\Source\DX3D\Graphics\Drawable\Mesh.hpp" />
     <ClInclude Include="DX3D\Source\DX3D\Graphics\Drawable\Drawable.hpp" />
+    <ClInclude Include="DX3D\Source\DX3D\Graphics\Utils\DynamicConstant.hpp" />
     <ClInclude Include="DX3D\Source\DX3D\Graphics\Utils\IndexedTriangleList.hpp" />
     <ClInclude Include="DX3D\Source\DX3D\Graphics\Drawable\Models\Cube.hpp" />
     <ClInclude Include="DX3D\Source\DX3D\Graphics\Drawable\Models\Plane.hpp" />
@@ -240,6 +243,7 @@
     <ClInclude Include="DX3D\Source\DX3D\Graphics\Bindable\VertexShader.hpp" />
     <ClInclude Include="DX3D\Source\DX3D\Graphics\Drawable\TestCube.hpp" />
     <ClInclude Include="DX3D\Source\DX3D\Graphics\Drawable\TestPlane.hpp" />
+    <ClInclude Include="DX3D\Source\DX3D\Graphics\Utils\LayoutCodex.hpp" />
     <ClInclude Include="DX3D\Source\DX3D\Graphics\Utils\Vertex.hpp" />
     <ClInclude Include="DX3D\Source\DX3D\Graphics\GraphicsLogUtils.hpp" />
     <ClInclude Include="DX3D\Include\DX3D\Math\Math.hpp" />
