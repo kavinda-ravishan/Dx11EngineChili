@@ -4,7 +4,7 @@
 #include <unordered_map>
 #include <DX3D/Graphics/Utils/DynamicConstant.hpp>
 
-namespace dx3d
+namespace dx3d_dcb
 {
 	class LayoutCodex
 	{

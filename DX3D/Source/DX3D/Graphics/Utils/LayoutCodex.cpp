@@ -1,6 +1,6 @@
 #include <DX3D/Graphics/Utils/LayoutCodex.hpp>
 
-namespace dx3d
+namespace dx3d_dcb
 {
 	CookedLayout LayoutCodex::Resolve(RawLayout&& layout) noxnd
 	{

@@ -17,7 +17,7 @@
 	X( Matrix ) \
 	X( Bool )
 
-namespace dx3d
+namespace dx3d_dcb
 {
 	namespace dx = DirectX;
 
