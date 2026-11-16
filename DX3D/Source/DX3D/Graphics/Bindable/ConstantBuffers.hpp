@@ -7,6 +7,19 @@ namespace dx3d {
 	template<typename C>
 	class BConstantBuffer : public Bindable {
 		public:
+			void Update(Graphics& graphics, const C& consts) {
+
+				D3D11_MAPPED_SUBRESOURCE constant_buffer_mapped_subresource{};
+				DX3DGraphicsLogThrowOnFail(GetContext(graphics)->Map(
+					_constant_buffer.Get(), 0u,
+					D3D11_MAP_WRITE_DISCARD, 0u,
+					&constant_buffer_mapped_subresource
+				), "Failed to update the constant buffer");
+				memcpy(constant_buffer_mapped_subresource.pData, &consts, sizeof(consts));
+				GetContext(graphics)->Unmap(_constant_buffer.Get(), 0u);
+			}
+		
+		protected:
 			BConstantBuffer(const BindableDesc& desc, Graphics& graphics, UINT slot = 0u)
 				: Bindable(desc), _slot(slot)
 			{
@@ -28,7 +41,7 @@ namespace dx3d {
 			BConstantBuffer(const BindableDesc& desc, Graphics& graphics, const C& consts, UINT slot = 0u)
 				: Bindable(desc), _slot(slot)
 			{
-		
+
 				D3D11_BUFFER_DESC constant_buffer_desc{};
 				constant_buffer_desc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
 				constant_buffer_desc.Usage = D3D11_USAGE_DYNAMIC;
@@ -36,7 +49,7 @@ namespace dx3d {
 				constant_buffer_desc.MiscFlags = 0u;
 				constant_buffer_desc.ByteWidth = sizeof(consts);
 				constant_buffer_desc.StructureByteStride = 0u;
-		
+
 				D3D11_SUBRESOURCE_DATA constant_buffer_subresource_data{};
 				constant_buffer_subresource_data.pSysMem = &consts;
 
@@ -45,20 +58,9 @@ namespace dx3d {
 					"Failed to create the constant buffer"
 				);
 			}
-			
+
 			virtual ~BConstantBuffer() = default;
 
-			void Update(Graphics& graphics, const C& consts) {
-
-				D3D11_MAPPED_SUBRESOURCE constant_buffer_mapped_subresource{};
-				DX3DGraphicsLogThrowOnFail(GetContext(graphics)->Map(
-					_constant_buffer.Get(), 0u,
-					D3D11_MAP_WRITE_DISCARD, 0u,
-					&constant_buffer_mapped_subresource
-				), "Failed to update the constant buffer");
-				memcpy(constant_buffer_mapped_subresource.pData, &consts, sizeof(consts));
-				GetContext(graphics)->Unmap(_constant_buffer.Get(), 0u);
-			}
 		protected:
 			const UINT _slot{};
 			Microsoft::WRL::ComPtr<ID3D11Buffer> _constant_buffer{};
