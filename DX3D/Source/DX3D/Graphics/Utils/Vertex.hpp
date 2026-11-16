@@ -8,7 +8,7 @@
 #include <DX3D/Core/ConditionalNoexcept.hpp>
 #include <DX3D/Math/Color.hpp>
 
-namespace dx3d_vtx {
+namespace dx3d_dvtx {
 
 	class VertexLayout
 	{

@@ -173,11 +173,6 @@ namespace dx3d {
 					ImGui::SliderFloat("X", &transform.x, -100.0f, 100.0f);
 					ImGui::SliderFloat("Y", &transform.y, -100.0f, 100.0f);
 					ImGui::SliderFloat("Z", &transform.z, -100.0f, 100.0f);
-
-					if (!_selected_node_ptr->MaterialConstantControl(graphics, _skin_material))
-					{
-						_selected_node_ptr->MaterialConstantControl(graphics, _ring_material);
-					}
 				}
 			}
 			ImGui::End();
@@ -205,9 +200,6 @@ namespace dx3d {
 			float z{ 0.0f };
 		};
 		std::unordered_map<int, TransformParameters> _transforms{};
-
-		Node::PSMaterialConstantFull _skin_material{};
-		Node::PSMaterialConstantNotex _ring_material{};
 	};
 } // namespace dx3d
 
@@ -333,13 +325,13 @@ std::unique_ptr<dx3d::Mesh> dx3d::Model::ParseMesh(
 
 	if (has_diffuse_map && has_normal_map && has_specular_map)
 	{
-		dx3d_vtx::VertexBuffer vbuf(std::move(
-			dx3d_vtx::VertexLayout{}
-			.Append(dx3d_vtx::VertexLayout::Position3D)
-			.Append(dx3d_vtx::VertexLayout::Normal)
-			.Append(dx3d_vtx::VertexLayout::Tangent)
-			.Append(dx3d_vtx::VertexLayout::Bitangent)
-			.Append(dx3d_vtx::VertexLayout::Texture2D)
+		dx3d_dvtx::VertexBuffer vbuf(std::move(
+			dx3d_dvtx::VertexLayout{}
+			.Append(dx3d_dvtx::VertexLayout::Position3D)
+			.Append(dx3d_dvtx::VertexLayout::Normal)
+			.Append(dx3d_dvtx::VertexLayout::Tangent)
+			.Append(dx3d_dvtx::VertexLayout::Bitangent)
+			.Append(dx3d_dvtx::VertexLayout::Texture2D)
 		));
 
 		for (unsigned int i = 0; i < ai_mesh.mNumVertices; i++)
@@ -380,22 +372,32 @@ std::unique_ptr<dx3d::Mesh> dx3d::Model::ParseMesh(
 
 		bindable_ptrs.push_back(BInputLayout::Resolve(BindableDesc({ desc.logger }), graphics, vbuf.GetLayout(), pvsbc));
 
-		Node::PSMaterialConstantFull pmc{};
+		struct PSMaterialConstantFull
+		{
+			BOOL normal_map_enabled{ TRUE };
+			BOOL specular_map_enabled{ TRUE };
+			BOOL has_gloss_map{};
+			float specular_power{ 3.1f };
+			DirectX::XMFLOAT3 specular_color{ 0.75f, 0.75f, 0.75f };
+			float specular_map_weight{ 0.671f };
+		};
+
+		PSMaterialConstantFull pmc{};
 		pmc.specular_power = shininess;
 		pmc.has_gloss_map = has_alpha_gloss ? TRUE : FALSE;
 		// this is CLEARLY an issue... all meshes will share same mat const, but may have different
 		// Ns (specular power) specified for each in the material properties... bad conflict
-		bindable_ptrs.push_back(BPixelConstantBuffer<Node::PSMaterialConstantFull>::Resolve(BindableDesc({ desc.logger }), graphics, pmc, 1u));
+		bindable_ptrs.push_back(BPixelConstantBuffer<PSMaterialConstantFull>::Resolve(BindableDesc({ desc.logger }), graphics, pmc, 1u));
 	}
 	else if (has_diffuse_map && has_normal_map)
 	{
-		dx3d_vtx::VertexBuffer vbuf(std::move(
-			dx3d_vtx::VertexLayout{}
-			.Append(dx3d_vtx::VertexLayout::Position3D)
-			.Append(dx3d_vtx::VertexLayout::Normal)
-			.Append(dx3d_vtx::VertexLayout::Tangent)
-			.Append(dx3d_vtx::VertexLayout::Bitangent)
-			.Append(dx3d_vtx::VertexLayout::Texture2D)
+		dx3d_dvtx::VertexBuffer vbuf(std::move(
+			dx3d_dvtx::VertexLayout{}
+			.Append(dx3d_dvtx::VertexLayout::Position3D)
+			.Append(dx3d_dvtx::VertexLayout::Normal)
+			.Append(dx3d_dvtx::VertexLayout::Tangent)
+			.Append(dx3d_dvtx::VertexLayout::Bitangent)
+			.Append(dx3d_dvtx::VertexLayout::Texture2D)
 		));
 
 		for (unsigned int i = 0; i < ai_mesh.mNumVertices; i++)
@@ -447,11 +449,11 @@ std::unique_ptr<dx3d::Mesh> dx3d::Model::ParseMesh(
 	}
 	else if (has_diffuse_map && !has_normal_map && has_specular_map)
 	{
-		dx3d_vtx::VertexBuffer vbuf(std::move(
-			dx3d_vtx::VertexLayout{}
-			.Append(dx3d_vtx::VertexLayout::Position3D)
-			.Append(dx3d_vtx::VertexLayout::Normal)
-			.Append(dx3d_vtx::VertexLayout::Texture2D)
+		dx3d_dvtx::VertexBuffer vbuf(std::move(
+			dx3d_dvtx::VertexLayout{}
+			.Append(dx3d_dvtx::VertexLayout::Position3D)
+			.Append(dx3d_dvtx::VertexLayout::Normal)
+			.Append(dx3d_dvtx::VertexLayout::Texture2D)
 		));
 
 		for (unsigned int i = 0; i < ai_mesh.mNumVertices; i++)
@@ -502,11 +504,11 @@ std::unique_ptr<dx3d::Mesh> dx3d::Model::ParseMesh(
 	}
 	else if (has_diffuse_map)
 	{
-		dx3d_vtx::VertexBuffer vbuf(std::move(
-			dx3d_vtx::VertexLayout{}
-			.Append(dx3d_vtx::VertexLayout::Position3D)
-			.Append(dx3d_vtx::VertexLayout::Normal)
-			.Append(dx3d_vtx::VertexLayout::Texture2D)
+		dx3d_dvtx::VertexBuffer vbuf(std::move(
+			dx3d_dvtx::VertexLayout{}
+			.Append(dx3d_dvtx::VertexLayout::Position3D)
+			.Append(dx3d_dvtx::VertexLayout::Normal)
+			.Append(dx3d_dvtx::VertexLayout::Texture2D)
 		));
 
 		for (unsigned int i = 0; i < ai_mesh.mNumVertices; i++)
@@ -555,10 +557,10 @@ std::unique_ptr<dx3d::Mesh> dx3d::Model::ParseMesh(
 	}
 	else if (!has_diffuse_map && !has_normal_map && !has_specular_map)
 	{
-		dx3d_vtx::VertexBuffer vbuf(std::move(
-			dx3d_vtx::VertexLayout{}
-			.Append(dx3d_vtx::VertexLayout::Position3D)
-			.Append(dx3d_vtx::VertexLayout::Normal)
+		dx3d_dvtx::VertexBuffer vbuf(std::move(
+			dx3d_dvtx::VertexLayout{}
+			.Append(dx3d_dvtx::VertexLayout::Position3D)
+			.Append(dx3d_dvtx::VertexLayout::Normal)
 		));
 
 		for (unsigned int i = 0; i < ai_mesh.mNumVertices; i++)
@@ -592,13 +594,20 @@ std::unique_ptr<dx3d::Mesh> dx3d::Model::ParseMesh(
 
 		bindable_ptrs.push_back(BInputLayout::Resolve(BindableDesc({ desc.logger }), graphics, vbuf.GetLayout(), pvsbc));
 
-		Node::PSMaterialConstantNotex pmc{};
+		struct PSMaterialConstantNotex
+		{
+			DirectX::XMFLOAT4 material_color{};
+			DirectX::XMFLOAT4 specular_color{};
+			float specular_power{};
+			float padding[3]{};
+		};
+		PSMaterialConstantNotex pmc{};
 		pmc.specular_power = shininess;
 		pmc.specular_color = specular_color;
 		pmc.material_color = diffuse_color;
 		// this is CLEARLY an issue... all meshes will share same mat const, but may have different
 		// Ns (specular power) specified for each in the material properties... bad conflict
-		bindable_ptrs.push_back(BPixelConstantBuffer<Node::PSMaterialConstantNotex>::Resolve(BindableDesc({ desc.logger }), graphics, pmc, 1u));
+		bindable_ptrs.push_back(BPixelConstantBuffer<PSMaterialConstantNotex>::Resolve(BindableDesc({ desc.logger }), graphics, pmc, 1u));
 	}
 	else
 	{

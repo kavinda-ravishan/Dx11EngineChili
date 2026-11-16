@@ -4,7 +4,7 @@
 
 dx3d::BInputLayout::BInputLayout(const BindableDesc&           desc,
 							     Graphics&                     graphics,
-	                             const dx3d_vtx::VertexLayout  layout,
+	                             const dx3d_dvtx::VertexLayout layout,
 							     ID3DBlob*                     vertex_shader_bytecode)
 	: Bindable(desc), _layout(layout)
 {
@@ -27,11 +27,11 @@ void dx3d::BInputLayout::Bind(Graphics& graphics) noexcept {
 	GetContext(graphics)->IASetInputLayout(_input_layout.Get());
 }
 
-std::shared_ptr<dx3d::BInputLayout> dx3d::BInputLayout::Resolve(const BindableDesc& desc, Graphics& graphics, const dx3d_vtx::VertexLayout& layout, ID3DBlob* vertex_shader_bytecode) {
+std::shared_ptr<dx3d::BInputLayout> dx3d::BInputLayout::Resolve(const BindableDesc& desc, Graphics& graphics, const dx3d_dvtx::VertexLayout& layout, ID3DBlob* vertex_shader_bytecode) {
 	return Codex::Resolve<BInputLayout>(desc, graphics, layout, vertex_shader_bytecode);
 }
 
-std::string dx3d::BInputLayout::GenerateUID(const dx3d_vtx::VertexLayout& layout, ID3DBlob* vertex_shader_bytecode) {
+std::string dx3d::BInputLayout::GenerateUID(const dx3d_dvtx::VertexLayout& layout, ID3DBlob* vertex_shader_bytecode) {
 	using namespace std::string_literals;
 	return typeid(BInputLayout).name() + "#"s + layout.GetCode();
 }

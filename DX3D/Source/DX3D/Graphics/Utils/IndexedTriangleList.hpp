@@ -8,7 +8,7 @@ namespace dx3d {
 	class IndexedTriangleList
 	{
 	public:
-		IndexedTriangleList(dx3d_vtx::VertexBuffer vertices, std::vector<unsigned short> indices)
+		IndexedTriangleList(dx3d_dvtx::VertexBuffer vertices, std::vector<unsigned short> indices)
 			:
 			_vertices(std::move(vertices)),
 			_indices(std::move(indices))
@@ -19,7 +19,7 @@ namespace dx3d {
 		
 		void Transform(DirectX::FXMMATRIX matrix)
 		{
-			using Elements = dx3d_vtx::VertexLayout::ElementType;
+			using Elements = dx3d_dvtx::VertexLayout::ElementType;
 			for (int i = 0; i < _vertices.Size(); i++)
 			{
 				auto& pos = _vertices[i].Attr<Elements::Position3D>();
@@ -40,20 +40,20 @@ namespace dx3d {
 				auto v0 = _vertices[_indices[i]];
 				auto v1 = _vertices[_indices[i + 1]];
 				auto v2 = _vertices[_indices[i + 2]];
-				const auto p0 = XMLoadFloat3(&v0.Attr<dx3d_vtx::VertexLayout::ElementType::Position3D>());
-				const auto p1 = XMLoadFloat3(&v1.Attr<dx3d_vtx::VertexLayout::ElementType::Position3D>());
-				const auto p2 = XMLoadFloat3(&v2.Attr<dx3d_vtx::VertexLayout::ElementType::Position3D>());
+				const auto p0 = XMLoadFloat3(&v0.Attr<dx3d_dvtx::VertexLayout::ElementType::Position3D>());
+				const auto p1 = XMLoadFloat3(&v1.Attr<dx3d_dvtx::VertexLayout::ElementType::Position3D>());
+				const auto p2 = XMLoadFloat3(&v2.Attr<dx3d_dvtx::VertexLayout::ElementType::Position3D>());
 
 				const auto n = XMVector3Normalize(XMVector3Cross((p1 - p0), (p2 - p0)));
 
-				XMStoreFloat3(&v0.Attr<dx3d_vtx::VertexLayout::ElementType::Normal>(), n);
-				XMStoreFloat3(&v1.Attr<dx3d_vtx::VertexLayout::ElementType::Normal>(), n);
-				XMStoreFloat3(&v2.Attr<dx3d_vtx::VertexLayout::ElementType::Normal>(), n);
+				XMStoreFloat3(&v0.Attr<dx3d_dvtx::VertexLayout::ElementType::Normal>(), n);
+				XMStoreFloat3(&v1.Attr<dx3d_dvtx::VertexLayout::ElementType::Normal>(), n);
+				XMStoreFloat3(&v2.Attr<dx3d_dvtx::VertexLayout::ElementType::Normal>(), n);
 			}
 		}
 
 	public:
-		dx3d_vtx::VertexBuffer _vertices;
+		dx3d_dvtx::VertexBuffer _vertices;
 		std::vector<unsigned short> _indices;
 	};
 } // namespace dx3d

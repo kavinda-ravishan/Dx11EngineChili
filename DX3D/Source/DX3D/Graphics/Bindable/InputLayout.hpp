@@ -10,16 +10,16 @@ namespace dx3d {
 	public:
 		BInputLayout(const BindableDesc&           desc,
 			         Graphics&                     graphics,
-			         const dx3d_vtx::VertexLayout  layout,
+			         const dx3d_dvtx::VertexLayout layout,
 			         ID3DBlob*                     vertex_shader_bytecode);
 		void Bind(Graphics& graphics) noexcept override;
 	
-		static std::shared_ptr<BInputLayout> Resolve(const BindableDesc& desc, Graphics& graphics, const dx3d_vtx::VertexLayout& layout, ID3DBlob* vertex_shader_bytecode);
-		static std::string GenerateUID(const dx3d_vtx::VertexLayout& layout, ID3DBlob* vertex_shader_bytecode = nullptr);
+		static std::shared_ptr<BInputLayout> Resolve(const BindableDesc& desc, Graphics& graphics, const dx3d_dvtx::VertexLayout& layout, ID3DBlob* vertex_shader_bytecode);
+		static std::string GenerateUID(const dx3d_dvtx::VertexLayout& layout, ID3DBlob* vertex_shader_bytecode = nullptr);
 		std::string GetUID() const noexcept override;
 
 	protected:
-		const dx3d_vtx::VertexLayout _layout{};
+		const dx3d_dvtx::VertexLayout _layout{};
 		Microsoft::WRL::ComPtr<ID3D11InputLayout> _input_layout{};
 	};
 

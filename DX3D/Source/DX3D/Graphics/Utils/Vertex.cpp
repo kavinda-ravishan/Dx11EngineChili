@@ -1,7 +1,7 @@
 #include <string>
 #include <DX3D/Graphics/Utils/Vertex.hpp>
 
-namespace dx3d_vtx
+namespace dx3d_dvtx
 {
 	// VertexLayout
 	const VertexLayout::Element& VertexLayout::ResolveByIndex(size_t i) const noxnd
