@@ -8,6 +8,7 @@ cbuffer ObjectCBuf
     float specular_power_const;
     bool has_gloss;
     float specular_map_weight;
+    float padding;
 };
 
 Texture2D tex;

@@ -715,10 +715,12 @@ std::unique_ptr<dx3d::Mesh> dx3d::Model::ParseMesh(
 		lay.Add<dx3d_dcb::Float4>(PSCBV_specular_color);
 		lay.Add<dx3d_dcb::Float>(PSCBV_specular_power);
 
-		auto buf = dx3d_dcb::Buffer(std::move(lay));
-		buf[PSCBV_material_color] = diffuse_color;
-		buf[PSCBV_specular_color] = specular_color;
-		buf[PSCBV_specular_power] = shininess;
+		auto ps_cbuf = dx3d_dcb::Buffer(std::move(lay));
+		ps_cbuf[PSCBV_material_color] = diffuse_color;
+		ps_cbuf[PSCBV_specular_color] = specular_color;
+		ps_cbuf[PSCBV_specular_power] = shininess;
+
+		bindable_ptrs.push_back(std::make_shared<BCachingPixelConstantBufferEX>(BindableDesc({ desc.logger }), graphics, ps_cbuf, 1u));
 	}
 	else
 	{

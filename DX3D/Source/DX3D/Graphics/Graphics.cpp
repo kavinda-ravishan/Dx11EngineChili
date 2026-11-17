@@ -52,9 +52,9 @@ dx3d::Graphics::Graphics(const GraphicsDesc& desc)
 
 	D3D_FEATURE_LEVEL feature_levels{};
 
-#ifndef NDBUG
+#ifndef NDEBUG
 	create_device_flags |= D3D11_CREATE_DEVICE_DEBUG;
-#endif // NDBUG
+#endif // NDEBUG
 
 	DX3DGraphicsLogThrowOnFail(
 		D3D11CreateDeviceAndSwapChain(
@@ -84,6 +84,27 @@ dx3d::Graphics::Graphics(const GraphicsDesc& desc)
 		case D3D_FEATURE_LEVEL_9_1:  DX3DLogInfo("Feature Level: 9.1"); break;
 		default: DX3DLogInfo("Unknown Feature Level"); break;
 	}
+
+#ifndef NDEBUG
+	Microsoft::WRL::ComPtr<ID3D11InfoQueue> info_queue;
+
+	DX3DGraphicsLogThrowOnFail(
+		_device->QueryInterface(IID_PPV_ARGS(&info_queue)), 
+		"Failed to query info-queue"
+	);
+	
+	info_queue->SetBreakOnSeverity(
+		D3D11_MESSAGE_SEVERITY_WARNING,
+		TRUE);
+
+	info_queue->SetBreakOnSeverity(
+		D3D11_MESSAGE_SEVERITY_ERROR,
+		TRUE);
+
+	info_queue->SetBreakOnSeverity(
+		D3D11_MESSAGE_SEVERITY_CORRUPTION,
+		TRUE);
+#endif // NDEBUG
 
 	Microsoft::WRL::ComPtr<ID3D11Resource> back_buffer{};
 	DX3DGraphicsLogThrowOnFail(
