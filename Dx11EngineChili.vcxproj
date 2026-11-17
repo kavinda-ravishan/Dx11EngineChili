@@ -216,6 +216,7 @@
     <ClInclude Include="DX3D\Source\DX3D\Graphics\Bindable\Blender.hpp" />
     <ClInclude Include="DX3D\Source\DX3D\Graphics\Bindable\ConstantBuffersEx.hpp" />
     <ClInclude Include="DX3D\Source\DX3D\Graphics\Bindable\Rasterizer.hpp" />
+    <ClInclude Include="DX3D\Source\DX3D\Graphics\Bindable\Stencil.hpp" />
     <ClInclude Include="DX3D\Source\DX3D\Graphics\Bindable\TransformCbufDouble.hpp" />
     <ClInclude Include="DX3D\Source\DX3D\Graphics\Camera\Camera.hpp" />
     <ClInclude Include="DX3D\Source\DX3D\Graphics\Drawable\Mesh.hpp" />

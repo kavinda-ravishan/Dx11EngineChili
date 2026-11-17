@@ -9,6 +9,7 @@ namespace dx3d {
 		void SetRotation(float roll, float pitch, float yaw) noexcept;
 		DirectX::XMMATRIX GetTransformXM() const noexcept override;
 		void SpawnControlWindow(Graphics& graphics, const char* name) noexcept;
+		void DrawOutline(Graphics& graphics) noxnd;
 	private:
 		struct PSMaterialConstant
 		{
@@ -22,5 +23,8 @@ namespace dx3d {
 		float _roll{ 0.0f };
 		float _pitch{ 0.0f };
 		float _yaw{ 0.0f };
+
+		std::vector<std::shared_ptr<Bindable>> _outline_effect;
+		bool _outlining{ false };
 	};
 } // namespace dx3d

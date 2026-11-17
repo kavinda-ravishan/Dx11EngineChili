@@ -1,5 +1,6 @@
 #include <string>
 #include <DX3D/Window/ImGUI/imgui.h>
+#include <DX3D/Graphics/Graphics.hpp>
 #include <DX3D/Graphics/Drawable/Models/Cube.hpp>
 #include <DX3D/Graphics/Drawable/TestCube.hpp>
 #include <DX3D/Graphics/Bindable/BindableCommon.hpp>
@@ -34,7 +35,26 @@ dx3d::TestCube::TestCube(const DrawableDesc& desc, Graphics& graphics, float siz
 
 	AddBind(BRasterizer::Resolve(BINDABLE_DESC, graphics, false));
 
-	AddBind(std::make_shared<BTransformCbufDouble>(BINDABLE_DESC, graphics, *this, 0u, 2u));
+	auto tcbdb = std::make_shared<BTransformCbufDouble>(BINDABLE_DESC, graphics, *this, 0u, 2u);
+	AddBind(tcbdb);
+
+	AddBind(std::make_shared<BStencil>(BINDABLE_DESC, graphics, BStencil::Mode::Write));
+
+	_outline_effect.push_back(BVertexBuffer::Resolve(BINDABLE_DESC, graphics, geometry_tag, model._vertices));
+	_outline_effect.push_back(BIndexBuffer::Resolve(BINDABLE_DESC, graphics, geometry_tag, model._indices));
+	pvs = BVertexShader::Resolve(BINDABLE_DESC, graphics, "SolidVS.cso");
+	pvsbc = pvs->GetBytecode();
+	_outline_effect.push_back(std::move(pvs));
+	_outline_effect.push_back(BPixelShader::Resolve(BINDABLE_DESC, graphics, "SolidPS.cso"));
+	struct SolidColorBuffer
+	{
+		DirectX::XMFLOAT4 color{ 1.0f,0.4f,0.4f,1.0f };
+	} scb;
+	_outline_effect.push_back(BPixelConstantBuffer<SolidColorBuffer>::Resolve(BINDABLE_DESC, graphics, scb, 1u));
+	_outline_effect.push_back(BInputLayout::Resolve(BINDABLE_DESC, graphics, model._vertices.GetLayout(), pvsbc));
+	_outline_effect.push_back(BTopology::Resolve(BINDABLE_DESC, graphics, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST));
+	_outline_effect.push_back(std::move(tcbdb));
+	_outline_effect.push_back(std::make_shared<BStencil>(BINDABLE_DESC, graphics, BStencil::Mode::Mask));
 }
 
 void dx3d::TestCube::SetPos(DirectX::XMFLOAT3 pos) noexcept {
@@ -48,8 +68,14 @@ void dx3d::TestCube::SetRotation(float roll, float pitch, float yaw) noexcept {
 }
 
 DirectX::XMMATRIX dx3d::TestCube::GetTransformXM() const noexcept {
-	return DirectX::XMMatrixRotationRollPitchYaw(_roll, _pitch, _yaw) *
+	auto xf = DirectX::XMMatrixRotationRollPitchYaw(_roll, _pitch, _yaw) *
 		DirectX::XMMatrixTranslation(_pos.x, _pos.y, _pos.z);
+
+	if (_outlining) {
+		xf = DirectX::XMMatrixScaling(1.03f, 1.03f, 1.03f) * xf;
+	}
+
+	return xf;
 }
 
 void dx3d::TestCube::SpawnControlWindow(Graphics& graphics, const char* name) noexcept {
@@ -75,4 +101,14 @@ void dx3d::TestCube::SpawnControlWindow(Graphics& graphics, const char* name) no
 		}
 	}
 	ImGui::End();
+}
+
+void dx3d::TestCube::DrawOutline(Graphics& graphics) noxnd {
+	_outlining = true;
+	for (auto& b : _outline_effect)
+	{
+		b->Bind(graphics);
+	}
+	graphics.DrawIndexed(QueryBindable<BIndexBuffer>()->GetCount());
+	_outlining = false;
 }

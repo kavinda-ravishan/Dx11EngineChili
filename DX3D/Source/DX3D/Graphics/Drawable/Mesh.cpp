@@ -731,6 +731,14 @@ std::unique_ptr<dx3d::Mesh> dx3d::Model::ParseMesh(
 
 	bindable_ptrs.push_back(BBlender::Resolve(BindableDesc({ desc.logger }), graphics, false));
 
+	bindable_ptrs.push_back(
+		std::make_shared<BStencil>(
+			BindableDesc({ desc.logger }), 
+			graphics, 
+			BStencil::Mode::Off
+		)
+	);
+
 	return std::make_unique<Mesh>(DrawableDesc({ desc.logger }), graphics, std::move(bindable_ptrs));
 }
 

@@ -96,28 +96,13 @@ dx3d::Graphics::Graphics(const GraphicsDesc& desc)
 		"Failed to create render target view"
 	);
 
-	// create depth stensil state
-	D3D11_DEPTH_STENCIL_DESC depth_stensil_desc{};
-	depth_stensil_desc.DepthEnable = TRUE;
-	depth_stensil_desc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ALL;
-	depth_stensil_desc.DepthFunc = D3D11_COMPARISON_LESS;
-
-	Microsoft::WRL::ComPtr<ID3D11DepthStencilState> depth_stensil_state{};
-	DX3DGraphicsLogThrowOnFail(
-		_device->CreateDepthStencilState(&depth_stensil_desc, &depth_stensil_state), 
-		"Failed to create depth stensil state"
-	);
-
-	// bind depth stensil state
-	_context->OMSetDepthStencilState(depth_stensil_state.Get(), 1u);
-
 	// create depth stensil texture
 	D3D11_TEXTURE2D_DESC depth_stensil_texture_desc{};
 	depth_stensil_texture_desc.Width = _window_size.width;
 	depth_stensil_texture_desc.Height = _window_size.height;
 	depth_stensil_texture_desc.MipLevels = 1u;
 	depth_stensil_texture_desc.ArraySize = 1u;
-	depth_stensil_texture_desc.Format = DXGI_FORMAT_D32_FLOAT;
+	depth_stensil_texture_desc.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
 	depth_stensil_texture_desc.SampleDesc.Count = 1u;
 	depth_stensil_texture_desc.SampleDesc.Quality = 0u;
 	depth_stensil_texture_desc.Usage = D3D11_USAGE_DEFAULT;
@@ -131,7 +116,7 @@ dx3d::Graphics::Graphics(const GraphicsDesc& desc)
 
 	// create view of depth stencil texture
 	D3D11_DEPTH_STENCIL_VIEW_DESC depth_stensil_view_desc{};
-	depth_stensil_view_desc.Format = DXGI_FORMAT_D32_FLOAT;
+	depth_stensil_view_desc.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
 	depth_stensil_view_desc.ViewDimension = D3D11_DSV_DIMENSION_TEXTURE2D;
 	depth_stensil_view_desc.Texture2D.MipSlice = 0u;
 
@@ -193,7 +178,7 @@ void dx3d::Graphics::BeginFrame(float red, float green, float blue) noexcept {
 
 	const float color[] = { red, green, blue, 1.0f };
 	_context->ClearRenderTargetView(_target_view.Get(), color);
-	_context->ClearDepthStencilView(_depth_stencil_view.Get(), D3D11_CLEAR_DEPTH, 1.0f, 0u);
+	_context->ClearDepthStencilView(_depth_stencil_view.Get(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0u);
 }
 
 void dx3d::Graphics::DrawIndexed(UINT count) noxnd {

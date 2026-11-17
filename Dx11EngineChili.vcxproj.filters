@@ -338,6 +338,9 @@
     <ClInclude Include="DX3D\Source\DX3D\Graphics\Bindable\ConstantBuffersEx.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="DX3D\Source\DX3D\Graphics\Bindable\Stencil.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="DX3D\Assets\Shaders\PhongVS.hlsl" />

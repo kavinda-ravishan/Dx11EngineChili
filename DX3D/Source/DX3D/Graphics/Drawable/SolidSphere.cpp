@@ -35,6 +35,8 @@ dx3d::SolidSphere::SolidSphere(const DrawableDesc& desc, Graphics& graphics, flo
 
 	AddBind(BRasterizer::Resolve(BINDABLE_DESC, graphics, false));
 
+	AddBind(std::make_shared<BStencil>(BINDABLE_DESC, graphics, BStencil::Mode::Off));
+
 	AddBind(std::make_shared<BTransformCbuf>(BINDABLE_DESC, graphics, *this));
 }
 
