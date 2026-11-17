@@ -16,13 +16,13 @@ dx3d::TestCube::TestCube(const DrawableDesc& desc, Graphics& graphics, float siz
 	AddBind(BIndexBuffer::Resolve(BINDABLE_DESC, graphics, geometry_tag, model._indices));
 
 	AddBind(BTexture::Resolve(BINDABLE_DESC, graphics, "Assets\\Images\\brickwall.jpg"));
-	AddBind(BTexture::Resolve(BINDABLE_DESC, graphics, "Assets\\Images\\brickwall_normal.jpg", 2u));
+	AddBind(BSampler::Resolve(BINDABLE_DESC, graphics));
 
 	auto pvs = BVertexShader::Resolve(BINDABLE_DESC, graphics, "PhongVS.cso");
 	auto pvsbc = pvs->GetBytecode();
 	AddBind(std::move(pvs));
 
-	AddBind(BPixelShader::Resolve(BINDABLE_DESC, graphics, "PhongPSNormalMap.cso"));
+	AddBind(BPixelShader::Resolve(BINDABLE_DESC, graphics, "PhongPS.cso"));
 
 	AddBind(BPixelConstantBuffer<PSMaterialConstant>::Resolve(BINDABLE_DESC, graphics, _pmc, 1u));
 
@@ -52,8 +52,8 @@ DirectX::XMMATRIX dx3d::TestCube::GetTransformXM() const noexcept {
 		DirectX::XMMatrixTranslation(_pos.x, _pos.y, _pos.z);
 }
 
-void dx3d::TestCube::SpawnControlWindow(Graphics& graphics) noexcept {
-	if (ImGui::Begin("Cube"))
+void dx3d::TestCube::SpawnControlWindow(Graphics& graphics, const char* name) noexcept {
+	if (ImGui::Begin(name))
 	{
 		ImGui::Text("Position");
 		ImGui::SliderFloat("X", &_pos.x, -80.0f, 80.0f, "%.1f");

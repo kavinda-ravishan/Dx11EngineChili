@@ -8,7 +8,7 @@ namespace dx3d {
 		void SetPos(DirectX::XMFLOAT3 pos) noexcept;
 		void SetRotation(float roll, float pitch, float yaw) noexcept;
 		DirectX::XMMATRIX GetTransformXM() const noexcept override;
-		void SpawnControlWindow(Graphics& graphics) noexcept;
+		void SpawnControlWindow(Graphics& graphics, const char* name) noexcept;
 	private:
 		struct PSMaterialConstant
 		{

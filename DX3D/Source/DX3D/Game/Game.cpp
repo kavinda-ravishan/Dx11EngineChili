@@ -13,7 +13,8 @@
 
 #include <DX3D/Graphics/Graphics.hpp>
 #include <DX3D/Graphics/Drawable/Mesh.hpp>
-#include <DX3D/Graphics/Drawable/TestPlane.hpp>
+//#include <DX3D/Graphics/Drawable/TestPlane.hpp>
+#include <DX3D/Graphics/Drawable/TestCube.hpp>
 #include <DX3D/Graphics/Camera/Camera.hpp>
 #include <DX3D/Graphics/Light/PointLight.hpp>
 
@@ -126,7 +127,7 @@ dx3d::Game::Game(const GameDesc& desc) :
 	);
 
 	
-	_sponza = std::make_unique<Model>(BaseDesc({ _logger }), *_graphics, "Assets\\Models\\Sponza\\sponza.obj", 1.0f / 20.0f);
+	//_sponza = std::make_unique<Model>(BaseDesc({ _logger }), *_graphics, "Assets\\Models\\Sponza\\sponza.obj", 1.0f / 20.0f);
 	
 	//_stripey = std::make_unique<Model>(BaseDesc({ _logger }), *_graphics, "Assets\\Models\\Stripey\\stripey.obj", 2.0f);
 	//_stripey->SetRootTransform(DirectX::XMMatrixTranslation(-50.0f, 9.125f, -2.75f));
@@ -140,11 +141,16 @@ dx3d::Game::Game(const GameDesc& desc) :
 	//_wall = std::make_unique<Model>(BaseDesc({ _logger }), *_graphics, "Assets\\Models\\brick_wall\\brick_wall.obj", 6.0f);
 	//_wall->SetRootTransform(DirectX::XMMatrixTranslation(-12.0f, 0.0f, 0.0f));
 
-	_blue_plane = std::make_unique<TestPlane>(DrawableDesc({ _logger }), *_graphics, 6.0f, DirectX::XMFLOAT4{ 0.3f,0.3f,1.0f,0.0f });
-	_blue_plane->SetPos(_camera->GetPos());
-	
-	_red_plane = std::make_unique<TestPlane>(DrawableDesc({ _logger }), *_graphics, 6.0f, DirectX::XMFLOAT4{ 1.0f,0.3f,0.3f,0.0f });
-	_red_plane->SetPos(_camera->GetPos());
+	//_blue_plane = std::make_unique<TestPlane>(DrawableDesc({ _logger }), *_graphics, 6.0f, DirectX::XMFLOAT4{ 0.3f,0.3f,1.0f,0.0f });
+	//_blue_plane->SetPos(_camera->GetPos());
+	//
+	//_red_plane = std::make_unique<TestPlane>(DrawableDesc({ _logger }), *_graphics, 6.0f, DirectX::XMFLOAT4{ 1.0f,0.3f,0.3f,0.0f });
+	//_red_plane->SetPos(_camera->GetPos());
+
+	_cube = std::make_unique<TestCube>(DrawableDesc({ _logger }), *_graphics, 4.0f);
+	_cube->SetPos({ .0f, 0.0f, 0.0f });
+	_cube2 = std::make_unique<TestCube>(DrawableDesc({ _logger }), *_graphics, 4.0f);
+	_cube2->SetPos({ 2.0f, 2.0f, 2.0f });
 	
 	const float aspect_ratio = float(_window->GetWindowSize().height) / _window->GetWindowSize().width;
 	_graphics->SetProjection(DirectX::XMMatrixPerspectiveLH(1.0f, aspect_ratio, 0.5f, 400.0f));
@@ -192,13 +198,15 @@ void dx3d::Game::OnInternalUpdate() {
 	_graphics->SetCamera(_camera->GetMatrix());
 	_point_light->Bind(*_graphics, _camera->GetMatrix());
 
-	_sponza->Draw(*_graphics);
+	//_sponza->Draw(*_graphics);
 	//_stripey->Draw(*_graphics);
 	//_nano->Draw(*_graphics);
 	//_gobber->Draw(*_graphics);
 	//_wall->Draw(*_graphics);
-	_blue_plane->Draw(*_graphics);
-	_red_plane->Draw(*_graphics);
+	//_blue_plane->Draw(*_graphics);
+	//_red_plane->Draw(*_graphics);
+	_cube->Draw(*_graphics);
+	_cube2->Draw(*_graphics);
 	
 	_point_light->Draw(*_graphics);
 
@@ -206,13 +214,15 @@ void dx3d::Game::OnInternalUpdate() {
 		_camera->SpawnControlWindow();
 		_point_light->SpawnControlWindow();
 		
-		_sponza->ShowWindow(*_graphics, "Sponza");
+		//_sponza->ShowWindow(*_graphics, "Sponza");
 		//_stripey->ShowWindow(*_graphics, "Stripey");
 		//_nano->ShowWindow(*_graphics, "Nano");
 		//_gobber->ShowWindow(*_graphics, "Gobber");
 		//_wall->ShowWindow(*_graphics, "Wall");
-		_blue_plane->SpawnControlWindow(*_graphics, "Blue Plane");
-		_red_plane->SpawnControlWindow(*_graphics, "Red Plane");
+		//_blue_plane->SpawnControlWindow(*_graphics, "Blue Plane");
+		//_red_plane->SpawnControlWindow(*_graphics, "Red Plane");
+		_cube->SpawnControlWindow(*_graphics, "Cube 1");
+		_cube2->SpawnControlWindow(*_graphics, "Cube 2");
 		
 		ShowPerformanceWindow();
 	}
