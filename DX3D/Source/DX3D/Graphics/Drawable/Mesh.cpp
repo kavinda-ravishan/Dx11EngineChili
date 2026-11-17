@@ -130,53 +130,45 @@ void dx3d::Node::SetMaterialConstants(const dx3d_dcb::Buffer& buf_in) noxnd {
 	pcb->SetBuffer(buf_in);
 }
 
-void dx3d::Node::Draw(Graphics& graphics, DirectX::FXMMATRIX accumulated_transform) const noxnd
-{
+void dx3d::Node::Draw(Graphics& graphics, DirectX::FXMMATRIX accumulated_transform) const noxnd {
 	const auto built = 
 		DirectX::XMLoadFloat4x4(&_applied_transform) * 
 		DirectX::XMLoadFloat4x4(&_transform) * 
 		accumulated_transform;
 
-	for (const auto pm : _mesh_ptrs)
-	{
+	for (const auto pm : _mesh_ptrs) {
 		pm->Draw(graphics, built);
 	}
-	for (const auto& pc : _child_ptrs)
-	{
+
+	for (const auto& pc : _child_ptrs) {
 		pc->Draw(graphics, built);
 	}
 }
 
-void dx3d::Node::AddChild(std::unique_ptr<Node> child) noxnd
-{
+void dx3d::Node::AddChild(std::unique_ptr<Node> child) noxnd {
 	assert(child);
 	_child_ptrs.push_back(std::move(child));
 }
 
 // ModelWindow
 namespace dx3d {
-	class ModelWindow // pImpl idiom, only defined in this .cpp
-	{
+	class ModelWindow { // pImpl idiom, only defined in this .cpp
 	public:
-		void Show(Graphics& gfx, const char* windowName, const Node& root) noexcept
-		{
+		void Show(Graphics& gfx, const char* windowName, const Node& root) noexcept {
 			// window name defaults to "Model"
 			windowName = windowName ? windowName : "Model";
 			// need an ints to track node indices and selected node
 			int nodeIndexTracker = 0;
-			if (ImGui::Begin(windowName))
-			{
+			if (ImGui::Begin(windowName)) {
 				ImGui::Columns(2, nullptr, true);
-				root.ShowTree(pSelectedNode);
+				root.ShowTree(_selected_node_ptr);
 
 				ImGui::NextColumn();
-				if (pSelectedNode != nullptr)
-				{
-					const auto id = pSelectedNode->GetID();
+				if (_selected_node_ptr != nullptr) {
+					const auto id = _selected_node_ptr->GetID();
 					auto i = _transforms.find(id);
-					if (i == _transforms.end())
-					{
-						const auto& applied = pSelectedNode->GetAppliedTransform();
+					if (i == _transforms.end()) {
+						const auto& applied = _selected_node_ptr->GetAppliedTransform();
 						const auto angles = ExtractEulerAngles(applied);
 						const auto translation = ExtractTranslation(applied);
 						TransformParameters tp;
@@ -186,10 +178,11 @@ namespace dx3d {
 						tp.x = translation.x;
 						tp.y = translation.y;
 						tp.z = translation.z;
-						auto pMatConst = pSelectedNode->GetMaterialConstants();
+						auto pMatConst = _selected_node_ptr->GetMaterialConstants();
 						auto buf = pMatConst != nullptr ? std::optional<dx3d_dcb::Buffer>{ *pMatConst } : std::optional<dx3d_dcb::Buffer>{};
 						std::tie(i, std::ignore) = _transforms.insert({ id,{ tp,false,std::move(buf),false } });
 					}
+
 					// link imgui ctrl to our cached transform params
 					{
 						auto& transform = i->second.tranform_params;
@@ -206,45 +199,44 @@ namespace dx3d {
 						dcheck(ImGui::SliderFloat("Y", &transform.y, -20.0f, 20.0f));
 						dcheck(ImGui::SliderFloat("Z", &transform.z, -20.0f, 20.0f));
 					}
+
 					// link imgui ctrl to our cached material params
-					if (i->second.material_cbuf)
-					{
+					if (i->second.material_cbuf) {
 						auto& mat = *i->second.material_cbuf;
 						// dirty check
 						auto& dirty = i->second.material_cbuf_changed;
 						const auto dcheck = [&dirty](bool changed) {dirty = dirty || changed; };
 						// widgets
 						ImGui::Text("Material");
-						if (auto v = mat[PSCBV_normal_map_enabled]; v.Exists())
-						{
+						if (auto v = mat[PSCBV_normal_map_enabled]; v.Exists()) {
 							dcheck(ImGui::Checkbox("Norm Map", &v));
 						}
-						if (auto v = mat[PSCBV_specular_map_enabled]; v.Exists())
-						{
+
+						if (auto v = mat[PSCBV_specular_map_enabled]; v.Exists()) {
 							dcheck(ImGui::Checkbox("Spec Map", &v));
 						}
-						if (auto v = mat[PSCBV_has_gloss_map]; v.Exists())
-						{
+
+						if (auto v = mat[PSCBV_has_gloss_map]; v.Exists()) {
 							dcheck(ImGui::Checkbox("Gloss Map", &v));
 						}
-						if (auto v = mat[PSCBV_material_color]; v.Exists())
-						{
+
+						if (auto v = mat[PSCBV_material_color]; v.Exists()) {
 							dcheck(ImGui::ColorPicker3("Diff Color", reinterpret_cast<float*>(&static_cast<DirectX::XMFLOAT3&>(v))));
 						}
-						if (auto v = mat[PSCBV_specular_power]; v.Exists())
-						{
+
+						if (auto v = mat[PSCBV_specular_power]; v.Exists()) {
 							dcheck(ImGui::SliderFloat("Spec Power", &v, 0.0f, 100.0f, "%.1f", ImGuiSliderFlags_Logarithmic));
 						}
-						if (auto v = mat[PSCBV_specular_color]; v.Exists())
-						{
+
+						if (auto v = mat[PSCBV_specular_color]; v.Exists()) {
 							dcheck(ImGui::ColorPicker3("Spec Color", reinterpret_cast<float*>(&static_cast<DirectX::XMFLOAT3&>(v))));
 						}
-						if (auto v = mat[PSCBV_specular_map_weight]; v.Exists())
-						{
+
+						if (auto v = mat[PSCBV_specular_map_weight]; v.Exists()) {
 							dcheck(ImGui::SliderFloat("Spec Weight", &v, 0.0f, 4.0f));
 						}
-						if (auto v = mat[PSCBV_specular_intensity]; v.Exists())
-						{
+
+						if (auto v = mat[PSCBV_specular_intensity]; v.Exists()) {
 							dcheck(ImGui::SliderFloat("Spec Intens", &v, 0.0f, 1.0f));
 						}
 					}
@@ -252,59 +244,57 @@ namespace dx3d {
 			}
 			ImGui::End();
 		}
-		void ApplyParameters() noxnd
-		{
-			if (TransformChanged())
-			{
-				pSelectedNode->SetAppliedTransform(GetTransform());
+
+		void ApplyParameters() noxnd {
+			if (TransformChanged()) {
+				_selected_node_ptr->SetAppliedTransform(GetTransform());
 				ResetTransformChanged();
 			}
-			if (MaterialChanged())
-			{
-				pSelectedNode->SetMaterialConstants(GetMaterial());
+
+			if (MaterialChanged()) {
+				_selected_node_ptr->SetMaterialConstants(GetMaterial());
 				ResetMaterialChanged();
 			}
 		}
+
 	private:
-		DirectX::XMMATRIX GetTransform() const noxnd
-		{
-			assert(pSelectedNode != nullptr);
-			const auto& transform = _transforms.at(pSelectedNode->GetID()).tranform_params;
+		DirectX::XMMATRIX GetTransform() const noxnd {
+			assert(_selected_node_ptr != nullptr);
+			const auto& transform = _transforms.at(_selected_node_ptr->GetID()).tranform_params;
 			return
 				DirectX::XMMatrixRotationRollPitchYaw(transform.roll, transform.pitch, transform.yaw) *
 				DirectX::XMMatrixTranslation(transform.x, transform.y, transform.z);
 		}
-		const dx3d_dcb::Buffer& GetMaterial() const noxnd
-		{
-			assert(pSelectedNode != nullptr);
-			const auto& mat = _transforms.at(pSelectedNode->GetID()).material_cbuf;
+
+		const dx3d_dcb::Buffer& GetMaterial() const noxnd {
+			assert(_selected_node_ptr != nullptr);
+			const auto& mat = _transforms.at(_selected_node_ptr->GetID()).material_cbuf;
 			assert(mat);
 			return *mat;
 		}
-		bool TransformChanged() const noxnd
-		{
-			return pSelectedNode && _transforms.at(pSelectedNode->GetID()).transform_params_changed;
+
+		bool TransformChanged() const noxnd {
+			return _selected_node_ptr && _transforms.at(_selected_node_ptr->GetID()).transform_params_changed;
 		}
-		void ResetTransformChanged() noxnd
-		{
-			_transforms.at(pSelectedNode->GetID()).transform_params_changed = false;
+
+		void ResetTransformChanged() noxnd {
+			_transforms.at(_selected_node_ptr->GetID()).transform_params_changed = false;
 		}
-		bool MaterialChanged() const noxnd
-		{
-			return pSelectedNode && _transforms.at(pSelectedNode->GetID()).material_cbuf_changed;
+
+		bool MaterialChanged() const noxnd {
+			return _selected_node_ptr && _transforms.at(_selected_node_ptr->GetID()).material_cbuf_changed;
 		}
-		void ResetMaterialChanged() noxnd
-		{
-			_transforms.at(pSelectedNode->GetID()).material_cbuf_changed = false;
+
+		void ResetMaterialChanged() noxnd {
+			_transforms.at(_selected_node_ptr->GetID()).material_cbuf_changed = false;
 		}
-		bool IsChanged() const noxnd
-		{
+
+		bool IsChanged() const noxnd {
 			return TransformChanged() || MaterialChanged();
 		}
+	
 	private:
-		Node* pSelectedNode;
-		struct TransformParameters
-		{
+		struct TransformParameters {
 			float roll{};
 			float pitch{};
 			float yaw{};
@@ -312,13 +302,15 @@ namespace dx3d {
 			float y{};
 			float z{};
 		};
-		struct NodeData
-		{
+
+		struct NodeData {
 			TransformParameters tranform_params{};
 			bool transform_params_changed{};
 			std::optional<dx3d_dcb::Buffer> material_cbuf{};
 			bool material_cbuf_changed{};
 		};
+
+		Node* _selected_node_ptr{};
 		std::unordered_map<int, NodeData> _transforms{};
 	};
 } // namespace dx3d
@@ -336,13 +328,11 @@ dx3d::Model::Model(const BaseDesc& desc, Graphics& graphics, const std::filesyst
 		aiProcess_CalcTangentSpace
 	);
 
-	if (scene == nullptr)
-	{
+	if (scene == nullptr) {
 		DX3DLogThrowError(("Failed to load the model " + file_path.string()).c_str());
 	}
 
-	for (size_t i = 0; i < scene->mNumMeshes; i++)
-	{
+	for (size_t i = 0; i < scene->mNumMeshes; i++) {
 		_mesh_ptrs.push_back(ParseMesh(desc, graphics, file_path, *scene->mMeshes[i], scene->mMaterials, scale));
 	}
 
@@ -352,8 +342,7 @@ dx3d::Model::Model(const BaseDesc& desc, Graphics& graphics, const std::filesyst
 
 dx3d::Model::~Model() noexcept {}
 
-void dx3d::Model::Draw(Graphics& graphics) const
-{
+void dx3d::Model::Draw(Graphics& graphics) const {
 	// I'm still not happy about updating parameters (i.e. mutating a bindable GPU state
 	// which is part of a mesh which is part of a node which is part of the model that is
 	// const in this call) Can probably do this elsewhere
@@ -361,8 +350,7 @@ void dx3d::Model::Draw(Graphics& graphics) const
 	_root->Draw(graphics, DirectX::XMMatrixIdentity());
 }
 
-void dx3d::Model::ShowWindow(Graphics& graphics, const char* window_name) noexcept
-{
+void dx3d::Model::ShowWindow(Graphics& graphics, const char* window_name) noexcept {
 	_window->Show(graphics, window_name, *_root);
 }
 
