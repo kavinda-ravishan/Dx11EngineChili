@@ -12,7 +12,7 @@
 #define PSCBV_specular_intensity "specular_intensity"
 #define PSCBV_specular_color "specular_color"
 #define PSCBV_specular_map_weight "specular_map_weight"
-#define PSCBV_material_color "material_clor"
+#define PSCBV_material_color "material_color"
 
 static DirectX::XMFLOAT3 ExtractEulerAngles(const DirectX::XMFLOAT4X4& mat)
 {
