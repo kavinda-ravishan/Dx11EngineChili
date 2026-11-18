@@ -14,3 +14,4 @@
 #include <DX3D/Graphics/Bindable/Blender.hpp>
 #include <DX3D/Graphics/Bindable/Rasterizer.hpp>
 #include <DX3D/Graphics/Bindable/Stencil.hpp>
+#include <DX3D/Graphics/Bindable/NullPixelShader.hpp>

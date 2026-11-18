@@ -19,11 +19,12 @@ namespace dx3d {
 		std::unique_ptr<class ImguiManager> _imgui{};
 		std::unique_ptr<Window> _window{};
 		std::unique_ptr<Graphics> _graphics{};
+		std::unique_ptr<class FrameCommander> _fc{};
 		std::unique_ptr<class Timer> _timer{};
 		std::unique_ptr<class Camera> _camera{};
 		std::unique_ptr<class PointLight> _point_light{};
 		
-		std::unique_ptr<class Model> _sponza{};
+		//std::unique_ptr<class Model> _sponza{};
 		//std::unique_ptr<class Model> _stripey{};
 		//std::unique_ptr<class Model> _nano{};
 		//std::unique_ptr<class Model> _gobber{};

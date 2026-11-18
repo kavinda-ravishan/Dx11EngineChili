@@ -5,35 +5,26 @@
 #include <DX3D/Core/ConditionalNoexcept.hpp>
 #include <DX3D/Core/Base.hpp>
 #include <DX3D/Core/Core.hpp>
+#include <DX3D/Graphics/RenderJobs/Technique.hpp>
 
 namespace dx3d {
+
 	class Drawable : public Base {
 	public:
 		Drawable(const DrawableDesc& desc);
 		virtual ~Drawable() = default;
 		
-		void Draw(Graphics& graphics) const noxnd;
-
+		void AddTechnique(Technique technique) noexcept;
 		virtual DirectX::XMMATRIX GetTransformXM() const noexcept = 0;
+		void Submit(class FrameCommander& frame) const noexcept;
+		void Bind(Graphics& graphics) const noexcept;
+		void Accept(class TechniqueProbe& probe);
+		UINT GetIndexCount() const noxnd;
 	
-		template<class T>
-		T* QueryBindable() noexcept
-		{
-			for (auto& pb : _bindables)
-			{
-				if (auto pt = dynamic_cast<T*>(pb.get()))
-				{
-					return pt;
-				}
-			}
-			return nullptr;
-		}
-
 	protected:
-		void AddBind(std::shared_ptr<Bindable> bindable) noxnd;
-
-	private:
-		const class BIndexBuffer* _index_buffer_ptr{ nullptr };
-		std::vector<std::shared_ptr<Bindable>> _bindables{};
+		std::shared_ptr<class BIndexBuffer> _indices{};
+		std::shared_ptr<class BVertexBuffer> _vertices{};
+		std::shared_ptr<class BTopology> _topology{};
+		std::vector<Technique> _techniques{};
 	};
 } // namespace dx3d

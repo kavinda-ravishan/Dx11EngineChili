@@ -7,7 +7,7 @@ dx3d::BVertexBuffer::BVertexBuffer(const BindableDesc& desc, Graphics& graphics,
 {}
 
 dx3d::BVertexBuffer::BVertexBuffer(const BindableDesc& desc, Graphics& graphics, const std::string tag, const dx3d_dvtx::VertexBuffer& vbuf)
-	: Bindable(desc), _tag(tag), _stride((UINT)vbuf.GetLayout().Size())
+	: Bindable(desc), _tag(tag), _stride((UINT)vbuf.GetLayout().Size()), _layout(vbuf.GetLayout())
 {
 	D3D11_BUFFER_DESC vertex_buffer_desc{};
 	vertex_buffer_desc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
@@ -32,6 +32,10 @@ dx3d::BVertexBuffer::BVertexBuffer(const BindableDesc& desc, Graphics& graphics,
 void dx3d::BVertexBuffer::Bind(Graphics& graphics) noexcept {
 	const UINT offset = 0u;
 	GetContext(graphics)->IASetVertexBuffers(0, 1, _vertex_buffer.GetAddressOf(), &_stride, &offset);
+}
+
+const dx3d_dvtx::VertexLayout& dx3d::BVertexBuffer::GetLayout() const noexcept {
+	return _layout;
 }
 
 std::shared_ptr<dx3d::BVertexBuffer> dx3d::BVertexBuffer::Resolve(const BindableDesc& desc, Graphics& graphics, const std::string tag, const dx3d_dvtx::VertexBuffer& vbuf) {

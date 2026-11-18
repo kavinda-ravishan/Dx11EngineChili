@@ -1,4 +1,5 @@
 #include <DX3D/Window/ImGUI/imgui.h>
+#include <DX3D/Graphics/RenderJobs/FrameCommander.hpp>
 #include <DX3D/Graphics/Light/PointLight.hpp>
 
 dx3d::PointLight::PointLight(const BaseDesc& desc, const DrawableDesc& drawable_desc, const BindableDesc& bindable_desc, Graphics& graphics, float radius)
@@ -48,9 +49,9 @@ void dx3d::PointLight::Reset() noexcept {
 	};
 }
 
-void dx3d::PointLight::Draw(Graphics& graphics) const noxnd {
+void dx3d::PointLight::Submit(class FrameCommander& frame) const noxnd {
 	_mesh.SetPos(_cb_data.pos);
-	_mesh.Draw(graphics);
+	_mesh.Submit(frame);
 }
 
 void dx3d::PointLight::Bind(Graphics& graphics, DirectX::FXMMATRIX view) const noexcept {

@@ -3,8 +3,8 @@
 #include <DX3D/Graphics/Bindable/ConstantBuffers.hpp>
 #include <DX3D/Graphics/Drawable/Drawable.hpp>
 
-dx3d::BTransformCbuf::BTransformCbuf(const BindableDesc& desc, Graphics& graphics, const Drawable& parent, UINT slot)
-	: Bindable(desc), _parent(parent) 
+dx3d::BTransformCbuf::BTransformCbuf(const BindableDesc& desc, Graphics& graphics, UINT slot)
+	: Bindable(desc)
 {
 	if (!_static_vertex_constant_buffer) {
 		_static_vertex_constant_buffer = std::make_unique<BVertexConstantBuffer<Transforms>>(desc, graphics, slot);
@@ -15,13 +15,19 @@ void dx3d::BTransformCbuf::Bind(Graphics& graphics) noexcept {
 	UpdateBindImpl(graphics, GetTransforms(graphics));
 }
 
+void dx3d::BTransformCbuf::InitializeParentReference(const Drawable& parent) noexcept {
+	_parent_ptr = &parent;
+}
+
 void dx3d::BTransformCbuf::UpdateBindImpl(Graphics& graphics, const Transforms& tf) noexcept {
+	assert(_parent_ptr != nullptr);
 	_static_vertex_constant_buffer->Update(graphics, tf);
 	_static_vertex_constant_buffer->Bind(graphics);
 }
 
 dx3d::BTransformCbuf::Transforms dx3d::BTransformCbuf::GetTransforms(Graphics& graphics) noexcept {
-	const auto model_view = _parent.GetTransformXM() * graphics.GetCamera();
+	assert(_parent_ptr != nullptr);
+	const auto model_view = _parent_ptr->GetTransformXM() * graphics.GetCamera();
 
 	return
 	{

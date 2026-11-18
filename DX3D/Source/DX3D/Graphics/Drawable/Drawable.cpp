@@ -1,27 +1,39 @@
 #include <cassert>
 #include <DX3D/Core/ConditionalNoexcept.hpp>
 #include <DX3D/Graphics/Graphics.hpp>
-#include <DX3D/Graphics/Bindable/Bindable.hpp>
-#include <DX3D/Graphics/Bindable/IndexBuffer.hpp>
+#include <DX3D/Graphics/Bindable/BindableCommon.hpp>
 #include <DX3D/Graphics/Drawable/Drawable.hpp>
 
 dx3d::Drawable::Drawable(const DrawableDesc& desc) : Base(desc.base) {}
 
-void dx3d::Drawable::Draw(Graphics& graphics) const noxnd {
-	for (auto& bindable : _bindables) {
-		bindable->Bind(graphics);
-	}
-
-	graphics.DrawIndexed(_index_buffer_ptr->GetCount());
+void dx3d::Drawable::AddTechnique(Technique technique) noexcept {
+	technique.InitializeParentReferences(*this);
+	_techniques.push_back(std::move(technique));
 }
 
-void dx3d::Drawable::AddBind(std::shared_ptr<Bindable> bindable) noxnd {
+DirectX::XMMATRIX dx3d::Drawable::GetTransformXM() const noexcept
+{
+	return DirectX::XMMATRIX();
+}
 
-	// special case for index buffer
-	if (typeid(*bindable) == typeid(BIndexBuffer)) {
-		assert("Binding multiple index buffers not allowed" && _index_buffer_ptr == nullptr);
-		_index_buffer_ptr = &static_cast<BIndexBuffer&>(*bindable);
+void dx3d::Drawable::Submit(FrameCommander& frame) const noexcept {
+	for (const auto& technique : _techniques) {
+		technique.Submit(frame, *this);
 	}
+}
 
-	_bindables.push_back(std::move(bindable));
+void dx3d::Drawable::Bind(Graphics& graphics) const noexcept {
+	_topology->Bind(graphics);
+	_indices->Bind(graphics);
+	_vertices->Bind(graphics);
+}
+
+void dx3d::Drawable::Accept(TechniqueProbe& probe) {
+	for (auto& technique : _techniques) {
+		technique.Accept(probe);
+	}
+}
+
+UINT dx3d::Drawable::GetIndexCount() const noxnd {
+	return _indices->GetCount();
 }

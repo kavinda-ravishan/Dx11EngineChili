@@ -17,13 +17,11 @@ namespace dx3d {
 	class Mesh final : public Drawable
 	{
 	public:
-		Mesh(const DrawableDesc& desc, Graphics& graphics, std::vector<std::shared_ptr<Bindable>> bindables);
-
-		void Draw(Graphics& graphics, DirectX::FXMMATRIX accumulated_transform) const noxnd;
-
+		Mesh(const DrawableDesc& desc);
+		void Submit(FrameCommander& frame, DirectX::FXMMATRIX accumulated_tranform) const ;
 		DirectX::XMMATRIX GetTransformXM() const noexcept override;
 	private:
-		mutable DirectX::XMFLOAT4X4 _transform;
+		mutable DirectX::XMFLOAT4X4 _transform{};
 	};
 
 	class Node final
@@ -33,16 +31,16 @@ namespace dx3d {
 	public:
 		Node(const int id, const std::string& name, std::vector<Mesh*> mesh_ptrs, const DirectX::XMMATRIX& transform) noxnd;
 
-		void Draw(Graphics& graphics, DirectX::FXMMATRIX accumulated_transform) const noxnd;
+		void Submit(FrameCommander& frame, DirectX::FXMMATRIX accumulated_tranform) const noxnd;
 		void SetAppliedTransform(DirectX::FXMMATRIX transform) noexcept;
 		const DirectX::XMFLOAT4X4& GetAppliedTransform() const noexcept;
 		void ShowTree(Node*& selected_node_ptr) const noexcept;
 		int GetID() const noexcept;
-		const dx3d_dcb::Buffer* GetMaterialConstants() const noxnd;
-		void SetMaterialConstants(const dx3d_dcb::Buffer& buf_in) noxnd;
+		//const dx3d_dcb::Buffer* GetMaterialConstants() const noxnd;
+		//void SetMaterialConstants(const dx3d_dcb::Buffer& buf_in) noxnd;
 
 	private:
-		void AddChild(std::unique_ptr<Node> child) noxnd;
+		void AddChild(std::unique_ptr<Node> child_ptr) noxnd;
 
 	private:
 		const int _id{};
@@ -59,7 +57,7 @@ namespace dx3d {
 		Model(const BaseDesc& desc, Graphics& graphics, const std::filesystem::path file_path, const float scale = 1.0f);
 		~Model() noexcept;
 		
-		void Draw(Graphics& graphics) const;
+		void Submit(FrameCommander& frame) const;
 		void ShowWindow(Graphics& graphics, const char* window_name = nullptr) noexcept;
 		void SetRootTransform(DirectX::FXMMATRIX tf) noexcept;
 

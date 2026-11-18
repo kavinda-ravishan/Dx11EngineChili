@@ -13,7 +13,7 @@ namespace dx3d {
 			         const dx3d_dvtx::VertexLayout layout,
 			         ID3DBlob*                     vertex_shader_bytecode);
 		void Bind(Graphics& graphics) noexcept override;
-	
+		const dx3d_dvtx::VertexLayout GetLayout() const noexcept;
 		static std::shared_ptr<BInputLayout> Resolve(const BindableDesc& desc, Graphics& graphics, const dx3d_dvtx::VertexLayout& layout, ID3DBlob* vertex_shader_bytecode);
 		static std::string GenerateUID(const dx3d_dvtx::VertexLayout& layout, ID3DBlob* vertex_shader_bytecode = nullptr);
 		std::string GetUID() const noexcept override;

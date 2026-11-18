@@ -27,6 +27,10 @@ void dx3d::BInputLayout::Bind(Graphics& graphics) noexcept {
 	GetContext(graphics)->IASetInputLayout(_input_layout.Get());
 }
 
+const dx3d_dvtx::VertexLayout dx3d::BInputLayout::GetLayout() const noexcept {
+	return _layout;
+}
+
 std::shared_ptr<dx3d::BInputLayout> dx3d::BInputLayout::Resolve(const BindableDesc& desc, Graphics& graphics, const dx3d_dvtx::VertexLayout& layout, ID3DBlob* vertex_shader_bytecode) {
 	return Codex::Resolve<BInputLayout>(desc, graphics, layout, vertex_shader_bytecode);
 }

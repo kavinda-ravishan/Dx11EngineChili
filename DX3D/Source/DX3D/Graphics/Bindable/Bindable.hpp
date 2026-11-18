@@ -14,6 +14,8 @@ namespace dx3d {
 		explicit Bindable(const BindableDesc& desc);
 		virtual ~Bindable() = default;
 
+		virtual void InitializeParentReference(const Drawable&) noexcept;
+		virtual void Accept(class TechniqueProbe&);
 		virtual std::string GetUID() const noexcept;
 		virtual void Bind(Graphics& graphics) noexcept = 0;
 

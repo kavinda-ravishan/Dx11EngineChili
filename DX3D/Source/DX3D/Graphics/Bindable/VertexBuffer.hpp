@@ -10,8 +10,9 @@ namespace dx3d {
 	public:
 		BVertexBuffer(const BindableDesc& desc, Graphics& graphics, const dx3d_dvtx::VertexBuffer& vbuf);
 		BVertexBuffer(const BindableDesc& desc, Graphics& graphics, const std::string tag, const dx3d_dvtx::VertexBuffer& vbuf);
+		
 		void Bind(Graphics& graphics) noexcept override;
-	
+		const dx3d_dvtx::VertexLayout& GetLayout() const noexcept;
 		static std::shared_ptr<BVertexBuffer> Resolve(const BindableDesc& desc, Graphics& graphics, const std::string tag, const dx3d_dvtx::VertexBuffer& vbuf);
 		
 		template<typename...Ignore>
@@ -27,6 +28,7 @@ namespace dx3d {
 	protected:
 		const std::string _tag{};
 		const UINT _stride{};
+		const dx3d_dvtx::VertexLayout _layout;
 		Microsoft::WRL::ComPtr<ID3D11Buffer> _vertex_buffer{};
 	};
 } // namespace dx3d

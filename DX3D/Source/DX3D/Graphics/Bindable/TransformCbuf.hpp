@@ -16,17 +16,18 @@ namespace dx3d {
 		};
 
 	public:
-		BTransformCbuf(const BindableDesc& desc, Graphics& graphics, const Drawable& parent, UINT slot=0u);
+		BTransformCbuf(const BindableDesc& desc, Graphics& graphics, UINT slot=0u);
 		virtual ~BTransformCbuf() = default;
 
 		void Bind(Graphics& graphics) noexcept override;
-	
+		void InitializeParentReference(const Drawable& parent) noexcept override;
+
 	protected:
 		void UpdateBindImpl(Graphics& graphics, const Transforms& tf) noexcept;
 		Transforms GetTransforms(Graphics& graphics) noexcept;
 
 	private:
 		static std::unique_ptr<BVertexConstantBuffer<Transforms>> _static_vertex_constant_buffer;
-		const Drawable& _parent;
+		const Drawable* _parent_ptr{nullptr};
 	};
 } // namespace dx3d

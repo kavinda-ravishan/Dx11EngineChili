@@ -160,6 +160,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="DX3D\Source\DX3D\Graphics\Bindable\Blender.cpp" />
+    <ClCompile Include="DX3D\Source\DX3D\Graphics\Bindable\NullPixelShader.cpp" />
     <ClCompile Include="DX3D\Source\DX3D\Graphics\Bindable\Rasterizer.cpp" />
     <ClCompile Include="DX3D\Source\DX3D\Graphics\Bindable\TransformCbufDouble.cpp" />
     <ClCompile Include="DX3D\Source\DX3D\Graphics\Camera\Camera.cpp" />
@@ -181,6 +182,9 @@
     <ClCompile Include="DX3D\Source\DX3D\Graphics\Drawable\SolidSphere.cpp" />
     <ClCompile Include="DX3D\Source\DX3D\Graphics\Drawable\TestCube.cpp" />
     <ClCompile Include="DX3D\Source\DX3D\Graphics\Drawable\TestPlane.cpp" />
+    <ClCompile Include="DX3D\Source\DX3D\Graphics\RenderJobs\Job.cpp" />
+    <ClCompile Include="DX3D\Source\DX3D\Graphics\RenderJobs\Step.cpp" />
+    <ClCompile Include="DX3D\Source\DX3D\Graphics\RenderJobs\Technique.cpp" />
     <ClCompile Include="DX3D\Source\DX3D\Graphics\Utils\DynamicConstant.cpp" />
     <ClCompile Include="DX3D\Source\DX3D\Graphics\Utils\LayoutCodex.cpp" />
     <ClCompile Include="DX3D\Source\DX3D\Graphics\Utils\Vertex.cpp" />
@@ -215,12 +219,19 @@
     <ClInclude Include="DX3D\Source\DX3D\Graphics\Bindable\BindableCodex.hpp" />
     <ClInclude Include="DX3D\Source\DX3D\Graphics\Bindable\Blender.hpp" />
     <ClInclude Include="DX3D\Source\DX3D\Graphics\Bindable\ConstantBuffersEx.hpp" />
+    <ClInclude Include="DX3D\Source\DX3D\Graphics\Bindable\NullPixelShader.hpp" />
     <ClInclude Include="DX3D\Source\DX3D\Graphics\Bindable\Rasterizer.hpp" />
     <ClInclude Include="DX3D\Source\DX3D\Graphics\Bindable\Stencil.hpp" />
     <ClInclude Include="DX3D\Source\DX3D\Graphics\Bindable\TransformCbufDouble.hpp" />
     <ClInclude Include="DX3D\Source\DX3D\Graphics\Camera\Camera.hpp" />
     <ClInclude Include="DX3D\Source\DX3D\Graphics\Drawable\Mesh.hpp" />
     <ClInclude Include="DX3D\Source\DX3D\Graphics\Drawable\Drawable.hpp" />
+    <ClInclude Include="DX3D\Source\DX3D\Graphics\RenderJobs\FrameCommander.hpp" />
+    <ClInclude Include="DX3D\Source\DX3D\Graphics\RenderJobs\Job.hpp" />
+    <ClInclude Include="DX3D\Source\DX3D\Graphics\RenderJobs\Pass.hpp" />
+    <ClInclude Include="DX3D\Source\DX3D\Graphics\RenderJobs\Step.hpp" />
+    <ClInclude Include="DX3D\Source\DX3D\Graphics\RenderJobs\Technique.hpp" />
+    <ClInclude Include="DX3D\Source\DX3D\Graphics\RenderJobs\TechniqueProbe.hpp" />
     <ClInclude Include="DX3D\Source\DX3D\Graphics\Utils\DynamicConstant.hpp" />
     <ClInclude Include="DX3D\Source\DX3D\Graphics\Utils\IndexedTriangleList.hpp" />
     <ClInclude Include="DX3D\Source\DX3D\Graphics\Drawable\Models\Cube.hpp" />

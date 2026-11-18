@@ -9,14 +9,13 @@ namespace dx3d {
 		void SetRotation(float roll, float pitch, float yaw) noexcept;
 		DirectX::XMMATRIX GetTransformXM() const noexcept override;
 		void SpawnControlWindow(Graphics& graphics, const char* name) noexcept;
-		void DrawOutline(Graphics& graphics) noxnd;
+	
 	private:
 		struct PSMaterialConstant
 		{
 			float specular_intensity{ 0.1f };
 			float specular_power{ 20.0f };
-			BOOL normal_mapping_enabled{ TRUE };
-			float padding[1]{};
+			float padding[2]{};
 		} _pmc;
 		
 		DirectX::XMFLOAT3 _pos{ 1.0f,1.0f,1.0f };
@@ -25,6 +24,5 @@ namespace dx3d {
 		float _yaw{ 0.0f };
 
 		std::vector<std::shared_ptr<Bindable>> _outline_effect;
-		bool _outlining{ false };
 	};
 } // namespace dx3d

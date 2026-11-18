@@ -12,7 +12,8 @@
 #include <DX3D/Utils/Timer.hpp>
 
 #include <DX3D/Graphics/Graphics.hpp>
-#include <DX3D/Graphics/Drawable/Mesh.hpp>
+#include <DX3D/Graphics/RenderJobs/FrameCommander.hpp>
+//#include <DX3D/Graphics/Drawable/Mesh.hpp>
 //#include <DX3D/Graphics/Drawable/TestPlane.hpp>
 #include <DX3D/Graphics/Drawable/TestCube.hpp>
 #include <DX3D/Graphics/Camera/Camera.hpp>
@@ -119,6 +120,7 @@ dx3d::Game::Game(const GameDesc& desc) :
 		_window->GetWindowHandle(), 
 		_window->GetWindowSize())
 	);
+	_fc = std::make_unique<FrameCommander>();
 	_timer = std::make_unique<Timer>();
 	_camera = std::make_unique<Camera>();
 
@@ -127,7 +129,7 @@ dx3d::Game::Game(const GameDesc& desc) :
 	);
 
 	
-	_sponza = std::make_unique<Model>(BaseDesc({ _logger }), *_graphics, "Assets\\Models\\Sponza\\sponza.obj", 1.0f / 20.0f);
+	//_sponza = std::make_unique<Model>(BaseDesc({ _logger }), *_graphics, "Assets\\Models\\Sponza\\sponza.obj", 1.0f / 20.0f);
 	
 	//_stripey = std::make_unique<Model>(BaseDesc({ _logger }), *_graphics, "Assets\\Models\\Stripey\\stripey.obj", 2.0f);
 	//_stripey->SetRootTransform(DirectX::XMMatrixTranslation(-50.0f, 9.125f, -2.75f));
@@ -198,25 +200,26 @@ void dx3d::Game::OnInternalUpdate() {
 	_graphics->SetCamera(_camera->GetMatrix());
 	_point_light->Bind(*_graphics, _camera->GetMatrix());
 
-	_sponza->Draw(*_graphics);
+	_point_light->Submit(*_fc);
+	//_sponza->Draw(*_graphics);
 	//_stripey->Draw(*_graphics);
 	//_nano->Draw(*_graphics);
 	//_gobber->Draw(*_graphics);
 	//_wall->Draw(*_graphics);
 	//_blue_plane->Draw(*_graphics);
 	//_red_plane->Draw(*_graphics);
-	_cube->Draw(*_graphics);
-	_cube2->Draw(*_graphics);
-	_cube->DrawOutline(*_graphics);
-	_cube2->DrawOutline(*_graphics);
+	_cube->Submit(*_fc);
+	_cube2->Submit(*_fc);
+
+	_fc->Execute(BINDABLE_DESC, *_graphics);
 	
-	_point_light->Draw(*_graphics);
+	//_point_light->Draw(*_graphics);
 
 	if (_graphics->IsImguiEnabled()) {
 		_camera->SpawnControlWindow();
 		_point_light->SpawnControlWindow();
 		
-		_sponza->ShowWindow(*_graphics, "Sponza");
+		//_sponza->ShowWindow(*_graphics, "Sponza");
 		//_stripey->ShowWindow(*_graphics, "Stripey");
 		//_nano->ShowWindow(*_graphics, "Nano");
 		//_gobber->ShowWindow(*_graphics, "Gobber");
@@ -230,6 +233,8 @@ void dx3d::Game::OnInternalUpdate() {
 	}
 
 	_graphics->EndFrame();
+
+	_fc->Reset();
 }
 
 void dx3d::Game::IOControls() noexcept {
