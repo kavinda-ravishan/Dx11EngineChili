@@ -11,9 +11,9 @@ dx3d::TestCube::TestCube(const DrawableDesc& desc, Graphics& graphics, float siz
 	auto model = Cube::MakeIndependentTextured();
 	model.Transform(DirectX::XMMatrixScaling(size, size, size));
 	model.SetNormalsIndependentFlat();
-	const auto geometryTag = "$cube." + std::to_string(size);
-	_vertices = BVertexBuffer::Resolve(BINDABLE_DESC, graphics, geometryTag, model._vertices);
-	_indices = BIndexBuffer::Resolve(BINDABLE_DESC, graphics, geometryTag, model._indices);
+	const auto geometry_tag = "$cube." + std::to_string(size);
+	_vertices = BVertexBuffer::Resolve(BINDABLE_DESC, graphics, geometry_tag, model._vertices);
+	_indices = BIndexBuffer::Resolve(BINDABLE_DESC, graphics, geometry_tag, model._indices);
 	_topology = BTopology::Resolve(BINDABLE_DESC, graphics, D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
 	{

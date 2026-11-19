@@ -11,8 +11,7 @@ void dx3d::Drawable::AddTechnique(Technique technique) noexcept {
 	_techniques.push_back(std::move(technique));
 }
 
-DirectX::XMMATRIX dx3d::Drawable::GetTransformXM() const noexcept
-{
+DirectX::XMMATRIX dx3d::Drawable::GetTransformXM() const noexcept {
 	return DirectX::XMMATRIX();
 }
 

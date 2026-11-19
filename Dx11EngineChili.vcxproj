@@ -409,6 +409,7 @@
     <Image Include="Assets\Images\kappa50.png" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="cpp.hint" />
     <None Include="DX3D\Assets\Shaders\LightVectorData.hlsli" />
     <None Include="DX3D\Assets\Shaders\PointLight.hlsli" />
     <None Include="DX3D\Assets\Shaders\ShaderOps.hlsli" />

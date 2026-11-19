@@ -413,5 +413,6 @@
     <None Include="DX3D\Assets\Shaders\PointLight.hlsli" />
     <None Include="DX3D\Assets\Shaders\LightVectorData.hlsli" />
     <None Include="DX3D\Assets\Shaders\Transform.hlsli" />
+    <None Include="cpp.hint" />
   </ItemGroup>
 </Project>

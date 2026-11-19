@@ -5,10 +5,8 @@
 dx3d::SolidSphere::SolidSphere(const DrawableDesc& desc, Graphics& graphics, float radius)
     : Drawable(desc)
 {
-	namespace dx = DirectX;
-
 	auto model = Sphere::Make();
-	model.Transform(dx::XMMatrixScaling(radius, radius, radius));
+	model.Transform(DirectX::XMMatrixScaling(radius, radius, radius));
 	const auto geometry_tag = "$sphere." + std::to_string(radius);
 	_vertices = BVertexBuffer::Resolve(BINDABLE_DESC, graphics, geometry_tag, model._vertices);
 	_indices = BIndexBuffer::Resolve(BINDABLE_DESC, graphics, geometry_tag, model._indices);
@@ -26,8 +24,7 @@ dx3d::SolidSphere::SolidSphere(const DrawableDesc& desc, Graphics& graphics, flo
 
 		struct PSColorConstant
 		{
-			dx::XMFLOAT3 color = { 1.0f,1.0f,1.0f };
-			float padding;
+			DirectX::XMFLOAT4 color{ 1.0f,1.0f,1.0f, 1.0f };
 		} color_const;
 
 		only.AddBindable(BPixelConstantBuffer<PSColorConstant>::Resolve(BINDABLE_DESC, graphics, color_const, 1u));
