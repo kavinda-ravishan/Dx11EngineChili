@@ -18,7 +18,7 @@ namespace dx3d {
 	{
 	public:
 		Mesh(const DrawableDesc& desc);
-		void Submit(FrameCommander& frame, DirectX::FXMMATRIX accumulated_tranform) const ;
+		void Submit(FrameCommander& frame, DirectX::FXMMATRIX accumulated_tranform) const noxnd;
 		DirectX::XMMATRIX GetTransformXM() const noexcept override;
 	private:
 		mutable DirectX::XMFLOAT4X4 _transform{};
