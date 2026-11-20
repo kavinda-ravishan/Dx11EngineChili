@@ -35,11 +35,7 @@ https://github.com/assimp/assimp/archive/refs/tags/v6.0.6.zip
 ## Generate Visual Studio Solution
 
 ```bash
-cmake -G "Visual Studio 18 2026" ^
-      -DASSIMP_BUILD_TESTS=OFF ^
-      -DASSIMP_INSTALL=OFF ^
-      -S . ^
-      -B build
+cmake -G "Visual Studio 18 2026" -DBUILD_SHARED_LIBS=OFF -DASSIMP_BUILD_TESTS=OFF -DASSIMP_INSTALL=OFF -S . -B build
 ```
 
 ## Runtime Library Configuration
@@ -107,7 +103,7 @@ Update the DirectXTex project to use the same runtime library settings as the en
 | Debug         | Multi-threaded Debug (/MTd) |
 | Release       | Multi-threaded (/MT) |
 
-Rebuild the solution after changing these settings.
+Rebuild the `DirectXTex` project after changing these settings.
 
 ## Required Libraries
 
