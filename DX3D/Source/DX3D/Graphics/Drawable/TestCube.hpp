@@ -11,13 +11,6 @@ namespace dx3d {
 		void SpawnControlWindow(Graphics& graphics, const char* name) noexcept;
 	
 	private:
-		struct PSMaterialConstant
-		{
-			float specular_intensity{ 0.1f };
-			float specular_power{ 20.0f };
-			float padding[2]{};
-		} _pmc;
-		
 		DirectX::XMFLOAT3 _pos{ 1.0f,1.0f,1.0f };
 		float _roll{ 0.0f };
 		float _pitch{ 0.0f };

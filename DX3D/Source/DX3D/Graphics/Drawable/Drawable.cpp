@@ -1,5 +1,4 @@
 #include <cassert>
-#include <DX3D/Core/ConditionalNoexcept.hpp>
 #include <DX3D/Graphics/Graphics.hpp>
 #include <DX3D/Graphics/Bindable/BindableCommon.hpp>
 #include <DX3D/Graphics/Drawable/Drawable.hpp>

@@ -1,3 +1,4 @@
+#include <DX3D/Graphics/Graphics.hpp>
 #include <DX3D/Graphics/Drawable/Drawable.hpp>
 #include <DX3D/Graphics/RenderJobs/Job.hpp>
 #include <DX3D/Graphics/RenderJobs/Step.hpp>

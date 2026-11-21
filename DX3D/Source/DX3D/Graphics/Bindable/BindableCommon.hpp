@@ -15,3 +15,4 @@
 #include <DX3D/Graphics/Bindable/Rasterizer.hpp>
 #include <DX3D/Graphics/Bindable/Stencil.hpp>
 #include <DX3D/Graphics/Bindable/NullPixelShader.hpp>
+#include <DX3D/Graphics/Bindable/ConstantBuffersEx.hpp>

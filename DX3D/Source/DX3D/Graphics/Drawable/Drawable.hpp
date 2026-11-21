@@ -1,6 +1,7 @@
 #pragma once
 #include <vector>
 #include <DX3D/Core/WinSwitches.hpp>
+#include <Windows.h>
 #include <DirectXMath.h>
 #include <DX3D/Core/ConditionalNoexcept.hpp>
 #include <DX3D/Core/Base.hpp>

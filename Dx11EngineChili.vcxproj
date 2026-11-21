@@ -226,6 +226,7 @@
     <ClInclude Include="DX3D\Source\DX3D\Graphics\Camera\Camera.hpp" />
     <ClInclude Include="DX3D\Source\DX3D\Graphics\Drawable\Mesh.hpp" />
     <ClInclude Include="DX3D\Source\DX3D\Graphics\Drawable\Drawable.hpp" />
+    <ClInclude Include="DX3D\Source\DX3D\Graphics\Drawable\Constants.hpp" />
     <ClInclude Include="DX3D\Source\DX3D\Graphics\RenderJobs\FrameCommander.hpp" />
     <ClInclude Include="DX3D\Source\DX3D\Graphics\RenderJobs\Job.hpp" />
     <ClInclude Include="DX3D\Source\DX3D\Graphics\RenderJobs\Pass.hpp" />

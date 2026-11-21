@@ -1,6 +1,7 @@
 #pragma once
 #include <DX3D/Core/ConditionalNoexcept.hpp>
 #include <DX3D/Graphics/GraphicsLogUtils.hpp>
+#include <DX3D/Graphics/RenderJobs/TechniqueProbe.hpp>
 #include <DX3D/Graphics/Bindable/Bindable.hpp>
 #include <DX3D/Graphics/Utils/DynamicConstant.hpp>
 
@@ -85,19 +86,27 @@ namespace dx3d {
 
 		void SetBuffer(const dx3d_dcb::Buffer& buf_in) {
 			_buf.CopyFrom(buf_in);
-			_dirty = true;
+			_changed = true;
 		}
 		
 		void Bind(Graphics& gfx) noexcept override {
-			if (_dirty) {
+			if (_changed) {
 				Update(gfx, _buf);
-				_dirty = false;
+				_changed = false;
 			}
 			BPixelConstantBufferEX::Bind(gfx);
 		}
 
+		void Accept(TechniqueProbe& probe) override
+		{
+			if (probe.VisitBuffer(_buf))
+			{
+				_changed = true;
+			}
+		}
+
 	private:
-		bool _dirty{ false };
+		bool _changed{ false };
 		dx3d_dcb::Buffer _buf;
 	};
 
