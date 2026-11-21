@@ -224,6 +224,7 @@
     <ClInclude Include="DX3D\Source\DX3D\Graphics\Bindable\Stencil.hpp" />
     <ClInclude Include="DX3D\Source\DX3D\Graphics\Bindable\TransformCbufDouble.hpp" />
     <ClInclude Include="DX3D\Source\DX3D\Graphics\Camera\Camera.hpp" />
+    <ClInclude Include="DX3D\Source\DX3D\Graphics\Drawable\Material.hpp" />
     <ClInclude Include="DX3D\Source\DX3D\Graphics\Drawable\Mesh.hpp" />
     <ClInclude Include="DX3D\Source\DX3D\Graphics\Drawable\Drawable.hpp" />
     <ClInclude Include="DX3D\Source\DX3D\Graphics\Drawable\Constants.hpp" />
