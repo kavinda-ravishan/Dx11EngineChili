@@ -22,7 +22,5 @@ namespace dx3d {
 		float _roll{ 0.0f };
 		float _pitch{ 0.0f };
 		float _yaw{ 0.0f };
-
-		std::vector<std::shared_ptr<Bindable>> _outline_effect;
 	};
 } // namespace dx3d

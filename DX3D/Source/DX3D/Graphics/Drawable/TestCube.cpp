@@ -69,6 +69,13 @@ dx3d::TestCube::TestCube(const DrawableDesc& desc, Graphics& graphics, float siz
 			// this can be pass-constant
 			draw.AddBindable(BPixelShader::Resolve(BINDABLE_DESC, graphics, "SolidPS.cso"));
 
+			struct PSColorConstant
+			{
+				DirectX::XMFLOAT4 color{ 1.0f, 0.3f, 0.3f, 1.0f };
+			} color_const;
+
+			draw.AddBindable(BPixelConstantBuffer<PSColorConstant>::Resolve(BINDABLE_DESC, graphics, color_const, 1u));
+
 			// TODO: better sub-layout generation tech for future consideration maybe
 			draw.AddBindable(BInputLayout::Resolve(BINDABLE_DESC, graphics, model._vertices.GetLayout(), pvsbc));
 
@@ -77,13 +84,13 @@ dx3d::TestCube::TestCube(const DrawableDesc& desc, Graphics& graphics, float siz
 			{
 			public:
 				using BTransformCbuf::BTransformCbuf;
-				void Bind(Graphics& gfx) noexcept override
+				void Bind(Graphics& graphics) noexcept override
 				{
 					const auto scale = DirectX::XMMatrixScaling(1.04f, 1.04f, 1.04f);
-					auto xf = GetTransforms(gfx);
+					auto xf = GetTransforms(graphics);
 					xf.model_view = xf.model_view * scale;
 					xf.model_view_proj = xf.model_view_proj * scale;
-					UpdateBindImpl(gfx, xf);
+					UpdateBindImpl(graphics, xf);
 				}
 			};
 			draw.AddBindable(std::make_shared<TransformCbufScaling>(BINDABLE_DESC, graphics));
