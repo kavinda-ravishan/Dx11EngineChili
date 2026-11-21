@@ -169,7 +169,7 @@ void dx3d::TestCube::SpawnControlWindow(Graphics& graphics, const char* name) no
 				using namespace std::string_literals;
 				ImGui::TextColored({ 0.4f,1.0f,0.6f,1.0f }, _tech_ptr->GetName().c_str());
 				bool active = _tech_ptr->IsActive();
-				ImGui::Checkbox(("Tech Active##"s + _tech_ptr->GetName()).c_str(), &active);
+				ImGui::Checkbox(("Tech Active##"s + std::to_string(_tech_idx)).c_str(), &active);
 				_tech_ptr->SetActiveState(active);
 			}
 			
@@ -177,27 +177,33 @@ void dx3d::TestCube::SpawnControlWindow(Graphics& graphics, const char* name) no
 				float changed = false;
 				const auto dcheck = [&changed](bool updated) {changed = changed || updated; };
 
+				auto tag = [tag_scratch = std::string{}, tag_string = "##" + std::to_string(_buf_idx)]
+				(const char* label) mutable
+					{
+						tag_scratch = label + tag_string;
+						return tag_scratch.c_str();
+					};
+
 				if (auto v = buf["scale"]; v.Exists())
 				{
-					dcheck(ImGui::SliderFloat("Scale", &v, 1.0f, 2.0f, "%.3f", ImGuiSliderFlags_Logarithmic));
+					dcheck(ImGui::SliderFloat(tag("Scale"), &v, 1.0f, 2.0f, "%.3f", ImGuiSliderFlags_Logarithmic));
 				}
 				if (auto v = buf[PSCBV_color]; v.Exists())
 				{
-					dcheck(ImGui::ColorPicker4(PSCBV_color, reinterpret_cast<float*>(&static_cast<DirectX::XMFLOAT4&>(v))));
+					dcheck(ImGui::ColorPicker4(tag(PSCBV_color), reinterpret_cast<float*>(&static_cast<DirectX::XMFLOAT4&>(v))));
 				}
 				if (auto v = buf[PSCBV_specular_intensity]; v.Exists())
 				{
-					dcheck(ImGui::SliderFloat("Spec. Intens.", &v, 0.0f, 1.0f));
+					dcheck(ImGui::SliderFloat(tag("Spec. Intens."), &v, 0.0f, 1.0f));
 				}
 				if (auto v = buf[PSCBV_specular_power]; v.Exists())
 				{
-					dcheck(ImGui::SliderFloat("Glossiness", &v, 1.0f, 100.0f, "%.1f", ImGuiSliderFlags_Logarithmic));
+					dcheck(ImGui::SliderFloat(tag("Glossiness"), &v, 1.0f, 100.0f, "%.1f", ImGuiSliderFlags_Logarithmic));
 				}
 				return changed;
 			}
-		};
+		} probe;
 
-		static Probe probe;
 		Accept(probe);
 	}
 	ImGui::End();
