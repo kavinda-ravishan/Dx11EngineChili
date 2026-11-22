@@ -1,4 +1,4 @@
-#include <DX3D/Graphics/Utils/Surface.hpp>
+#include <DX3D/Utils/Surface.hpp>
 #include <DX3D/Graphics/GraphicsLogUtils.hpp>
 #include <DX3D/Graphics/Bindable/BindableCodex.hpp>
 #include <DX3D/Graphics/Bindable/Texture.hpp>

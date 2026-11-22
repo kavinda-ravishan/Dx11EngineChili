@@ -5,7 +5,7 @@
 #include <DX3D/Utils/STD_Image/stb_image_write.h>
 
 #include <stdexcept>
-#include <DX3D/Graphics/Utils/SurfaceSTD.hpp>
+#include <DX3D/Utils/SurfaceSTD.hpp>
 
 dx3d::SurfaceSTD::SurfaceSTD(const BaseDesc& desc, const std::filesystem::path image_path)
     : Base(desc)

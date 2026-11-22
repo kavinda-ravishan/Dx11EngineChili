@@ -72,7 +72,7 @@
     <ClCompile Include="DX3D\Source\DX3D\Utils\Timer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="DX3D\Source\DX3D\Graphics\Utils\SurfaceSTD.cpp">
+    <ClCompile Include="DX3D\Source\DX3D\Utils\SurfaceSTD.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="DX3D\Source\DX3D\Graphics\Bindable\Texture.cpp">
@@ -135,7 +135,7 @@
     <ClCompile Include="DX3D\Source\DX3D\Graphics\Bindable\Rasterizer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="DX3D\Source\DX3D\Graphics\Utils\Surface.cpp">
+    <ClCompile Include="DX3D\Source\DX3D\Utils\Surface.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="DX3D\Source\DX3D\Utils\Utils.cpp">
@@ -248,7 +248,7 @@
     <ClInclude Include="DX3D\Source\DX3D\Graphics\Drawable\Models\Sphere.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="DX3D\Source\DX3D\Graphics\Utils\SurfaceSTD.hpp">
+    <ClInclude Include="DX3D\Source\DX3D\Utils\SurfaceSTD.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="DX3D\Source\DX3D\Graphics\Bindable\Texture.hpp">
@@ -335,7 +335,7 @@
     <ClInclude Include="DX3D\Source\DX3D\Graphics\Bindable\Rasterizer.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="DX3D\Source\DX3D\Graphics\Utils\Surface.hpp">
+    <ClInclude Include="DX3D\Source\DX3D\Utils\Surface.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="DX3D\Source\DX3D\Utils\Utils.hpp">

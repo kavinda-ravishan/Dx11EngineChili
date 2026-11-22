@@ -1,7 +1,7 @@
 #include <stdexcept>
 #include <DX3D/Utils/Utils.hpp>
 #include <DX3D/Graphics/GraphicsLogUtils.hpp>
-#include <DX3D/Graphics/Utils/Surface.hpp>
+#include <DX3D/Utils/Surface.hpp>
 
 dx3d::Surface::Surface(const BaseDesc& desc, const std::filesystem::path image_path)
     : Base(desc)

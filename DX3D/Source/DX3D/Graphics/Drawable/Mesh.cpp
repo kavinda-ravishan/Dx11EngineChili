@@ -1,7 +1,7 @@
 #include <unordered_map>
 
 #include <DX3D/Graphics/Drawable/Constants.hpp>
-#include <DX3D/Graphics/Utils/Surface.hpp>
+#include <DX3D/Utils/Surface.hpp>
 #include <DX3D/Graphics/Bindable/ConstantBuffersEx.hpp>
 #include <DX3D/Graphics/Drawable/Mesh.hpp>
 
