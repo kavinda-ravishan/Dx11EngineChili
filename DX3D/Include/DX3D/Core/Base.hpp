@@ -12,11 +12,22 @@ namespace dx3d {
 		virtual Logger& GetLogger() const noexcept final;
 
 	protected:
-		//Base(const Base&) = delete;
-		//Base(Base&&) = delete;
-		//Base& operator = (const Base&) = delete;
-		//Base& operator = (Base&&) = delete;
+		Base(const Base&) = delete;
+		Base(Base&&) = delete;
+		Base& operator = (const Base&) = delete;
+		Base& operator = (Base&&) = delete;
 	
+	protected:
+		Logger& _logger;
+	};
+
+	class ClonableBase {
+	public:
+		explicit ClonableBase(const BaseDesc& desc);
+		virtual ~ClonableBase();
+
+		virtual Logger& GetLogger() const noexcept final;
+
 	protected:
 		Logger& _logger;
 	};

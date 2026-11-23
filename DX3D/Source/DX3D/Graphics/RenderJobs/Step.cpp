@@ -15,7 +15,7 @@ dx3d::Step::Step(const Step & src) noexcept
 {
 	_bindables.reserve(src._bindables.size());
 	for (auto& pb : src._bindables) {
-		if (auto* pCloning = dynamic_cast<const BCloningBindable*>(pb.get())) {
+		if (auto* pCloning = dynamic_cast<const CloningBindable*>(pb.get())) {
 			_bindables.push_back(pCloning->Clone());
 		} else {
 			_bindables.push_back(pb);

@@ -182,7 +182,7 @@ dx3d::Material::Material(const BindableDesc& desc, Graphics& graphics, const aiM
 					xf.model_view_proj = xf.model_view_proj * scaleMatrix;
 					UpdateBindImpl(gfx, xf);
 				}
-				std::unique_ptr<BCloningBindable> Clone() const noexcept override
+				std::unique_ptr<CloningBindable> Clone() const noexcept override
 				{
 					return std::make_unique<TransformCbufScaling>(*this);
 				}

@@ -8,7 +8,7 @@ namespace dx3d {
 	template<typename C>
 	class BVertexConstantBuffer;
 
-	class BTransformCbuf : public BCloningBindable {
+	class BTransformCbuf : public CloningBindable {
 	protected:
 		struct Transforms {
 			DirectX::XMMATRIX model_view;
@@ -21,7 +21,7 @@ namespace dx3d {
 
 		void Bind(Graphics& graphics) noexcept override;
 		void InitializeParentReference(const Drawable& parent) noexcept override;
-		std::unique_ptr<BCloningBindable> Clone() const noexcept override;
+		std::unique_ptr<CloningBindable> Clone() const noexcept override;
 	protected:
 		void UpdateBindImpl(Graphics& graphics, const Transforms& tf) noexcept;
 		Transforms GetTransforms(Graphics& graphics) noexcept;

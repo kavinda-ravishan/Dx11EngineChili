@@ -10,7 +10,7 @@
 #define BINDABLE_DESC BindableDesc({ GetLogger() })
 
 namespace dx3d {
-	class Bindable : public Base {
+	class Bindable : public ClonableBase {
 	public:
 		explicit Bindable(const BindableDesc& desc);
 		virtual ~Bindable() = default;
@@ -25,11 +25,11 @@ namespace dx3d {
 		static ID3D11Device* GetDevice(Graphics& graphics) noexcept;
 	};
 
-	class BCloningBindable : public Bindable {
+	class CloningBindable : public Bindable {
 	public:
-		explicit BCloningBindable(const BindableDesc& desc);
-		virtual ~BCloningBindable() = default;
+		explicit CloningBindable(const BindableDesc& desc);
+		virtual ~CloningBindable() = default;
 
-		virtual std::unique_ptr<BCloningBindable> Clone() const noexcept = 0;
+		virtual std::unique_ptr<CloningBindable> Clone() const noexcept = 0;
 	};
 } // namespace dx3d

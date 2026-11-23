@@ -8,6 +8,7 @@ namespace dx3d {
 
 	class Logger;
 	class Base;
+	class ClonableBase;
 	class Game;
 	class Window;
 	class Keyboard;

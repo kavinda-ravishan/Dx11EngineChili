@@ -1,7 +1,8 @@
 #include <DX3D/Graphics/Bindable/Bindable.hpp>
 #include <DX3D/Graphics/Graphics.hpp>
 
-dx3d::Bindable::Bindable(const BindableDesc& desc) : Base(desc.base) {}
+// Bindable
+dx3d::Bindable::Bindable(const BindableDesc& desc) : ClonableBase(desc.base) {}
 
 void dx3d::Bindable::InitializeParentReference(const Drawable&) noexcept
 {}
@@ -22,6 +23,5 @@ ID3D11Device* dx3d::Bindable::GetDevice(Graphics& graphics) noexcept {
     return graphics._device.Get();
 }
 
-dx3d::BCloningBindable::BCloningBindable(const BindableDesc& desc)
-    : Bindable(desc)
-{}
+// CloningBindable
+dx3d::CloningBindable::CloningBindable(const BindableDesc& desc) : Bindable(desc) {}
