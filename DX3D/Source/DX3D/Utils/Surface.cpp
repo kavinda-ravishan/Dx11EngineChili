@@ -8,7 +8,7 @@ dx3d::Surface::Surface(const BaseDesc& desc, const std::filesystem::path image_p
 {
     DirectX::ScratchImage scratch;
     DX3DGraphicsLogThrowOnFail(
-        DirectX::LoadFromWICFile(ToWide(image_path.string()).c_str(), DirectX::WIC_FLAGS_NONE, nullptr, scratch),
+        DirectX::LoadFromWICFile(ToWide(image_path.string()).c_str(), DirectX::WIC_FLAGS_IGNORE_SRGB, nullptr, scratch),
         "Failed to load image"
     );
 

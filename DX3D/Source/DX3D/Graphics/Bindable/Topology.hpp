@@ -8,7 +8,7 @@ namespace dx3d {
 		BTopology(const BindableDesc& desc, Graphics& graphics, const D3D11_PRIMITIVE_TOPOLOGY type);
 		void Bind(Graphics& graphics) noexcept override;
 
-		static std::shared_ptr<BTopology> Resolve(const BindableDesc& desc, Graphics& graphics, const D3D11_PRIMITIVE_TOPOLOGY type);
+		static std::shared_ptr<BTopology> Resolve(const BindableDesc& desc, Graphics& graphics, const D3D11_PRIMITIVE_TOPOLOGY type = D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 		static std::string GenerateUID(const D3D11_PRIMITIVE_TOPOLOGY type);
 		std::string GetUID() const noexcept override;
 

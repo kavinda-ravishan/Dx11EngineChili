@@ -9,6 +9,20 @@ dx3d::Step::Step(size_t target_pass)
 	: _target_pass{ target_pass }
 {}
 
+dx3d::Step::Step(const Step & src) noexcept
+	:
+	_target_pass(src._target_pass)
+{
+	_bindables.reserve(src._bindables.size());
+	for (auto& pb : src._bindables) {
+		if (auto* pCloning = dynamic_cast<const BCloningBindable*>(pb.get())) {
+			_bindables.push_back(pCloning->Clone());
+		} else {
+			_bindables.push_back(pb);
+		}
+	}
+}
+
 void dx3d::Step::AddBindable(std::shared_ptr<Bindable> bind_in) noexcept {
 	_bindables.push_back(std::move(bind_in));
 }

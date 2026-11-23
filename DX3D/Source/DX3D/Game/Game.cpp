@@ -1,8 +1,12 @@
 #include <DX3D/Core/WinSwitches.hpp>
 #include <Windows.h>
 
+#include <memory>
 #include <sstream>
 #include <filesystem>
+
+#include <assimp/Importer.hpp>
+#include <assimp/postprocess.h>
 
 #include <DX3D/Window/ImGUI/imgui.h>
 #include <DX3D/Window/ImguiManager.hpp>
@@ -13,9 +17,10 @@
 
 #include <DX3D/Graphics/Graphics.hpp>
 #include <DX3D/Graphics/RenderJobs/FrameCommander.hpp>
-//#include <DX3D/Graphics/Drawable/Mesh.hpp>
+#include <DX3D/Graphics/Drawable/Material.hpp>
+#include <DX3D/Graphics/Drawable/Mesh.hpp>
 //#include <DX3D/Graphics/Drawable/TestPlane.hpp>
-#include <DX3D/Graphics/Drawable/TestCube.hpp>
+//#include <DX3D/Graphics/Drawable/TestCube.hpp>
 #include <DX3D/Graphics/Camera/Camera.hpp>
 #include <DX3D/Graphics/Light/PointLight.hpp>
 
@@ -149,11 +154,25 @@ dx3d::Game::Game(const GameDesc& desc) :
 	//_red_plane = std::make_unique<TestPlane>(DrawableDesc({ _logger }), *_graphics, 6.0f, DirectX::XMFLOAT4{ 1.0f,0.3f,0.3f,0.0f });
 	//_red_plane->SetPos(_camera->GetPos());
 
-	_cube = std::make_unique<TestCube>(DrawableDesc({ _logger }), *_graphics, 4.0f);
-	_cube->SetPos({ .0f, 0.0f, 0.0f });
-	_cube2 = std::make_unique<TestCube>(DrawableDesc({ _logger }), *_graphics, 4.0f);
-	_cube2->SetPos({ 2.0f, 2.0f, 2.0f });
+	//_cube = std::make_unique<TestCube>(DrawableDesc({ _logger }), *_graphics, 4.0f);
+	//_cube->SetPos({ .0f, 0.0f, 0.0f });
+	//_cube2 = std::make_unique<TestCube>(DrawableDesc({ _logger }), *_graphics, 4.0f);
+	//_cube2->SetPos({ 2.0f, 2.0f, 2.0f });
 	
+	{
+		const std::string path{ "Assets\\Models\\brick_wall\\brick_wall.obj" };
+		Assimp::Importer imp;
+		const auto pScene = imp.ReadFile(path,
+			aiProcess_Triangulate |
+			aiProcess_JoinIdenticalVertices |
+			aiProcess_ConvertToLeftHanded |
+			aiProcess_GenNormals |
+			aiProcess_CalcTangentSpace
+		);
+		Material mat{ BindableDesc({ _logger }), *_graphics,*pScene->mMaterials[1],path };
+		_loaded = std::make_unique<Mesh>(DrawableDesc({ _logger }), *_graphics, mat, *pScene->mMeshes[0]);
+	}
+
 	const float aspect_ratio = float(_window->GetWindowSize().height) / _window->GetWindowSize().width;
 	_graphics->SetProjection(DirectX::XMMatrixPerspectiveLH(1.0f, aspect_ratio, 0.5f, 400.0f));
 	_graphics->SetCamera(DirectX::XMMatrixTranslation(0.0f, 0.0f, 20.0f));
@@ -208,8 +227,9 @@ void dx3d::Game::OnInternalUpdate() {
 	//_wall->Draw(*_graphics);
 	//_blue_plane->Draw(*_graphics);
 	//_red_plane->Draw(*_graphics);
-	_cube->Submit(*_fc);
-	_cube2->Submit(*_fc);
+	//_cube->Submit(*_fc);
+	//_cube2->Submit(*_fc);
+	_loaded->Submit(*_fc, DirectX::XMMatrixIdentity());
 
 	_fc->Execute(BINDABLE_DESC, *_graphics);
 	
@@ -226,8 +246,8 @@ void dx3d::Game::OnInternalUpdate() {
 		//_wall->ShowWindow(*_graphics, "Wall");
 		//_blue_plane->SpawnControlWindow(*_graphics, "Blue Plane");
 		//_red_plane->SpawnControlWindow(*_graphics, "Red Plane");
-		_cube->SpawnControlWindow(*_graphics, "Cube 1");
-		_cube2->SpawnControlWindow(*_graphics, "Cube 2");
+		//_cube->SpawnControlWindow(*_graphics, "Cube 1");
+		//_cube2->SpawnControlWindow(*_graphics, "Cube 2");
 		
 		ShowPerformanceWindow();
 	}

@@ -5,9 +5,11 @@
 
 cbuffer ObjectCBuf
 {
-    float specular_intensity;
-    float specular_power;
-    bool normal_map_enabled;
+    float3 specular_color;
+    float specular_weight;
+    float specular_gloss;
+    bool use_normal_map;
+    float normal_map_weight;
     float padding[1];
 };
 
@@ -21,7 +23,7 @@ float4 main(float3 view_Frag_pos : Position, float3 view_normal : Normal, float3
     // normalize the mesh normal
     view_normal = normalize(view_normal);
     // replace normal with mapped if normal mapping enabled
-    if (normal_map_enabled)
+    if (use_normal_map)
     {
         view_normal = MapNormal(normalize(view_tan), normalize(view_bitan), view_normal, tc, nmap, splr);
     }
@@ -33,8 +35,8 @@ float4 main(float3 view_Frag_pos : Position, float3 view_normal : Normal, float3
     const float3 diffuse = Diffuse(diffuse_color, diffuse_intensity, att, lv.dir_to_l, view_normal);
     // specular
     const float3 specular = Specular(
-        diffuse_color, diffuse_intensity, view_normal,
-        lv.v_to_l, view_Frag_pos, att, specular_power
+        diffuse_color * diffuse_intensity * specular_color, specular_weight, view_normal,
+        lv.v_to_l, view_Frag_pos, att, specular_gloss
     );
 	// final color
     return float4(saturate((diffuse + ambient) * tex.Sample(splr, tc).rgb + specular), 1.0f);

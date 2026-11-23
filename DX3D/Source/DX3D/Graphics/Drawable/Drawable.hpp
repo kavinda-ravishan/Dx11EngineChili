@@ -13,6 +13,7 @@ namespace dx3d {
 	class Drawable : public Base {
 	public:
 		Drawable(const DrawableDesc& desc);
+		Drawable(const DrawableDesc& desc, Graphics& graphics, const class Material& mat, const struct aiMesh& mesh) noexcept;
 		virtual ~Drawable() = default;
 		
 		void AddTechnique(Technique technique) noexcept;

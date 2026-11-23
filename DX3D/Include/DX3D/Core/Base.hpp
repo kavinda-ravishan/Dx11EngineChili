@@ -12,10 +12,10 @@ namespace dx3d {
 		virtual Logger& GetLogger() const noexcept final;
 
 	protected:
-		Base(const Base&) = delete;
-		Base(Base&&) = delete;
-		Base& operator = (const Base&) = delete;
-		Base& operator = (Base&&) = delete;
+		//Base(const Base&) = delete;
+		//Base(Base&&) = delete;
+		//Base& operator = (const Base&) = delete;
+		//Base& operator = (Base&&) = delete;
 	
 	protected:
 		Logger& _logger;

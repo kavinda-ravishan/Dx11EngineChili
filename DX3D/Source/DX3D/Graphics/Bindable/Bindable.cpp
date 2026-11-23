@@ -21,3 +21,7 @@ ID3D11DeviceContext* dx3d::Bindable::GetContext(Graphics& graphics) noexcept {
 ID3D11Device* dx3d::Bindable::GetDevice(Graphics& graphics) noexcept {
     return graphics._device.Get();
 }
+
+dx3d::BCloningBindable::BCloningBindable(const BindableDesc& desc)
+    : Bindable(desc)
+{}

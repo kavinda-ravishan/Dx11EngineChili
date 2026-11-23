@@ -2,8 +2,23 @@
 #include <DX3D/Graphics/Graphics.hpp>
 #include <DX3D/Graphics/Bindable/BindableCommon.hpp>
 #include <DX3D/Graphics/Drawable/Drawable.hpp>
+#include <assimp/scene.h>
+#include <DX3D/Graphics/Drawable/Material.hpp>
 
 dx3d::Drawable::Drawable(const DrawableDesc& desc) : Base(desc.base) {}
+
+dx3d::Drawable::Drawable(const DrawableDesc& desc, Graphics& graphics, const Material& mat, const aiMesh& mesh) noexcept
+	: Base(desc.base)
+{
+	_vertices = mat.MakeVertexBindable(BindableDesc(desc.base), graphics, mesh);
+	_indices = mat.MakeIndexBindable(BindableDesc(desc.base), graphics, mesh);
+	_topology = BTopology::Resolve(BindableDesc(desc.base), graphics);
+
+	for (auto& t : mat.GetTechniques())
+	{
+		AddTechnique(std::move(t));
+	}
+}
 
 void dx3d::Drawable::AddTechnique(Technique technique) noexcept {
 	technique.InitializeParentReferences(*this);

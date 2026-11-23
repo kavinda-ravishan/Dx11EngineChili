@@ -159,6 +159,9 @@
     <ClCompile Include="DX3D\Source\DX3D\Graphics\RenderJobs\Step.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="DX3D\Source\DX3D\Graphics\Drawable\Material.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DX3D\Include\DX3D\Core\Base.hpp">
@@ -387,8 +390,8 @@
     <FxCompile Include="DX3D\Assets\Shaders\SolidPS.hlsl" />
     <FxCompile Include="DX3D\Assets\Shaders\SolidVS.hlsl" />
     <FxCompile Include="DX3D\Assets\Shaders\PhongPSSpecNormalMap.hlsl" />
-    <FxCompile Include="DX3D\Assets\Shaders\PhongPSNormalMap.hlsl" />
-    <FxCompile Include="DX3D\Assets\Shaders\PhongVSNormalMap.hlsl" />
+    <FxCompile Include="DX3D\Assets\Shaders\PhongDifNrmPS.hlsl" />
+    <FxCompile Include="DX3D\Assets\Shaders\PhongDifNrmVS.hlsl" />
     <FxCompile Include="DX3D\Assets\Shaders\PhongPSNormalMapObject.hlsl" />
     <FxCompile Include="DX3D\Assets\Shaders\PhongPSNotex.hlsl" />
     <FxCompile Include="DX3D\Assets\Shaders\PhongVSNotex.hlsl" />

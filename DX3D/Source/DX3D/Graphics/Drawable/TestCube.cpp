@@ -89,7 +89,7 @@ dx3d::TestCube::TestCube(const DrawableDesc& desc, Graphics& graphics, float siz
 			draw.AddBindable(BInputLayout::Resolve(BINDABLE_DESC, graphics, model._vertices.GetLayout(), pvsbc));
 
 			// quick and dirty... nicer solution maybe takes a lamba... we'll see :)
-			class TransformCbufScaling : public BTransformCbuf
+			class TransformCbufScaling final : public BTransformCbuf
 			{
 			public:
 				TransformCbufScaling(const BindableDesc& desc, Graphics& graphics, float scale = 1.04)

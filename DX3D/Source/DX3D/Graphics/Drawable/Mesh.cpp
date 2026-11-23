@@ -31,8 +31,13 @@ static DirectX::XMFLOAT3 ExtractTranslation(const DirectX::XMFLOAT4X4& matrix)
 
 // Mesh
 dx3d::Mesh::Mesh(const DrawableDesc& desc)
-: Drawable(desc)
+	: Drawable(desc)
 {}
+
+dx3d::Mesh::Mesh(const DrawableDesc & desc, Graphics & graphics, const Material & mat, const aiMesh & mesh) noexcept(!IS_DEBUG)
+	: Drawable(desc, graphics, mat, mesh)
+{
+}
 
 void dx3d::Mesh::Submit(FrameCommander & frame, DirectX::FXMMATRIX accumulated_tranform) const noxnd {
 	DirectX::XMStoreFloat4x4(&_transform, accumulated_tranform);

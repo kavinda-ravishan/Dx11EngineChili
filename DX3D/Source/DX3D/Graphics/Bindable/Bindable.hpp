@@ -2,6 +2,7 @@
 #include <DX3D/Core/WinSwitches.hpp>
 #include <wrl.h>
 #include <d3d11.h>
+#include <memory>
 #include <string>
 #include <DX3D/Core/Base.hpp>
 #include <DX3D/Core/Common.hpp>
@@ -22,5 +23,13 @@ namespace dx3d {
 	protected:
 		static ID3D11DeviceContext* GetContext(Graphics& graphics) noexcept;
 		static ID3D11Device* GetDevice(Graphics& graphics) noexcept;
+	};
+
+	class BCloningBindable : public Bindable {
+	public:
+		explicit BCloningBindable(const BindableDesc& desc);
+		virtual ~BCloningBindable() = default;
+
+		virtual std::unique_ptr<BCloningBindable> Clone() const noexcept = 0;
 	};
 } // namespace dx3d

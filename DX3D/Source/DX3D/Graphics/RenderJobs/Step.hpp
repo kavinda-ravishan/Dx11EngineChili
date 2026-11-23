@@ -1,12 +1,19 @@
 #pragma once
-#include <vector>
 #include <memory>
+#include <vector>
 #include <DX3D/Core/Core.hpp>
 
 namespace dx3d {
 	class Step {
 	public:
 		Step(size_t target_pass);
+
+		Step(Step&&) = default;
+
+		Step(const Step& src) noexcept;
+
+		Step& operator=(const Step&) = delete;
+		Step& operator=(Step&&) = delete;
 
 		void AddBindable(std::shared_ptr<Bindable> bind_in) noexcept;
 

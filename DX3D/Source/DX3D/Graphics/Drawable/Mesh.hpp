@@ -18,6 +18,7 @@ namespace dx3d {
 	{
 	public:
 		Mesh(const DrawableDesc& desc);
+		Mesh(const DrawableDesc& desc, Graphics& graphics, const class Material& mat, const aiMesh& mesh) noxnd;
 		void Submit(FrameCommander& frame, DirectX::FXMMATRIX accumulated_tranform) const noxnd;
 		DirectX::XMMATRIX GetTransformXM() const noexcept override;
 	private:

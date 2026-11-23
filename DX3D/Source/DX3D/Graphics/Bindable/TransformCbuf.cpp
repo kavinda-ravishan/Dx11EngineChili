@@ -4,7 +4,7 @@
 #include <DX3D/Graphics/Drawable/Drawable.hpp>
 
 dx3d::BTransformCbuf::BTransformCbuf(const BindableDesc& desc, Graphics& graphics, UINT slot)
-	: Bindable(desc)
+	: BCloningBindable(desc)
 {
 	if (!_static_vertex_constant_buffer) {
 		_static_vertex_constant_buffer = std::make_unique<BVertexConstantBuffer<Transforms>>(desc, graphics, slot);
@@ -17,6 +17,10 @@ void dx3d::BTransformCbuf::Bind(Graphics& graphics) noexcept {
 
 void dx3d::BTransformCbuf::InitializeParentReference(const Drawable& parent) noexcept {
 	_parent_ptr = &parent;
+}
+
+std::unique_ptr<dx3d::BCloningBindable> dx3d::BTransformCbuf::Clone() const noexcept {
+	return std::make_unique<BTransformCbuf>(*this);
 }
 
 void dx3d::BTransformCbuf::UpdateBindImpl(Graphics& graphics, const Transforms& tf) noexcept {
