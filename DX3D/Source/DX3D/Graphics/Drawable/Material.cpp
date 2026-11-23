@@ -121,6 +121,88 @@ dx3d::Material::Material(const BindableDesc& desc, Graphics& graphics, const aiM
 	}
 	// outline technique
 	{
+		Technique outline("Outline");
+		{
+			Step mask(1);
+
+			auto pvs = BVertexShader::Resolve(desc, graphics, "SolidVS.cso");
+			auto pvsbc = pvs->GetBytecode();
+			mask.AddBindable(std::move(pvs));
+
+			// TODO: better sub-layout generation tech for future consideration maybe
+			mask.AddBindable(BInputLayout::Resolve(desc, graphics, _vtx_layout, pvsbc));
+
+			mask.AddBindable(std::make_shared<BTransformCbuf>(desc, graphics));
+
+			// TODO: might need to specify rasterizer when doubled-sided models start being used
+
+			outline.AddStep(std::move(mask));
+		}
+		{
+			Step draw(2);
+
+			// these can be pass-constant (tricky due to layout issues)
+			auto pvs = BVertexShader::Resolve(desc, graphics, "SolidVS.cso");
+			auto pvsbc = pvs->GetBytecode();
+			draw.AddBindable(std::move(pvs));
+
+			// this can be pass-constant
+			draw.AddBindable(BPixelShader::Resolve(desc, graphics, "SolidPS.cso"));
+
+			dx3d_dcb::RawLayout lay;
+			lay.Add<dx3d_dcb::Float4>("materialColor");
+			auto buf = dx3d_dcb::Buffer(std::move(lay));
+			buf["materialColor"] = DirectX::XMFLOAT4{ 1.0f,0.4f,0.4f,1.0f };
+			draw.AddBindable(std::make_shared<BCachingPixelConstantBufferEX>(desc, graphics, buf, 1u));
+
+			// TODO: better sub-layout generation tech for future consideration maybe
+			draw.AddBindable(BInputLayout::Resolve(desc, graphics, _vtx_layout, pvsbc));
+
+			// quick and dirty... nicer solution maybe takes a lamba... we'll see :)
+			class TransformCbufScaling : public BTransformCbuf
+			{
+			public:
+				TransformCbufScaling(const BindableDesc& desc, Graphics& graphics, float scale = 1.04)
+					:
+					BTransformCbuf(desc, graphics),
+					_buf(MakeLayout())
+				{
+					_buf["scale"] = scale;
+				}
+				void Accept(TechniqueProbe& probe) override
+				{
+					probe.VisitBuffer(_buf);
+				}
+				void Bind(Graphics& gfx) noexcept override
+				{
+					const float scale = _buf["scale"];
+					const auto scaleMatrix = DirectX::XMMatrixScaling(scale, scale, scale);
+					auto xf = GetTransforms(gfx);
+					xf.model_view = xf.model_view * scaleMatrix;
+					xf.model_view_proj = xf.model_view_proj * scaleMatrix;
+					UpdateBindImpl(gfx, xf);
+				}
+				std::unique_ptr<BCloningBindable> Clone() const noexcept override
+				{
+					return std::make_unique<TransformCbufScaling>(*this);
+				}
+			private:
+				static dx3d_dcb::RawLayout MakeLayout()
+				{
+					dx3d_dcb::RawLayout layout;
+					layout.Add<dx3d_dcb::Float>("scale");
+					return layout;
+				}
+			private:
+				dx3d_dcb::Buffer _buf;
+			};
+			draw.AddBindable(std::make_shared<TransformCbufScaling>(desc, graphics));
+
+			// TODO: might need to specify rasterizer when doubled-sided models start being used
+
+			outline.AddStep(std::move(draw));
+		}
+		_techniques.push_back(std::move(outline));
 	}
 }
 
