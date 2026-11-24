@@ -9,6 +9,8 @@
 dx3d::BPixelShader::BPixelShader(const BindableDesc& desc, Graphics& graphics, const std::string& path) 
 	: Bindable(desc), _path(path)
 {
+	DX3DLogInfo(("Loading pixel shader : " + path).c_str());
+
 	Microsoft::WRL::ComPtr<ID3DBlob> ps_blod{};
 	DX3DGraphicsLogThrowOnFail(
 		D3DReadFileToBlob(ToWide(path).c_str(), &ps_blod),
