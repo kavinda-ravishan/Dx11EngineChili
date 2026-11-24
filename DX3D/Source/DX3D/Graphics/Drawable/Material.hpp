@@ -1,11 +1,14 @@
 #pragma once
 #include <vector>
 #include <filesystem>
-#include <assimp/scene.h>
 #include <DX3D/Graphics/Bindable/BindableCommon.hpp>
-#include <DX3D/Graphics/RenderJobs/Technique.hpp>
+
+struct aiMaterial;
+struct aiMesh;
 
 namespace dx3d {
+	class Technique;
+
 	class Material {
 	public:
 		Material(const BindableDesc& desc, Graphics& graphics, const aiMaterial& material, const std::filesystem::path& path) noxnd;

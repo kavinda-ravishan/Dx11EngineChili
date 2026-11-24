@@ -180,9 +180,12 @@
     <ClCompile Include="DX3D\Source\DX3D\Graphics\Bindable\VertexShader.cpp" />
     <ClCompile Include="DX3D\Source\DX3D\Graphics\Drawable\Material.cpp" />
     <ClCompile Include="DX3D\Source\DX3D\Graphics\Drawable\Mesh.cpp" />
+    <ClCompile Include="DX3D\Source\DX3D\Graphics\Drawable\Model.cpp" />
     <ClCompile Include="DX3D\Source\DX3D\Graphics\Drawable\Models\SolidSphere.cpp" />
     <ClCompile Include="DX3D\Source\DX3D\Graphics\Drawable\Models\TestCube.cpp" />
     <ClCompile Include="DX3D\Source\DX3D\Graphics\Drawable\Models\TestPlane.cpp" />
+    <ClCompile Include="DX3D\Source\DX3D\Graphics\Drawable\ModelWindow.cpp" />
+    <ClCompile Include="DX3D\Source\DX3D\Graphics\Drawable\Node.cpp" />
     <ClCompile Include="DX3D\Source\DX3D\Graphics\RenderJobs\Job.cpp" />
     <ClCompile Include="DX3D\Source\DX3D\Graphics\RenderJobs\Step.cpp" />
     <ClCompile Include="DX3D\Source\DX3D\Graphics\RenderJobs\Technique.cpp" />
@@ -229,6 +232,9 @@
     <ClInclude Include="DX3D\Source\DX3D\Graphics\Drawable\Mesh.hpp" />
     <ClInclude Include="DX3D\Source\DX3D\Graphics\Drawable\Drawable.hpp" />
     <ClInclude Include="DX3D\Source\DX3D\Graphics\Drawable\Constants.hpp" />
+    <ClInclude Include="DX3D\Source\DX3D\Graphics\Drawable\Model.hpp" />
+    <ClInclude Include="DX3D\Source\DX3D\Graphics\Drawable\ModelWindow.hpp" />
+    <ClInclude Include="DX3D\Source\DX3D\Graphics\Drawable\Node.hpp" />
     <ClInclude Include="DX3D\Source\DX3D\Graphics\RenderJobs\FrameCommander.hpp" />
     <ClInclude Include="DX3D\Source\DX3D\Graphics\RenderJobs\Job.hpp" />
     <ClInclude Include="DX3D\Source\DX3D\Graphics\RenderJobs\Pass.hpp" />
