@@ -150,9 +150,9 @@ dx3d::Material::Material(const BindableDesc& desc, Graphics& graphics, const aiM
 			draw.AddBindable(BPixelShader::Resolve(desc, graphics, "SolidPS.cso"));
 
 			dx3d_dcb::RawLayout lay;
-			lay.Add<dx3d_dcb::Float4>("materialColor");
+			lay.Add<dx3d_dcb::Float3>(PSCBV_material_color);
 			auto buf = dx3d_dcb::Buffer(std::move(lay));
-			buf["materialColor"] = DirectX::XMFLOAT4{ 1.0f,0.4f,0.4f,1.0f };
+			buf[PSCBV_material_color] = DirectX::XMFLOAT3{ 1.0f,0.4f,0.4f };
 			draw.AddBindable(std::make_shared<BCachingPixelConstantBufferEX>(desc, graphics, buf, 1u));
 
 			// TODO: better sub-layout generation tech for future consideration maybe

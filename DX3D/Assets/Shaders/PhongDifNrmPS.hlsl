@@ -25,7 +25,8 @@ float4 main(float3 view_Frag_pos : Position, float3 view_normal : Normal, float3
     // replace normal with mapped if normal mapping enabled
     if (use_normal_map)
     {
-        view_normal = MapNormal(normalize(view_tan), normalize(view_bitan), view_normal, tc, nmap, splr);
+        const float3 mapped_normal = MapNormal(normalize(view_tan), normalize(view_bitan), view_normal, tc, nmap, splr);
+        view_normal = lerp(view_normal, mapped_normal, normal_map_weight);
     }
 	// fragment to light vector data
     const LightVectorData lv = CalculateLightVectorData(view_light_pos, view_Frag_pos);

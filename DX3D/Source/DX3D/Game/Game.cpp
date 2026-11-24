@@ -17,6 +17,8 @@
 
 #include <DX3D/Graphics/Graphics.hpp>
 #include <DX3D/Graphics/RenderJobs/FrameCommander.hpp>
+#include <DX3D/Graphics/RenderJobs/TechniqueProbe.hpp>
+#include <DX3D/Graphics/Drawable/Constants.hpp>
 #include <DX3D/Graphics/Drawable/Material.hpp>
 #include <DX3D/Graphics/Drawable/Mesh.hpp>
 //#include <DX3D/Graphics/Drawable/TestPlane.hpp>
@@ -111,6 +113,63 @@ static void ShowPerformanceWindow()
 
 	ImGui::End();
 }
+
+namespace dx3d {
+
+	// Mesh techniques window
+	class Probe : public TechniqueProbe {
+	public:
+		void OnSetTechnique() override {
+			using namespace std::string_literals;
+			ImGui::TextColored({ 0.4f,1.0f,0.6f,1.0f }, _tech_ptr->GetName().c_str());
+			bool active = _tech_ptr->IsActive();
+			ImGui::Checkbox(("Tech Active##"s + std::to_string(_tech_idx)).c_str(), &active);
+			_tech_ptr->SetActiveState(active);
+		}
+
+		bool OnVisitBuffer(dx3d_dcb::Buffer& buf) override
+		{
+			float changed = false;
+			const auto CheckChanges = [&changed](bool updated) {changed = changed || updated; };
+			auto tag = [tag_scratch = std::string{}, tag_string = "##" + std::to_string(_buf_idx)]
+			(const char* label) mutable
+				{
+					tag_scratch = label + tag_string;
+					return tag_scratch.c_str();
+				};
+
+			if (auto v = buf["scale"]; v.Exists())
+			{
+				CheckChanges(ImGui::SliderFloat(tag("Scale"), &v, 1.0f, 2.0f, "%.3f", ImGuiSliderFlags_Logarithmic));
+			}
+			if (auto v = buf[PSCBV_material_color]; v.Exists())
+			{
+				CheckChanges(ImGui::ColorPicker3(tag("Color"), reinterpret_cast<float*>(&static_cast<DirectX::XMFLOAT3&>(v))));
+			}
+			if (auto v = buf[PSCBV_specular_color]; v.Exists())
+			{
+				CheckChanges(ImGui::ColorPicker3(tag("Spec. Color"), reinterpret_cast<float*>(&static_cast<DirectX::XMFLOAT3&>(v))));
+			}
+			if (auto v = buf[PSCBV_specular_gloss]; v.Exists())
+			{
+				CheckChanges(ImGui::SliderFloat(tag("Glossiness"), &v, 1.0f, 100.0f, "%.1f", ImGuiSliderFlags_Logarithmic));
+			}
+			if (auto v = buf[PSCBV_specular_weight]; v.Exists())
+			{
+				CheckChanges(ImGui::SliderFloat(tag("Spec. Weight"), &v, 0.0f, 2.0f));
+			}
+			if (auto v = buf[PSCBV_use_normal_map]; v.Exists())
+			{
+				CheckChanges(ImGui::Checkbox(tag("Normal Map Enable"), &v));
+			}
+			if (auto v = buf[PSCBV_normal_map_weight]; v.Exists())
+			{
+				CheckChanges(ImGui::SliderFloat(tag("Normal Map Weight"), &v, 0.0f, 2.0f));
+			}
+			return changed;
+		}
+	};
+} // namespace dx3d
 
 dx3d::Game::Game(const GameDesc& desc) :
     Base({ *std::make_unique<Logger>(desc.log_level).release() }),
@@ -230,6 +289,8 @@ void dx3d::Game::OnInternalUpdate() {
 	//_cube->Submit(*_fc);
 	//_cube2->Submit(*_fc);
 	_loaded->Submit(*_fc, DirectX::XMMatrixIdentity());
+	Probe loaded_probe;
+	_loaded->Accept(loaded_probe);
 
 	_fc->Execute(BINDABLE_DESC, *_graphics);
 	
