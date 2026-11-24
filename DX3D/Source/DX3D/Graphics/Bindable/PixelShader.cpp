@@ -14,12 +14,12 @@ dx3d::BPixelShader::BPixelShader(const BindableDesc& desc, Graphics& graphics, c
 	Microsoft::WRL::ComPtr<ID3DBlob> ps_blod{};
 	DX3DGraphicsLogThrowOnFail(
 		D3DReadFileToBlob(ToWide(path).c_str(), &ps_blod),
-		("Failed to read pixel shader binary" + path).c_str()
+		("Failed to read pixel shader binary : " + path).c_str()
 	);
 
 	DX3DGraphicsLogThrowOnFail(
 		GetDevice(graphics)->CreatePixelShader(ps_blod->GetBufferPointer(), ps_blod->GetBufferSize(), nullptr, &_pixel_shader),
-		("Failed to create pixel shader" + path).c_str()
+		("Failed to create pixel shader : " + path).c_str()
 	);
 
 }

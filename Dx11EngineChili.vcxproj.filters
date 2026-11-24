@@ -385,18 +385,21 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <FxCompile Include="DX3D\Assets\Shaders\PhongVS.hlsl" />
-    <FxCompile Include="DX3D\Assets\Shaders\PhongPS.hlsl" />
-    <FxCompile Include="DX3D\Assets\Shaders\Solid_PS.hlsl" />
+    <FxCompile Include="DX3D\Assets\Shaders\PhongDif_VS.hlsl" />
+    <FxCompile Include="DX3D\Assets\Shaders\PhongDif_PS.hlsl" />
     <FxCompile Include="DX3D\Assets\Shaders\Solid_VS.hlsl" />
-    <FxCompile Include="DX3D\Assets\Shaders\PhongPSSpecNormalMap.hlsl" />
+    <FxCompile Include="DX3D\Assets\Shaders\PhongDifSpcNrm_PS.hlsl" />
     <FxCompile Include="DX3D\Assets\Shaders\PhongDifNrm_PS.hlsl" />
     <FxCompile Include="DX3D\Assets\Shaders\PhongDifNrm_VS.hlsl" />
-    <FxCompile Include="DX3D\Assets\Shaders\PhongPSNormalMapObject.hlsl" />
-    <FxCompile Include="DX3D\Assets\Shaders\PhongPSNotex.hlsl" />
-    <FxCompile Include="DX3D\Assets\Shaders\PhongVSNotex.hlsl" />
-    <FxCompile Include="DX3D\Assets\Shaders\PhongPSSpec.hlsl" />
-    <FxCompile Include="DX3D\Assets\Shaders\PhongPSSpecNormalMask.hlsl" />
+    <FxCompile Include="DX3D\Assets\Shaders\xPhongDifNro.hlsl" />
+    <FxCompile Include="DX3D\Assets\Shaders\Phong_PS.hlsl" />
+    <FxCompile Include="DX3D\Assets\Shaders\Phong_VS.hlsl" />
+    <FxCompile Include="DX3D\Assets\Shaders\PhongDifSpc_PS.hlsl" />
+    <FxCompile Include="DX3D\Assets\Shaders\Solid_PS.hlsl" />
+    <FxCompile Include="DX3D\Assets\Shaders\PhongDifMskSpcNrm_PS.hlsl" />
+    <FxCompile Include="DX3D\Assets\Shaders\PhongDifMskSpcNrm_VS.hlsl" />
+    <FxCompile Include="DX3D\Assets\Shaders\PhongDifSpcNrm_VS.hlsl" />
+    <FxCompile Include="DX3D\Assets\Shaders\PhongDifSpc_VS.hlsl" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Assets\Images\cube.png">
@@ -418,10 +421,10 @@
   <ItemGroup>
     <None Include="third_party_libraries\.gitignore" />
     <None Include="third_party_libraries\README.md" />
-    <None Include="DX3D\Assets\Shaders\ShaderOps.hlsli" />
-    <None Include="DX3D\Assets\Shaders\PointLight.hlsli" />
-    <None Include="DX3D\Assets\Shaders\LightVectorData.hlsli" />
-    <None Include="DX3D\Assets\Shaders\Transform.hlsli" />
+    <None Include="DX3D\Assets\Shaders\Inc\ShaderOps.hlsli" />
+    <None Include="DX3D\Assets\Shaders\Inc\PointLight.hlsli" />
+    <None Include="DX3D\Assets\Shaders\Inc\LightVectorData.hlsli" />
+    <None Include="DX3D\Assets\Shaders\Inc\Transform.hlsli" />
     <None Include="cpp.hint" />
   </ItemGroup>
 </Project>
