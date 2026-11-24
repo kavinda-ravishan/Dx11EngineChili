@@ -180,9 +180,9 @@
     <ClCompile Include="DX3D\Source\DX3D\Graphics\Bindable\VertexShader.cpp" />
     <ClCompile Include="DX3D\Source\DX3D\Graphics\Drawable\Material.cpp" />
     <ClCompile Include="DX3D\Source\DX3D\Graphics\Drawable\Mesh.cpp" />
-    <ClCompile Include="DX3D\Source\DX3D\Graphics\Drawable\SolidSphere.cpp" />
-    <ClCompile Include="DX3D\Source\DX3D\Graphics\Drawable\TestCube.cpp" />
-    <ClCompile Include="DX3D\Source\DX3D\Graphics\Drawable\TestPlane.cpp" />
+    <ClCompile Include="DX3D\Source\DX3D\Graphics\Drawable\Models\SolidSphere.cpp" />
+    <ClCompile Include="DX3D\Source\DX3D\Graphics\Drawable\Models\TestCube.cpp" />
+    <ClCompile Include="DX3D\Source\DX3D\Graphics\Drawable\Models\TestPlane.cpp" />
     <ClCompile Include="DX3D\Source\DX3D\Graphics\RenderJobs\Job.cpp" />
     <ClCompile Include="DX3D\Source\DX3D\Graphics\RenderJobs\Step.cpp" />
     <ClCompile Include="DX3D\Source\DX3D\Graphics\RenderJobs\Technique.cpp" />
@@ -239,7 +239,7 @@
     <ClInclude Include="DX3D\Source\DX3D\Graphics\Utils\IndexedTriangleList.hpp" />
     <ClInclude Include="DX3D\Source\DX3D\Graphics\Drawable\Models\Cube.hpp" />
     <ClInclude Include="DX3D\Source\DX3D\Graphics\Drawable\Models\Plane.hpp" />
-    <ClInclude Include="DX3D\Source\DX3D\Graphics\Drawable\SolidSphere.hpp" />
+    <ClInclude Include="DX3D\Source\DX3D\Graphics\Drawable\Models\SolidSphere.hpp" />
     <ClInclude Include="DX3D\Source\DX3D\Graphics\Drawable\Models\Sphere.hpp" />
     <ClInclude Include="DX3D\Source\DX3D\Graphics\Bindable\Bindable.hpp" />
     <ClInclude Include="DX3D\Source\DX3D\Graphics\Bindable\BindableCommon.hpp" />
@@ -257,8 +257,8 @@
     <ClInclude Include="DX3D\Source\DX3D\Graphics\Bindable\TransformCbuf.hpp" />
     <ClInclude Include="DX3D\Source\DX3D\Graphics\Bindable\VertexBuffer.hpp" />
     <ClInclude Include="DX3D\Source\DX3D\Graphics\Bindable\VertexShader.hpp" />
-    <ClInclude Include="DX3D\Source\DX3D\Graphics\Drawable\TestCube.hpp" />
-    <ClInclude Include="DX3D\Source\DX3D\Graphics\Drawable\TestPlane.hpp" />
+    <ClInclude Include="DX3D\Source\DX3D\Graphics\Drawable\Models\TestCube.hpp" />
+    <ClInclude Include="DX3D\Source\DX3D\Graphics\Drawable\Models\TestPlane.hpp" />
     <ClInclude Include="DX3D\Source\DX3D\Graphics\Utils\LayoutCodex.hpp" />
     <ClInclude Include="DX3D\Source\DX3D\Graphics\Utils\Vertex.hpp" />
     <ClInclude Include="DX3D\Source\DX3D\Graphics\GraphicsLogUtils.hpp" />

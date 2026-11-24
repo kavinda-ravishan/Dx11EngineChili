@@ -1,4 +1,4 @@
-#include <DX3D/Graphics/Drawable/SolidSphere.hpp>
+#include <DX3D/Graphics/Drawable/Models/SolidSphere.hpp>
 #include <DX3D/Graphics/Drawable/Models/Sphere.hpp>
 #include <DX3D/Graphics/Bindable/BindableCommon.hpp>
 

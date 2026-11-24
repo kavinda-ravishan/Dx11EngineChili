@@ -1,6 +1,6 @@
 #pragma once
 #include <DX3D/Graphics/Graphics.hpp>
-#include <DX3D/Graphics/Drawable/SolidSphere.hpp>
+#include <DX3D/Graphics/Drawable/Models/SolidSphere.hpp>
 #include <DX3D/Graphics/Bindable/ConstantBuffers.hpp>
 
 namespace dx3d {

@@ -5,7 +5,7 @@
 #include <DX3D/Graphics/Drawable/Models/Cube.hpp>
 #include <DX3D/Graphics/Bindable/BindableCommon.hpp>
 #include <DX3D/Graphics/Drawable/Constants.hpp>
-#include <DX3D/Graphics/Drawable/TestCube.hpp>
+#include <DX3D/Graphics/Drawable/Models/TestCube.hpp>
 
 dx3d::TestCube::TestCube(const DrawableDesc& desc, Graphics& graphics, float size)
 	: Drawable(desc)
