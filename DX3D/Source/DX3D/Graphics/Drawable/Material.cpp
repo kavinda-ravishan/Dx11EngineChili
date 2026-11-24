@@ -210,6 +210,32 @@ dx3d_dvtx::VertexBuffer dx3d::Material::ExtractVertices(const aiMesh & mesh) con
 	return { _vtx_layout,mesh };
 }
 
+std::vector<unsigned short> dx3d::Material::ExtractIndices(const aiMesh& mesh) const noexcept {
+	std::vector<unsigned short> indices;
+	indices.reserve(mesh.mNumFaces * 3);
+	for (unsigned int i = 0; i < mesh.mNumFaces; i++)
+	{
+		const auto& face = mesh.mFaces[i];
+		assert(face.mNumIndices == 3);
+		indices.push_back(face.mIndices[0]);
+		indices.push_back(face.mIndices[1]);
+		indices.push_back(face.mIndices[2]);
+	}
+	return indices;
+}
+
+std::shared_ptr<dx3d::BVertexBuffer> dx3d::Material::MakeVertexBindable(const BindableDesc& desc, Graphics& graphics, const aiMesh& mesh) const noexcept(!IS_DEBUG) {
+	return BVertexBuffer::Resolve(desc, graphics, MakeMeshTag(mesh), ExtractVertices(mesh));
+}
+
+std::shared_ptr<dx3d::BIndexBuffer> dx3d::Material::MakeIndexBindable(const BindableDesc& desc, Graphics& graphics, const aiMesh& mesh) const noexcept(!IS_DEBUG) {
+	return BIndexBuffer::Resolve(desc, graphics, MakeMeshTag(mesh), ExtractIndices(mesh));
+}
+
 std::vector<dx3d::Technique> dx3d::Material::GetTechniques() const noexcept {
 	return _techniques;
+}
+
+std::string dx3d::Material::MakeMeshTag(const aiMesh& mesh) const noexcept {
+	return _model_path + "%" + mesh.mName.C_Str();
 }
