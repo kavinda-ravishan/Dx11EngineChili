@@ -387,11 +387,11 @@
   <ItemGroup>
     <FxCompile Include="DX3D\Assets\Shaders\PhongVS.hlsl" />
     <FxCompile Include="DX3D\Assets\Shaders\PhongPS.hlsl" />
-    <FxCompile Include="DX3D\Assets\Shaders\SolidPS.hlsl" />
-    <FxCompile Include="DX3D\Assets\Shaders\SolidVS.hlsl" />
+    <FxCompile Include="DX3D\Assets\Shaders\Solid_PS.hlsl" />
+    <FxCompile Include="DX3D\Assets\Shaders\Solid_VS.hlsl" />
     <FxCompile Include="DX3D\Assets\Shaders\PhongPSSpecNormalMap.hlsl" />
-    <FxCompile Include="DX3D\Assets\Shaders\PhongDifNrmPS.hlsl" />
-    <FxCompile Include="DX3D\Assets\Shaders\PhongDifNrmVS.hlsl" />
+    <FxCompile Include="DX3D\Assets\Shaders\PhongDifNrm_PS.hlsl" />
+    <FxCompile Include="DX3D\Assets\Shaders\PhongDifNrm_VS.hlsl" />
     <FxCompile Include="DX3D\Assets\Shaders\PhongPSNormalMapObject.hlsl" />
     <FxCompile Include="DX3D\Assets\Shaders\PhongPSNotex.hlsl" />
     <FxCompile Include="DX3D\Assets\Shaders\PhongVSNotex.hlsl" />

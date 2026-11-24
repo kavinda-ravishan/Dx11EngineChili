@@ -81,10 +81,10 @@ dx3d::Material::Material(const BindableDesc& desc, Graphics& graphics, const aiM
 		{
 			step.AddBindable(std::make_shared<BTransformCbuf>(desc, graphics, 0u));
 			step.AddBindable(BBlender::Resolve(desc, graphics, false));
-			auto pvs = BVertexShader::Resolve(desc, graphics, shader_code + "VS.cso");
+			auto pvs = BVertexShader::Resolve(desc, graphics, shader_code + "_VS.cso");
 			auto pvsbc = pvs->GetBytecode();
 			step.AddBindable(std::move(pvs));
-			step.AddBindable(BPixelShader::Resolve(desc, graphics, shader_code + "PS.cso"));
+			step.AddBindable(BPixelShader::Resolve(desc, graphics, shader_code + "_PS.cso"));
 			step.AddBindable(BInputLayout::Resolve(desc, graphics, _vtx_layout, pvsbc));
 			if (has_texture)
 			{
@@ -125,7 +125,7 @@ dx3d::Material::Material(const BindableDesc& desc, Graphics& graphics, const aiM
 		{
 			Step mask(1);
 
-			auto pvs = BVertexShader::Resolve(desc, graphics, "SolidVS.cso");
+			auto pvs = BVertexShader::Resolve(desc, graphics, "Solid_VS.cso");
 			auto pvsbc = pvs->GetBytecode();
 			mask.AddBindable(std::move(pvs));
 
@@ -142,12 +142,12 @@ dx3d::Material::Material(const BindableDesc& desc, Graphics& graphics, const aiM
 			Step draw(2);
 
 			// these can be pass-constant (tricky due to layout issues)
-			auto pvs = BVertexShader::Resolve(desc, graphics, "SolidVS.cso");
+			auto pvs = BVertexShader::Resolve(desc, graphics, "Solid_VS.cso");
 			auto pvsbc = pvs->GetBytecode();
 			draw.AddBindable(std::move(pvs));
 
 			// this can be pass-constant
-			draw.AddBindable(BPixelShader::Resolve(desc, graphics, "SolidPS.cso"));
+			draw.AddBindable(BPixelShader::Resolve(desc, graphics, "Solid_PS.cso"));
 
 			dx3d_dcb::RawLayout lay;
 			lay.Add<dx3d_dcb::Float3>(PSCBV_material_color);

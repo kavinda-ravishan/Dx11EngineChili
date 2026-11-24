@@ -10,7 +10,7 @@ dx3d::BVertexShader::BVertexShader(const BindableDesc& desc, Graphics& graphics,
 {
 	DX3DGraphicsLogThrowOnFail(
 		D3DReadFileToBlob(ToWide(path).c_str(), &_bytecode_blob),
-		"Failed to read vertex shader binary"
+		("Failed to read vertex shader binary : " + path).c_str()
 	);
 
 	DX3DGraphicsLogThrowOnFail(
@@ -18,7 +18,7 @@ dx3d::BVertexShader::BVertexShader(const BindableDesc& desc, Graphics& graphics,
 			_bytecode_blob->GetBufferPointer(), 
 			_bytecode_blob->GetBufferSize(), nullptr, 
 			&_vertex_shader),
-		"Failed to create vertex shader"
+		("Failed to create vertex shader : " + path).c_str()
 	);
 
 }

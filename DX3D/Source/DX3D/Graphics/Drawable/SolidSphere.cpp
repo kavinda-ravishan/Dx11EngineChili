@@ -16,11 +16,11 @@ dx3d::SolidSphere::SolidSphere(const DrawableDesc& desc, Graphics& graphics, flo
 		Technique solid;
 		Step only(0);
 
-		auto pvs = BVertexShader::Resolve(BINDABLE_DESC, graphics, "SolidVS.cso");
+		auto pvs = BVertexShader::Resolve(BINDABLE_DESC, graphics, "Solid_VS.cso");
 		auto pvsbc = pvs->GetBytecode();
 		only.AddBindable(std::move(pvs));
 
-		only.AddBindable(BPixelShader::Resolve(BINDABLE_DESC, graphics, "SolidPS.cso"));
+		only.AddBindable(BPixelShader::Resolve(BINDABLE_DESC, graphics, "Solid_PS.cso"));
 
 		struct PSColorConstant
 		{
