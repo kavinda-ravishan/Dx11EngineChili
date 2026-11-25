@@ -1,6 +1,7 @@
 #include <assimp/scene.h>
 #include <DX3D/Graphics/Drawable/Constants.hpp>
 #include <DX3D/Graphics/RenderJobs/Technique.hpp>
+#include <DX3D/Graphics/RenderJobs/Step.hpp>
 #include <DX3D/Graphics/Drawable/Material.hpp>
 
 dx3d::Material::Material(const BindableDesc& desc, Graphics& graphics, const aiMaterial& material, const std::filesystem::path& path) noexcept(!IS_DEBUG)
@@ -123,7 +124,7 @@ dx3d::Material::Material(const BindableDesc& desc, Graphics& graphics, const aiM
 	}
 	// outline technique
 	{
-		Technique outline("Outline");
+		Technique outline("Outline", false);
 		{
 			Step mask(1);
 

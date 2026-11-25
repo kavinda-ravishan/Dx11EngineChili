@@ -2,44 +2,23 @@
 #include <vector>
 #include <string>
 #include <DX3D/Graphics/RenderJobs/Step.hpp>
-#include <DX3D/Graphics/RenderJobs/TechniqueProbe.hpp>
 
 namespace dx3d {
+	class FrameCommander;
+	class TechniqueProbe;
+
 	class Technique {
 	public:
 		Technique() = default;
-		Technique(std::string name) noexcept
-			:
-			_name(name)
-		{}
+		Technique(std::string name, bool start_active = true) noexcept;
 
-		void Submit(class FrameCommander& frame, const class Drawable& drawable) const noexcept;
-		
-		void AddStep(Step step) noexcept {
-			_steps.push_back(std::move(step));
-		}
-
-		bool IsActive() const noexcept {
-			return _active;
-		}
-
-		void SetActiveState(bool active) noexcept {
-			_active = active;
-		}
-
+		void Submit(FrameCommander& frame, const class Drawable& drawable) const noexcept;
+		void AddStep(Step step) noexcept;
+		bool IsActive() const noexcept;
+		void SetActiveState(bool active) noexcept;
 		void InitializeParentReferences(const class Drawable& parent) noexcept;
-		
-		void Accept(TechniqueProbe& probe) {
-			probe.SetTechnique(this);
-			for (auto& s : _steps)
-			{
-				s.Accept(probe);
-			}
-		}
-
-		const std::string& GetName() const noexcept {
-			return _name;
-		}
+		void Accept(TechniqueProbe& probe);
+		const std::string& GetName() const noexcept;
 
 	private:
 		bool _active{ true };

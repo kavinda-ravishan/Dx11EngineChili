@@ -1,6 +1,7 @@
 #include <string>
 #include <DX3D/Window/ImGUI/imgui.h>
 #include <DX3D/Graphics/Graphics.hpp>
+#include <DX3D/Graphics/RenderJobs/Step.hpp>
 #include <DX3D/Graphics/Utils/DynamicConstant.hpp>
 #include <DX3D/Graphics/Drawable/Models/Cube.hpp>
 #include <DX3D/Graphics/Bindable/BindableCommon.hpp>
