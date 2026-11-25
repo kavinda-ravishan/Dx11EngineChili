@@ -8,7 +8,7 @@
 dx3d::BVertexShader::BVertexShader(const BindableDesc& desc, Graphics& graphics, const std::string& path)
     : Bindable(desc), _path(path)
 {
-	DX3DLogInfo(("Loading vertex shader : " + path).c_str());
+	DX3DLogInfo(("[Vertex Shader] : Loading vertex shader : " + path).c_str());
 
 	DX3DGraphicsLogThrowOnFail(
 		D3DReadFileToBlob(ToWide(path).c_str(), &_bytecode_blob),
