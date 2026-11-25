@@ -33,37 +33,37 @@ const DirectX::XMFLOAT4X4& dx3d::Node::GetAppliedTransform() const noexcept {
 	return _applied_transform;
 }
 
-void dx3d::Node::ShowTree(Node*& selected_node_ptr) const noexcept
-{
-	// if there is no selected node, set selectedId to an impossible value
-	const int selected_id = (selected_node_ptr == nullptr) ? -1 : selected_node_ptr->GetID();
-
-	// build up flags for current node
-	const auto node_flags = ImGuiTreeNodeFlags_OpenOnArrow
-		| ((GetID() == selected_id) ? ImGuiTreeNodeFlags_Selected : 0)
-		| ((_child_ptrs.empty()) ? ImGuiTreeNodeFlags_Leaf : 0);
-
-	// render this node
-	const auto expanded = ImGui::TreeNodeEx((
-		void*)(intptr_t)GetID(), node_flags, _name.c_str()
-	);
-
-	// process for selection node
-	if (ImGui::IsItemClicked())
-	{
-		selected_node_ptr = const_cast<Node*>(this);
-	}
-
-	//recursively rendering of open node's children
-	if (expanded)
-	{
-		for (const auto& child_ptr : _child_ptrs)
-		{
-			child_ptr->ShowTree(selected_node_ptr);
-		}
-		ImGui::TreePop();
-	}
-}
+//void dx3d::Node::ShowTree(Node*& selected_node_ptr) const noexcept
+//{
+//	// if there is no selected node, set selectedId to an impossible value
+//	const int selected_id = (selected_node_ptr == nullptr) ? -1 : selected_node_ptr->GetID();
+//
+//	// build up flags for current node
+//	const auto node_flags = ImGuiTreeNodeFlags_OpenOnArrow
+//		| ((GetID() == selected_id) ? ImGuiTreeNodeFlags_Selected : 0)
+//		| ((_child_ptrs.empty()) ? ImGuiTreeNodeFlags_Leaf : 0);
+//
+//	// render this node
+//	const auto expanded = ImGui::TreeNodeEx((
+//		void*)(intptr_t)GetID(), node_flags, _name.c_str()
+//	);
+//
+//	// process for selection node
+//	if (ImGui::IsItemClicked())
+//	{
+//		selected_node_ptr = const_cast<Node*>(this);
+//	}
+//
+//	//recursively rendering of open node's children
+//	if (expanded)
+//	{
+//		for (const auto& child_ptr : _child_ptrs)
+//		{
+//			child_ptr->ShowTree(selected_node_ptr);
+//		}
+//		ImGui::TreePop();
+//	}
+//}
 
 int dx3d::Node::GetID() const noexcept {
 	return _id;

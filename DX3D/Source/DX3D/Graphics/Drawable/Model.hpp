@@ -19,23 +19,15 @@ namespace dx3d {
 		~Model() noexcept;
 
 		void Submit(FrameCommander& frame) const;
-		void ShowWindow(Graphics& graphics, const char* window_name = nullptr) noexcept;
+		//void ShowWindow(Graphics& graphics, const char* window_name = nullptr) noexcept;
 		void SetRootTransform(DirectX::FXMMATRIX tf) noexcept;
 
 	private:
-		static std::unique_ptr<Mesh> ParseMesh(
-			const BaseDesc& desc,
-			Graphics& graphics,
-			const std::filesystem::path& file_path,
-			const aiMesh& ai_mesh,
-			const aiMaterial* const* ai_material,
-			const float scale
-		);
 		std::unique_ptr<Node> ParseNode(int& next_id, const aiNode& node);
 
 	private:
 		std::unique_ptr<Node> _root{};
 		std::vector<std::unique_ptr<Mesh>> _mesh_ptrs{};
-		std::unique_ptr<class ModelWindow> _window{};
+		//std::unique_ptr<class ModelWindow> _window{};
 	};
 } // namespace dx3d

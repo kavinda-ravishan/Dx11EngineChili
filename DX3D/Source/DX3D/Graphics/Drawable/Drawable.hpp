@@ -8,6 +8,8 @@
 #include <DX3D/Core/Core.hpp>
 #include <DX3D/Graphics/RenderJobs/Technique.hpp>
 
+#define DRAWABLE_DESC DrawableDesc({ GetLogger() })
+
 namespace dx3d {
 
 	class Drawable : public Base {

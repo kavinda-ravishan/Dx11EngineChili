@@ -14,7 +14,7 @@ namespace dx3d {
 		void Submit(class FrameCommander& frame, DirectX::FXMMATRIX accumulated_tranform) const noxnd;
 		void SetAppliedTransform(DirectX::FXMMATRIX transform) noexcept;
 		const DirectX::XMFLOAT4X4& GetAppliedTransform() const noexcept;
-		void ShowTree(Node*& selected_node_ptr) const noexcept;
+		//void ShowTree(Node*& selected_node_ptr) const noexcept;
 		int GetID() const noexcept;
 
 	private:

@@ -20,6 +20,7 @@
 #include <DX3D/Graphics/RenderJobs/TechniqueProbe.hpp>
 #include <DX3D/Graphics/Drawable/Constants.hpp>
 #include <DX3D/Graphics/Drawable/Material.hpp>
+#include <DX3D/Graphics/Drawable/Model.hpp>
 #include <DX3D/Graphics/Drawable/Mesh.hpp>
 //#include <DX3D/Graphics/Drawable/TestPlane.hpp>
 //#include <DX3D/Graphics/Drawable/TestCube.hpp>
@@ -210,8 +211,8 @@ dx3d::Game::Game(const GameDesc& desc) :
 	//_nano = std::make_unique<Model>(BaseDesc({ _logger }), *_graphics, "Assets\\Models\\nano_textured\\nanosuit.obj", 2.0f);
 	//_nano->SetRootTransform(DirectX::XMMatrixTranslation(0.0f, -7.0f, 6.0f));
 	
-	//_gobber = std::make_unique<Model>(BaseDesc({ _logger }), *_graphics, "Assets\\Models\\gobber\\GoblinX.obj", 6.0f);
-	//_gobber->SetRootTransform(DirectX::XMMatrixTranslation(0.0f, 0.0f, -4.0f));
+	_gobber = std::make_unique<Model>(BaseDesc({ _logger }), *_graphics, "Assets\\Models\\gobber\\GoblinX.obj", 6.0f);
+	_gobber->SetRootTransform(DirectX::XMMatrixTranslation(0.0f, 0.0f, -4.0f));
 
 	//_wall = std::make_unique<Model>(BaseDesc({ _logger }), *_graphics, "Assets\\Models\\brick_wall\\brick_wall.obj", 6.0f);
 	//_wall->SetRootTransform(DirectX::XMMatrixTranslation(-12.0f, 0.0f, 0.0f));
@@ -291,7 +292,7 @@ void dx3d::Game::OnInternalUpdate() {
 	//_sponza->Draw(*_graphics);
 	//_stripey->Draw(*_graphics);
 	//_nano->Draw(*_graphics);
-	//_gobber->Draw(*_graphics);
+	_gobber->Submit(*_fc);
 	//_wall->Draw(*_graphics);
 	//_blue_plane->Draw(*_graphics);
 	//_red_plane->Draw(*_graphics);
