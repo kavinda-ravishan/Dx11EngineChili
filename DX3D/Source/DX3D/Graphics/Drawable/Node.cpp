@@ -16,11 +16,11 @@ void dx3d::Node::Submit(FrameCommander& frame, DirectX::FXMMATRIX accumulated_tr
 		accumulated_tranform;
 	for (const auto pm : _mesh_ptrs)
 	{
-		pm->Submit(frame, accumulated_tranform);
+		pm->Submit(frame, built);
 	}
 	for (const auto& pc : _child_ptrs)
 	{
-		pc->Submit(frame, accumulated_tranform);
+		pc->Submit(frame, built);
 	}
 }
 

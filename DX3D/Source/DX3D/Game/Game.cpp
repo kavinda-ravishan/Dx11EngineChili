@@ -203,7 +203,7 @@ dx3d::Game::Game(const GameDesc& desc) :
 	);
 
 	
-	//_sponza = std::make_unique<Model>(BaseDesc({ _logger }), *_graphics, "Assets\\Models\\Sponza\\sponza.obj", 1.0f / 20.0f);
+	_sponza = std::make_unique<Model>(BaseDesc({ _logger }), *_graphics, "Assets\\Models\\Sponza\\sponza.obj", 1.0f / 20.0f);
 	
 	//_stripey = std::make_unique<Model>(BaseDesc({ _logger }), *_graphics, "Assets\\Models\\Stripey\\stripey.obj", 2.0f);
 	//_stripey->SetRootTransform(DirectX::XMMatrixTranslation(-50.0f, 9.125f, -2.75f));
@@ -211,8 +211,7 @@ dx3d::Game::Game(const GameDesc& desc) :
 	//_nano = std::make_unique<Model>(BaseDesc({ _logger }), *_graphics, "Assets\\Models\\nano_textured\\nanosuit.obj", 2.0f);
 	//_nano->SetRootTransform(DirectX::XMMatrixTranslation(0.0f, -7.0f, 6.0f));
 	
-	_gobber = std::make_unique<Model>(BaseDesc({ _logger }), *_graphics, "Assets\\Models\\gobber\\GoblinX.obj", 6.0f);
-	_gobber->SetRootTransform(DirectX::XMMatrixTranslation(0.0f, 0.0f, -4.0f));
+	//_gobber = std::make_unique<Model>(BaseDesc({ _logger }), *_graphics, "Assets\\Models\\gobber\\GoblinX.obj", 4.0f);
 
 	//_wall = std::make_unique<Model>(BaseDesc({ _logger }), *_graphics, "Assets\\Models\\brick_wall\\brick_wall.obj", 6.0f);
 	//_wall->SetRootTransform(DirectX::XMMatrixTranslation(-12.0f, 0.0f, 0.0f));
@@ -228,20 +227,6 @@ dx3d::Game::Game(const GameDesc& desc) :
 	//_cube2 = std::make_unique<TestCube>(DrawableDesc({ _logger }), *_graphics, 4.0f);
 	//_cube2->SetPos({ 2.0f, 2.0f, 2.0f });
 	
-	{
-		const std::string path{ "Assets\\Models\\brick_wall\\brick_wall.obj" };
-		Assimp::Importer imp;
-		const auto pScene = imp.ReadFile(path,
-			aiProcess_Triangulate |
-			aiProcess_JoinIdenticalVertices |
-			aiProcess_ConvertToLeftHanded |
-			aiProcess_GenNormals |
-			aiProcess_CalcTangentSpace
-		);
-		Material mat{ BindableDesc({ _logger }), *_graphics,*pScene->mMaterials[1],path };
-		_loaded = std::make_unique<Mesh>(DrawableDesc({ _logger }), *_graphics, mat, *pScene->mMeshes[0]);
-	}
-
 	const float aspect_ratio = float(_window->GetWindowSize().height) / _window->GetWindowSize().width;
 	_graphics->SetProjection(DirectX::XMMatrixPerspectiveLH(1.0f, aspect_ratio, 0.5f, 400.0f));
 	_graphics->SetCamera(DirectX::XMMatrixTranslation(0.0f, 0.0f, 20.0f));
@@ -289,18 +274,15 @@ void dx3d::Game::OnInternalUpdate() {
 	_point_light->Bind(*_graphics, _camera->GetMatrix());
 
 	_point_light->Submit(*_fc);
-	//_sponza->Draw(*_graphics);
+	_sponza->Submit(*_fc);
 	//_stripey->Draw(*_graphics);
 	//_nano->Draw(*_graphics);
-	_gobber->Submit(*_fc);
+	//_gobber->Submit(*_fc);
 	//_wall->Draw(*_graphics);
 	//_blue_plane->Draw(*_graphics);
 	//_red_plane->Draw(*_graphics);
 	//_cube->Submit(*_fc);
 	//_cube2->Submit(*_fc);
-	_loaded->Submit(*_fc, DirectX::XMMatrixIdentity());
-	Probe loaded_probe(_graphics->IsImguiEnabled());
-	_loaded->Accept(loaded_probe);
 
 	_fc->Execute(BINDABLE_DESC, *_graphics);
 	

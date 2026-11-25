@@ -23,7 +23,7 @@ namespace dx3d {
 		void SetRootTransform(DirectX::FXMMATRIX tf) noexcept;
 
 	private:
-		std::unique_ptr<Node> ParseNode(int& next_id, const aiNode& node);
+		std::unique_ptr<Node> ParseNode(int& next_id, const aiNode& node, DirectX::FXMMATRIX additional_transform);
 
 	private:
 		std::unique_ptr<Node> _root{};

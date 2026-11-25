@@ -25,7 +25,8 @@ dx3d::SolidSphere::SolidSphere(const DrawableDesc& desc, Graphics& graphics, flo
 
 		struct PSColorConstant
 		{
-			DirectX::XMFLOAT4 color{ 1.0f,1.0f,1.0f, 1.0f };
+			DirectX::XMFLOAT3 color{ 1.0f, 1.0f, 1.0f };
+			float padding[1];
 		} color_const;
 
 		only.AddBindable(BPixelConstantBuffer<PSColorConstant>::Resolve(BINDABLE_DESC, graphics, color_const, 1u));

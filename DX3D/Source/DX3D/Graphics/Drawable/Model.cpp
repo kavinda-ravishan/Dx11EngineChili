@@ -39,7 +39,7 @@ dx3d::Model::Model(const BaseDesc& desc, Graphics& graphics, const std::filesyst
 	}
 
 	int next_id{ 0 };
-	_root = ParseNode(next_id, *scene->mRootNode);
+	_root = ParseNode(next_id, *scene->mRootNode, DirectX::XMMatrixScaling(scale, scale, scale));
 }
 
 dx3d::Model::~Model() noexcept {}
@@ -60,9 +60,9 @@ void dx3d::Model::SetRootTransform(DirectX::FXMMATRIX tf) noexcept {
 	_root->SetAppliedTransform(tf);
 }
 
-std::unique_ptr<dx3d::Node> dx3d::Model::ParseNode(int& next_id, const aiNode& node)
+std::unique_ptr<dx3d::Node> dx3d::Model::ParseNode(int& next_id, const aiNode& node, DirectX::FXMMATRIX additional_transform)
 {
-	const auto transform = DirectX::XMMatrixTranspose(DirectX::XMLoadFloat4x4(
+	const auto transform = additional_transform * DirectX::XMMatrixTranspose(DirectX::XMLoadFloat4x4(
 		reinterpret_cast<const DirectX::XMFLOAT4X4*>(&node.mTransformation)
 	));
 
@@ -77,7 +77,7 @@ std::unique_ptr<dx3d::Node> dx3d::Model::ParseNode(int& next_id, const aiNode& n
 	auto node_ptr = std::make_unique<Node>(next_id++, node.mName.C_Str(), std::move(cur_mesh_ptrs), transform);
 	for (size_t i = 0; i < node.mNumChildren; i++)
 	{
-		node_ptr->AddChild(ParseNode(next_id, *node.mChildren[i]));
+		node_ptr->AddChild(ParseNode(next_id, *node.mChildren[i], DirectX::XMMatrixIdentity()));
 	}
 
 	return node_ptr;

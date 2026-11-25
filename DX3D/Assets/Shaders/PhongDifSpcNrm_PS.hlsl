@@ -6,11 +6,11 @@
 cbuffer ObjectCBuf
 {
     bool use_gloss_alpha;
+    float3 specular_color;
     float specular_weight;
     float specular_gloss;
     bool use_normal_map;
     float normal_map_weight;
-    float padding[3];
 };
 
 Texture2D tex;

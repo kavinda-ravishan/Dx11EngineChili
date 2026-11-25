@@ -24,16 +24,15 @@ namespace dx3d {
 		std::unique_ptr<class Camera> _camera{};
 		std::unique_ptr<class PointLight> _point_light{};
 		
-		//std::unique_ptr<class Model> _sponza{};
+		std::unique_ptr<class Model> _sponza{};
 		//std::unique_ptr<class Model> _stripey{};
 		//std::unique_ptr<class Model> _nano{};
-		std::unique_ptr<class Model> _gobber{};
+		//std::unique_ptr<class Model> _gobber{};
 		//std::unique_ptr<class Model> _wall{};
 		//std::unique_ptr<class TestPlane> _blue_plane{};
 		//std::unique_ptr<class TestPlane> _red_plane{};
 		//std::unique_ptr<class TestCube> _cube{};
 		//std::unique_ptr<class TestCube> _cube2{};
-		std::unique_ptr<class Mesh> _loaded{};
 		
 		bool _is_running{ true };
 	};
