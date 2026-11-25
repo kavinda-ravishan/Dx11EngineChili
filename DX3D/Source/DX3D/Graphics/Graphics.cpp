@@ -230,6 +230,6 @@ void dx3d::Graphics::DisableImgui() noexcept {
 	_imgui_enabled = false;
 }
 
-bool dx3d::Graphics::IsImguiEnabled() const noexcept {
+const bool& dx3d::Graphics::IsImguiEnabled() const noexcept {
 	return _imgui_enabled;
 }

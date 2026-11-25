@@ -27,7 +27,7 @@ namespace dx3d {
 
 		void EnableImgui() noexcept;
 		void DisableImgui() noexcept;
-		bool IsImguiEnabled() const noexcept;
+		const bool& IsImguiEnabled() const noexcept;
 	private:
 		const Rect _window_size{};
 

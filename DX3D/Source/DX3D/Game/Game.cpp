@@ -117,9 +117,13 @@ static void ShowPerformanceWindow()
 namespace dx3d {
 
 	// Mesh techniques window
-	class Probe : public TechniqueProbe {
+	class Probe final : public TechniqueProbe {
 	public:
+		Probe(const bool& imgui_enabled): _imgui_enabled(imgui_enabled) {}
+
 		void OnSetTechnique() override {
+			if (!_imgui_enabled) return;
+
 			using namespace std::string_literals;
 			ImGui::TextColored({ 0.4f,1.0f,0.6f,1.0f }, _tech_ptr->GetName().c_str());
 			bool active = _tech_ptr->IsActive();
@@ -129,6 +133,8 @@ namespace dx3d {
 
 		bool OnVisitBuffer(dx3d_dcb::Buffer& buf) override
 		{
+			if (!_imgui_enabled) return false;
+
 			float changed = false;
 			const auto CheckChanges = [&changed](bool updated) {changed = changed || updated; };
 			auto tag = [tag_scratch = std::string{}, tag_string = "##" + std::to_string(_buf_idx)]
@@ -168,6 +174,9 @@ namespace dx3d {
 			}
 			return changed;
 		}
+	
+	private:
+		const bool &_imgui_enabled;
 	};
 } // namespace dx3d
 
@@ -289,7 +298,7 @@ void dx3d::Game::OnInternalUpdate() {
 	//_cube->Submit(*_fc);
 	//_cube2->Submit(*_fc);
 	_loaded->Submit(*_fc, DirectX::XMMatrixIdentity());
-	Probe loaded_probe;
+	Probe loaded_probe(_graphics->IsImguiEnabled());
 	_loaded->Accept(loaded_probe);
 
 	_fc->Execute(BINDABLE_DESC, *_graphics);
