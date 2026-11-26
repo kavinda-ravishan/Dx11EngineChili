@@ -32,8 +32,8 @@ namespace dx3d {
 		//std::unique_ptr<class Model> _wall{};
 		//std::unique_ptr<class TestPlane> _blue_plane{};
 		//std::unique_ptr<class TestPlane> _red_plane{};
-		//std::unique_ptr<class TestCube> _cube{};
-		//std::unique_ptr<class TestCube> _cube2{};
+		std::unique_ptr<class TestCube> _cube{};
+		std::unique_ptr<class TestCube> _cube2{};
 		
 		bool _is_running{ true };
 	};

@@ -27,19 +27,25 @@ dx3d::TestCube::TestCube(const DrawableDesc& desc, Graphics& graphics, float siz
 			only.AddBindable(BTexture::Resolve(BINDABLE_DESC, graphics, "Assets\\Images\\brickwall.jpg"));
 			only.AddBindable(BSampler::Resolve(BINDABLE_DESC, graphics));
 
-			auto pvs = BVertexShader::Resolve(BINDABLE_DESC, graphics, "PhongVS.cso");
+			auto pvs = BVertexShader::Resolve(BINDABLE_DESC, graphics, "PhongDif_VS.cso");
 			auto pvsbc = pvs->GetBytecode();
 			only.AddBindable(std::move(pvs));
 
-			only.AddBindable(BPixelShader::Resolve(BINDABLE_DESC, graphics, "PhongPS.cso"));
+			only.AddBindable(BPixelShader::Resolve(BINDABLE_DESC, graphics, "PhongDif_PS.cso"));
 
 			//only.AddBindable(BPixelConstantBuffer<PSMaterialConstant>::Resolve(BINDABLE_DESC, graphics, _pmc, 1u));
 			dx3d_dcb::RawLayout lay;
-			lay.Add<dx3d_dcb::Float>(PSCBV_specular_intensity);
-			lay.Add<dx3d_dcb::Float>(PSCBV_specular_power);
+
+			lay.Add<dx3d_dcb::Float3>(PSCBV_specular_color);
+			lay.Add<dx3d_dcb::Float>(PSCBV_specular_weight);
+			lay.Add<dx3d_dcb::Float>(PSCBV_specular_gloss);
+
 			auto buf = dx3d_dcb::Buffer(std::move(lay));
-			buf[PSCBV_specular_intensity] = 0.1f;
-			buf[PSCBV_specular_power] = 20.0f;
+			
+			buf[PSCBV_specular_color] = DirectX::XMFLOAT3(1.0f, 1.0f, 1.0f);
+			buf[PSCBV_specular_weight] = 0.1f;
+			buf[PSCBV_specular_gloss] = 20.0f;
+			
 			only.AddBindable(std::make_shared<BCachingPixelConstantBufferEX>(BINDABLE_DESC, graphics, buf, 1u));
 
 			only.AddBindable(BInputLayout::Resolve(BINDABLE_DESC, graphics, model._vertices.GetLayout(), pvsbc));
@@ -56,7 +62,7 @@ dx3d::TestCube::TestCube(const DrawableDesc& desc, Graphics& graphics, float siz
 		{
 			Step mask(1);
 
-			auto pvs = BVertexShader::Resolve(BINDABLE_DESC, graphics, "SolidVS.cso");
+			auto pvs = BVertexShader::Resolve(BINDABLE_DESC, graphics, "Solid_VS.cso");
 			auto pvsbc = pvs->GetBytecode();
 			mask.AddBindable(std::move(pvs));
 
@@ -73,17 +79,17 @@ dx3d::TestCube::TestCube(const DrawableDesc& desc, Graphics& graphics, float siz
 			Step draw(2);
 
 			// these can be pass-constant (tricky due to layout issues)
-			auto pvs = BVertexShader::Resolve(BINDABLE_DESC, graphics, "SolidVS.cso");
+			auto pvs = BVertexShader::Resolve(BINDABLE_DESC, graphics, "Solid_VS.cso");
 			auto pvsbc = pvs->GetBytecode();
 			draw.AddBindable(std::move(pvs));
 
 			// this can be pass-constant
-			draw.AddBindable(BPixelShader::Resolve(BINDABLE_DESC, graphics, "SolidPS.cso"));
+			draw.AddBindable(BPixelShader::Resolve(BINDABLE_DESC, graphics, "Solid_PS.cso"));
 
 			dx3d_dcb::RawLayout lay;
-			lay.Add<dx3d_dcb::Float4>(PSCBV_color);
+			lay.Add<dx3d_dcb::Float3>(PSCBV_material_color);
 			auto buf = dx3d_dcb::Buffer(std::move(lay));
-			buf[PSCBV_color] = DirectX::XMFLOAT4{ 1.0f, 0.4f, 0.4f, 1.0f };
+			buf[PSCBV_material_color] = DirectX::XMFLOAT3{ 1.0f, 0.4f, 0.4f };
 			draw.AddBindable(std::make_shared<BCachingPixelConstantBufferEX>(BINDABLE_DESC, graphics, buf, 1u));
 
 			// TODO: better sub-layout generation tech for future consideration maybe
@@ -189,17 +195,29 @@ void dx3d::TestCube::SpawnControlWindow(Graphics& graphics, const char* name) no
 				{
 					CheckChanges(ImGui::SliderFloat(tag("Scale"), &v, 1.0f, 2.0f, "%.3f", ImGuiSliderFlags_Logarithmic));
 				}
-				if (auto v = buf[PSCBV_color]; v.Exists())
+				if (auto v = buf[PSCBV_material_color]; v.Exists())
 				{
-					CheckChanges(ImGui::ColorPicker4(tag(PSCBV_color), reinterpret_cast<float*>(&static_cast<DirectX::XMFLOAT4&>(v))));
+					CheckChanges(ImGui::ColorPicker3(tag("Color"), reinterpret_cast<float*>(&static_cast<DirectX::XMFLOAT3&>(v))));
 				}
-				if (auto v = buf[PSCBV_specular_intensity]; v.Exists())
+				if (auto v = buf[PSCBV_specular_color]; v.Exists())
 				{
-					CheckChanges(ImGui::SliderFloat(tag("Spec. Intens."), &v, 0.0f, 1.0f));
+					CheckChanges(ImGui::ColorPicker3(tag("Spec. Color"), reinterpret_cast<float*>(&static_cast<DirectX::XMFLOAT3&>(v))));
 				}
-				if (auto v = buf[PSCBV_specular_power]; v.Exists())
+				if (auto v = buf[PSCBV_specular_gloss]; v.Exists())
 				{
 					CheckChanges(ImGui::SliderFloat(tag("Glossiness"), &v, 1.0f, 100.0f, "%.1f", ImGuiSliderFlags_Logarithmic));
+				}
+				if (auto v = buf[PSCBV_specular_weight]; v.Exists())
+				{
+					CheckChanges(ImGui::SliderFloat(tag("Spec. Weight"), &v, 0.0f, 2.0f));
+				}
+				if (auto v = buf[PSCBV_use_normal_map]; v.Exists())
+				{
+					CheckChanges(ImGui::Checkbox(tag("Normal Map Enable"), &v));
+				}
+				if (auto v = buf[PSCBV_normal_map_weight]; v.Exists())
+				{
+					CheckChanges(ImGui::SliderFloat(tag("Normal Map Weight"), &v, 0.0f, 2.0f));
 				}
 				return changed;
 			}

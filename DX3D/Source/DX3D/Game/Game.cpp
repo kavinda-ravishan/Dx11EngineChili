@@ -25,8 +25,8 @@
 #include <DX3D/Graphics/Drawable/ModelProbe.hpp>
 #include <DX3D/Graphics/Drawable/Model.hpp>
 #include <DX3D/Graphics/Drawable/Mesh.hpp>
-//#include <DX3D/Graphics/Drawable/TestPlane.hpp>
-//#include <DX3D/Graphics/Drawable/TestCube.hpp>
+//#include <DX3D/Graphics/Drawable/Models/TestPlane.hpp>
+#include <DX3D/Graphics/Drawable/Models/TestCube.hpp>
 #include <DX3D/Graphics/Camera/Camera.hpp>
 #include <DX3D/Graphics/Light/PointLight.hpp>
 
@@ -324,10 +324,10 @@ dx3d::Game::Game(const GameDesc& desc) :
 	//_red_plane = std::make_unique<TestPlane>(DrawableDesc({ _logger }), *_graphics, 6.0f, DirectX::XMFLOAT4{ 1.0f,0.3f,0.3f,0.0f });
 	//_red_plane->SetPos(_camera->GetPos());
 
-	//_cube = std::make_unique<TestCube>(DrawableDesc({ _logger }), *_graphics, 4.0f);
-	//_cube->SetPos({ .0f, 0.0f, 0.0f });
-	//_cube2 = std::make_unique<TestCube>(DrawableDesc({ _logger }), *_graphics, 4.0f);
-	//_cube2->SetPos({ 2.0f, 2.0f, 2.0f });
+	_cube = std::make_unique<TestCube>(DrawableDesc({ _logger }), *_graphics, 4.0f);
+	_cube->SetPos({ .0f, 0.0f, 0.0f });
+	_cube2 = std::make_unique<TestCube>(DrawableDesc({ _logger }), *_graphics, 4.0f);
+	_cube2->SetPos({ 2.0f, 2.0f, 2.0f });
 	
 	const float aspect_ratio = float(_window->GetWindowSize().height) / _window->GetWindowSize().width;
 	_graphics->SetProjection(DirectX::XMMatrixPerspectiveLH(1.0f, aspect_ratio, 0.5f, 400.0f));
@@ -383,27 +383,24 @@ void dx3d::Game::OnInternalUpdate() {
 	//_wall->Draw(*_graphics);
 	//_blue_plane->Draw(*_graphics);
 	//_red_plane->Draw(*_graphics);
-	//_cube->Submit(*_fc);
-	//_cube2->Submit(*_fc);
+	_cube->Submit(*_fc);
+	_cube2->Submit(*_fc);
 
 	_fc->Execute(BINDABLE_DESC, *_graphics);
 	
-	//_point_light->Draw(*_graphics);
-
 	if (_graphics->IsImguiEnabled()) {
 		_camera->SpawnControlWindow();
 		_point_light->SpawnControlWindow();
 		_model_probe->SpawnWindow(*_sponza);
 
-		//_sponza->ShowWindow(*_graphics, "Sponza");
 		//_stripey->ShowWindow(*_graphics, "Stripey");
 		//_nano->ShowWindow(*_graphics, "Nano");
 		//_gobber->ShowWindow(*_graphics, "Gobber");
 		//_wall->ShowWindow(*_graphics, "Wall");
 		//_blue_plane->SpawnControlWindow(*_graphics, "Blue Plane");
 		//_red_plane->SpawnControlWindow(*_graphics, "Red Plane");
-		//_cube->SpawnControlWindow(*_graphics, "Cube 1");
-		//_cube2->SpawnControlWindow(*_graphics, "Cube 2");
+		_cube->SpawnControlWindow(*_graphics, "Cube 1");
+		_cube2->SpawnControlWindow(*_graphics, "Cube 2");
 		
 		ShowPerformanceWindow();
 	}
