@@ -184,7 +184,6 @@
     <ClCompile Include="DX3D\Source\DX3D\Graphics\Drawable\Models\SolidSphere.cpp" />
     <ClCompile Include="DX3D\Source\DX3D\Graphics\Drawable\Models\TestCube.cpp" />
     <ClCompile Include="DX3D\Source\DX3D\Graphics\Drawable\Models\TestPlane.cpp" />
-    <ClCompile Include="DX3D\Source\DX3D\Graphics\Drawable\ModelWindow.cpp" />
     <ClCompile Include="DX3D\Source\DX3D\Graphics\Drawable\Node.cpp" />
     <ClCompile Include="DX3D\Source\DX3D\Graphics\RenderJobs\Job.cpp" />
     <ClCompile Include="DX3D\Source\DX3D\Graphics\RenderJobs\Step.cpp" />
@@ -235,7 +234,6 @@
     <ClInclude Include="DX3D\Source\DX3D\Graphics\Drawable\Constants.hpp" />
     <ClInclude Include="DX3D\Source\DX3D\Graphics\Drawable\Model.hpp" />
     <ClInclude Include="DX3D\Source\DX3D\Graphics\Drawable\ModelProbe.hpp" />
-    <ClInclude Include="DX3D\Source\DX3D\Graphics\Drawable\ModelWindow.hpp" />
     <ClInclude Include="DX3D\Source\DX3D\Graphics\Drawable\Node.hpp" />
     <ClInclude Include="DX3D\Source\DX3D\Graphics\RenderJobs\FrameCommander.hpp" />
     <ClInclude Include="DX3D\Source\DX3D\Graphics\RenderJobs\Job.hpp" />
@@ -294,6 +292,16 @@
     <ClInclude Include="DX3D\Source\DX3D\Graphics\Graphics.hpp" />
   </ItemGroup>
   <ItemGroup>
+    <FxCompile Include="DX3D\Assets\Shaders\Offset_VS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ProjectDir)%(Filename).cso</ObjectFileOutput>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ProjectDir)%(Filename).cso</ObjectFileOutput>
+    </FxCompile>
     <FxCompile Include="DX3D\Assets\Shaders\PhongDifMskSpcNrm_PS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>

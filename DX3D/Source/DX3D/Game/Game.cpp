@@ -146,6 +146,10 @@ namespace dx3d {
 			{
 				CheckChanges(ImGui::SliderFloat(tag("Scale"), &v, 1.0f, 2.0f, "%.3f", ImGuiSliderFlags_Logarithmic));
 			}
+			if (auto v = buf["offset"]; v.Exists())
+			{
+				CheckChanges(ImGui::SliderFloat(tag("offset"), &v, 0.0f, 1.0f, "%.3f", ImGuiSliderFlags_Logarithmic));
+			}
 			if (auto v = buf[PSCBV_material_color]; v.Exists())
 			{
 				CheckChanges(ImGui::ColorPicker3(tag("Color"), reinterpret_cast<float*>(&static_cast<DirectX::XMFLOAT3&>(v))));

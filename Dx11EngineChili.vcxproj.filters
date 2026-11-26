@@ -165,9 +165,6 @@
     <ClCompile Include="DX3D\Source\DX3D\Graphics\Drawable\Models\TestPlane.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="DX3D\Source\DX3D\Graphics\Drawable\ModelWindow.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="DX3D\Source\DX3D\Graphics\Drawable\Node.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -389,9 +386,6 @@
     <ClInclude Include="DX3D\Source\DX3D\Graphics\Drawable\Model.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="DX3D\Source\DX3D\Graphics\Drawable\ModelWindow.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="DX3D\Source\DX3D\Graphics\Drawable\Node.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -427,6 +421,7 @@
     <FxCompile Include="DX3D\Assets\Shaders\PhongDifMskSpcNrm_VS.hlsl" />
     <FxCompile Include="DX3D\Assets\Shaders\PhongDifSpcNrm_VS.hlsl" />
     <FxCompile Include="DX3D\Assets\Shaders\PhongDifSpc_VS.hlsl" />
+    <FxCompile Include="DX3D\Assets\Shaders\Offset_VS.hlsl" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Assets\Images\cube.png">

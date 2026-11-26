@@ -46,7 +46,7 @@ dx3d::TestCube::TestCube(const DrawableDesc& desc, Graphics& graphics, float siz
 			buf[PSCBV_specular_weight] = 0.1f;
 			buf[PSCBV_specular_gloss] = 20.0f;
 			
-			only.AddBindable(std::make_shared<BCachingPixelConstantBufferEX>(BINDABLE_DESC, graphics, buf, 1u));
+			only.AddBindable(std::make_shared<BCachingPixelConstantBufferEx>(BINDABLE_DESC, graphics, buf, 1u));
 
 			only.AddBindable(BInputLayout::Resolve(BINDABLE_DESC, graphics, model._vertices.GetLayout(), pvsbc));
 
@@ -90,7 +90,7 @@ dx3d::TestCube::TestCube(const DrawableDesc& desc, Graphics& graphics, float siz
 			lay.Add<dx3d_dcb::Float3>(PSCBV_material_color);
 			auto buf = dx3d_dcb::Buffer(std::move(lay));
 			buf[PSCBV_material_color] = DirectX::XMFLOAT3{ 1.0f, 0.4f, 0.4f };
-			draw.AddBindable(std::make_shared<BCachingPixelConstantBufferEX>(BINDABLE_DESC, graphics, buf, 1u));
+			draw.AddBindable(std::make_shared<BCachingPixelConstantBufferEx>(BINDABLE_DESC, graphics, buf, 1u));
 
 			// TODO: better sub-layout generation tech for future consideration maybe
 			draw.AddBindable(BInputLayout::Resolve(BINDABLE_DESC, graphics, model._vertices.GetLayout(), pvsbc));

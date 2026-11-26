@@ -2,7 +2,6 @@
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
 #include <DX3D/Math/MathXM.hpp>
-#include <DX3D/Graphics/Drawable/ModelWindow.hpp>
 #include <DX3D/Graphics/Drawable/Mesh.hpp>
 #include <DX3D/Graphics/Drawable/Node.hpp>
 #include <DX3D/Graphics/Drawable/Model.hpp>
