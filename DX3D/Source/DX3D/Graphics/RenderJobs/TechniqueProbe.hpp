@@ -31,7 +31,9 @@ namespace dx3d {
 	protected:
 		virtual void OnSetTechnique() {}
 		virtual void OnSetStep() {}
-		virtual bool OnVisitBuffer(class dx3d_dcb::Buffer&) = 0;
+		virtual bool OnVisitBuffer(class dx3d_dcb::Buffer&) {
+			return false;
+		}
 
 	protected:
 		class Technique* _tech_ptr{ nullptr };

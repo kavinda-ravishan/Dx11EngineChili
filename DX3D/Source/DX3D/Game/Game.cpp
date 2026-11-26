@@ -235,6 +235,28 @@ namespace dx3d {
 			);
 			// processing for selecting node
 			if (ImGui::IsItemClicked()) {
+				// used to change the highlighted node on selection change
+				struct Probe : public TechniqueProbe
+				{
+					virtual void OnSetTechnique()
+					{
+						if (_tech_ptr->GetName() == "Outline")
+						{
+							_tech_ptr->SetActiveState(highlighted);
+						}
+					}
+					bool highlighted = false;
+				} probe;
+
+				// remove highlight on prev-selected node
+				if (_selected_node_ptr != nullptr)
+				{
+					_selected_node_ptr->Accept(probe);
+				}
+				// add highlight to newly-selected node
+				probe.highlighted = true;
+				node.Accept(probe);
+
 				_selected_node_ptr = &node;
 			}
 			// signal if children should also be recursed
