@@ -32,14 +32,6 @@ namespace dx3d {
 			float z{};
 		};
 
-		struct NodeData {
-			TransformParameters tranform_params{};
-			bool transform_params_changed{};
-			std::optional<dx3d_dcb::Buffer> material_cbuf{};
-			bool material_cbuf_changed{};
-		};
-
-		Node* _selected_node_ptr{};
-		std::unordered_map<int, NodeData> _transforms{};
+		std::unordered_map<int, TransformParameters> _transforms;
 	};
 } // namespace dx3d

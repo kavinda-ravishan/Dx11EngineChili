@@ -7,10 +7,10 @@
 
 dx3d::Drawable::Drawable(const DrawableDesc& desc) : Base(desc.base) {}
 
-dx3d::Drawable::Drawable(const DrawableDesc& desc, Graphics& graphics, const Material& mat, const aiMesh& mesh) noexcept
+dx3d::Drawable::Drawable(const DrawableDesc& desc, Graphics& graphics, const Material& mat, const aiMesh& mesh, const float scale) noexcept
 	: Base(desc.base)
 {
-	_vertices = mat.MakeVertexBindable(BindableDesc(desc.base), graphics, mesh);
+	_vertices = mat.MakeVertexBindable(BindableDesc(desc.base), graphics, mesh, scale);
 	_indices = mat.MakeIndexBindable(BindableDesc(desc.base), graphics, mesh);
 	_topology = BTopology::Resolve(BindableDesc(desc.base), graphics);
 

@@ -24,7 +24,7 @@ namespace dx3d {
 		void Accept(ModelProbe& probe);
 
 	private:
-		std::unique_ptr<Node> ParseNode(int& next_id, const aiNode& node, DirectX::FXMMATRIX additional_transform);
+		std::unique_ptr<Node> ParseNode(int& next_id, const aiNode& node, const float scale);
 
 	private:
 		std::unique_ptr<Node> _root{};

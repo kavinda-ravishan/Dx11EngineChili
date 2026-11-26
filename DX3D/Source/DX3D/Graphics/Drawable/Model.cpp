@@ -1,6 +1,7 @@
 #include <assimp/Importer.hpp>
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
+#include <DX3D/Math/MathXM.hpp>
 #include <DX3D/Graphics/Drawable/ModelWindow.hpp>
 #include <DX3D/Graphics/Drawable/Mesh.hpp>
 #include <DX3D/Graphics/Drawable/Node.hpp>
@@ -34,11 +35,11 @@ dx3d::Model::Model(const BaseDesc& desc, Graphics& graphics, const std::filesyst
 
 	for (size_t i = 0; i < scene->mNumMeshes; i++) {
 		const auto& mesh = *scene->mMeshes[i];
-		_mesh_ptrs.push_back(std::make_unique<Mesh>(DRAWABLE_DESC, graphics, materials[mesh.mMaterialIndex], mesh));
+		_mesh_ptrs.push_back(std::make_unique<Mesh>(DRAWABLE_DESC, graphics, materials[mesh.mMaterialIndex], mesh, scale));
 	}
 
 	int next_id{ 0 };
-	_root = ParseNode(next_id, *scene->mRootNode, DirectX::XMMatrixScaling(scale, scale, scale));
+	_root = ParseNode(next_id, *scene->mRootNode, scale);
 }
 
 dx3d::Model::~Model() noexcept {}
@@ -59,11 +60,10 @@ void dx3d::Model::Accept(ModelProbe& probe) {
 	_root->Accept(probe);
 }
 
-std::unique_ptr<dx3d::Node> dx3d::Model::ParseNode(int& next_id, const aiNode& node, DirectX::FXMMATRIX additional_transform)
-{
-	const auto transform = additional_transform * DirectX::XMMatrixTranspose(DirectX::XMLoadFloat4x4(
+std::unique_ptr<dx3d::Node> dx3d::Model::ParseNode(int& next_id, const aiNode& node, const float scale) {
+	const auto transform = ScaleTranslation(DirectX::XMMatrixTranspose(DirectX::XMLoadFloat4x4(
 		reinterpret_cast<const DirectX::XMFLOAT4X4*>(&node.mTransformation)
-	));
+	)), scale);
 
 	std::vector<Mesh*> cur_mesh_ptrs;
 	cur_mesh_ptrs.reserve(node.mNumMeshes);
@@ -76,7 +76,7 @@ std::unique_ptr<dx3d::Node> dx3d::Model::ParseNode(int& next_id, const aiNode& n
 	auto node_ptr = std::make_unique<Node>(next_id++, node.mName.C_Str(), std::move(cur_mesh_ptrs), transform);
 	for (size_t i = 0; i < node.mNumChildren; i++)
 	{
-		node_ptr->AddChild(ParseNode(next_id, *node.mChildren[i], DirectX::XMMatrixIdentity()));
+		node_ptr->AddChild(ParseNode(next_id, *node.mChildren[i], scale));
 	}
 
 	return node_ptr;

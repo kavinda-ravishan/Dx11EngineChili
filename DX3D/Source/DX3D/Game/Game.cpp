@@ -12,6 +12,7 @@
 #include <DX3D/Window/ImguiManager.hpp>
 
 #include <DX3D/Math/Math.hpp>
+#include <DX3D/Math/MathXM.hpp>
 #include <DX3D/Core/Logger.hpp>
 #include <DX3D/Utils/Timer.hpp>
 
@@ -190,7 +191,28 @@ namespace dx3d {
 			model.Accept(*this);
 
 			ImGui::NextColumn();
-			if (_selected_node_ptr != nullptr) {}
+			if (_selected_node_ptr != nullptr) {
+
+				float changed = false;
+				const auto CheckChanges = [&changed](bool updated) {changed = changed || updated; };
+				auto& tf = ResolveTransform();
+				ImGui::TextColored({ 0.4f,1.0f,0.6f,1.0f }, "Translation");
+				CheckChanges(ImGui::SliderFloat("X", &tf.x, -60.f, 60.f));
+				CheckChanges(ImGui::SliderFloat("Y", &tf.y, -60.f, 60.f));
+				CheckChanges(ImGui::SliderFloat("Z", &tf.z, -60.f, 60.f));
+				ImGui::TextColored({ 0.4f,1.0f,0.6f,1.0f }, "Orientation");
+				CheckChanges(ImGui::SliderAngle("X-rotation", &tf.x_rot, -180.0f, 180.0f));
+				CheckChanges(ImGui::SliderAngle("Y-rotation", &tf.y_rot, -180.0f, 180.0f));
+				CheckChanges(ImGui::SliderAngle("Z-rotation", &tf.z_rot, -180.0f, 180.0f));
+				if (changed) {
+					_selected_node_ptr->SetAppliedTransform(
+						DirectX::XMMatrixRotationX(tf.x_rot) *
+						DirectX::XMMatrixRotationY(tf.y_rot) *
+						DirectX::XMMatrixRotationZ(tf.z_rot) *
+						DirectX::XMMatrixTranslation(tf.x, tf.y, tf.z)
+					);
+				}
+			}
 			ImGui::End();
 		}
 
@@ -219,8 +241,44 @@ namespace dx3d {
 			ImGui::TreePop();
 		}
 
-	protected:
+	private:
 		Node* _selected_node_ptr{ nullptr };
+
+		struct TransformParameters {
+			float x_rot{ 0.0f };
+			float y_rot{ 0.0f };
+			float z_rot{ 0.0f };
+			float x{ 0.0f };
+			float y{ 0.0f };
+			float z{ 0.0f };
+		};
+
+		std::unordered_map<int, TransformParameters> _transform_params{};
+	
+	private:
+		TransformParameters& ResolveTransform() noexcept {
+			const auto id = _selected_node_ptr->GetID();
+			auto i = _transform_params.find(id);
+			if (i == _transform_params.end())
+			{
+				return LoadTransform(id);
+			}
+			return i->second;
+		}
+
+		TransformParameters& LoadTransform(int id) noexcept {
+			const auto& applied = _selected_node_ptr->GetAppliedTransform();
+			const auto angles = ExtractEulerAngles(applied);
+			const auto translation = ExtractTranslation(applied);
+			TransformParameters tp;
+			tp.z_rot = angles.z;
+			tp.x_rot = angles.x;
+			tp.y_rot = angles.y;
+			tp.x = translation.x;
+			tp.y = translation.y;
+			tp.z = translation.z;
+			return _transform_params.insert({ id,{ tp } }).first->second;
+		}
 	};
 } // namespace dx3d
 

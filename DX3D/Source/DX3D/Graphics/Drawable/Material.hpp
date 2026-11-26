@@ -14,7 +14,7 @@ namespace dx3d {
 		Material(const BindableDesc& desc, Graphics& graphics, const aiMaterial& material, const std::filesystem::path& path) noxnd;
 		dx3d_dvtx::VertexBuffer ExtractVertices(const aiMesh& mesh) const noexcept;
 		std::vector<unsigned short> ExtractIndices(const aiMesh& mesh) const noexcept;
-		std::shared_ptr<BVertexBuffer> MakeVertexBindable(const BindableDesc& desc, Graphics& graphics, const aiMesh& mesh) const noxnd;
+		std::shared_ptr<BVertexBuffer> MakeVertexBindable(const BindableDesc& desc, Graphics& graphics, const aiMesh& mesh, const float scale = 1.0f) const noxnd;
 		std::shared_ptr<BIndexBuffer> MakeIndexBindable(const BindableDesc& desc, Graphics& graphics, const aiMesh& mesh) const noxnd;
 		std::vector<Technique> GetTechniques() const noexcept;
 	

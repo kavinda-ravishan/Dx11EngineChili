@@ -10,8 +10,7 @@ namespace dx3d {
 
 	class Mesh final : public Drawable {
 	public:
-		Mesh(const DrawableDesc& desc);
-		Mesh(const DrawableDesc& desc, Graphics& graphics, const class Material& mat, const aiMesh& mesh) noxnd;
+		Mesh(const DrawableDesc& desc, Graphics& graphics, const class Material& mat, const aiMesh& mesh, const float scale = 1.0f) noxnd;
 		void Submit(FrameCommander& frame, DirectX::FXMMATRIX accumulated_tranform) const noxnd;
 		DirectX::XMMATRIX GetTransformXM() const noexcept override;
 	

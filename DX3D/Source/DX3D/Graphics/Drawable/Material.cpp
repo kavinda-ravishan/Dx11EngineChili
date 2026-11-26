@@ -227,8 +227,19 @@ std::vector<unsigned short> dx3d::Material::ExtractIndices(const aiMesh& mesh) c
 	return indices;
 }
 
-std::shared_ptr<dx3d::BVertexBuffer> dx3d::Material::MakeVertexBindable(const BindableDesc& desc, Graphics& graphics, const aiMesh& mesh) const noexcept(!IS_DEBUG) {
-	return BVertexBuffer::Resolve(desc, graphics, MakeMeshTag(mesh), ExtractVertices(mesh));
+std::shared_ptr<dx3d::BVertexBuffer> dx3d::Material::MakeVertexBindable(const BindableDesc& desc, Graphics& graphics, const aiMesh& mesh, const float scale) const noexcept(!IS_DEBUG) {
+	auto vtc = ExtractVertices(mesh);
+
+	if (scale != 1.0f) {
+		for (auto i = 0u; i < vtc.Size(); i++) {
+			DirectX::XMFLOAT3& pos = vtc[i].Attr<dx3d_dvtx::VertexLayout::ElementType::Position3D>();
+			pos.x *= scale;
+			pos.y *= scale;
+			pos.z *= scale;
+		}
+	}
+
+	return BVertexBuffer::Resolve(desc, graphics, MakeMeshTag(mesh), std::move(vtc));
 }
 
 std::shared_ptr<dx3d::BIndexBuffer> dx3d::Material::MakeIndexBindable(const BindableDesc& desc, Graphics& graphics, const aiMesh& mesh) const noexcept(!IS_DEBUG) {

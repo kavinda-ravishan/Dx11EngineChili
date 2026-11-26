@@ -105,34 +105,25 @@ void dx3d::ModelWindow::ApplyParameters() noexcept(!IS_DEBUG) {
 }
 
 DirectX::XMMATRIX dx3d::ModelWindow::GetTransform() const noexcept(!IS_DEBUG) {
-	assert(_selected_node_ptr != nullptr);
-	const auto& transform = _transforms.at(_selected_node_ptr->GetID()).tranform_params;
-	return
-		DirectX::XMMatrixRotationRollPitchYaw(transform.roll, transform.pitch, transform.yaw) *
-		DirectX::XMMatrixTranslation(transform.x, transform.y, transform.z);
-}
-
-const dx3d_dcb::Buffer& dx3d::ModelWindow::GetMaterial() const noexcept(!IS_DEBUG) {
-	assert(_selected_node_ptr != nullptr);
-	const auto& mat = _transforms.at(_selected_node_ptr->GetID()).material_cbuf;
-	assert(mat);
-	return *mat;
+	return DirectX::XMMatrixIdentity();
 }
 
 bool dx3d::ModelWindow::TransformChanged() const noexcept(!IS_DEBUG) {
-	return _selected_node_ptr && _transforms.at(_selected_node_ptr->GetID()).transform_params_changed;
+	//return _selected_node_ptr && _transforms.at(_selected_node_ptr->GetID()).transform_params_changed;
+	return false;
 }
 
 void dx3d::ModelWindow::ResetTransformChanged() noexcept(!IS_DEBUG) {
-	_transforms.at(_selected_node_ptr->GetID()).transform_params_changed = false;
+	//_transforms.at(_selected_node_ptr->GetID()).transform_params_changed = false;
 }
 
 bool dx3d::ModelWindow::MaterialChanged() const noexcept(!IS_DEBUG) {
-	return _selected_node_ptr && _transforms.at(_selected_node_ptr->GetID()).material_cbuf_changed;
+	//return _selected_node_ptr && _transforms.at(_selected_node_ptr->GetID()).material_cbuf_changed;
+	return false;
 }
 
 void dx3d::ModelWindow::ResetMaterialChanged() noexcept(!IS_DEBUG) {
-	_transforms.at(_selected_node_ptr->GetID()).material_cbuf_changed = false;
+	//_transforms.at(_selected_node_ptr->GetID()).material_cbuf_changed = false;
 }
 
 bool dx3d::ModelWindow::IsChanged() const noexcept(!IS_DEBUG) {
