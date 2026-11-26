@@ -9,6 +9,8 @@ namespace dx3d {
 
 	class TechniqueProbe {
 	public:
+		// TODO: add callback for visiting each mesh
+
 		void SetTechnique(class Technique* tech_ptr) {
 			_tech_ptr = tech_ptr;
 			_tech_idx++;

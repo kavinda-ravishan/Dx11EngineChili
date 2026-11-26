@@ -6,11 +6,13 @@
 cbuffer ObjectCBuf
 {
     bool use_gloss_alpha;
+    bool use_specular_map;
     float3 specular_color;
     float specular_weight;
     float specular_gloss;
     bool use_normal_map;
     float normal_map_weight;
+    float padding[3];
 };
 
 Texture2D tex;
@@ -43,6 +45,8 @@ float4 main(float3 view_frag_pos : Position, float3 view_normal : Normal, float3
     if (use_normal_map)
     {
         view_normal = MapNormal(normalize(view_tan), normalize(view_bitan), view_normal, tc, nmap, splr);
+        const float3 mapped_normal = MapNormal(normalize(view_tan), normalize(view_bitan), view_normal, tc, nmap, splr);
+        view_normal = lerp(view_normal, mapped_normal, normal_map_weight);
     }
 	
     // fragment to light vector data
@@ -52,7 +56,14 @@ float4 main(float3 view_frag_pos : Position, float3 view_normal : Normal, float3
     float3 specular_reflection_color;
     float specular_power = specular_gloss;
     const float4 specular_sample = spec.Sample(splr, tc);
-    specular_reflection_color = specular_sample.rgb;
+    if (use_specular_map)
+    {
+        specular_reflection_color = specular_sample.rgb;
+    }
+    else
+    {
+        specular_reflection_color = specular_color;
+    }
     if (use_gloss_alpha)
     {
         specular_power = pow(2.0f, specular_sample.a * 13.0f);

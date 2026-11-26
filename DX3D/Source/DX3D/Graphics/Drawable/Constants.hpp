@@ -10,6 +10,7 @@
 #define PSCBV_specular_intensity "specular_intensity"
 #define PSCBV_specular_color "specular_color"
 #define PSCBV_specular_weight "specular_weight"
+#define PSCBV_use_specular_map "use_specular_map"
 #define PSCBV_specular_gloss "specular_gloss"
 #define PSCBV_specular_map_weight "specular_map_weight"
 #define PSCBV_material_color "material_color"

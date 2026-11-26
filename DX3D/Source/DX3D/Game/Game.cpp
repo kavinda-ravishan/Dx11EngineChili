@@ -123,11 +123,7 @@ namespace dx3d {
 	// Mesh techniques window
 	class TP final : public TechniqueProbe {
 	public:
-		TP(const bool& imgui_enabled): _imgui_enabled(imgui_enabled) {}
-
 		void OnSetTechnique() override {
-			if (!_imgui_enabled) return;
-
 			using namespace std::string_literals;
 			ImGui::TextColored({ 0.4f,1.0f,0.6f,1.0f }, _tech_ptr->GetName().c_str());
 			bool active = _tech_ptr->IsActive();
@@ -137,8 +133,6 @@ namespace dx3d {
 
 		bool OnVisitBuffer(dx3d_dcb::Buffer& buf) override
 		{
-			if (!_imgui_enabled) return false;
-
 			float changed = false;
 			const auto CheckChanges = [&changed](bool updated) {changed = changed || updated; };
 			auto tag = [tag_scratch = std::string{}, tag_string = "##" + std::to_string(_buf_idx)]
@@ -168,6 +162,10 @@ namespace dx3d {
 			{
 				CheckChanges(ImGui::SliderFloat(tag("Spec. Weight"), &v, 0.0f, 2.0f));
 			}
+			if (auto v = buf[PSCBV_use_specular_map]; v.Exists())
+			{
+				CheckChanges(ImGui::Checkbox(tag("Spec. Map Enable"), &v));
+			}
 			if (auto v = buf[PSCBV_use_normal_map]; v.Exists())
 			{
 				CheckChanges(ImGui::Checkbox(tag("Normal Map Enable"), &v));
@@ -178,9 +176,6 @@ namespace dx3d {
 			}
 			return changed;
 		}
-	
-	private:
-		const bool &_imgui_enabled;
 	};
 
 	class MP : ModelProbe {
@@ -212,6 +207,11 @@ namespace dx3d {
 						DirectX::XMMatrixTranslation(tf.x, tf.y, tf.z)
 					);
 				}
+			}
+			if (_selected_node_ptr != nullptr)
+			{
+				TP probe;
+				_selected_node_ptr->Accept(probe);
 			}
 			ImGui::End();
 		}

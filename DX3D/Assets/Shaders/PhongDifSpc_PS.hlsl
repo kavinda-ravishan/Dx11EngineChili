@@ -6,10 +6,11 @@
 cbuffer ObjectCBuf
 {
     bool use_gloss_alpha;
+    bool use_specular_map;
     float3 specular_color;
     float specular_weight;
     float specular_gloss;
-    float padding[2];
+    float padding[1];
 };
 
 Texture2D tex;
@@ -28,7 +29,15 @@ float4 main(float3 view_frag_pos : Position, float3 view_normal : Normal, float2
     // specular parameters
     float specular_power_loaded = specular_gloss;
     const float4 specular_sample = spec.Sample(splr, tc);
-    const float3 specular_reflection_color = specular_sample.rgb;
+    float3 specular_reflection_color;
+    if (use_specular_map)
+    {
+        specular_reflection_color = specular_sample.rgb;
+    }
+    else
+    {
+        specular_reflection_color = specular_color;
+    }
     if (use_gloss_alpha)
     {
         specular_power_loaded = pow(2.0f, specular_sample.a * 13.0f);

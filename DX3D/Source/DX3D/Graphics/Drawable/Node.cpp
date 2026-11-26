@@ -53,6 +53,13 @@ void dx3d::Node::Accept(ModelProbe& probe) {
 	}
 }
 
+void dx3d::Node::Accept(TechniqueProbe& probe) {
+	for (auto& mp : _mesh_ptrs)
+	{
+		mp->Accept(probe);
+	}
+}
+
 const std::string& dx3d::Node::GetName() const {
 	return _name;
 }

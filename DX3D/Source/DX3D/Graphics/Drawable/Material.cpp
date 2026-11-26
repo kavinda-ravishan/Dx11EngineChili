@@ -61,6 +61,7 @@ dx3d::Material::Material(const BindableDesc& desc, Graphics& graphics, const aiM
 				has_gloss_alpha = tex->HasAlpha();
 				step.AddBindable(std::move(tex));
 				psc_layout.Add<dx3d_dcb::Bool>(PSCBV_use_gloss_alpha);
+				psc_layout.Add<dx3d_dcb::Bool>(PSCBV_use_specular_map);
 			}
 			psc_layout.Add<dx3d_dcb::Float3>(PSCBV_specular_color);
 			psc_layout.Add<dx3d_dcb::Float>(PSCBV_specular_weight);
@@ -102,6 +103,7 @@ dx3d::Material::Material(const BindableDesc& desc, Graphics& graphics, const aiM
 				r = reinterpret_cast<DirectX::XMFLOAT3&>(color);
 			}
 			buf[PSCBV_use_gloss_alpha].SetIfExists(has_gloss_alpha);
+			buf[PSCBV_use_specular_map].SetIfExists(true);
 			if (auto r = buf[PSCBV_specular_color]; r.Exists())
 			{
 				aiColor3D color = { 0.18f,0.18f,0.18f };

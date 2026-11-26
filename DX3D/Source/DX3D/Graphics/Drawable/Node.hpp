@@ -17,6 +17,7 @@ namespace dx3d {
 		int GetID() const noexcept;
 		bool HasChildren() const noexcept;
 		void Accept(class ModelProbe& probe);
+		void Accept(class TechniqueProbe& probe);
 		const std::string& GetName() const;
 
 	private:
