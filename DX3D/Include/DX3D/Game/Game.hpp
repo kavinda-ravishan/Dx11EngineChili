@@ -25,6 +25,7 @@ namespace dx3d {
 		std::unique_ptr<class PointLight> _point_light{};
 		
 		std::unique_ptr<class Model> _sponza{};
+		std::unique_ptr<class MP> _model_probe{};
 		//std::unique_ptr<class Model> _stripey{};
 		//std::unique_ptr<class Model> _nano{};
 		//std::unique_ptr<class Model> _gobber{};

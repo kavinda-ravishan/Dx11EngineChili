@@ -10,7 +10,6 @@
 // Model
 dx3d::Model::Model(const BaseDesc& desc, Graphics& graphics, const std::filesystem::path file_path, const float scale)
 	: Base(desc)
-	//, _window(std::make_unique<ModelWindow>())
 {
 	Assimp::Importer imp;
 	const auto scene = imp.ReadFile(file_path.string().c_str(),
@@ -52,12 +51,12 @@ void dx3d::Model::Submit(FrameCommander& frame) const {
 	_root->Submit(frame, DirectX::XMMatrixIdentity());
 }
 
-//void dx3d::Model::ShowWindow(Graphics& graphics, const char* window_name) noexcept {
-//	_window->Show(graphics, window_name, *_root);
-//}
-
 void dx3d::Model::SetRootTransform(DirectX::FXMMATRIX tf) noexcept {
 	_root->SetAppliedTransform(tf);
+}
+
+void dx3d::Model::Accept(ModelProbe& probe) {
+	_root->Accept(probe);
 }
 
 std::unique_ptr<dx3d::Node> dx3d::Model::ParseNode(int& next_id, const aiNode& node, DirectX::FXMMATRIX additional_transform)

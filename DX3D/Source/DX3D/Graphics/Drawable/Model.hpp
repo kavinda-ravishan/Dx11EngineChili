@@ -12,6 +12,7 @@ namespace dx3d {
 	class Node;
 	class Mesh;
 	class FrameCommander;
+	class ModelProbe;
 
 	class Model final : public Base {
 	public:
@@ -19,15 +20,15 @@ namespace dx3d {
 		~Model() noexcept;
 
 		void Submit(FrameCommander& frame) const;
-		//void ShowWindow(Graphics& graphics, const char* window_name = nullptr) noexcept;
 		void SetRootTransform(DirectX::FXMMATRIX tf) noexcept;
+		void Accept(ModelProbe& probe);
 
 	private:
 		std::unique_ptr<Node> ParseNode(int& next_id, const aiNode& node, DirectX::FXMMATRIX additional_transform);
 
 	private:
 		std::unique_ptr<Node> _root{};
+		// sharing meshes here perhaps dangerous?
 		std::vector<std::unique_ptr<Mesh>> _mesh_ptrs{};
-		//std::unique_ptr<class ModelWindow> _window{};
 	};
 } // namespace dx3d

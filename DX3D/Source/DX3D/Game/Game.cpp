@@ -20,6 +20,8 @@
 #include <DX3D/Graphics/RenderJobs/TechniqueProbe.hpp>
 #include <DX3D/Graphics/Drawable/Constants.hpp>
 #include <DX3D/Graphics/Drawable/Material.hpp>
+#include <DX3D/Graphics/Drawable/Node.hpp>
+#include <DX3D/Graphics/Drawable/ModelProbe.hpp>
 #include <DX3D/Graphics/Drawable/Model.hpp>
 #include <DX3D/Graphics/Drawable/Mesh.hpp>
 //#include <DX3D/Graphics/Drawable/TestPlane.hpp>
@@ -118,9 +120,9 @@ static void ShowPerformanceWindow()
 namespace dx3d {
 
 	// Mesh techniques window
-	class Probe final : public TechniqueProbe {
+	class TP final : public TechniqueProbe {
 	public:
-		Probe(const bool& imgui_enabled): _imgui_enabled(imgui_enabled) {}
+		TP(const bool& imgui_enabled): _imgui_enabled(imgui_enabled) {}
 
 		void OnSetTechnique() override {
 			if (!_imgui_enabled) return;
@@ -179,6 +181,47 @@ namespace dx3d {
 	private:
 		const bool &_imgui_enabled;
 	};
+
+	class MP : ModelProbe {
+	public:
+		void SpawnWindow(Model& model) {
+			ImGui::Begin("Model");
+			ImGui::Columns(2, nullptr, true);
+			model.Accept(*this);
+
+			ImGui::NextColumn();
+			if (_selected_node_ptr != nullptr) {}
+			ImGui::End();
+		}
+
+	protected:
+		bool PushNode(Node& node) override {
+			// if there is no selected node, set selected_Id to an impossible value
+			const int selected_Id = (_selected_node_ptr == nullptr) ? -1 : _selected_node_ptr->GetID();
+			// build up flags for current node
+			const auto node_flags = ImGuiTreeNodeFlags_OpenOnArrow
+				| ((node.GetID() == selected_Id) ? ImGuiTreeNodeFlags_Selected : 0)
+				| (node.HasChildren() ? 0 : ImGuiTreeNodeFlags_Leaf);
+			// render this node
+			const auto expanded = ImGui::TreeNodeEx(
+				(void*)(intptr_t)node.GetID(),
+				node_flags, node.GetName().c_str()
+			);
+			// processing for selecting node
+			if (ImGui::IsItemClicked()) {
+				_selected_node_ptr = &node;
+			}
+			// signal if children should also be recursed
+			return expanded;
+		}
+
+		void PopNode(Node& node) override {
+			ImGui::TreePop();
+		}
+
+	protected:
+		Node* _selected_node_ptr{ nullptr };
+	};
 } // namespace dx3d
 
 dx3d::Game::Game(const GameDesc& desc) :
@@ -204,7 +247,8 @@ dx3d::Game::Game(const GameDesc& desc) :
 
 	
 	_sponza = std::make_unique<Model>(BaseDesc({ _logger }), *_graphics, "Assets\\Models\\Sponza\\sponza.obj", 1.0f / 20.0f);
-	
+	_model_probe = std::make_unique<MP>();
+
 	//_stripey = std::make_unique<Model>(BaseDesc({ _logger }), *_graphics, "Assets\\Models\\Stripey\\stripey.obj", 2.0f);
 	//_stripey->SetRootTransform(DirectX::XMMatrixTranslation(-50.0f, 9.125f, -2.75f));
 	
@@ -291,7 +335,8 @@ void dx3d::Game::OnInternalUpdate() {
 	if (_graphics->IsImguiEnabled()) {
 		_camera->SpawnControlWindow();
 		_point_light->SpawnControlWindow();
-		
+		_model_probe->SpawnWindow(*_sponza);
+
 		//_sponza->ShowWindow(*_graphics, "Sponza");
 		//_stripey->ShowWindow(*_graphics, "Stripey");
 		//_nano->ShowWindow(*_graphics, "Nano");

@@ -233,6 +233,7 @@
     <ClInclude Include="DX3D\Source\DX3D\Graphics\Drawable\Drawable.hpp" />
     <ClInclude Include="DX3D\Source\DX3D\Graphics\Drawable\Constants.hpp" />
     <ClInclude Include="DX3D\Source\DX3D\Graphics\Drawable\Model.hpp" />
+    <ClInclude Include="DX3D\Source\DX3D\Graphics\Drawable\ModelProbe.hpp" />
     <ClInclude Include="DX3D\Source\DX3D\Graphics\Drawable\ModelWindow.hpp" />
     <ClInclude Include="DX3D\Source\DX3D\Graphics\Drawable\Node.hpp" />
     <ClInclude Include="DX3D\Source\DX3D\Graphics\RenderJobs\FrameCommander.hpp" />

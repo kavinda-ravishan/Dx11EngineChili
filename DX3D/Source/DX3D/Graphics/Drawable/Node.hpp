@@ -14,8 +14,10 @@ namespace dx3d {
 		void Submit(class FrameCommander& frame, DirectX::FXMMATRIX accumulated_tranform) const noxnd;
 		void SetAppliedTransform(DirectX::FXMMATRIX transform) noexcept;
 		const DirectX::XMFLOAT4X4& GetAppliedTransform() const noexcept;
-		//void ShowTree(Node*& selected_node_ptr) const noexcept;
 		int GetID() const noexcept;
+		bool HasChildren() const noexcept;
+		void Accept(class ModelProbe& probe);
+		const std::string& GetName() const;
 
 	private:
 		void AddChild(std::unique_ptr<Node> child_ptr) noxnd;
