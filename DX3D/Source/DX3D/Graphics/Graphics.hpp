@@ -9,8 +9,10 @@
 
 namespace dx3d {
 
+	class DepthStencil;
+	
 	class Graphics final : public Base {
-		friend class Bindable;
+		friend class GraphicsResource;
 
 	public:
 		explicit Graphics(const GraphicsDesc& desc);
@@ -19,6 +21,10 @@ namespace dx3d {
 		void EndFrame();
 		void BeginFrame(float red, float green, float blue) noexcept;
 		void DrawIndexed(UINT count) noxnd;
+		void BindSwapBuffer() noexcept;
+		void BindSwapBuffer(const DepthStencil& ds) noexcept;
+		uint32_t GetWidth() const noexcept;
+		uint32_t GetHeight() const noexcept;
 
 		void SetProjection(DirectX::FXMMATRIX projection) noexcept;
 		DirectX::XMMATRIX GetProjection() const noexcept;

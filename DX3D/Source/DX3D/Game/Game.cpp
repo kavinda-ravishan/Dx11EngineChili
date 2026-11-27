@@ -321,7 +321,7 @@ dx3d::Game::Game(const GameDesc& desc) :
 		_window->GetWindowHandle(), 
 		_window->GetWindowSize())
 	);
-	_fc = std::make_unique<FrameCommander>();
+	_fc = std::make_unique<FrameCommander>(BaseDesc(_logger), *_graphics);
 	_timer = std::make_unique<Timer>();
 	_camera = std::make_unique<Camera>();
 

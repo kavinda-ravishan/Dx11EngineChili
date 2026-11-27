@@ -4,6 +4,7 @@
 
 #include <DX3D/Core/ConditionalNoexcept.hpp>
 #include <DX3D/Graphics/GraphicsLogUtils.hpp>
+#include <DX3D/Graphics/DepthStencil.hpp>
 #include <DX3D/Graphics/Graphics.hpp>
 
 #pragma comment(lib, "d3d11.lib")
@@ -117,39 +118,6 @@ dx3d::Graphics::Graphics(const GraphicsDesc& desc)
 		"Failed to create render target view"
 	);
 
-	// create depth stensil texture
-	D3D11_TEXTURE2D_DESC depth_stensil_texture_desc{};
-	depth_stensil_texture_desc.Width = _window_size.width;
-	depth_stensil_texture_desc.Height = _window_size.height;
-	depth_stensil_texture_desc.MipLevels = 1u;
-	depth_stensil_texture_desc.ArraySize = 1u;
-	depth_stensil_texture_desc.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
-	depth_stensil_texture_desc.SampleDesc.Count = 1u;
-	depth_stensil_texture_desc.SampleDesc.Quality = 0u;
-	depth_stensil_texture_desc.Usage = D3D11_USAGE_DEFAULT;
-	depth_stensil_texture_desc.BindFlags = D3D11_BIND_DEPTH_STENCIL;
-
-	Microsoft::WRL::ComPtr<ID3D11Texture2D> depth_stensil_texture{};
-	DX3DGraphicsLogThrowOnFail(
-		_device->CreateTexture2D(&depth_stensil_texture_desc, nullptr, &depth_stensil_texture),
-		"Failed to create depth stensil texture"
-	);
-
-	// create view of depth stencil texture
-	D3D11_DEPTH_STENCIL_VIEW_DESC depth_stensil_view_desc{};
-	depth_stensil_view_desc.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
-	depth_stensil_view_desc.ViewDimension = D3D11_DSV_DIMENSION_TEXTURE2D;
-	depth_stensil_view_desc.Texture2D.MipSlice = 0u;
-
-	DX3DGraphicsLogThrowOnFail(
-		_device->CreateDepthStencilView(depth_stensil_texture.Get(), &depth_stensil_view_desc, &_depth_stencil_view),
-		"Failed to create depth stensil view"
-	);
-
-	// bind render target and epth stensil view to OM
-	// NOTE : &_target_view will get the pp but it release the currunt resources therefor use 'GetAddressOf' to get pp
-	_context->OMSetRenderTargets(1u, _target_view.GetAddressOf(), _depth_stencil_view.Get());
-
 	// confifure viewport
 	D3D11_VIEWPORT view_port{};
 	view_port.Width = static_cast<float>(_window_size.width);
@@ -199,11 +167,26 @@ void dx3d::Graphics::BeginFrame(float red, float green, float blue) noexcept {
 
 	const float color[] = { red, green, blue, 1.0f };
 	_context->ClearRenderTargetView(_target_view.Get(), color);
-	_context->ClearDepthStencilView(_depth_stencil_view.Get(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0u);
 }
 
 void dx3d::Graphics::DrawIndexed(UINT count) noxnd {
 	_context->DrawIndexed(count, 0u, 0u);
+}
+
+void dx3d::Graphics::BindSwapBuffer() noexcept {
+	_context->OMSetRenderTargets(1u, _target_view.GetAddressOf(), nullptr);
+}
+
+void dx3d::Graphics::BindSwapBuffer(const dx3d::DepthStencil& ds) noexcept {
+	_context->OMSetRenderTargets(1u, _target_view.GetAddressOf(), ds._depth_stencil_view.Get());
+}
+
+uint32_t dx3d::Graphics::GetWidth() const noexcept {
+	return _window_size.width;
+}
+
+uint32_t dx3d::Graphics::GetHeight() const noexcept {
+	return _window_size.height;
 }
 
 void dx3d::Graphics::SetProjection(DirectX::FXMMATRIX projection) noexcept {

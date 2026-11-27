@@ -5,12 +5,13 @@
 #include <memory>
 #include <string>
 #include <DX3D/Core/Base.hpp>
+#include <DX3D/Graphics/GraphicsResource.hpp>
 #include <DX3D/Core/Common.hpp>
 
 #define BINDABLE_DESC BindableDesc({ GetLogger() })
 
 namespace dx3d {
-	class Bindable : public ClonableBase {
+	class Bindable : public ClonableBase, public GraphicsResource {
 	public:
 		explicit Bindable(const BindableDesc& desc);
 		virtual ~Bindable() = default;
@@ -19,10 +20,6 @@ namespace dx3d {
 		virtual void Accept(class TechniqueProbe&);
 		virtual std::string GetUID() const noexcept;
 		virtual void Bind(Graphics& graphics) noexcept = 0;
-
-	protected:
-		static ID3D11DeviceContext* GetContext(Graphics& graphics) noexcept;
-		static ID3D11Device* GetDevice(Graphics& graphics) noexcept;
 	};
 
 	class CloningBindable : public Bindable {
