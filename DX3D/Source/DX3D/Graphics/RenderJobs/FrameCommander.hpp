@@ -30,8 +30,8 @@ namespace dx3d {
 			_ib_full_ptr = BIndexBuffer::Resolve(BINDABLE_DESC, graphics, "$Full", std::move(indices));
 
 			// setup fullscreen shaders
-			_ps_full_ptr = BPixelShader::Resolve(BINDABLE_DESC, graphics, "FullScreenInv_PS.cso");
 			_vs_full_ptr = BVertexShader::Resolve(BINDABLE_DESC, graphics, "FullScreen_VS.cso");
+			_ps_full_ptr = BPixelShader::Resolve(BINDABLE_DESC, graphics, "FullScreenEffect_PS.cso");
 			_layout_full_ptr = BInputLayout::Resolve(BINDABLE_DESC, graphics, lay, _vs_full_ptr->GetBytecode());
 		}
 

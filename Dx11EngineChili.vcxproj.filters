@@ -441,7 +441,7 @@
     <FxCompile Include="DX3D\Assets\Shaders\PhongDifSpc_VS.hlsl" />
     <FxCompile Include="DX3D\Assets\Shaders\Offset_VS.hlsl" />
     <FxCompile Include="DX3D\Assets\Shaders\FullScreen_VS.hlsl" />
-    <FxCompile Include="DX3D\Assets\Shaders\FullScreenInv_PS.hlsl" />
+    <FxCompile Include="DX3D\Assets\Shaders\FullScreenEffect_PS.hlsl" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Assets\Images\cube.png">
