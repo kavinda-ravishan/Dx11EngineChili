@@ -50,6 +50,12 @@ void dx3d::RenderTarget::BindAsTexture(Graphics & graphics, UINT slot) const noe
 	GetContext(graphics)->PSSetShaderResources(slot, 1, _texture_view.GetAddressOf());
 }
 
+// NOTE : to fix trying to bind a texture as a render target while that same resource is still bound as an input resource issue
+void dx3d::RenderTarget::UnbindAsTexture(Graphics& graphics, UINT slot) const noexcept {
+	ID3D11ShaderResourceView* null_srv[] = { nullptr };
+	GetContext(graphics)->PSSetShaderResources(slot, 1, null_srv);
+}
+
 void dx3d::RenderTarget::BindAsTarget(Graphics & graphics) const noexcept {
 	GetContext(graphics)->OMSetRenderTargets(1, _target_view.GetAddressOf(), nullptr);
 }

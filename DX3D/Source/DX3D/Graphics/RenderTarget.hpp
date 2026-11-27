@@ -9,6 +9,8 @@ namespace dx3d {
 	public:
 		RenderTarget(const BaseDesc& desc, Graphics& graphics, UINT width, UINT height);
 		void BindAsTexture(Graphics& graphics, UINT slot) const noexcept;
+		// NOTE : to fix trying to bind a texture as a render target while that same resource is still bound as an input resource issue
+		void UnbindAsTexture(Graphics& graphics, UINT slot) const noexcept;
 		void BindAsTarget(Graphics& graphics) const noexcept;
 		void BindAsTarget(Graphics& graphics, const DepthStencil& depth_stencil) const noexcept;
 	
