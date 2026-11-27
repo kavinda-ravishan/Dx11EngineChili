@@ -1,7 +1,7 @@
 #pragma once
 
 namespace dx3d {
-	struct RGBAColor
+	struct RGBAColorStruct
 	{
 		unsigned char r;
 		unsigned char g;

@@ -20,7 +20,7 @@
 	X( Bitangent ) \
 	X( Float3Color ) \
 	X( Float4Color ) \
-	X( BGRAColor ) \
+	X( RGBAColor ) \
 	X( Count )
 
 
@@ -101,9 +101,9 @@ namespace dx3d_dvtx {
 			static constexpr const char* code = "C4";
 			DVTX_ELEMENT_AI_EXTRACTOR(mColors[0])
 		};
-		template<> struct Map<BGRAColor>
+		template<> struct Map<RGBAColor>
 		{
-			using SysType = dx3d::RGBAColor;
+			using SysType = dx3d::RGBAColorStruct;
 			static constexpr DXGI_FORMAT dxgiFormat = DXGI_FORMAT_R8G8B8A8_UNORM;
 			static constexpr const char* semantic = "Color";
 			static constexpr const char* code = "C8";
